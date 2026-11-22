@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eye of the System</title>
+<script>var t = new URLSearchParams(location.search).get('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;</script>
+<link rel="stylesheet" href="/static/v4/style.css">
+</head>
+<body>
+<a class="skip" href="#report">Skip to the report</a>
+
+<header class="masthead">
+  <div class="brand">
+    <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12C5 6.5 19 6.5 22 12C19 17.5 5 17.5 2 12Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle class="pupil" cx="12" cy="12" r="3.3"/></svg>
+    <h1>Eye of the System</h1>
+  </div>
+  <div class="clock" title="The newest hour of simulated data the monitor has read">
+    <span class="clock-mode" id="clock-mode">Simulated</span>
+    <span class="clock-date" id="clock-date">connecting</span>
+    <span class="clock-hour" id="clock-hour"></span>
+  </div>
+  <div class="counts" id="counts" aria-label="Incidents by status"></div>
+  <nav class="tools" aria-label="Tools">
+    <button type="button" class="tool" id="bench-btn" aria-expanded="false" aria-controls="bench" title="Open the test bench (B)">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 3v5L3.5 15a1.5 1.5 0 0 0 1.3 2h10.4a1.5 1.5 0 0 0 1.3-2L13 8V3M6 3h8M5.5 12h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Test bench</span><kbd>B</kbd></button>
+    <button type="button" class="tool cue-tool" id="present-btn" aria-pressed="false" title="Walk the demo script step by step (P)">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 4.5h14v9H3zM10 13.5V17M6.5 17h7M8.5 7l3.5 2-3.5 2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span>Presenter mode</span><kbd>P</kbd></button>
+    <button type="button" class="tool icon-only" id="theme-btn" title="Switch between light and dark">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16 12.5A6.5 6.5 0 0 1 7.5 4a6.5 6.5 0 1 0 8.5 8.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span class="sr">Switch theme</span></button>
+    <a class="tool" href="/data" title="Browse the simulator's tables">Data <span aria-hidden="true">&rarr;</span></a>
+  </nav>
+</header>
+
+<main class="shell" id="shell">
+  <section class="health" aria-label="Business health by domain">
+    <div class="health-head">
+      <h2>Business health</h2>
+      <p class="health-hint" id="health-hint">Tiles follow a customer from visit to revenue. Click one to scope everything below.</p>
+    </div>
+    <div class="tiles" id="tiles" role="group" aria-label="Domain"></div>
+  </section>
+
+  <section class="now" id="now" aria-live="polite">
+    <span class="now-tag">Now</span>
+    <div class="now-body" id="now-body"><p class="now-line">Connecting to the monitor...</p></div>
+    <div class="now-act" id="now-act"></div>
+  </section>
+
+  <div class="stage" id="stage">
+    <section class="panel feed-panel" aria-labelledby="feed-title">
+      <div class="panel-head">
+        <h2 id="feed-title">Incidents</h2>
+        <span class="panel-note" id="feed-note"></span>
+      </div>
+      <div class="scroll" id="feed"></div>
+    </section>
+    <section class="panel report-panel" id="report" aria-labelledby="report-title" tabindex="-1">
+      <div class="report-head" id="report-head"><h2 id="report-title">Report</h2></div>
+      <div class="scroll" id="report-scroll"><div class="report" id="report-body"><p class="empty">Select an incident to read its report.</p></div></div>
+    </section>
+  </div>
+
+  <details class="howto" id="howto">
+    <summary>
+      <span class="howto-title"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="4" cy="10" r="2"/><circle cx="16" cy="4.5" r="2"/><circle cx="16" cy="15.5" r="2"/><path d="M6 10h3.5M9.5 10V4.5H14M9.5 10v5.5H14" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>How the business works</span>
+      <span class="howto-sub" id="howto-sub">The metric graph: how every figure adds up to contribution, and where the selected incident sits on it</span>
+      <span class="howto-toggle"><span class="when-closed">Show the graph</span><span class="when-open">Hide the graph</span> <kbd>G</kbd></span>
+    </summary>
+    <div class="howto-grid">
+      <div class="graph-area">
+        <div class="graph-head"><h3 id="graph-title">Metric graph</h3><span class="panel-note">Click a box for its definition and links</span></div>
+        <div id="graphwrap"><svg id="g" role="group" aria-label="Metric graph"></svg></div>
+        <div class="legend" aria-hidden="true">
+          <span><i class="sw st-open"></i>Open</span>
+          <span><i class="sw st-ongoing"></i>Ongoing</span>
+          <span><i class="sw st-resolved"></i>Resolved</span>
+          <span><i class="sw"></i>No incident</span>
+          <span><i class="sw outcome"></i>Outcome</span>
+          <span><svg viewBox="0 0 24 10"><line x1="0" y1="5" x2="24" y2="5"/></svg>Formula</span>
+          <span><svg viewBox="0 0 24 10"><line class="may" x1="0" y1="5" x2="24" y2="5"/></svg>Possible cause, with its sign + or &minus;</span>
+          <span title="The same metric under a second parent"><i class="sw again"></i>Shown again</span>
+        </div>
+        <div id="extra"></div>
+      </div>
+      <aside class="metric-card" id="metric-card" aria-live="polite">
+        <div class="metric-head" id="metric-head"><h3>Metric</h3></div>
+        <div class="metric-body" id="metric-body"><p class="empty">Click a box in the graph, or a metric under it, to see its definition, status, origin and links.</p></div>
+      </aside>
+    </div>
+  </details>
+</main>
+
+<!-- the test bench: simulated faults written into the simulator, outside the monitor -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="bench" id="bench" aria-labelledby="bench-title" hidden>
+  <div class="bench-head">
+    <div>
+      <p class="demo-tag">Demo</p>
+      <h2 id="bench-title">Test bench</h2>
+      <p class="bench-sub">Simulated faults written into the simulator. The monitor is not told: it has to find them in the data.</p>
+    </div>
+    <button type="button" class="close" id="bench-close" title="Close the test bench (Esc)"><span aria-hidden="true">&times;</span><span class="sr">Close the test bench</span></button>
+  </div>
+  <div class="bench-scroll">
+    <section class="bgroup">
+      <h3>Break something</h3>
+      <div class="field-row">
+        <label class="field"><span>Fault</span><select id="f-kind"></select></label>
+        <label class="field" id="w-country"><span>Country</span><select id="f-country"></select></label>
+        <label class="field" id="w-platform"><span>Platform</span><select id="f-platform"></select></label>
+        <label class="field" id="w-category"><span>Category</span><select id="f-category"></select></label>
+      </div>
+      <p class="bnote" id="f-note"></p>
+      <button type="button" class="primary" id="f-go">Inject fault</button>
+    </section>
+    <section class="bgroup" id="end-grp">
+      <h3>In progress</h3>
+      <div id="end-list"><p class="bnote">Nothing injected is running.</p></div>
+    </section>
+    <section class="bgroup">
+      <h3>Innocent change</h3>
+      <div class="pair">
+        <label class="field"><span>Country</span><select id="pr-country"></select></label>
+        <button type="button" id="pr-go">Promo (12 h)</button>
+      </div>
+      <div class="pair">
+        <label class="field"><span>Traffic moves toward</span><select id="ms-category"></select></label>
+        <button type="button" id="ms-go" title="Traffic moves toward one category; every rate stays the same; no calendar announces it">Mix shift (innocent)</button>
+      </div>
+    </section>
+    <section class="bgroup">
+      <h3>Data</h3>
+      <div class="pair">
+        <label class="field"><span>Source</span><select id="dd-source"></select></label>
+        <button type="button" id="dd-go">Arrives 2 h late</button>
+      </div>
+    </section>
+    <section class="bgroup">
+      <h3>New metric</h3>
+      <p class="bnote">Hand the monitor a definition and a query. Its extension agent checks it and answers.</p>
+      <div class="btn-row">
+        <button type="button" id="nm-go">Add refund_rate</button>
+        <button type="button" id="nm-dup" title="payment_rate: the query of payment_success_rate under another name">Add a duplicate metric</button>
+      </div>
+    </section>
+    <section class="bgroup answers">
+      <h3>Answers <span class="bnote" id="answers-note"></span></h3>
+      <div id="answers"><p class="bnote">Each action's result and the monitor's answers show here.</p></div>
+    </section>
+  </div>
+</aside>
+
+<!-- presenter mode: the demo script, one step at a time -->
+<section class="cue" id="cue" aria-label="Presenter mode" hidden>
+  <div class="cue-top">
+    <span class="cue-tag">Presenter</span>
+    <ol class="cue-steps" id="cue-steps"></ol>
+    <button type="button" class="close" id="cue-close" title="Leave presenter mode (P)"><span aria-hidden="true">&times;</span><span class="sr">Leave presenter mode</span></button>
+  </div>
+  <div class="cue-main">
+    <div class="cue-text">
+      <p class="cue-title" id="cue-title"></p>
+      <p class="cue-say" id="cue-say"></p>
+      <p class="cue-status" id="cue-status" role="status"></p>
+    </div>
+    <div class="cue-actions">
+      <button type="button" class="ghost" id="cue-back">Back</button>
+      <button type="button" class="cue-primary" id="cue-go"></button>
+      <button type="button" class="ghost" id="cue-next">Next step</button>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="/static/v4/app.js"></script>
+</body>
+</html>

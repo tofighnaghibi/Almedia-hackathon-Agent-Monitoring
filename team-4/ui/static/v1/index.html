@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eye of the System</title>
+<script>var t = new URLSearchParams(location.search).get('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;</script>
+<link rel="stylesheet" href="/static/v1/style.css">
+</head>
+<body>
+<div class="app" id="app">
+
+<header class="top">
+  <div class="brand">
+    <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12C5 6.5 19 6.5 22 12C19 17.5 5 17.5 2 12Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle class="pupil" cx="12" cy="12" r="3.2"/></svg>
+    <h1>Eye of the System</h1>
+  </div>
+  <div class="clock" title="The newest hour of simulated data the monitor has read">
+    <span class="clock-mode" id="clock-mode">Simulated</span>
+    <span id="clock" class="clock-val">connecting...</span>
+  </div>
+  <span id="exbadge"></span>
+  <span id="notice" role="status"></span>
+  <div class="counts" id="counts" aria-label="Incidents by status"></div>
+  <div class="top-actions">
+    <button class="tbtn" id="cmd-open" title="Run a command: inject, roll back, promo, add a metric, go to an incident">Commands <kbd>/</kbd></button>
+    <button class="tbtn bench-btn" id="bench-open" aria-expanded="false" aria-controls="bench"><span class="demo-tag">DEMO</span>Test bench <kbd>b</kbd></button>
+    <button class="tbtn icon" id="theme-btn" title="Switch between light and dark" aria-label="Switch between light and dark theme"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 3.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button>
+    <a class="tbtn" href="/data">Data <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</header>
+
+<section class="ribbon" id="ribbon" aria-label="The last 48 simulated hours">
+  <div class="rb-head">
+    <span class="rb-title" id="rb-title">Last 48 simulated hours</span>
+    <span class="rb-key"><span><i class="k-lag"></i>detection lag</span><span><i class="k-open"></i>open</span><span><i class="k-ongoing"></i>ongoing</span><span><i class="k-resolved"></i>resolved</span><span class="kx"><i class="k-explained"></i>explained, no alert</span><span class="kx"><i class="k-bench"></i>injected on the test bench</span></span>
+    <span class="rb-earlier" id="rb-earlier"></span>
+  </div>
+  <div class="rb-body" id="rb-body">
+    <div class="rb-axis" id="rb-axis"></div>
+    <div class="rb-lanes" id="rb-lanes"></div>
+    <div class="rb-now" id="rb-now"><span id="rb-now-label">now</span></div>
+  </div>
+</section>
+
+<nav class="scope" aria-label="Business domain">
+  <span class="scope-label">Domain</span>
+  <div id="domains" class="chips"></div>
+</nav>
+
+<main class="panes">
+  <section class="pane queue" aria-labelledby="feed-title">
+    <div class="pane-head"><h2 id="feed-title">Incidents</h2><span class="pane-sub" id="feed-sub"></span></div>
+    <div id="feed" class="feed" role="list"></div>
+    <div class="keys" aria-hidden="true"><kbd>j</kbd><kbd>k</kbd> move <kbd>g</kbd> graph <kbd>/</kbd> commands</div>
+  </section>
+
+  <section class="pane graph" id="graph-card" aria-labelledby="graph-title">
+    <div class="pane-head"><h2 id="graph-title">Metric graph</h2><span class="pane-sub">Click a box for its definition and links</span></div>
+    <div id="graphwrap"><svg id="g"></svg></div>
+    <div class="legend" aria-hidden="true">
+      <span><i class="sw st-open"></i>Open</span>
+      <span><i class="sw st-ongoing"></i>Ongoing</span>
+      <span><i class="sw st-resolved"></i>Resolved</span>
+      <span><i class="sw"></i>No incident</span>
+      <span><i class="sw outcome"></i>Outcome</span>
+      <span><svg viewBox="0 0 24 10"><line x1="0" y1="5" x2="24" y2="5"/></svg>Formula</span>
+      <span><svg viewBox="0 0 24 10"><line class="may" x1="0" y1="5" x2="24" y2="5"/></svg>Possible cause &plusmn;</span>
+      <span title="The same metric under a second parent"><i class="sw again"></i>Shown again</span>
+    </div>
+    <div id="extra"></div>
+  </section>
+
+  <section class="pane case" id="detail-card" aria-labelledby="detail-title">
+    <div class="pane-head case-head">
+      <button class="back" id="back" hidden>&larr; <span id="back-label">Back</span></button>
+      <h2 id="detail-title">Case file</h2><span id="detail-status"></span>
+    </div>
+    <nav class="jump" id="jump" aria-label="Sections of the report"></nav>
+    <div id="detail-scroll" class="case-scroll"><div id="detail" class="detail"><div class="empty">Select an incident or a box in the graph.</div></div></div>
+  </section>
+</main>
+
+<section class="bench" id="bench" hidden aria-label="Test bench">
+  <div class="bench-head">
+    <span class="demo-tag">DEMO</span>
+    <b>Test bench</b><span class="muted">Writes simulated faults into the simulator. The monitor cannot see these buttons; it has to find the change in the data.</span>
+    <button class="tbtn close" id="bench-close" aria-label="Close the test bench">Close <kbd>Esc</kbd></button>
+  </div>
+  <div class="controls">
+    <div class="grp"><label for="f-kind">Fault</label>
+      <div><select id="f-kind"></select><select id="f-country" aria-label="Country"></select><select id="f-platform" aria-label="Platform"></select><select id="f-category" aria-label="Category"></select>
+      <button id="f-go" class="primary">Inject fault</button></div></div>
+    <div class="grp" id="end-grp" hidden><label for="end-select">In progress</label>
+      <div><select id="end-select"></select><button id="end-go">End it (rollback)</button></div></div>
+    <div class="grp"><label for="pr-country">Innocent change</label>
+      <div><select id="pr-country" aria-label="Promo country"></select><button id="pr-go">Promo (12 h)</button>
+      <select id="ms-category" aria-label="Category the traffic moves toward"></select><button id="ms-go" title="Traffic moves toward one category; every rate stays the same; no calendar announces it">Mix shift (innocent)</button></div></div>
+    <div class="grp"><label for="dd-source">Data</label>
+      <div><select id="dd-source"></select><button id="dd-go">Arrives 2 h late</button></div></div>
+    <div class="grp"><label>New metric</label><div><button id="nm-go">Add refund_rate</button><button id="nm-dup" title="payment_rate: the query of payment_success_rate under another name">Add a duplicate metric</button></div></div>
+  </div>
+  <div id="toast" class="bench-msg" role="status"></div>
+</section>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<div class="palette-wrap" id="palette" hidden>
+  <div class="palette" role="dialog" aria-modal="true" aria-label="Commands">
+    <div class="pal-in"><span class="pal-slash" aria-hidden="true">/</span><input id="pal-input" type="text" autocomplete="off" spellcheck="false" placeholder="Type a command: inject pay de, roll back, promo fr, refund, inc-0001..." aria-controls="pal-list"></div>
+    <ul class="pal-list" id="pal-list" role="listbox"></ul>
+    <div class="pal-foot"><kbd>&uarr;</kbd><kbd>&darr;</kbd> choose <kbd>Enter</kbd> run <kbd>Esc</kbd> close</div>
+  </div>
+</div>
+
+</div>
+<script src="/static/v1/app.js"></script>
+</body>
+</html>

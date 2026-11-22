@@ -1,0 +1,1002 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eye of the System</title>
+<script>var t = new URLSearchParams(location.search).get('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;</script>
+<link rel="stylesheet" href="/static/console.css">
+<style>
+/* the title and the domain selector stay at the top while the page scrolls */
+.sticky-top { position: sticky; top: 0; z-index: 10; background: var(--block); border-bottom: 1px solid var(--line); margin-bottom: 16px; }
+/* the replay clock: an instrument readout; its value moving is what shows the system is live */
+.clock { display: flex; align-items: baseline; gap: 8px; padding-left: 24px; border-left: 1px solid var(--line); min-height: 28px; }
+.clock-mode { align-self: center; display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; line-height: 18px; white-space: nowrap; }
+.clock-mode::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.clock-mode.live::before { background: var(--ok); }
+#clock { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+#clock .clock-date { white-space: nowrap; }
+#clock .clock-hour { font-size: 18px; font-weight: 600; color: var(--ink); margin-left: 8px; letter-spacing: -.01em; white-space: nowrap; }
+.clock-note { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.counts { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--muted); }
+.count { white-space: nowrap; }
+.count b { font: 600 14px var(--mono); color: var(--st); margin-right: 4px; }
+.count.zero b { color: var(--muted); }
+#exbadge:empty, #notice:empty { display: none; }
+/* the example badge takes only the room the bar has left (never a second row): the clock's note gives way to it */
+#exbadge { flex: 1 1 0; min-width: 0; display: flex; }
+#exbadge .pill.example { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top:has(#exbadge:not(:empty)) .clock-note { display: none; }
+#notice { font-size: 13px; color: var(--hot); }
+/* domain selector: the main control, a compact segmented control */
+.domain-row { display: flex; align-items: center; gap: 16px; padding: 0 0 8px; min-width: 0; position: relative; }
+/* more chips to the right (a phone): a solid end cap with an arrow over the row's right end, flat, never a fade */
+.domain-row.more::after { content: "\203A"; position: absolute; top: 1px; right: 1px; bottom: 9px; width: 32px; display: grid; place-items: center;
+  font: 600 20px/1 var(--ui); color: var(--ink); background: var(--bg); border-left: 1px solid var(--line); border-radius: 0 7px 7px 0; pointer-events: none; }
+#domains { display: flex; gap: 2px; padding: 3px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; max-width: 100%; scrollbar-width: thin; }
+/* the row scrolls (overflow clips at its padding): a chip's focus ring sits on its edge, inside the 3px padding */
+.chip:focus-visible { outline-offset: 0; }
+.chip { display: inline-flex; gap: 6px; align-items: center; border: 0; background: transparent; color: var(--muted); border-radius: 6px; padding: 2px 12px; min-height: 28px; white-space: nowrap; }
+.chip:hover { color: var(--ink); background: var(--block); }
+.chip.on, .chip.on:hover { background: var(--sel-bg); color: var(--sel-fg); }
+.chip .n { font: 600 11px/16px var(--mono); color: var(--hot); background: var(--hot-bg); border-radius: 4px; padding: 0 4px; min-width: 16px; text-align: center; }
+.chip.on .n { color: var(--sel-fg); background: var(--hot); }
+/* demo controls: a test bench outside the monitor (the dashed edge), folded, clearly marked */
+#demo-controls { border: 1px dashed var(--edge); border-radius: 8px; margin-bottom: 16px; }
+#demo-controls summary { cursor: pointer; padding: 8px 16px; list-style: none; display: flex; gap: 12px; align-items: center; min-height: 40px; color: var(--muted); font-size: 13px; white-space: nowrap; }
+#demo-controls summary::-webkit-details-marker { display: none; }
+#demo-controls summary:hover .bench-toggle { color: var(--accent); }
+.demo-tag { white-space: nowrap; font: 600 11px/18px var(--mono); letter-spacing: .08em; border: 1px dashed var(--ink); border-radius: 4px; padding: 0 6px; color: var(--ink); }
+.bench { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.bench b { color: var(--ink); font-weight: 600; }
+.bench-toggle { margin-left: auto; font-weight: 600; color: var(--ink); }
+.bench-toggle::after { content: " \25BE"; }
+#demo-controls[open] .bench-toggle::after { content: " \25B4"; }
+.controls { display: flex; flex-wrap: wrap; gap: 16px 32px; padding: 16px; align-items: flex-end; border-top: 1px dashed var(--line); }
+.controls .grp { display: grid; gap: 4px; }
+.controls .grp > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.controls label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+#toast { flex: 1 1 240px; color: var(--muted); font-size: 13px; min-height: 24px; align-self: center; }
+#toast:empty { flex: 0 0 0; min-height: 0; }      /* no blank row in the bench until there is a message */
+/* layout */
+main { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(380px, 1fr); gap: 16px; padding-bottom: 48px; align-items: start; }
+/* the graph stays in view while the long report on the right is read. Its card is as tall as the screen below the
+   folded test bench, so the whole tree, the legend and the extra metrics show at load and while scrolling (fitGraph) */
+#graph-card { position: sticky; top: calc(var(--top-h, 99px) + 16px); display: flex; flex-direction: column; max-height: calc(100vh - var(--top-h, 99px) - var(--bench-h, 42px) - 48px); }
+#graphwrap { flex: 1 1 auto; min-height: 160px; overflow: auto; padding: 4px 16px; }
+.hint { margin-left: auto; font-size: 12px; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; padding: 8px 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.sw { display: inline-block; width: 14px; height: 10px; border-radius: 3px; border: 1px solid var(--edge); background: var(--block); }
+.sw.st-open, .sw.st-ongoing, .sw.st-resolved { border-color: var(--st); background: var(--st-bg); }
+.sw.outcome { background: var(--ink); border-color: var(--ink); }
+.sw.again { border-style: dashed; }
+.legend svg { width: 24px; height: 10px; }
+.legend line { stroke: var(--edge); stroke-width: 1.5; }
+.legend line.may { stroke: var(--accent); stroke-dasharray: 4 3; }
+/* metrics with no place on a formula tree: one quiet row under the legend, scrolling sideways when it is long */
+#extra { display: flex; align-items: center; gap: 4px; padding: 8px 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; white-space: nowrap; overflow-x: auto; scrollbar-width: thin; }
+#extra:empty { display: none; }
+#extra button { flex: none; margin: 0; padding: 0 8px; min-height: 24px; font: 400 12px var(--mono); background: var(--surface); }
+#extra button:first-of-type { margin-left: 8px; }
+/* graph */
+svg#g { display: block; width: 100%; height: auto; margin: 0 auto; }      /* sized by fitGraph */
+svg#g:empty { display: none; }
+svg text { font-family: var(--mono); }
+.node { cursor: pointer; }
+.node:focus { outline: none; }
+.node rect { fill: var(--block); stroke: var(--edge); stroke-width: 1; }
+.node text { fill: var(--ink); font-size: 12px; text-anchor: middle; }
+.node.repeated rect { stroke-dasharray: 3 3; }
+.node.context text { fill: var(--muted); } .node.context rect { stroke: var(--line); }
+.node.h-open rect { stroke: var(--hot); fill: var(--hot-bg); stroke-width: 1.5; }
+.node.h-ongoing rect { stroke: var(--amber); fill: var(--amber-bg); stroke-width: 1.5; }
+.node.h-resolved rect { stroke: var(--ok); fill: var(--ok-bg); stroke-width: 1.5; }
+.node.root rect { fill: var(--ink); stroke: var(--ink); }      /* the outcome everything adds up to */
+.node.root text { fill: var(--block); font-weight: 600; }
+.node.root.h-open rect { fill: var(--ink); stroke: var(--hot); stroke-width: 3; }
+.node.root.h-ongoing rect { fill: var(--ink); stroke: var(--amber); stroke-width: 3; }
+.node.root.h-resolved rect { fill: var(--ink); stroke: var(--ok); stroke-width: 3; }
+#g .node.picked rect, #g .node:focus-visible rect { stroke: var(--accent); stroke-width: 2.5; }      /* over status and trace colours */
+.edge { fill: none; stroke: var(--edge); stroke-width: 1.25; }
+.edge.may { stroke: var(--accent); stroke-dasharray: 4 3; opacity: .8; }
+/* the direction of a possible cause: a small badge on the middle of its dashed line, never fainter than the line */
+.sign circle { fill: var(--block); stroke: var(--accent); stroke-width: 1.25; }
+.sign text { fill: var(--accent); font: 700 15px var(--mono); text-anchor: middle; }
+.dim .node, .dim .edge { opacity: .4; } .dim .node.on, .dim .edge.on, .dim .node:focus-visible { opacity: 1; }
+.dim .sign { opacity: .75; }
+.dim .edge.on { stroke: var(--st, var(--hot)); stroke-width: 2.25; }
+.dim .node.on rect { stroke: var(--st, var(--hot)); fill: var(--st-bg, var(--hot-bg)); stroke-width: 1.75; }
+.dim .node.root.on rect { fill: var(--st, var(--hot)); }
+.dim .node.root.on text { fill: var(--block); }
+.dim .node.moved rect { stroke-width: 2.5; }
+.moved-tag rect { fill: var(--st-bg, var(--hot-bg)); stroke: var(--st, var(--hot)); stroke-width: 1; }
+.moved-tag text { fill: var(--st, var(--hot)); font-size: 11px; font-weight: 600; }
+/* the trace: the selected incident's path drawn once, from the moved rate up to the outcome */
+.trace-line { fill: none; stroke: var(--st, var(--hot)); stroke-width: 2.25; stroke-linecap: round; }
+.tracing .edge.on { stroke: var(--edge); stroke-width: 1.25; }
+/* right side */
+#side { display: grid; gap: 16px; min-width: 0; }
+#feed { max-height: 312px; overflow: auto; container-type: inline-size; }
+.inc { display: grid; grid-template-columns: 80px minmax(0, 1fr) auto; gap: 0 12px; padding: 8px 16px 8px 13px; border-left: 3px solid var(--st); border-bottom: 1px solid var(--line); cursor: pointer; align-items: center; }
+.inc:hover { background: var(--surface); }
+.inc.sel { background: var(--accent-bg); border-left-color: var(--accent); }
+.inc.quiet { border-left-color: var(--edge); }
+.inc.quiet .pill, .inc.quiet .chg, .inc.quiet .inc-metric { color: var(--muted); }
+.inc-main, .inc-meta { display: grid; min-width: 0; }
+.inc-line { display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+.inc-metric { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.inc-sub { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.inc-sub .mono { font-size: 11px; }
+.inc-meta { text-align: right; font-size: 12px; white-space: nowrap; max-width: 10em; }      /* the first-seen time; a long id is cut, never the metric */
+.inc-meta .muted { font-size: 11px; overflow: hidden; text-overflow: ellipsis; }
+/* a narrow feed (a 1024 px screen, a phone): the time and id go under the metric */
+@container (max-width: 430px) { .inc { grid-template-columns: 76px minmax(0, 1fr); }
+  .inc-meta { grid-column: 2; display: flex; gap: 8px; text-align: left; min-width: 0; max-width: none; } }
+.chg { font-family: var(--mono); white-space: nowrap; }
+.chg.bad { color: var(--hot); } .chg.good { color: var(--ok); }
+.detail.st-explained .chg, .detail.st-pending .chg { color: var(--muted); }      /* not alerts: no alarm colour */
+#detail-card { container-type: inline-size; }
+#detail-title .head-id { font: 600 13px var(--mono); letter-spacing: 0; text-transform: none; color: var(--ink); margin-left: 4px; }
+#detail-card .card-head { flex-wrap: nowrap; }      /* a long id is cut; the status stays on the line */
+#detail-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#detail-status { margin-left: auto; flex: none; }
+.detail { padding: 16px; display: grid; gap: 24px; min-width: 0; }
+.detail h3 { margin: 0 0 8px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.detail p { margin: 0; }
+.readout { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 8px; }
+.readout .cell { padding: 8px 12px 12px; min-width: 0; }
+.readout .cell + .cell { border-left: 1px solid var(--line); }
+.readout .label { display: block; white-space: nowrap; }
+.readout .big { display: block; margin-top: 4px; font-family: var(--mono); font-weight: 500; font-size: clamp(18px, 5cqi, 28px); line-height: 1.15; letter-spacing: -.02em; white-space: nowrap; }
+@container (max-width: 400px) { .readout { grid-template-columns: repeat(2, minmax(0, 1fr)); } .readout .cell:nth-child(3) { border-left: 0; }
+  .readout .cell:nth-child(n+3) { border-top: 1px solid var(--line); } .readout .big { font-size: 24px; } }
+.brief-sec { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; }
+.brief { font-size: 15px; line-height: 1.55; }
+.detail .brief-note { margin-top: 8px; font-size: 12px; color: var(--muted); }
+.detail .brief-stale { margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--amber); }
+.row2 { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; font-size: 13px; }
+.contrib + .contrib { margin-top: 12px; }
+.share-bar { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; margin: 4px 0; } .share-bar i { display: block; height: 100%; background: var(--st, var(--hot)); }
+/* money and counts: one right-aligned column; the page pads after the point so the decimals line up */
+.kv.nums { grid-template-columns: minmax(104px, max-content) max-content; }
+.kv.nums > span:nth-child(even) { text-align: right; white-space: pre; }
+.small { font-size: 12px; }
+.loc { display: grid; grid-template-columns: minmax(0, 1fr) 56px 96px; gap: 12px; padding: 4px 0; font-size: 12px; border-bottom: 1px solid var(--line); align-items: baseline; }
+.loc > span:nth-child(n+2) { text-align: right; }
+.loc.head { padding-top: 0; font-size: 11px; color: var(--muted); }
+.loc:last-child { border-bottom: 0; }
+.loc .seg { overflow-wrap: anywhere; }
+.loc.chosen .seg { font-weight: 600; }
+.chosen-tag { font-family: var(--ui); font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-left: 8px; }
+.hyp { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 0 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+.hyp:first-of-type { border-top: 0; padding-top: 0; }
+.verdict { justify-self: start; align-self: start; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; line-height: 18px; padding: 0 6px; border-radius: 4px; white-space: nowrap; color: var(--muted); border: 1px solid var(--line); }
+.verdict.supported { color: var(--ok); background: var(--ok-bg); border-color: var(--ok-bg); }
+.verdict.plausible { color: var(--amber); background: var(--amber-bg); border-color: var(--amber-bg); }
+/* the checks of the extension agent: pass, warn (a caveat), fail (the reason it was refused), skip */
+.verdict.pass { color: var(--ok); background: var(--ok-bg); border-color: var(--ok-bg); }
+.verdict.warn { color: var(--amber); background: var(--amber-bg); border-color: var(--amber-bg); }
+.verdict.fail { color: var(--hot); background: var(--hot-bg); border-color: var(--hot-bg); }
+.check .small { overflow-wrap: anywhere; }
+/* a link inside the bench's message: opens the checks behind the answer in the details panel */
+button.linkish { border: 0; background: none; padding: 0; min-height: 0; font: inherit; font-weight: 600; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.hyp-cause { font-size: 14px; line-height: 20px; }
+.hyp.rejected .hyp-cause { color: var(--muted); }
+.hyp-meta { font: 400 11px/16px var(--mono); color: var(--muted); }
+.evidence, .uncertain { margin: 4px 0 0; padding-left: 16px; color: var(--muted); font-size: 13px; }
+.evidence li + li, .uncertain li + li { margin-top: 2px; }
+ol.trail { list-style: none; margin: 0; padding: 0; }
+ol.trail li { position: relative; padding: 0 0 12px 24px; }
+ol.trail li::before { content: ""; position: absolute; left: 4px; top: 14px; bottom: -5px; width: 1px; background: var(--edge); }      /* --edge: at least 1.8:1 on the card in both themes */
+ol.trail li:last-child { padding-bottom: 0; }
+ol.trail li:last-child::before { display: none; }
+ol.trail li::after { content: ""; position: absolute; left: 0; top: 5px; width: 9px; height: 9px; border-radius: 50%; background: var(--block); border: 1.5px solid var(--edge); }
+ol.trail li:last-child::after { background: var(--st, var(--ink)); border-color: var(--st, var(--ink)); }
+.step-head { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: baseline; }
+.verb { font-family: var(--mono); font-size: 14px; font-weight: 600; font-variant-caps: all-small-caps; letter-spacing: .06em; }
+.step-target { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.step-result { font-size: 13px; overflow-wrap: anywhere; }
+.summary { font-size: 13px; }
+.detail .about { margin-bottom: 8px; }
+.involved { margin: 0 8px 8px 0; font: 400 12px var(--mono); }
+.detail .empty, #feed .empty { padding: 16px; }
+.detail .empty { padding: 0; }
+@media (max-width: 1180px) { .clock-note { display: none; } }
+@media (max-width: 900px) { main { grid-template-columns: minmax(0, 1fr); } .page { padding: 0 16px; }
+  #graph-card { position: static; max-height: none; } #graphwrap { max-height: 70vh; } }
+@media (max-width: 600px) { .sticky-top { position: static; }   /* on a phone the bar would take too much of the screen */
+  .brand { flex: 1 1 auto; } .top > .navlink { order: 1; } .top > .clock, .top > .counts, .top > #exbadge, .top > #notice { order: 2; }
+  .top .counts.grow { margin-left: 0; }
+  #exbadge { flex-basis: 100%; } #exbadge .pill.example { white-space: normal; }
+  .clock { padding-left: 0; border-left: 0; } .bench small, .hint { display: none; } #graphwrap { padding: 8px; }
+  .domain-row .label { display: none; }
+  .inc { grid-template-columns: 76px minmax(0, 1fr); } .inc-meta { grid-column: 2; display: flex; gap: 8px; text-align: left; min-width: 0; }
+  .hyp { grid-template-columns: minmax(0, 1fr); } .hyp .verdict { margin-bottom: 4px; } }
+</style>
+</head>
+<body>
+<div class="sticky-top">
+  <div class="page">
+    <header class="top">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12C5 6.5 19 6.5 22 12C19 17.5 5 17.5 2 12Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle class="pupil" cx="12" cy="12" r="3.2"/></svg>
+        <h1>Eye of the System</h1>
+      </div>
+      <div class="clock" title="The newest hour of simulated data the monitor has read">
+        <span class="clock-mode" id="clock-mode">Simulated</span>
+        <span id="clock">connecting...</span>
+        <span class="clock-note" id="clock-note"></span>
+      </div>
+      <span id="exbadge"></span>
+      <span id="notice" role="status"></span>
+      <div class="counts grow" id="counts" aria-label="Incidents by status"></div>
+      <a class="navlink" href="/data">Data &rarr;</a>
+    </header>
+    <div class="domain-row"><span class="label">Domain</span><nav id="domains" aria-label="Business domain"></nav></div>
+  </div>
+</div>
+
+<div class="page">
+<details id="demo-controls">
+  <summary><span class="demo-tag" title="These buttons write simulated faults into the simulator. The monitor cannot see them; it has to find them in the data.">DEMO</span><span class="bench"><b>Test bench</b><small> &middot; simulated faults, not part of the monitor</small></span><span class="bench-toggle">controls</span></summary>
+  <div class="controls">
+    <div class="grp"><label>Fault</label>
+      <div><select id="f-kind"></select><select id="f-country"></select><select id="f-platform"></select><select id="f-category"></select>
+      <button id="f-go" class="primary">Inject fault</button></div></div>
+    <div class="grp" id="end-grp" hidden><label>In progress</label>
+      <div><select id="end-select"></select><button id="end-go">End it (rollback)</button></div></div>
+    <div class="grp"><label>Innocent change</label>
+      <div><select id="pr-country"></select><button id="pr-go">Promo (12 h)</button>
+      <select id="ms-category" aria-label="Category the traffic moves toward"></select><button id="ms-go" title="Traffic moves toward one category; every rate stays the same; no calendar announces it">Mix shift (innocent)</button></div></div>
+    <div class="grp"><label>Data</label>
+      <div><select id="dd-source"></select><button id="dd-go">Arrives 2 h late</button></div></div>
+    <div class="grp"><label>New metric</label><div><button id="nm-go">Add refund_rate</button><button id="nm-dup" title="payment_rate: the query of payment_success_rate under another name">Add a duplicate metric</button></div></div>
+    <div id="toast" role="status"></div>
+  </div>
+</details>
+
+<main>
+  <section class="card" id="graph-card">
+    <div class="card-head"><h2 id="graph-title">Metric graph</h2><span class="hint">Click a box for its definition, breakdown and context links</span></div>
+    <div id="graphwrap"><svg id="g"></svg></div>
+    <div class="legend" aria-hidden="true">
+      <span><i class="sw st-open"></i>Open</span>
+      <span><i class="sw st-ongoing"></i>Ongoing</span>
+      <span><i class="sw st-resolved"></i>Resolved</span>
+      <span><i class="sw"></i>No incident</span>
+      <span><i class="sw outcome"></i>Outcome</span>
+      <span><svg viewBox="0 0 24 10"><line x1="0" y1="5" x2="24" y2="5"/></svg>Formula</span>
+      <span><svg viewBox="0 0 24 10"><line class="may" x1="0" y1="5" x2="24" y2="5"/></svg>Possible cause &plusmn;</span>
+      <span title="The same metric under a second parent"><i class="sw again"></i>Shown again</span>
+    </div>
+    <div id="extra"></div>
+  </section>
+  <aside id="side">
+    <section class="card"><div class="card-head"><h2 id="feed-title">Incidents</h2></div><div id="feed"></div></section>
+    <section class="card" id="detail-card"><div class="card-head"><h2 id="detail-title">Details</h2><span id="detail-status"></span></div><div id="detail" class="detail"><div class="empty">Select a box in the graph or an incident.</div></div></section>
+  </aside>
+</main>
+</div>
+
+<script>
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  var $ = function (id) { return document.getElementById(id); };
+  var graph = null, meta = {}, domains = [], domOf = {}, incidents = [], example = false, skipped = 0, graphKey = '';
+  var dom = 'all', selInc = null, selNode = null, mode = 'incident', drawn = null;
+  var LIVE = ['open', 'ongoing'], COUNTED = ['open', 'ongoing', 'resolved'], KNOWN = ['open', 'ongoing', 'resolved', 'explained', 'pending'];
+
+  // anything the monitor writes may have the wrong type: show it as text, never let it stop the page
+  function str(v) { return v == null ? '' : (typeof v === 'object' ? JSON.stringify(v) : String(v)); }
+  function list(v) { return Array.isArray(v) ? v : []; }
+  function obj(v) { return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }
+  function text(s) { return document.createTextNode(str(s)); }
+  function el(tag, cls, kids) { var e = document.createElement(tag); if (cls) e.className = cls; (kids || []).forEach(function (k) { e.appendChild(k && k.nodeType ? k : text(k)); }); return e; }
+  function get(url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
+  function post(url, body) {
+    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.detail || r.status); return j; }); });
+  }
+  function toast(msg) { $('toast').textContent = msg; }
+  function num(n) { return typeof n === 'number' && isFinite(n) ? n : null; }
+  function fmt(n, d) { n = num(Number(n)); return n == null ? '-' : signed(n.toLocaleString('en', { maximumFractionDigits: d == null ? 1 : d })); }
+  // a readout figure: whole numbers from 100 up, two decimals from 1, three significant digits below
+  function short(n) {
+    n = num(n); if (n == null) return '–';
+    var a = Math.abs(n);
+    return signed(a >= 100 ? n.toLocaleString('en', { maximumFractionDigits: 0 }) : a >= 1 ? n.toLocaleString('en', { maximumFractionDigits: 2 })
+      : n.toLocaleString('en', { maximumSignificantDigits: 3 }));
+  }
+  function signed(s) { return s.charAt(0) === '-' ? '−' + s.slice(1) : s; }      // every negative number shown gets a true minus sign
+  function pct(n) { n = num(n); return n == null ? '–' : (n > 0 ? '+' : '') + signed(fmt(n)) + '%'; }
+  // is this change good or bad for the business? by the metric's own direction (up or down is good)
+  function tone(metric, delta) {
+    var d = obj(meta[metric]).direction; delta = num(delta);
+    if (!delta || (d !== 'up' && d !== 'down')) return '';
+    return (d === 'up') === (delta > 0) ? 'good' : 'bad';
+  }
+  // in an incident a loss is red, and a gain is green only when the incident is explained (an innocent change): a
+  // fault can raise a figure for a while (an ad budget spent ahead of schedule raises ad revenue), which is no gain
+  function toneIn(i, metric, delta) { var t = tone(metric, delta); return t === 'good' && status(i) !== 'explained' ? '' : t; }
+  function euroTone(i, v) { v = num(v); return !v ? '' : v < 0 ? 'bad' : status(i) === 'explained' ? 'good' : ''; }
+  // the incident's effect in euros: on contribution when it has one, else the first euro figure
+  function euroOf(i) {
+    var imp = obj(i.impact);
+    var k = num(imp.contribution_eur) != null ? 'contribution_eur' : Object.keys(imp).filter(function (x) { return /_eur$/.test(x) && num(imp[x]) != null; })[0];
+    return k ? num(imp[k]) : null;
+  }
+  function eurText(v) { return (v > 0 ? '+' : '') + short(v) + ' EUR'; }
+  function segText(s) { var o = obj(s), k = Object.keys(o); return k.length ? k.map(function (x) { return str(o[x]); }).join(' x ') : 'all'; }
+  function when(t) { return str(t).replace('T', ' ').replace(':00Z', '').replace(/-/g, '‑'); }
+  function svg(tag, attrs, parent) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+  function note(msg) { $('notice').textContent = msg || ''; }
+
+  // ----------------------------------------------------------- domains
+  function domainOf(metric) { return domOf[metric] || 'other'; }
+  function domainLabel(id) { if (id === 'all') return 'All domains'; var d = domains.filter(function (x) { return x.id === id; })[0]; return d ? d.label : 'Other'; }
+  function incidentNodes(i) {
+    var s = {}; s[str(i.metric)] = true;
+    list(i.contributions).forEach(function (c) { if (c && c.node) s[str(c.node)] = true; });
+    // metrics the monitor also watched move during the investigation (one incident can hold several faults that began
+    // together, e.g. an ad budget fault and stockouts): they count for their own domain too
+    list(i.trail).forEach(function (t) { t = obj(t); if (t.action === 'watch' && t.target && meta[t.target]) s[str(t.target)] = true; });
+    return Object.keys(s);
+  }
+  function status(i) { return str(i.status) || 'open'; }
+  function stOf(i) { var s = status(i); return 'st-' + (KNOWN.indexOf(s) >= 0 ? s : 'other'); }
+  function touches(i, d) { return d === 'all' || incidentNodes(i).some(function (m) { return domainOf(m) === d; }); }
+  function inScope() { return incidents.filter(function (i) { return touches(i, dom); }); }
+  function liveCount(d) { return incidents.filter(function (i) { return LIVE.indexOf(status(i)) >= 0 && touches(i, d); }).length; }
+
+  function renderChips() {
+    var nav = $('domains'); nav.textContent = '';
+    var l = [{ id: 'all', label: 'All' }].concat(domains);
+    if (graph && list(graph.nodes).some(function (n) { return n.kind === 'metric' && !domOf[n.id]; })) l.push({ id: 'other', label: 'Other' });
+    l.forEach(function (d) {
+      var n = liveCount(d.id);
+      var b = el('button', 'chip' + (d.id === dom ? ' on' : ''), [d.label].concat(n ? [el('span', 'n', [String(n)])] : []));
+      b.setAttribute('aria-pressed', d.id === dom ? 'true' : 'false');
+      b.onclick = function () { dom = d.id; selNode = null; mode = 'incident'; var s = inScope(); selInc = s.length ? s[0].id : null; renderAll(); };
+      nav.appendChild(b);
+    });
+    renderCounts();
+  }
+  // the top bar: how many incidents are in each state, across every domain; explained and pending are not alerts
+  function renderCounts() {
+    var c = $('counts'); c.textContent = '';
+    KNOWN.forEach(function (s) {
+      var k = incidents.filter(function (i) { return status(i) === s; }).length;
+      if (!k && COUNTED.indexOf(s) < 0) return;
+      c.appendChild(el('span', 'count st-' + s + (k ? '' : ' zero'), [el('b', null, [String(k)]), s]));
+    });
+  }
+
+  // ------------------------------------------------------------- graph
+  function filterTree(n) {
+    if (dom === 'all') return n;
+    var kids = list(n.children).map(filterTree).filter(Boolean);
+    if (domainOf(n.metric) === dom || kids.length) return { metric: n.metric, role: n.role, repeated: n.repeated, children: kids };
+    return null;
+  }
+  // Boxes hold metric names in a 12px mono face: each column is as wide as its longest name, so the deep trees fit
+  // the card without shrinking the text more than they must; rows are dense enough for the whole tree at 1280x800.
+  var CHAR = 7.2, NODE_H = 22, DY = 30, GAP = 24;
+  function columns(roots) {
+    var chars = [], x = [], hw = [], at = 8;
+    var walk = function (n, d) { chars[d] = Math.max(chars[d] || 0, str(n.metric).length); list(n.children).forEach(function (c) { walk(c, d + 1); }); };
+    roots.forEach(function (r) { walk(r, 0); });
+    chars.forEach(function (c, d) { var w = Math.max(72, Math.ceil(c * CHAR) + 14); hw[d] = w / 2; x[d] = at + w / 2; at += w + GAP; });
+    return { x: x, hw: hw };
+  }
+  function layout(root, y0, cols) {
+    var nodes = [], edges = [], leaf = 0;
+    (function walk(n, depth, parent) {
+      var item = { n: n, d: depth, x: cols.x[depth], hw: cols.hw[depth], y: 0 }, ys = [];
+      list(n.children).forEach(function (c) { ys.push(walk(c, depth + 1, item).y); });
+      item.y = ys.length ? (Math.min.apply(null, ys) + Math.max.apply(null, ys)) / 2 : y0 + (leaf++) * DY + 28;
+      nodes.push(item); if (parent) edges.push([parent, item]);
+      return item;
+    })(root, 0, null);
+    return { nodes: nodes, edges: edges, w: Math.max.apply(null, nodes.map(function (i) { return i.x + i.hw; })) + 8, h: leaf * DY + 18 };
+  }
+  function health() {
+    var h = {}, rank = { open: 3, ongoing: 2, resolved: 1 };
+    incidents.forEach(function (i) {
+      var st = status(i);
+      if (!rank[st]) return;                                   // explained and pending do not colour the graph
+      incidentNodes(i).forEach(function (m) { if (!h[m] || rank[st] > rank[h[m]]) h[m] = st; });
+    });
+    return h;
+  }
+  function drawGraph() {
+    $('graph-title').textContent = 'Metric graph: ' + domainLabel(dom);
+    var wrap = $('graphwrap');
+    Array.prototype.slice.call(wrap.querySelectorAll('.empty')).forEach(function (e) { wrap.removeChild(e); });
+    var g = $('g'); g.textContent = '';
+    drawn = { edges: [], nodes: [] };
+    var roots = list(graph && graph.trees).map(filterTree).filter(Boolean);
+    if (!roots.length) { wrap.appendChild(el('div', 'empty', ['No formula tree for this domain.'])); renderExtra(null); return; }
+    var cols = columns(roots), all = { nodes: [], edges: [], w: 0, h: 0 };
+    roots.forEach(function (r) {
+      var L = layout(r, all.h, cols);
+      all.nodes = all.nodes.concat(L.nodes); all.edges = all.edges.concat(L.edges);
+      all.w = Math.max(all.w, L.w); all.h += L.h + 8;
+    });
+    g.setAttribute('viewBox', '0 0 ' + all.w + ' ' + all.h);
+    var ge = svg('g', {}, g), gt = svg('g', {}, g), gn = svg('g', {}, g), gm = svg('g', {}, g), shown = {}, pos = {};
+    drawn.layer = gt; drawn.tags = gm;
+    all.edges.forEach(function (pair) {
+      var a = pair[0], b = pair[1], x1 = a.x + a.hw, x2 = b.x - b.hw, c = (x2 - x1) / 2;
+      var p = svg('path', { d: 'M' + x1 + ',' + a.y + ' C' + (x1 + c) + ',' + a.y + ' ' + (x2 - c) + ',' + b.y + ' ' + x2 + ',' + b.y, 'class': 'edge' }, ge);
+      drawn.edges.push({ el: p, from: a.n.metric, to: b.n.metric, depth: b.d });
+    });
+    all.nodes.forEach(function (i) {
+      shown[i.n.metric] = true; if (!pos[i.n.metric]) pos[i.n.metric] = i;
+      var outcome = !!obj(meta[i.n.metric]).outcome;
+      var gr = svg('g', { 'class': 'node' + (i.n.repeated ? ' repeated' : '') + (outcome ? ' root' : ''), tabindex: 0, role: 'button', 'aria-label': str(i.n.metric), transform: 'translate(' + (i.x - i.hw) + ',' + (i.y - NODE_H / 2) + ')' }, gn);
+      svg('rect', { width: 2 * i.hw, height: NODE_H, rx: 6 }, gr);
+      var t = svg('text', { x: i.hw, y: NODE_H / 2, dy: '0.35em' }, gr); t.textContent = str(i.n.metric);
+      var pick = function () { selNode = i.n.metric; mode = 'node'; renderDetail(); applyStyles(); };
+      gr.addEventListener('click', pick);
+      gr.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+      drawn.nodes.push({ el: gr, metric: i.n.metric, item: i });
+    });
+    // possible causes: dashed lines with the direction of the effect, when both ends are on screen
+    list(graph && graph.edges).filter(function (e) { return e.kind === 'may_affect' && pos[e.source] && pos[e.target]; }).forEach(function (e) {
+      var a = pos[e.source], b = pos[e.target], mx = (a.x + b.x) / 2 + 40, my = (a.y + b.y) / 2;
+      svg('path', { d: 'M' + (a.x + a.hw) + ',' + a.y + ' Q' + (mx + 40) + ',' + my + ' ' + (b.x + b.hw) + ',' + b.y, 'class': 'edge may' }, ge);
+      var sg = svg('g', { 'class': 'sign', transform: 'translate(' + (mx + (a.hw + b.hw) / 4) + ',' + my + ')' }, ge);      // the curve's middle
+      svg('circle', { r: 9 }, sg); var s = svg('text', { dy: '0.35em' }, sg); s.textContent = e.sign > 0 ? '+' : e.sign < 0 ? '−' : '?';
+    });
+    renderExtra(shown);
+    fitGraph();
+    applyStyles();
+  }
+  function renderExtra(shown) {
+    var x = $('extra'); x.textContent = '';
+    if (!graph) return;
+    var rest = (domains.filter(function (d) { return d.id === dom; })[0] || { metrics: [] }).metrics;
+    if (dom === 'all') rest = list(graph.nodes).filter(function (n) { return n.kind === 'metric'; }).map(function (n) { return n.id; });
+    if (dom === 'other') rest = list(graph.nodes).filter(function (n) { return n.kind === 'metric' && !domOf[n.id]; }).map(function (n) { return n.id; });
+    rest = rest.filter(function (m) { return !(shown && shown[m]) && meta[m]; });
+    if (!rest.length) return;
+    x.appendChild(text(dom === 'all' ? 'Not on the formula tree: ' : 'Also in this domain, not on the formula tree: '));
+    rest.forEach(function (m) { var b = el('button', null, [m]); b.onclick = function () { selNode = m; mode = 'node'; renderDetail(); applyStyles(); }; x.appendChild(b); });
+  }
+  function applyStyles() {
+    if (!drawn || !drawn.layer) return;                      // nothing drawn yet, or no tree in this domain
+    var h = health(), inc = incidents.filter(function (i) { return i.id === selInc; })[0], on = {};
+    if (inc && mode === 'incident') {
+      on[inc.metric] = true;
+      var kids = {};
+      drawn.edges.forEach(function (e) { (kids[e.from] = kids[e.from] || []).push(e.to); });
+      var path = function (from, target, seen) {
+        if (from === target) return [from];
+        if (seen[from]) return null; seen[from] = true;
+        var ks = kids[from] || [];
+        for (var k = 0; k < ks.length; k++) { var r = path(ks[k], target, seen); if (r) return [from].concat(r); }
+        return null;
+      };
+      list(inc.contributions).forEach(function (c) { if (!c || !c.node) return; on[c.node] = true; (path(inc.metric, c.node, {}) || []).forEach(function (m) { on[m] = true; }); });
+      list(inc.trail).forEach(function (t) { t = obj(t); if (t.action === 'watch' && t.target && meta[t.target]) on[t.target] = true; });
+    }
+    var g = $('g'), lit = Object.keys(on).length > 0;
+    g.classList.toggle('dim', lit);
+    KNOWN.concat(['other']).forEach(function (k) { g.classList.remove('st-' + k); });
+    if (lit) g.classList.add(stOf(inc));                     // the path takes the colour of the selected incident's status
+    drawn.nodes.forEach(function (n) {
+      var c = n.el.classList;
+      ['h-open', 'h-ongoing', 'h-resolved'].forEach(function (k) { c.remove(k); });
+      if (h[n.metric]) c.add('h-' + h[n.metric]);
+      c.toggle('on', !!on[n.metric]);
+      c.toggle('picked', mode === 'node' && selNode === n.metric);
+      c.toggle('context', dom !== 'all' && domainOf(n.metric) !== dom);
+    });
+    drawn.edges.forEach(function (e) { e.el.classList.toggle('on', !!(on[e.from] && on[e.to])); });
+    markMoved(lit ? inc : null);
+    trace(lit ? inc : null);
+  }
+  // --------------------------------------------------------- right side
+  function renderFeed() {
+    $('feed-title').textContent = 'Incidents' + (dom === 'all' ? '' : ' in ' + domainLabel(dom));
+    var f = $('feed'); f.textContent = '';
+    var l = inScope();
+    if (!l.length) { f.appendChild(el('div', 'empty', [dom === 'all' ? 'No incidents. The monitor is watching.' : 'No incident touches this domain.'])); }
+    l.forEach(function (i) {
+      try {
+        var ch = obj(i.change), st = status(i), d = obj(list(i.drivers)[0]);
+        var quiet = st === 'explained' || st === 'pending';
+        // the row leads with what moved and what it cost; the place, and the outcome it was measured on, come under it
+        var moved = d.metric ? str(d.metric) : str(i.metric), dp = d.metric ? d.delta_pct : ch.delta_pct, eur = euroOf(i);
+        var line = [el('span', 'mono inc-metric', [moved])];
+        if (num(dp) != null) line.push(el('span', 'chg ' + toneIn(i, moved, dp), [pct(dp)]));
+        if (eur != null) line.push(el('span', 'chg ' + euroTone(i, eur), [eurText(eur)]));
+        var sub = [segText(i.segment)];
+        if (moved !== str(i.metric)) sub.push(' · ', el('span', 'mono', [str(i.metric) + (num(ch.delta_pct) != null ? ' ' + pct(ch.delta_pct) : '')]));
+        if (!quiet && i.severity) sub.push(' · ', el('span', 'sev ' + str(i.severity), [str(i.severity)]));
+        if (i.recurrence_of) sub.push(' · ', el('span', 'muted', ['back again, see ' + str(i.recurrence_of)]));
+        if (st === 'explained' && obj(i.innocent).kind) sub.push(' · ', el('span', 'muted', ['innocent: ' + str(obj(i.innocent).kind)]));
+        var row = el('div', 'inc ' + stOf(i) + (quiet ? ' quiet' : '') + (i.id === selInc && mode === 'incident' ? ' sel' : ''), [
+          el('span', 'pill ' + st, [st]),
+          el('span', 'inc-main', [
+            el('span', 'inc-line', line),
+            el('span', 'inc-sub', sub)]),
+          el('span', 'inc-meta', [el('span', 'mono', [when(i.first_seen)]), el('span', 'mono muted', [i.id])])]);
+        row.tabIndex = 0; row.title = 'First seen ' + when(i.first_seen) + ' UTC';
+        var pick = function () { selInc = i.id; mode = 'incident'; renderFeed(); renderDetail(); applyStyles(); };
+        row.addEventListener('click', pick); row.addEventListener('keydown', function (e) { if (e.key === 'Enter') pick(); });
+        f.appendChild(row);
+      } catch (err) { f.appendChild(el('div', 'empty', ['An incident (' + str(i.id) + ') could not be shown: ' + err.message])); }
+    });
+    if (skipped) f.appendChild(el('div', 'empty', [skipped + ' file' + (skipped > 1 ? 's' : '') + ' in the incidents folder ignored (not an incident, or still being written).']));
+  }
+  function section(title, kids, cls) { var d = el('div', cls || null, [el('h3', null, [title])]); kids.forEach(function (k) { d.appendChild(k); }); return d; }
+  function kv(pairs, cls) { var k = el('div', 'kv' + (cls ? ' ' + cls : '')); pairs.forEach(function (p) { k.appendChild(el('span', null, [p[0]])); k.appendChild(el('span', null, [p[1]])); }); return k; }
+  function mono(s) { return el('span', 'mono', [str(s)]); }
+
+  // the typed links of a metric, read from the graph export
+  function linksOf(m) {
+    var out = [], E = list(graph && graph.edges);
+    var by = function (kind) { return E.filter(function (e) { return e.kind === kind; }); };
+    var dims = by('breakdown').filter(function (e) { return e.source === m; }).map(function (e) { return e.dimension; });
+    if (dims.length) out.push(['Breaks down by', dims.join(', ')]);
+    var parts = by('formula').filter(function (e) { return e.source === m; }).map(function (e) { return e.target + (e.role ? ' (' + e.role + ')' : ''); });
+    if (parts.length) out.push(['Made of', parts.join(', ')]);
+    var feeds = by('formula').filter(function (e) { return e.target === m; }).map(function (e) { return e.source; });
+    if (feeds.length) out.push(['Feeds', feeds.join(', ')]);
+    var defs = by('definition').filter(function (e) { return e.source === m; }).map(function (e) { return e.target + (e.role ? ' (' + e.role + ')' : ''); });
+    if (defs.length) out.push(['Defined from', defs.join(', ')]);
+    var ctx = by('context').filter(function (e) { return e.target === m; }).map(function (e) { return e.source + (e.via ? ' (' + e.via + ')' : ''); });
+    if (ctx.length) out.push(['Context', ctx.join(', ')]);
+    var cause = function (e, other) { return e[other] + ' ' + (e.sign > 0 ? '+' : e.sign < 0 ? '−' : '?') + (num(e.prior) != null ? ', prior ' + e.prior : '') + (e.status ? ', ' + e.status : '') + (e.note ? ': ' + e.note : ''); };
+    var affects = by('may_affect').filter(function (e) { return e.source === m; }).map(function (e) { return cause(e, 'target'); });
+    if (affects.length) out.push(['May affect', affects.join('; ')]);
+    var affected = by('may_affect').filter(function (e) { return e.target === m; }).map(function (e) { return cause(e, 'source'); });
+    if (affected.length) out.push(['May be affected by', affected.join('; ')]);
+    return out;
+  }
+  // the extension agent's answer to a contributed metric (<name>.result.json): its message and every check it ran
+  var answers = {};
+  function checksSection(a) {
+    var rows = list(a.checks).map(function (c) {
+      c = obj(c); var s = str(c.status);
+      return el('div', 'hyp check', [el('span', 'verdict ' + s, [s || '-']),
+        el('div', null, [el('div', 'hyp-cause', [str(c.check)]), el('div', 'small muted', [str(c.detail)])])]);
+    });
+    return section('Checks of the extension agent', [el('p', 'about', [str(a.message)])].concat(rows.length ? rows : [el('div', 'empty', ['The answer lists no checks.'])]));
+  }
+  function loadAnswer(name) {
+    return get('/api/metric/' + encodeURIComponent(name)).then(function (r) {
+      answers[name] = r; if (mode === 'node' && selNode === name) renderDetail(); return r;
+    });
+  }
+  function showChecks(name) { selNode = name; mode = 'node'; renderDetail(); applyStyles(); }
+  // the bench's message after adding a metric: the answer, and a link to the checks behind it
+  function answerToast(res) {
+    res = obj(res); var name = str(res.name), t = $('toast');
+    if (name) answers[name] = res;
+    t.textContent = str(res.message) || ('Monitor: ' + str(res.status));
+    if (name && list(res.checks).length) {
+      var b = el('button', 'linkish', ['Show checks']); b.onclick = function () { showChecks(name); };
+      t.appendChild(text(' ')); t.appendChild(b);
+    }
+  }
+  function renderNode(d) {
+    var m = meta[selNode], a = answers[selNode];
+    var t = $('detail-title'); t.textContent = 'Metric: '; t.appendChild(el('span', 'head-id', [str(selNode)]));
+    if (!m) {      // not in the graph: the answer that refused it (an alias, a failed check), when there is one
+      if (a) { $('detail-status').appendChild(el('span', 'pill ' + str(a.status), [str(a.status)])); d.appendChild(checksSection(a)); }
+      else { d.appendChild(el('div', 'empty', ['This metric is not in the graph.'])); loadAnswer(selNode).catch(function () {}); }
+      return;
+    }
+    var pairs =[['Domain', domainLabel(domainOf(selNode))], ['Status', m.status || '-'], ['Origin', m.origin || '-'], ['Unit', m.unit || '-'], ['Direction', m.direction || '-']];
+    if (m.formula) pairs.push(['Formula', mono(m.formula)]);
+    if (m.decomposition) pairs.push(['Made of', mono(m.decomposition)]);
+    if (m.column) pairs.push(['Column', mono(m.column)]);
+    if (list(m.systems).length) pairs.push(['Systems', m.systems.join(', ')]);
+    if (m.source) pairs.push(['Data source', m.source]);
+    pairs.push(['Dimensions', list(m.dimensions).join(', ') || '-']);
+    d.appendChild(section('About', [el('p', 'about', [m.description || 'No description.']), kv(pairs)]));
+    var links = linksOf(selNode);
+    d.appendChild(section('Links', links.length ? [kv(links)] : [el('div', 'empty', ['No links recorded for this metric.'])]));
+    if (a) d.appendChild(checksSection(a));
+    else if (m.origin === 'contributed') loadAnswer(selNode).catch(function () {});
+    var inc = incidents.filter(function (i) { return incidentNodes(i).indexOf(selNode) >= 0; });
+    var box = inc.length ? inc.map(function (i) {
+      var b = el('button', 'involved', [str(i.id) + ' ' + str(i.metric) + ' (' + status(i) + ')']);
+      b.onclick = function () { selInc = i.id; mode = 'incident'; renderFeed(); renderDetail(); applyStyles(); }; return b;
+    }) : [el('div', 'empty', ['No incident involves this metric.'])];
+    d.appendChild(section('Incidents involving it', box));
+  }
+  function cell(label, value, cls, unit) {
+    return el('div', 'cell', [el('span', 'label', [label]), el('span', 'big ' + (cls || ''), [value].concat(unit ? [el('small', 'muted', [' ' + unit])] : []))]);
+  }
+  function renderIncident(d, i) {
+    var t = $('detail-title'); t.textContent = 'Report: '; t.appendChild(el('span', 'head-id', [str(i.id)]));
+    $('detail-status').appendChild(el('span', 'pill ' + status(i), [status(i)]));
+    if (i.severity && status(i) !== 'explained') $('detail-status').appendChild(el('span', 'sev ' + str(i.severity), [str(i.severity) + ' severity']));
+    d.className = 'detail ' + stOf(i);
+    // an innocent change the investigation found (a mix shift): why there is no alert
+    if (obj(i.innocent).reason) d.appendChild(section('Why no alert', [el('p', 'summary', [str(obj(i.innocent).reason)])]));
+    // the same fault came back: the earlier, resolved incident is one click away
+    if (i.recurrence_of) {
+      var back = el('button', 'linkish', ['It is back: same metric and place as ' + str(i.recurrence_of) + '. Open it']);
+      back.addEventListener('click', function () { selInc = str(i.recurrence_of); mode = 'incident'; renderFeed(); renderDetail(); applyStyles(); });
+      d.appendChild(back);
+    }
+    var ch = obj(i.change), w = obj(ch.window), imp = obj(i.impact);
+    // four figures first: what was seen, what was expected, the change, and what it cost in euros
+    var effect = euroOf(i);
+    // a record with none of the four (a pending one: its data has not arrived) gets one quiet line, not four dashes
+    d.appendChild([ch.observed, ch.expected, ch.delta_pct, effect].some(function (v) { return num(v) != null; }) ? el('div', 'readout', [
+      cell('Observed', short(ch.observed)), cell('Expected', short(ch.expected)),
+      cell('Change', pct(ch.delta_pct), 'chg ' + toneIn(i, i.metric, ch.delta_pct)),
+      cell('Effect, EUR', effect == null ? '–' : (effect > 0 ? '+' : '') + short(effect), 'chg ' + euroTone(i, effect))])
+      : el('p', 'muted', [status(i) === 'pending' ? 'No figures yet: the data for these hours has not arrived.' : 'No figures in this report.']));
+    // the narration (brain/narrate.py), only when a model wrote it and every number in it was checked. Without it the
+    // plain-language summary comes right under the figures, not at the end below the trail
+    var story = obj(i.narrative), told = story.source === 'model' && !!str(story.text).trim();
+    if (told) {
+      var brief = [];
+      // written before the newest figures: it says when, so it is not read as contradicting the readout above it
+      var asOf = Date.parse(str(story.as_of)), seen = Date.parse(str(i.last_seen));
+      if (isFinite(asOf) && isFinite(seen) && asOf < seen)
+        brief.push(el('p', 'brief-stale', ['written at ' + ('0' + new Date(asOf).getUTCHours()).slice(-2) + ':00 UTC; the figures above are newer']));
+      brief.push(el('p', 'brief', [str(story.text)]),
+        el('p', 'brief-note', ['Written by ' + (str(story.model) || 'a language model') + ' from this report' + (story.as_of ? ' at ' + when(story.as_of) + ' UTC' : '')
+          + '; every number in it was checked against the evidence.']));
+      d.appendChild(section('In brief', brief, 'brief-sec'));
+    } else if (i.report) d.appendChild(section('Summary', [el('p', 'summary', [str(i.report)])]));
+    var rows = [['Metric', mono(i.metric)], ['Segment', segText(i.segment)],
+                ['Change', num(ch.delta_pct) != null ? pct(ch.delta_pct) + (num(ch.z) != null ? ' (z ' + fmt(ch.z) + ')' : '') : '-']];
+    if (num(ch.delta) != null) rows.push(['Difference', fmt(ch.delta)]);
+    if (w.start || w.end) rows.push(['Window', when(w.start) + ' to ' + when(w.end) + ' UTC']);
+    d.appendChild(section('What changed', [kv(rows)]));
+    // right-aligned in one column, padded after the point so the decimals line up
+    var ik = Object.keys(imp).map(function (k) { var v = Number(imp[k]); return [k, fmt(v, Number.isInteger(v) ? 0 : 2)]; });
+    var dec = function (s) { var p = s.indexOf('.'); return p < 0 ? 0 : s.length - p; }, D = Math.max.apply(null, ik.map(function (p) { return dec(p[1]); }).concat(0));
+    if (ik.length) d.appendChild(section('Business impact', [kv(ik.map(function (p) { return [mono(p[0]), mono(p[1] + ' '.repeat(D - dec(p[1])))]; }), 'nums')]));
+    var cs = list(i.contributions).map(function (c) {
+      c = obj(c);
+      var share = (num(c.share_of_delta) || 0) * 100;
+      var bar = el('div', 'share-bar'), b = el('i'); b.style.width = Math.max(0, Math.min(100, share)) + '%'; bar.appendChild(b);
+      return el('div', 'contrib', [el('div', 'row2', [mono(c.node), el('span', null, [fmt(share, 0) + '% of the change'])]), bar,
+        el('div', 'small muted mono', [short(c.observed) + ' against ' + short(c.expected) + ' expected'])]);
+    });
+    if (cs.length) d.appendChild(section('Where along the graph', cs));
+    var loc = list(i.localization).map(function (x) {
+      x = obj(x);
+      return el('div', 'loc' + (x.chosen ? ' chosen' : ''), [
+        el('span', 'seg', [mono(str(x.dimension) + ' = ' + str(x.segment))].concat(x.chosen ? [el('span', 'chosen-tag', ['chosen'])] : [])),
+        el('span', 'mono', [fmt((num(x.share_of_delta) || 0) * 100, 0) + '%']),
+        el('span', 'mono muted', [num(x.surprise) != null ? fmt(x.surprise, 2) : ''])]);
+    });
+    if (loc.length) d.appendChild(section('Where in the segments', [el('div', 'loc head', [el('span', null, ['Place']), el('span', null, ['Of change']), el('span', null, ['Surprise'])])].concat(loc)));
+    var hs = list(i.hypotheses).map(function (h) {
+      h = obj(h);
+      var about = (h.kind ? str(h.kind) : '') + (num(h.score) != null ? (h.kind ? ' · ' : '') + 'score ' + fmt(h.score, 2) : '');
+      return el('div', 'hyp ' + str(h.status), [el('span', 'verdict ' + str(h.status), [str(h.status)]),
+        el('div', null, [el('div', 'hyp-cause', [str(h.cause)])].concat(about ? [el('div', 'hyp-meta', [about])] : [],
+          [el('ul', 'evidence', list(h.evidence).map(function (e) { return el('li', null, [str(e)]); }))]))]);
+    });
+    if (hs.length) d.appendChild(section('Hypotheses', hs));
+    var tr = list(i.trail).map(function (s) {
+      s = obj(s);
+      return el('li', null, [el('div', 'step-head', [el('span', 'verb', [str(s.action)]), el('span', 'step-target', [str(s.target)])]), el('div', 'step-result', [str(s.result)])]);
+    });
+    if (tr.length) d.appendChild(section('Investigation trail', [el('ol', 'trail', tr)]));
+    if (list(i.uncertain).length) d.appendChild(section('Still uncertain', [el('ul', 'uncertain', i.uncertain.map(function (u) { return el('li', null, [str(u)]); }))]));
+    if (told && i.report) d.appendChild(section('Summary', [el('p', 'summary', [str(i.report)])]));
+  }
+  function renderDetail() {
+    var d = $('detail'); d.textContent = ''; d.className = 'detail'; $('detail-status').textContent = '';
+    try {
+      if (mode === 'node' && selNode) { renderNode(d); return; }
+      var i = incidents.filter(function (x) { return x.id === selInc; })[0];
+      if (!i) { $('detail-title').textContent = 'Details'; d.appendChild(el('div', 'empty', ['Select a box in the graph or an incident.'])); return; }
+      renderIncident(d, i);
+    } catch (err) { d.textContent = ''; d.appendChild(el('div', 'empty', ['This could not be shown: ' + err.message])); }
+  }
+
+  function renderAll() { renderChips(); drawGraph(); renderFeed(); renderDetail(); }
+
+  // ----------------------------------------------------------- loading
+  function takeGraph(g) {
+    graph = g; meta = {}; domOf = {}; answers = {};      // a changed graph may hold a metric judged again: its checks are read anew
+    list(g.nodes).forEach(function (n) { if (n.kind === 'metric') meta[n.id] = n; });
+    domains.forEach(function (d) { d.metrics.forEach(function (m) { domOf[m] = d.id; }); });
+  }
+  // Compare complete payloads: values and links can change without IDs or counts changing.
+  function graphSignature(g) {
+    return JSON.stringify(g);
+  }
+  function incidentSignature() {
+    return JSON.stringify([incidents, skipped]);
+  }
+  var wallMode = false;
+  // the clock's mode. Live: one data hour per real hour. Simulated, accelerated: the data clock is ahead of real time,
+  // or has moved on by more than an hour beyond the real time that passed since the page first looked (sim.live
+  // --speed 2 writes an hour every 2 s). Replay: a finished database read as it is
+  var clockFirst = null, accelerated = false, HOUR_MS = 3600000;
+  function clockMode(s) {
+    if (s.clock_mode === 'wall') { clockFirst = null; accelerated = false; return 'Live'; }
+    var hour = Date.parse(str(s.last_hour)), now = Date.parse(str(s.server_now));
+    if (isFinite(hour) && isFinite(now)) {
+      if (hour > now) accelerated = true;
+      if (!clockFirst) clockFirst = { hour: hour, now: now };
+      else if (hour - clockFirst.hour > now - clockFirst.now + HOUR_MS) accelerated = true;
+    }
+    return accelerated ? 'Simulated, accelerated' : 'Replay';
+  }
+  function displayHour(ts) {
+    return new Intl.DateTimeFormat('en-GB', {timeZone: 'Europe/Berlin', day: '2-digit', month: '2-digit',
+      year: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'}).format(new Date(ts)) + ' Europe/Berlin';
+  }
+  function refresh() {
+    get('/api/state').then(function (s) {
+      wallMode = s.clock_mode === 'wall';
+      var c = $('clock'), parts = s.ready ? clockParts(s.last_hour) : null;
+      var label = s.ready ? clockMode(s) : (wallMode ? 'Live' : 'Simulated');
+      $('clock-mode').textContent = label;
+      $('clock-mode').className = 'clock-mode' + (wallMode ? ' live' : '');
+      $('clock-mode').title = wallMode ? 'Current hour: one data hour per real hour'
+        : label === 'Replay' ? 'A finished database of simulated data, read hour by hour'
+        : 'Simulated data: the simulator writes an hour of data every few seconds, faster than real time';
+      c.textContent = '';
+      if (parts) { c.appendChild(el('span', 'clock-date', [parts.day])); c.appendChild(el('span', 'clock-hour', [parts.hour])); } else c.textContent = s.error;
+      $('clock-note').textContent = s.ready ? 'Europe/Berlin · simulated data' : '';
+      fillEnd(list(s.injected).filter(function (i) { return i.active; }));
+    }).catch(function (e) { $('clock').textContent = 'Clock unavailable: ' + e.message; });
+    get('/api/graph').then(function (g) {
+      if (graphSignature(g) !== graphKey) { graphKey = graphSignature(g); takeGraph(g); try { renderAll(); } catch (e) { note('Could not draw the graph: ' + e.message); } }
+    }).catch(function () {});
+    get('/api/incidents').then(function (r) {
+      var before = incidentSignature();
+      incidents = list(r.incidents); skipped = r.skipped || 0;
+      var flipped = example && !r.example; example = !!r.example;
+      $('exbadge').textContent = '';
+      if (example) $('exbadge').appendChild(el('span', 'pill example', ['showing the contract example, no live incident yet']));
+      var scope = inScope();
+      if (flipped || !incidents.some(function (i) { return i.id === selInc; })) {      // new live feed or missing selection: open the first in scope
+        selInc = scope.length ? scope[0].id : null; if (mode === 'incident' || flipped) mode = 'incident';
+      }
+      note('');
+      if (before !== incidentSignature() || flipped) { try { renderChips(); renderFeed(); renderDetail(); applyStyles(); } catch (e) { note('Could not draw the incidents: ' + e.message); } }
+    }).catch(function () { note('Could not read the incidents.'); });
+  }
+
+  // the faults the test bench can write into the simulator: kind, label, settings it uses, hours it lasts unless
+  // someone ends it, and its severity when it takes one. At 2 s per simulated hour the demo's rollback step comes 50 s
+  // after the click, so the faults run 72 h (144 s): still bounded, and still running when "End it" is clicked. The ad
+  // fault keeps 12 h: its shape (boost for a third, then nothing) needs it.
+  var KINDS = [
+    ['payment_failure', 'Payment failure', ['country', 'platform'], 72, 0.4],
+    ['stockout_surge', 'Stockouts', ['category'], 72, 0.4],
+    ['search_regression', 'Search regression', ['country'], 72, 0.4],
+    ['ad_budget_exhausted', 'Ad budget gone early', ['country'], 12, 0.4],
+    ['traffic_drop', 'Traffic drop', ['country', 'platform'], 72, 0.5],
+    ['feed_unavailable', 'Feed shows unavailable', [], 72, null],
+    ['discount_push', 'Discount push', [], 72, null]];
+  // the request the bench posts to /api/inject: only the settings the fault uses (value(p) reads the bench's select)
+  function faultBody(kind, value) {
+    var k = KINDS.filter(function (x) { return x[0] === kind; })[0], hours = k[3];
+    var body = { kind: kind, hours: hours, when: 'now' };
+    if (k[4] != null) body.severity = k[4];
+    k[2].forEach(function (p) { body[p] = value(p); });
+    return body;
+  }
+  // an innocent change no calendar announces: traffic moves toward one category, every rate in it stays the same
+  function mixShiftBody(category) { return { kind: 'mix_shift', category: category, hours: 12, when: 'now' }; }
+
+  // ------------------------------------------------------------- controls
+  function fill(id, values) { var s = $(id); values.forEach(function (v) { var o = document.createElement('option'); o.value = v; o.textContent = v; s.appendChild(o); }); }
+  KINDS.forEach(function (k) { var o = document.createElement('option'); o.value = k[0]; o.textContent = k[1]; $('f-kind').appendChild(o); });
+  fill('f-country', ['DE', 'FR', 'ES', 'PL']); fill('f-platform', ['Android', 'iOS', 'Web']); fill('f-category', ['electronics', 'fashion', 'home', 'beauty', 'sports']);
+  fill('pr-country', ['FR', 'DE', 'ES', 'PL']); fill('ms-category', ['fashion', 'electronics', 'home', 'beauty', 'sports']); fill('dd-source', ['payments', 'orders', 'traffic', 'search', 'recommendations', 'ads', 'inventory']);
+  function showParams() {
+    var need = KINDS.filter(function (k) { return k[0] === $('f-kind').value; })[0][2];
+    ['country', 'platform', 'category'].forEach(function (p) { $('f-' + p).hidden = need.indexOf(p) < 0; });
+  }
+  $('f-kind').onchange = showParams; showParams();
+
+  // injections that are still in effect, so a demo can end one (the rollback)
+  var endKey = '';
+  function fillEnd(l) {
+    var key = JSON.stringify(l.map(function (i) { return i.id; }));
+    $('end-grp').hidden = !l.length;
+    if (key === endKey) return;
+    endKey = key;
+    var sel = $('end-select'), keep = sel.value;
+    sel.textContent = '';
+    l.forEach(function (i) {
+      var where = ['country', 'platform', 'category', 'source'].map(function (d) { return obj(i.scope)[d]; }).filter(Boolean).join(' ');
+      var o = document.createElement('option'); o.value = i.id;
+      o.textContent = i.kind + ' ' + where + ' from ' + displayHour(obj(i.scope).start);
+      sel.appendChild(o);
+    });
+    if (keep) sel.value = keep;
+  }
+  $('end-go').onclick = function () {
+    var id = parseInt($('end-select').value, 10);
+    if (!id) return;
+    toast('Ending...');
+    post('/api/end', { id: id }).then(function (r) { toast('Ended from ' + displayHour(r.ended_from)); refresh(); })
+      .catch(function (e) { toast('Failed: ' + e.message); });
+  };
+  function act(body, label) {
+    toast(label + '...');
+    post('/api/inject', body).then(function (r) { toast(label + ' from ' + displayHour(r.start) + '. Injected into data; waiting for monitor detection before graph updates.'); refresh(); })
+      .catch(function (e) { toast('Failed: ' + e.message); });
+  }
+  $('f-go').onclick = function () {
+    var kind = $('f-kind').value, label = KINDS.filter(function (k) { return k[0] === kind; })[0][1];
+    act(faultBody(kind, function (p) { return $('f-' + p).value; }), label + ' injected');
+  };
+  $('pr-go').onclick = function () { act({ kind: 'promo', country: $('pr-country').value, hours: 12, when: 'now' }, 'Promo started'); };
+  $('ms-go').onclick = function () { act(mixShiftBody($('ms-category').value), 'Mix shift started'); };
+  $('dd-go').onclick = function () { act({ kind: 'data_delay', source: $('dd-source').value, hours: 3, delay_hours: 2, when: 'now' }, 'Late data scheduled'); };
+  // adding a metric: hand it over, then wait for the monitor's answer (<name>.result.json). The bench shows the
+  // answer's message with a link to its checks
+  function handOver(yamlText) {
+    post('/api/metric', { yaml_text: yamlText }).then(function (r) {
+      toast('Handed to the monitor: ' + r.saved + '. Waiting for its answer...');
+      var tries = 0;
+      var poll = function () {
+        get('/api/metric/' + encodeURIComponent(r.name)).then(function (res) { answerToast(res); refresh(); })
+          .catch(function () { if (++tries < 20) setTimeout(poll, 2000); else toast('Handed to the monitor; it has not answered yet.'); });
+      };
+      setTimeout(poll, 1500);
+    }).catch(function (e) { toast('Failed: ' + e.message); });
+  }
+  // a definition and a query, no formula: the agent finds the formula itself, checks it and places the metric
+  $('nm-go').onclick = function () {
+    var y = 'name: refund_rate\ndescription: Share of orders refunded\nsql: >\n  SELECT ts, country, platform, category, channel,\n         SUM(refunds) * 1.0 / NULLIF(SUM(orders), 0) AS value\n  FROM facts_hourly GROUP BY ts, country, platform, category, channel\ndimensions: [country, platform, category, channel]\nunit: ratio\n';
+    handOver(y);
+  };
+  // an existing rate (payment_success_rate) under another name: the agent refuses it as an alias and says of what
+  $('nm-dup').onclick = function () {
+    var dup = 'name: payment_rate\ndescription: Successful payments per payment attempt\nsql: >\n  SELECT ts, country, platform, category, channel,\n         SUM(payment_successes) * 1.0 / NULLIF(SUM(payment_attempts), 0) AS value\n  FROM facts_hourly GROUP BY ts, country, platform, category, channel\ndimensions: [country, platform, category, channel]\nunit: ratio\n';
+    handOver(dup);
+  };
+
+  // ------------------------------------------------------------ the trace
+  // Browser-only drawing, placed after the controls: tests/test_ui_runtime.py runs the code above this point in Node
+  // and hands it over on one command line, which Windows limits to 32k characters.
+  // the box the change is attributed to (the largest share along the graph), else the leading driver, else the metric
+  function movedOf(inc) {
+    var at = {}, best = null;
+    drawn.nodes.forEach(function (n) { if (!at[n.metric] || (at[n.metric].item.n.repeated && !n.item.n.repeated)) at[n.metric] = n; });
+    list(inc.contributions).forEach(function (c) { c = obj(c); if (at[c.node] && (!best || (num(c.share_of_delta) || 0) > (num(best.share_of_delta) || 0))) best = c; });
+    if (best) return { node: at[best.node], observed: best.observed, expected: best.expected };
+    var d = obj(list(inc.drivers)[0]), ch = obj(inc.change);
+    if (at[d.metric]) return { node: at[d.metric], observed: d.observed, expected: d.expected };
+    return at[inc.metric] ? { node: at[inc.metric], observed: ch.observed, expected: ch.expected } : null;
+  }
+  function markMoved(inc) {
+    var layer = drawn.tags; layer.textContent = '';
+    drawn.nodes.forEach(function (n) { n.el.classList.remove('moved'); });
+    var m = inc && movedOf(inc);
+    if (!m) return;
+    m.node.el.classList.add('moved');
+    if (num(m.observed) == null || num(m.expected) == null) return;
+    var i = m.node.item, label = short(m.observed) + ' vs ' + short(m.expected), w = Math.ceil(label.length * 6.6) + 10, H = 14;
+    // the tag goes where it covers no other box: above the moved box, else to its left (in the parent's column, clear
+    // of the line that comes in), else below; when every place is taken it sits above, over the dimmed neighbour
+    var vb = drawn.box, top = i.y - NODE_H / 2, spots = [[i.x + i.hw - w, top - H - 3], [i.x - i.hw - GAP - w, i.y - H / 2], [i.x + i.hw - w, top + NODE_H + 3]];
+    var clear = function (s) {
+      return s[0] >= 0 && s[1] >= 0 && (!vb || s[1] + H <= vb.h) && !drawn.nodes.some(function (n) {
+        var o = n.item; return o !== i && o.x + o.hw > s[0] - 2 && o.x - o.hw < s[0] + w + 2 && o.y + NODE_H / 2 > s[1] - 2 && o.y - NODE_H / 2 < s[1] + H + 2;
+      });
+    };
+    var at = spots.filter(clear)[0] || [spots[0][0], top - H + 1];
+    var tag = svg('g', { 'class': 'moved-tag', transform: 'translate(' + at[0] + ',' + at[1] + ')' }, layer);
+    svg('rect', { width: w, height: H, rx: 3 }, tag);
+    var t = svg('text', { x: 5, y: 10.5 }, tag); t.textContent = label;
+    svg('title', {}, tag).textContent = 'observed ' + short(m.observed) + ', expected ' + short(m.expected);
+  }
+  // The graph fits its card: as wide as the card allows (at most 1.3 times its own size), and on a desktop never taller
+  // than the card can show, so the whole tree stays in view next to the report.
+  function fitGraph() {
+    var g = $('g'), wrap = $('graphwrap'), card = $('graph-card'), v = g.viewBox && g.viewBox.baseVal;
+    if (!v || !v.width || !v.height) return;
+    drawn.box = { w: v.width, h: v.height };
+    var cs = getComputedStyle(wrap), w = wrap.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    var maxH = parseFloat(getComputedStyle(card).maxHeight);
+    if (maxH > 0) w = Math.min(w, (maxH - (card.offsetHeight - wrap.offsetHeight) - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 1) * v.width / v.height);
+    var lo = v.width * 0.74;      // keep the names readable (about 9 px): below that the card scrolls instead
+    g.style.width = Math.floor(Math.max(lo, Math.min(w, v.width * 1.3))) + 'px';
+  }
+  // The trace: when an incident is selected its path is drawn once in the status colour, from the moved rate up to
+  // the outcome, the direction in which the investigation explains the change. Polls and redraws do not replay it.
+  var traceKey = '', tracing = null;
+  function trace(inc) {
+    var key = inc ? str(inc.id) + '|' + dom : '';
+    if (key === traceKey) return;
+    traceKey = key;
+    var g = $('g'), layer = drawn.layer;
+    tracing = null; layer.textContent = ''; g.classList.remove('tracing');
+    var still = !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var lit = drawn.edges.filter(function (e) { return e.el.classList.contains('on'); });
+    if (!inc || still || !lit.length || !window.requestAnimationFrame) return;
+    var depths = lit.map(function (e) { return e.depth; }).filter(function (d, k, a) { return a.indexOf(d) === k; }).sort(function (a, b) { return b - a; });
+    var items = lit.map(function (e) {
+      var p = e.el.cloneNode(false); p.setAttribute('class', 'trace-line'); layer.appendChild(p);
+      var len = p.getTotalLength(); p.style.strokeDasharray = len + ' ' + len; p.style.strokeDashoffset = String(-len);
+      return { el: p, len: len, j: depths.indexOf(e.depth) };
+    });
+    g.classList.add('tracing');
+    var run = {}, t0 = null, T = 700, n = depths.length;
+    var done = function () { if (tracing !== run) return; tracing = null; layer.textContent = ''; g.classList.remove('tracing'); };
+    tracing = run;
+    var frame = function (now) {
+      if (tracing !== run) return;
+      if (t0 == null) t0 = now;
+      var t = Math.min(1, (now - t0) / T), p = 1 - Math.pow(1 - t, 3);      // ease-out
+      items.forEach(function (it) { var f = Math.max(0, Math.min(1, p * n - it.j)); it.el.style.strokeDashoffset = String(-it.len * (1 - f)); });
+      if (t < 1) window.requestAnimationFrame(frame); else done();
+    };
+    window.requestAnimationFrame(frame);
+    setTimeout(done, T + 500);         // a hidden tab gets no frames: the path still ends up drawn
+  }
+
+  // the clock readout: the day in small type, the hour large; both in Europe/Berlin
+  function clockParts(ts) {
+    var p = {};
+    new Intl.DateTimeFormat('en-GB', {timeZone: 'Europe/Berlin', weekday: 'short', day: '2-digit', month: 'short', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', hourCycle: 'h23'}).formatToParts(new Date(ts)).forEach(function (x) { p[x.type] = x.value; });
+    return { day: p.weekday + ' ' + p.day + ' ' + p.month + ' ' + p.year, hour: p.hour + ':' + p.minute };
+  }
+
+  // --top-h and --bench-h follow the real heights of the top bar and the folded test bench (the domain chips arrive
+  // after the first paint and the example badge comes and goes), and the graph refits to the room that leaves
+  function setTop() {
+    var s = document.documentElement.style, b = document.querySelector('#demo-controls summary');
+    s.setProperty('--top-h', document.querySelector('.sticky-top').offsetHeight + 'px');
+    if (b && b.offsetHeight) s.setProperty('--bench-h', (b.offsetHeight + 2) + 'px');
+    if (drawn) fitGraph();
+    capChips();
+  }
+  setTop(); window.addEventListener('resize', setTop); if (document.fonts && document.fonts.ready) document.fonts.ready.then(setTop);
+  if (window.ResizeObserver) new ResizeObserver(function () { setTop(); }).observe(document.querySelector('.sticky-top'));
+
+  // On a narrow screen the domain chips scroll sideways: while more of them lie to the right, the row ends in a solid
+  // cap with an arrow (.more on .domain-row). A newly chosen domain's chip is scrolled clear of that cap.
+  function capChips() { var n = $('domains'); n.parentNode.classList.toggle('more', n.scrollLeft + n.clientWidth < n.scrollWidth - 1); }
+  var chipDom = 'all';
+  function moreChips() {
+    var n = $('domains'), on = n.querySelector('.chip.on');
+    if (on && dom !== chipDom) {
+      chipDom = dom;
+      var a = on.offsetLeft - n.offsetLeft - n.clientLeft, b = a + on.offsetWidth - n.clientWidth + 32;
+      if (n.scrollLeft > a) n.scrollLeft = a - 4; else if (n.scrollLeft < b) n.scrollLeft = b;
+    }
+    capChips();
+  }
+  $('domains').addEventListener('scroll', capChips);
+  var drawChips = renderChips;
+  renderChips = function () { drawChips(); moreChips(); };
+  // The selected incident's row is scrolled into view inside the feed, never the page: at load with ?incident=, and
+  // when an incident is picked elsewhere (a domain chip, a metric's details). A poll that keeps the selection leaves
+  // the feed where the reader put it.
+  var feedSel = null, drawFeed = renderFeed;
+  renderFeed = function () {
+    drawFeed();
+    var f = $('feed'), r = f.querySelector('.inc.sel');
+    if (!r) { feedSel = null; return; }
+    if (selInc === feedSel) return;
+    feedSel = selInc;
+    var fb = f.getBoundingClientRect(), rb = r.getBoundingClientRect();
+    if (rb.top < fb.top) f.scrollTop += rb.top - fb.top; else if (rb.bottom > fb.bottom) f.scrollTop += rb.bottom - fb.bottom;
+  };
+
+  // ?incident=inc-0001 opens that report at load (for a demo or a screenshot); otherwise the first in scope opens
+  var asked = new URLSearchParams(location.search).get('incident');
+  if (asked) selInc = asked;
+
+  // start polling first: a page that fails to draw once must still recover on the next tick
+  get('/api/domains').then(function (d) { domains = d; }).catch(function () {}).then(function () { refresh(); setInterval(refresh, 2000); setTop(); });
+})();
+</script>
+</body>
+</html>

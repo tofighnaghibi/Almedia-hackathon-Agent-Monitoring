@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monitoring Brain Architecture</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+<style>
+/* Layout: one left-aligned reading column; figures sit on colour blocks and scroll sideways on phones.
+   Tokens follow the project's console style (ui/static/console.css): warm neutrals, one amber accent, flat surfaces. */
+:root {
+  --bg: #FAF7F2; --block: #F0EBE2; --line: #D9D1C3; --edge: #A89F8F; --ink: #1C1917; --muted: #57534E;
+  --accent: #B45309; --hot: #B42318; --ok: #1F6F5C;
+  --ui: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12100D; --block: #1C1915; --line: #332E27; --edge: #5E574B; --ink: #F5F1EA; --muted: #A8A196;
+    --accent: #F59E0B; --hot: #FF8A7A; --ok: #6FD0BD; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12100D; --block: #1C1915; --line: #332E27; --edge: #5E574B; --ink: #F5F1EA; --muted: #A8A196;
+  --accent: #F59E0B; --hot: #FF8A7A; --ok: #6FD0BD; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.6 var(--ui); font-variant-numeric: tabular-nums; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 40px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 48px; }
+header { display: grid; gap: 12px; }
+.eyebrow { font: 500 12px/1.4 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 0; font-size: 32px; font-weight: 700; line-height: 1.15; text-wrap: balance; }
+h2 { margin: 0; font-size: 21px; font-weight: 700; line-height: 1.25; text-wrap: balance; }
+p { margin: 0; max-width: 70ch; }
+a { color: var(--accent); text-underline-offset: 2px; }
+.lede { font-size: 17px; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px 24px; margin: 0; padding: 0; list-style: none; font: 400 13px/1.5 var(--mono); color: var(--muted); }
+.facts b { color: var(--ink); font-weight: 700; }
+section { display: grid; gap: 16px; min-width: 0; }
+figure { margin: 0; display: grid; gap: 10px; min-width: 0; }
+.fig { overflow-x: auto; background: var(--block); border-radius: 8px; padding: 16px; }
+figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
+code { font: 400 0.9em var(--mono); }
+ul.read { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 80ch; }
+
+svg.d { display: block; width: 100%; min-width: 900px; height: auto; color: var(--ink); font-family: var(--ui); }
+.d .box { fill: var(--bg); stroke: var(--edge); stroke-width: 1.2; }
+.d .box-a { fill: var(--bg); stroke: var(--ink); stroke-width: 2; }
+.d .tt { fill: var(--ink); font: 700 12.5px var(--mono); }
+.d .tm { fill: var(--muted); font-size: 11.5px; }
+.d .ts { fill: var(--muted); font-size: 11px; }
+.d .mono { fill: var(--ink); font: 400 11.5px var(--mono); }
+.d .tw { fill: var(--hot); font-size: 11.5px; font-weight: 500; }
+.d .lbl { fill: var(--muted); font-size: 11px; font-style: italic; }
+.d .edge { stroke: var(--ink); stroke-width: 1.3; fill: none; }
+.d .mk { fill: var(--ink); }
+.d .mk-m { fill: var(--accent); }
+.d .mk-c { fill: var(--ok); }
+.d .n { fill: var(--bg); stroke: var(--edge); stroke-width: 1.2; }
+.d .n-root { fill: var(--ink); stroke: var(--ink); stroke-width: 1.2; }
+.d .n-root + .nt { fill: var(--bg); font-weight: 700; }
+.d .n-shared { fill: var(--bg); stroke: var(--ink); stroke-width: 2.4; }
+.d .n-cause { fill: var(--bg); stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 6 3; }
+.d .n-ref { fill: none; stroke: var(--accent); stroke-width: 1.2; stroke-dasharray: 2 4; }
+.d .n-ctx { fill: none; stroke: var(--ok); stroke-width: 1.4; stroke-dasharray: 2 3; }
+.d .nt { fill: var(--ink); font: 400 11.5px var(--mono); }
+.d .nt-s { font-size: 10.5px; }
+.d .e-f { stroke: var(--edge); stroke-width: 1.4; fill: none; }
+.d .e-m { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 6 3; fill: none; }
+.d .e-c { stroke: var(--ok); stroke-width: 1.4; stroke-dasharray: 2 3; fill: none; }
+.d .op { fill: var(--muted); font: 700 12px var(--mono); }
+.d .sg { fill: var(--accent); font: 700 14px var(--mono); }
+
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+th { font-size: 12px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); background: var(--block); }
+th.num { text-align: right; }
+tbody th { color: var(--ink); font-weight: 700; }
+tr:last-child td { border-bottom: none; }
+td.num { text-align: right; font-family: var(--mono); white-space: nowrap; }
+td:first-child code { white-space: nowrap; }
+.pair, .tiles { display: grid; gap: 16px; }
+.pair { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.tiles { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.pair > div, .tiles > div { background: var(--block); border-radius: 8px; padding: 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.big { font: 700 28px/1.1 var(--ui); }
+.what { font-weight: 500; }
+.why { font-size: 14px; color: var(--muted); }
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 4px; }
+@media (max-width: 560px) { h1 { font-size: 27px; } .lede { font-size: 16px; } }
+</style>
+
+</head>
+<body style="margin:0">
+<main class="wrap">
+<header>
+  <div class="eyebrow">Eye of the System · brain · HackLab #2 Berlin · state of 22 Nov 2026, 13:13</div>
+  <h1>Monitoring Brain Architecture</h1>
+  <p class="lede">The brain is the part of the system that understands the marketplace. It keeps a graph of metrics and how they depend on each other, and computes any metric for any segment from the simulator's data. For every new hour of data it uses both to notice a change, find where it happened and what caused it, and write a report without being asked. It also takes in new metric definitions while it runs.</p>
+  <ul class="facts">
+    <li><b>36</b> metrics, <b>299</b> typed edges</li>
+    <li><b>20</b> modules, <b>6,624</b> lines</li>
+    <li><b>410</b> test functions in the <b>28</b> test files that import <code>brain/</code></li>
+    <li>holdout: <b>120/120</b> faults detected, <b>120/120</b> localized, <b>116/120</b> with the cause, <b>0</b> false alarms in <b>457</b> watched days, <b>80/80</b> innocent events silent (<a href="results.md">results.md</a>)</li>
+  </ul>
+</header>
+
+<section>
+  <h2>From data to incident</h2>
+  <p>On the left is what comes in, and the two modules through which every part reads the data. On the right, from top to bottom: a new metric that arrives at run time, the model of the business, and the loop that runs. Every box that names a <code>.py</code> file is a module of <code>brain/</code> with tests. The other boxes are the files and tables the brain reads and writes.</p>
+  <figure>
+    <div class="fig"><svg class="d" viewBox="0 0 1050 562" role="img" aria-label="Metric definitions become a typed graph. The store and the evaluator turn the simulator&#x27;s tables into metric values. In the loop of run.py the monitor judges the watched rates and reports alerts, incidents.py groups them into incident files, and the investigator writes the report of every incident. The extension agent takes a new definition from incoming_metrics, answers in a result file, adds a checked metric to the graph, writes the graph export again and extends the monitor&#x27;s watch list."><defs><marker id="p-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk"/></marker><marker id="p-am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk-m"/></marker><marker id="p-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk-c"/></marker></defs>
+<rect class="box" x="16" y="16" width="180" height="104" rx="6"/>
+<text class="tt" x="28" y="37">&lt;name&gt;.yaml</text>
+<text class="tm" x="28" y="55">a new metric definition:</text>
+<text class="tm" x="28" y="70">a formula, a query or both,</text>
+<text class="tm" x="28" y="85">written into</text>
+<text class="mono" x="28" y="100">incoming_metrics/</text>
+<rect class="box" x="16" y="154" width="180" height="124" rx="6"/>
+<text class="tt" x="28" y="175">simulator database</text>
+<text class="mono" x="28" y="193">facts_hourly</text>
+<text class="mono" x="28" y="208">ingestion_log</text>
+<text class="mono" x="28" y="223">releases</text>
+<text class="mono" x="28" y="238">calendar</text>
+<text class="tw" x="28" y="253">ground_truth: not readable</text>
+<rect class="box" x="16" y="332" width="180" height="98" rx="6"/>
+<text class="tt" x="28" y="353">data.py · Store</text>
+<text class="tm" x="28" y="371">read-only connection</text>
+<text class="tm" x="28" y="386">only the 4 contract tables:</text>
+<text class="tm" x="28" y="401">SQLite refuses the rest</text>
+<text class="tm" x="28" y="416">NULL is never summed as 0</text>
+<rect class="box" x="16" y="466" width="180" height="68" rx="6"/>
+<text class="tt" x="28" y="487">evaluator.py</text>
+<text class="tm" x="28" y="505">any metric, from sums</text>
+<text class="tm" x="28" y="520">a rate is a ratio of sums</text>
+<line class="edge" x1="106" y1="278" x2="106" y2="329" marker-end="url(#p-ar)"/>
+<line class="edge" x1="106" y1="430" x2="106" y2="463" marker-end="url(#p-ar)"/>
+<rect class="box" x="226" y="16" width="602" height="104" rx="6"/>
+<text class="tt" x="238" y="37">extension.py · extension agent</text>
+<text class="tm" x="238" y="55">polled by the live loop; takes a file once it reads the same on two looks in a row</text>
+<text class="tm" x="238" y="70">12 checks, from reading the file to the watch list; the query runs with a time and a row limit</text>
+<text class="tm" x="238" y="85">validated or tentative: the metric joins the graph · rejected: it stays out</text>
+<text class="tm" x="238" y="100">no language model</text>
+<rect class="box" x="856" y="16" width="178" height="46" rx="6"/>
+<text class="tt" x="868" y="37">&lt;name&gt;.result.json</text>
+<text class="tm" x="868" y="55">status and every check</text>
+<rect class="box" x="856" y="74" width="178" height="46" rx="6"/>
+<text class="tt" x="868" y="95">graph export</text>
+<text class="tm" x="868" y="113">rewritten for the console</text>
+<line class="edge" x1="196" y1="68" x2="223" y2="68" marker-end="url(#p-ar)"/>
+<line class="edge" x1="828" y1="39" x2="853" y2="39" marker-end="url(#p-ar)"/>
+<line class="edge" x1="828" y1="97" x2="853" y2="97" marker-end="url(#p-ar)"/>
+<line class="edge" x1="705" y1="120" x2="705" y2="151" marker-end="url(#p-ar)"/>
+<text class="lbl" x="713" y="141">adopts a checked metric (MetricGraph.adopt)</text>
+<rect class="box" x="226" y="154" width="150" height="74" rx="6"/>
+<text class="tt" x="238" y="175">metrics/*.yaml</text>
+<text class="tm" x="238" y="193">36 metric definitions</text>
+<text class="tm" x="238" y="208">formulas and causes</text>
+<rect class="box" x="404" y="154" width="150" height="74" rx="6"/>
+<text class="tt" x="416" y="175">metric_spec.py</text>
+<text class="tm" x="416" y="193">specs checked on load</text>
+<text class="tm" x="416" y="208">formula.py: parser</text>
+<rect class="box-a" x="582" y="154" width="246" height="74" rx="6"/>
+<text class="tt" x="594" y="175">graph.py · MetricGraph</text>
+<text class="tm" x="594" y="193">36 metrics, 299 typed edges</text>
+<text class="tm" x="594" y="208">declared outcome: contribution</text>
+<rect class="box" x="856" y="154" width="178" height="74" rx="6"/>
+<text class="tt" x="868" y="175">validate.py</text>
+<text class="tm" x="868" y="193">52 checks on data</text>
+<text class="tm" x="868" y="208">28 hold by definition</text>
+<line class="edge" x1="376" y1="191" x2="401" y2="191" marker-end="url(#p-ar)"/>
+<line class="edge" x1="554" y1="191" x2="579" y2="191" marker-end="url(#p-ar)"/>
+<line class="edge" x1="828" y1="191" x2="853" y2="191" marker-end="url(#p-ar)"/>
+<line class="edge" x1="705" y1="228" x2="705" y2="259" marker-end="url(#p-ar)"/>
+<text class="lbl" x="697" y="249" text-anchor="end">watch list · Monitor.rewatch after a new metric</text>
+<text class="lbl" x="713" y="249">cause links, system tags, formulas</text>
+<rect class="box" x="226" y="262" width="808" height="284" rx="6"/>
+<text class="tt" x="238" y="283">run.py · the loop</text>
+<text class="tm" x="238" y="301">python -m brain.run. Live: on every poll it looks into incoming_metrics/ (Extension.poll) and ticks when a new data hour is there.</text>
+<text class="tm" x="238" y="316">--replay walks a finished database hour by hour and reads no row from the future. One tick: Monitor.tick(), then Book.update(tick).</text>
+<rect class="box" x="238" y="332" width="262" height="98" rx="6"/>
+<text class="tt" x="250" y="353">monitor</text>
+<text x="250" y="371"><tspan class="mono">clock.py</tspan><tspan class="tm" x="329">clock, arrival gate</tspan></text>
+<text x="250" y="386"><tspan class="mono">stats.py</tspan><tspan class="tm" x="329">how surprising a count is</tspan></text>
+<text x="250" y="401"><tspan class="mono">monitor.py</tspan><tspan class="tm" x="329">baselines, tests, alerts</tspan></text>
+<text class="tm" x="250" y="416">15 rates in 7 cuts, judged on every tick</text>
+<rect class="box" x="528" y="332" width="228" height="98" rx="6"/>
+<text class="tt" x="540" y="353">incidents.py</text>
+<text class="tm" x="540" y="371">groups alerts into incidents;</text>
+<text class="tm" x="540" y="386">one file each, updated in place:</text>
+<text class="tm" x="540" y="401">open → ongoing → resolved;</text>
+<text class="tm" x="540" y="416">explained and pending records</text>
+<rect class="box" x="784" y="332" width="238" height="98" rx="6"/>
+<text class="tt" x="796" y="353">incident files</text>
+<text x="796" y="371"><tspan class="mono">inc-NNNN.json</tspan><tspan class="tm" x="917">an incident</tspan></text>
+<text x="796" y="386"><tspan class="mono">explained-*.json</tspan><tspan class="tm" x="917">a calendar event</tspan></text>
+<text x="796" y="401"><tspan class="mono">pending-*.json</tspan><tspan class="tm" x="917">hours held</tspan></text>
+<text class="tm" x="796" y="416">read by the console and the scorer</text>
+<line class="edge" x1="500" y1="381" x2="525" y2="381" marker-end="url(#p-ar)"/>
+<line class="edge" x1="756" y1="381" x2="781" y2="381" marker-end="url(#p-ar)"/>
+<rect class="box" x="238" y="466" width="784" height="68" rx="6"/>
+<text class="tt" x="250" y="487">investigator</text>
+<text x="250" y="505"><tspan class="mono">investigate.py</tspan><tspan class="tm" x="357">cause or symptom, hypotheses, trail, report</tspan></text>
+<text x="250" y="520"><tspan class="mono">localize.py</tspan><tspan class="tm" x="357">every place scored for one common shift</tspan></text>
+<text x="650" y="505"><tspan class="mono">attribution.py</tspan><tspan class="tm" x="757">the cost, split over the factors</tspan></text>
+<text x="650" y="520"><tspan class="mono">impact.py</tspan><tspan class="tm" x="757">the outcome recomputed through the formulas</tspan></text>
+<line class="edge" x1="642" y1="433" x2="642" y2="463" marker-end="url(#p-ar)" marker-start="url(#p-ar)"/>
+<text class="lbl" x="650" y="452">one report for every incident with a live alert</text>
+<line class="edge" x1="196" y1="381" x2="223" y2="381" marker-end="url(#p-ar)"/>
+<line class="edge" x1="196" y1="500" x2="223" y2="500" marker-end="url(#p-ar)"/></svg></div>
+    <figcaption>The brain reads four tables of the simulator through a read-only connection. The table with the injected faults is refused by SQLite itself, so no query, written by us or contributed with a new metric, can read the answer. The extension agent and <code>validate.py</code> read the data through the same store. All data is simulated.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>The metric graph</h2>
+  <p>Drawn from the graph the code loads, not by hand. Every line downward is an exact identity, so a change at the top can be split into the parts each factor explains.</p>
+  <figure>
+    <div class="fig"><svg class="d" viewBox="0 0 1050 556" role="img" aria-label="The metric graph as loaded from the YAML files: contribution splits into marketplace fees plus ad spend minus discounts and further down to the six step rates of the funnel; gmv and sessions feed two parents; possible causes point at step rates; releases, data freshness and the calendar are context."><defs><marker id="g-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk"/></marker><marker id="g-am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk-m"/></marker><marker id="g-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk-c"/></marker></defs>
+<path class="e-f" d="M199.0,116 C199.0,138 269.0,134 269.0,156"/>
+<text class="op" x="274.0" y="151">×</text>
+<path class="e-f" d="M199.0,116 C199.0,138 95.0,134 95.0,156"/>
+<text class="op" x="100.0" y="151">×</text>
+<path class="e-f" d="M269.0,186 C269.0,208 313.0,204 313.0,226"/>
+<text class="op" x="318.0" y="221">×</text>
+<path class="e-f" d="M269.0,186 C269.0,208 139.0,204 139.0,226"/>
+<text class="op" x="144.0" y="221">×</text>
+<path class="e-f" d="M313.0,256 C313.0,278 437.0,274 437.0,296"/>
+<text class="op" x="442.0" y="291">×</text>
+<path class="e-f" d="M313.0,256 C313.0,278 229.0,274 229.0,296"/>
+<text class="op" x="234.0" y="291">×</text>
+<path class="e-f" d="M609.0,256 C609.0,278 485.0,274 485.0,296"/>
+<text class="op" x="490.0" y="291">×</text>
+<path class="e-f" d="M609.0,256 C609.0,278 699.0,274 699.0,296"/>
+<text class="op" x="704.0" y="291">×</text>
+<path class="e-f" d="M699.0,326 C699.0,348 95.0,344 95.0,366"/>
+<text class="op" x="100.0" y="361">×</text>
+<path class="e-f" d="M699.0,326 C699.0,348 267.0,344 267.0,366"/>
+<text class="op" x="272.0" y="361">×</text>
+<path class="e-f" d="M699.0,326 C699.0,348 439.0,344 439.0,366"/>
+<text class="op" x="444.0" y="361">×</text>
+<path class="e-f" d="M699.0,326 C699.0,348 611.0,344 611.0,366"/>
+<text class="op" x="616.0" y="361">×</text>
+<path class="e-f" d="M699.0,326 C699.0,348 783.0,344 783.0,366"/>
+<text class="op" x="788.0" y="361">×</text>
+<path class="e-f" d="M699.0,326 C699.0,348 955.0,344 955.0,366"/>
+<text class="op" x="960.0" y="361">×</text>
+<path class="e-f" d="M525.0,46 C525.0,68 525.0,64 525.0,86"/>
+<text class="op" x="530.0" y="81">+</text>
+<path class="e-f" d="M525.0,46 C525.0,68 199.0,64 199.0,86"/>
+<text class="op" x="204.0" y="81">+</text>
+<path class="e-f" d="M525.0,46 C525.0,68 859.0,64 859.0,86"/>
+<text class="op" x="864.0" y="81">−</text>
+<path class="e-f" d="M525.0,116 C525.0,138 668.0,134 668.0,156"/>
+<text class="op" x="673.0" y="151">×</text>
+<path class="e-f" d="M525.0,116 C525.0,138 479.0,134 479.0,156"/>
+<text class="op" x="484.0" y="151">×</text>
+<path class="e-f" d="M859.0,116 C859.0,138 716.0,134 716.0,156"/>
+<text class="op" x="721.0" y="151">×</text>
+<path class="e-f" d="M859.0,116 C859.0,138 955.0,134 955.0,156"/>
+<text class="op" x="960.0" y="151">×</text>
+<path class="e-f" d="M692.0,186 C692.0,208 609.0,204 609.0,226"/>
+<text class="op" x="614.0" y="221">×</text>
+<path class="e-f" d="M692.0,186 C692.0,208 783.0,204 783.0,226"/>
+<text class="op" x="788.0" y="221">×</text>
+<rect class="n-root" x="446" y="16" width="158" height="30" rx="5"/><text class="nt" x="525.0" y="35.5" text-anchor="middle">contribution</text>
+<rect class="n" x="120" y="86" width="158" height="30" rx="5"/><text class="nt" x="199.0" y="105.5" text-anchor="middle">ad_spend</text>
+<rect class="n" x="446" y="86" width="158" height="30" rx="5"/><text class="nt" x="525.0" y="105.5" text-anchor="middle">marketplace_fees</text>
+<rect class="n" x="780" y="86" width="158" height="30" rx="5"/><text class="nt" x="859.0" y="105.5" text-anchor="middle">discounts</text>
+<rect class="n" x="16" y="156" width="158" height="30" rx="5"/><text class="nt" x="95.0" y="175.5" text-anchor="middle">ad_cpc</text>
+<rect class="n" x="190" y="156" width="158" height="30" rx="5"/><text class="nt" x="269.0" y="175.5" text-anchor="middle">ad_clicks</text>
+<rect class="n" x="400" y="156" width="158" height="30" rx="5"/><text class="nt" x="479.0" y="175.5" text-anchor="middle">take_rate</text>
+<rect class="n-shared" x="613" y="156" width="158" height="30" rx="5"/><text class="nt" x="692.0" y="175.5" text-anchor="middle">gmv</text>
+<rect class="n" x="876" y="156" width="158" height="30" rx="5"/><text class="nt" x="955.0" y="175.5" text-anchor="middle">discount_rate</text>
+<rect class="n" x="60" y="226" width="158" height="30" rx="5"/><text class="nt" x="139.0" y="245.5" text-anchor="middle">ad_ctr</text>
+<rect class="n" x="234" y="226" width="158" height="30" rx="5"/><text class="nt" x="313.0" y="245.5" text-anchor="middle">ad_impressions</text>
+<rect class="n" x="530" y="226" width="158" height="30" rx="5"/><text class="nt" x="609.0" y="245.5" text-anchor="middle">orders</text>
+<rect class="n" x="704" y="226" width="158" height="30" rx="5"/><text class="nt" x="783.0" y="245.5" text-anchor="middle">aov</text>
+<rect class="n" x="150" y="296" width="158" height="30" rx="5"/><text class="nt" x="229.0" y="315.5" text-anchor="middle">ad_load</text>
+<rect class="n-shared" x="382" y="296" width="158" height="30" rx="5"/><text class="nt" x="461.0" y="315.5" text-anchor="middle">sessions</text>
+<rect class="n" x="620" y="296" width="158" height="30" rx="5"/><text class="nt" x="699.0" y="315.5" text-anchor="middle">conversion_rate</text>
+<rect class="n" x="16" y="366" width="158" height="30" rx="5"/><text class="nt" x="95.0" y="385.5" text-anchor="middle">views_per_session</text>
+<rect class="n" x="188" y="366" width="158" height="30" rx="5"/><text class="nt" x="267.0" y="385.5" text-anchor="middle">add_to_cart_rate</text>
+<rect class="n" x="360" y="366" width="158" height="30" rx="5"/><text class="nt" x="439.0" y="385.5" text-anchor="middle">checkout_rate</text>
+<rect class="n" x="532" y="366" width="158" height="30" rx="5"/><text class="nt" x="611.0" y="385.5" text-anchor="middle">payment_attempt_rate</text>
+<rect class="n" x="704" y="366" width="158" height="30" rx="5"/><text class="nt" x="783.0" y="385.5" text-anchor="middle">payment_success_rate</text>
+<rect class="n" x="876" y="366" width="158" height="30" rx="5"/><text class="nt" x="955.0" y="385.5" text-anchor="middle">order_rate</text>
+<rect class="n-cause" x="16" y="456" width="158" height="30" rx="5"/><text class="nt" x="95.0" y="475.5" text-anchor="middle">search_ctr</text>
+<rect class="n-cause" x="188" y="456" width="158" height="30" rx="5"/><text class="nt" x="267.0" y="475.5" text-anchor="middle">feed_ctr</text>
+<rect class="n-cause" x="396" y="456" width="158" height="30" rx="5"/><text class="nt" x="475.0" y="475.5" text-anchor="middle">stockouts</text>
+<rect class="n-ref" x="560" y="456" width="158" height="30" rx="5"/><text class="nt" x="639.0" y="475.5" text-anchor="middle">discount_rate</text>
+<text class="tm" x="639.0" y="500" text-anchor="middle">same node as in the tree</text>
+<line class="e-m" x1="80" y1="456" x2="80.0" y2="399" marker-end="url(#g-am)"/>
+<text class="sg" x="86.0" y="442.9">+</text>
+<line class="e-m" x1="215" y1="456" x2="125.0" y2="399" marker-end="url(#g-am)"/>
+<text class="sg" x="194.0" y="442.9">+</text>
+<line class="e-m" x1="290" y1="456" x2="242.0" y2="399" marker-end="url(#g-am)"/>
+<text class="sg" x="281.6" y="442.9">−</text>
+<line class="e-m" x1="460" y1="456" x2="282.0" y2="399" marker-end="url(#g-am)"/>
+<text class="sg" x="412.6" y="442.9">−</text>
+<line class="e-m" x1="640" y1="456" x2="317.0" y2="399" marker-end="url(#g-am)"/>
+<text class="sg" x="549.1" y="442.9">+</text>
+<line class="e-m" x1="396" y1="471" x2="349" y2="471" marker-end="url(#g-am)"/>
+<text class="sg" x="368" y="465">?</text>
+<rect class="n-ctx" x="728" y="456" width="160" height="30" rx="5"/><text class="nt nt-s" x="808.0" y="475.5" text-anchor="middle">release: payments-sdk</text>
+<rect class="n-ctx" x="898" y="456" width="140" height="30" rx="5"/><text class="nt nt-s" x="968.0" y="475.5" text-anchor="middle">freshness: payments</text>
+<line class="e-c" x1="808" y1="456" x2="793.0" y2="399" marker-end="url(#g-ac)"/>
+<line class="e-c" x1="968" y1="456" x2="838.0" y2="399" marker-end="url(#g-ac)"/>
+<rect class="n-ctx" x="406" y="226" width="110" height="30" rx="5"/><text class="nt" x="461.0" y="245.5" text-anchor="middle">calendar</text>
+<line class="e-c" x1="461" y1="256" x2="461.0" y2="293" marker-end="url(#g-ac)"/>
+<line class="e-f" x1="16" y1="536" x2="52" y2="536"/><text class="tm" x="60" y="540">formula: exact identity (+ − × show the role)</text>
+<rect class="n-shared" x="330" y="528" width="26" height="16" rx="4"/><text class="tm" x="364" y="540">feeds two parents: the graph is a DAG</text>
+<line class="e-m" x1="600" y1="536" x2="636" y2="536" marker-end="url(#g-am)"/><text class="tm" x="646" y="540">possible cause, with sign</text>
+<line class="e-c" x1="820" y1="536" x2="856" y2="536" marker-end="url(#g-ac)"/><text class="tm" x="866" y="540">context (3 of 94 shown)</text></svg></div>
+    <figcaption>23 formula edges are shown in full, all 6 possible-cause edges, and 3 of the 94 context edges. Not drawn: 32 definition edges (how each rate is computed from its numerator and denominator) and 144 breakdown edges (every metric by country, platform, category and channel).</figcaption>
+  </figure>
+  <ul class="read">
+    <li><b>Formula edges</b> carry a role: <code>contribution = marketplace_fees + ad_spend − discounts</code>, and everything below is a product. The six boxes in the lowest row of the tree (views_per_session to order_rate) are the step rates of the funnel.</li>
+    <li><b><code>gmv</code> and <code>sessions</code> feed two parents.</b> The graph is a DAG, so the effect of a factor on the outcome is summed over all paths: <code>gmv</code> raises fees and raises discounts, with opposite signs at the top.</li>
+    <li><b>Possible causes</b> are hypotheses with a sign: more stock-outs should lower the add-to-cart rate. They stay assumed in the graph: an incident tests the links of what moved, and the result goes into that incident's report, not into the graph; a question mark means the direction is unknown.</li>
+    <li><b>Context</b> links a metric to releases of the systems behind it, to the freshness of its data sources and to the promo calendar. A derived metric inherits the sources of its parts.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>One tick of the loop</h2>
+  <p><code>python -m brain.run</code> ticks for every new hour of data, and the live loop ticks again while it waits for the next one. Steps 1 to 5 are the monitor and end in alerts. Step 6 turns alerts into incident files. Steps 7 to 10 are the investigator: they run on every tick for every open incident that has a live alert. Every number in the figure is read from the code when this page is built.</p>
+  <figure>
+    <div class="fig"><svg class="d" viewBox="0 0 1062 460" role="img" aria-label="One tick of the loop in ten steps. The monitor: the clock and the arrival gate, what is watched, the expected rate of every series, the test, the watch after a release. Then the incidents: alerts are grouped into incidents, the place is found, the cost is computed, every explanation is tested, and the trail and the report are written."><defs><marker id="t-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk"/></marker><marker id="t-am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk-m"/></marker><marker id="t-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk-c"/></marker></defs>
+<rect class="box" x="16.0" y="16" width="196.4" height="192" rx="6"/>
+<text class="tt" x="28.0" y="37">1 · clock and gate</text>
+<text class="lbl" x="28.0" y="53">clock.py</text>
+<text class="ts" x="28.0" y="71">The clock is the newest data</text>
+<text class="ts" x="28.0" y="85">hour plus 1 h. A source has</text>
+<text class="ts" x="28.0" y="99">arrived for an hour when its log</text>
+<text class="ts" x="28.0" y="113">row is dated no later than the</text>
+<text class="ts" x="28.0" y="127">clock plus 10 min. An hour of a</text>
+<text class="ts" x="28.0" y="141">metric is judged when all its</text>
+<text class="ts" x="28.0" y="155">sources are in. Until then it is</text>
+<text class="ts" x="28.0" y="169">held: not healthy, not an alert.</text>
+<rect class="box" x="224.4" y="16" width="196.4" height="192" rx="6"/>
+<text class="tt" x="236.4" y="37">2 · what is watched</text>
+<text class="lbl" x="236.4" y="53">monitor.py · watch_list</text>
+<text class="ts" x="236.4" y="71">Every atomic rate of the graph,</text>
+<text class="ts" x="236.4" y="85">15 today, in 7 cuts: the total,</text>
+<text class="ts" x="236.4" y="99">each of the four dimensions,</text>
+<text class="ts" x="236.4" y="113">country × platform and country</text>
+<text class="ts" x="236.4" y="127">× category. That is 48 series</text>
+<text class="ts" x="236.4" y="141">per rate. Outcomes are not</text>
+<text class="ts" x="236.4" y="155">judged: a fault in one cell is lost</text>
+<text class="ts" x="236.4" y="169">in their noise.</text>
+<line class="edge" x1="213.4" y1="112.0" x2="222.4" y2="112.0" marker-end="url(#t-ar)"/>
+<rect class="box" x="432.8" y="16" width="196.4" height="192" rx="6"/>
+<text class="tt" x="444.8" y="37">3 · expected rate</text>
+<text class="lbl" x="444.8" y="53">monitor.py</text>
+<text class="ts" x="444.8" y="71">Pooled numerator over pooled</text>
+<text class="ts" x="444.8" y="85">denominator of the series&#x27; own</text>
+<text class="ts" x="444.8" y="99">history, up to 21 days. Left out:</text>
+<text class="ts" x="444.8" y="113">the hours being judged, hours</text>
+<text class="ts" x="444.8" y="127">already flagged, calendar</text>
+<text class="ts" x="444.8" y="141">events, held hours and the</text>
+<text class="ts" x="444.8" y="155">hours of an open incident. A</text>
+<text class="ts" x="444.8" y="169">fault that lasts does not</text>
+<text class="ts" x="444.8" y="183">become normal.</text>
+<line class="edge" x1="421.8" y1="112.0" x2="430.8" y2="112.0" marker-end="url(#t-ar)"/>
+<rect class="box" x="641.2" y="16" width="196.4" height="192" rx="6"/>
+<text class="tt" x="653.2" y="37">4 · test</text>
+<text class="lbl" x="653.2" y="53">stats.py</text>
+<text class="ts" x="653.2" y="71">Chosen per metric from its</text>
+<text class="ts" x="653.2" y="85">history. Counts with a binomial</text>
+<text class="ts" x="653.2" y="99">spread: the exact two-sided</text>
+<text class="ts" x="653.2" y="113">tail, p below 1e-7. Other ratios:</text>
+<text class="ts" x="653.2" y="127">the residual beyond 6 historical</text>
+<text class="ts" x="653.2" y="141">spreads and 1.25 times the</text>
+<text class="ts" x="653.2" y="155">largest seen. An hour alone and</text>
+<text class="ts" x="653.2" y="169">summed with the two before;</text>
+<text class="ts" x="653.2" y="183">the rate moved by 10 % or</text>
+<text class="ts" x="653.2" y="197">more.</text>
+<line class="edge" x1="630.2" y1="112.0" x2="639.2" y2="112.0" marker-end="url(#t-ar)"/>
+<rect class="box" x="849.6" y="16" width="196.4" height="192" rx="6"/>
+<text class="tt" x="861.6" y="37">5 · after a release</text>
+<text class="lbl" x="861.6" y="53">monitor.py</text>
+<text class="ts" x="861.6" y="71">For 24 h after a release the</text>
+<text class="ts" x="861.6" y="85">metrics linked to its system are</text>
+<text class="ts" x="861.6" y="99">tested in its scope, on the sum</text>
+<text class="ts" x="861.6" y="113">since it went out. It is one</text>
+<text class="ts" x="861.6" y="127">question, so p below 1e-4 is</text>
+<text class="ts" x="861.6" y="141">enough. Exact tests only. This</text>
+<text class="ts" x="861.6" y="155">finds a fault in a small cell at</text>
+<text class="ts" x="861.6" y="169">night.</text>
+<line class="edge" x1="838.6" y1="112.0" x2="847.6" y2="112.0" marker-end="url(#t-ar)"/>
+<path class="edge" d="M947.8,208 L947.8,223.0 L114.2,223.0 L114.2,236" marker-end="url(#t-ar)"/>
+<rect class="box" x="16.0" y="238" width="196.4" height="206" rx="6"/>
+<text class="tt" x="28.0" y="259">6 · incidents</text>
+<text class="lbl" x="28.0" y="275">incidents.py</text>
+<text class="ts" x="28.0" y="293">Per metric the strongest series</text>
+<text class="ts" x="28.0" y="307">of a place leads. Alerts join one</text>
+<text class="ts" x="28.0" y="321">incident when one place lies</text>
+<text class="ts" x="28.0" y="335">inside the other and the graph</text>
+<text class="ts" x="28.0" y="349">relates the metrics. An open</text>
+<text class="ts" x="28.0" y="363">incident keeps its file and its id.</text>
+<text class="ts" x="28.0" y="377">It is resolved at the earliest 3 h</text>
+<text class="ts" x="28.0" y="391">after the last bad hour, once the</text>
+<text class="ts" x="28.0" y="405">data shows health.</text>
+<rect class="box" x="224.4" y="238" width="196.4" height="206" rx="6"/>
+<text class="tt" x="236.4" y="259">7 · where</text>
+<text class="lbl" x="236.4" y="275">localize.py</text>
+<text class="ts" x="236.4" y="293">Every place the dimensions can</text>
+<text class="ts" x="236.4" y="307">name is scored on the 180</text>
+<text class="ts" x="236.4" y="321">finest cells: up to 479 places</text>
+<text class="ts" x="236.4" y="335">and the whole. The score is the</text>
+<text class="ts" x="236.4" y="349">likelihood gain of one common</text>
+<text class="ts" x="236.4" y="363">shift in the place, minus the</text>
+<text class="ts" x="236.4" y="377">price of the search. The</text>
+<text class="ts" x="236.4" y="391">monitor&#x27;s place is confirmed,</text>
+<text class="ts" x="236.4" y="405">narrowed, widened or kept.</text>
+<line class="edge" x1="213.4" y1="341.0" x2="222.4" y2="341.0" marker-end="url(#t-ar)"/>
+<rect class="box" x="432.8" y="238" width="196.4" height="206" rx="6"/>
+<text class="tt" x="444.8" y="259">8 · what it cost</text>
+<text class="lbl" x="444.8" y="275">attribution.py</text>
+<text class="ts" x="444.8" y="293">The outcome as observed</text>
+<text class="ts" x="444.8" y="307">against the outcome with the</text>
+<text class="ts" x="444.8" y="321">moved rates back at their</text>
+<text class="ts" x="444.8" y="335">baselines, through every path</text>
+<text class="ts" x="444.8" y="349">of the formulas: LMDI, with</text>
+<text class="ts" x="444.8" y="363">Shapley as the fallback. In EUR</text>
+<text class="ts" x="444.8" y="377">and in orders, ad_clicks and</text>
+<text class="ts" x="444.8" y="391">ad_impressions. The baselines</text>
+<text class="ts" x="444.8" y="405">are frozen at the first report of</text>
+<text class="ts" x="444.8" y="419">the cost.</text>
+<line class="edge" x1="421.8" y1="341.0" x2="430.8" y2="341.0" marker-end="url(#t-ar)"/>
+<rect class="box" x="641.2" y="238" width="196.4" height="206" rx="6"/>
+<text class="tt" x="653.2" y="259">9 · why</text>
+<text class="lbl" x="653.2" y="275">investigate.py</text>
+<text class="ts" x="653.2" y="293">Every release from 12 h before</text>
+<text class="ts" x="653.2" y="307">the onset is scored: is its</text>
+<text class="ts" x="653.2" y="321">system linked to what moved,</text>
+<text class="ts" x="653.2" y="335">does its scope fit the place, did</text>
+<text class="ts" x="653.2" y="349">the change start with it (within</text>
+<text class="ts" x="653.2" y="363">2 h, or earlier when the hours in</text>
+<text class="ts" x="653.2" y="377">between already lean the same</text>
+<text class="ts" x="653.2" y="391">way)? All three: supported. The</text>
+<text class="ts" x="653.2" y="405">moved metric itself, a calendar</text>
+<text class="ts" x="653.2" y="419">event, late data and a mix shift</text>
+<text class="ts" x="653.2" y="433">are tested too.</text>
+<line class="edge" x1="630.2" y1="341.0" x2="639.2" y2="341.0" marker-end="url(#t-ar)"/>
+<rect class="box" x="849.6" y="238" width="196.4" height="206" rx="6"/>
+<text class="tt" x="861.6" y="259">10 · trail and report</text>
+<text class="lbl" x="861.6" y="275">investigate.py</text>
+<text class="ts" x="861.6" y="293">Each question and its answer is</text>
+<text class="ts" x="861.6" y="307">a step of the trail: watch,</text>
+<text class="ts" x="861.6" y="321">compare, drill, follow,</text>
+<text class="ts" x="861.6" y="335">decompose, check, compare,</text>
+<text class="ts" x="861.6" y="349">stop. Nothing stops early. The</text>
+<text class="ts" x="861.6" y="363">report is template text. What</text>
+<text class="ts" x="861.6" y="377">stays open is listed under</text>
+<text class="ts" x="861.6" y="391">&quot;uncertain&quot;.</text>
+<line class="edge" x1="838.6" y1="341.0" x2="847.6" y2="341.0" marker-end="url(#t-ar)"/></svg></div>
+    <figcaption>Why rates in cells and not the top numbers: with a payment fault in one country and platform, total orders moved by 0.8 units of noise, orders in the affected cell by 2.9, and the payment success rate in that cell by 17.2. Measured on the simulator's data when the design was reviewed (project README, section 3.8).</figcaption>
+  </figure>
+  <ul class="read">
+    <li><b>Which test.</b> 11 of the 15 watched rates are counts over counts. Such a rate gets an exact test when its spread from hour to hour is what a binomial gives: the two-sided binomial tail, or the same on the surplus for a ratio that never falls below 1 (payment attempts per checkout). Every other rate, money per order for example, is judged on its residual against its own historical spread, on at least 30 of denominator.</li>
+    <li><b>When a series is judged.</b> After 72 usable hours of history with at least 200 of pooled denominator. The newest 8 hours are read and judged again on every tick, because late data and an injection can rewrite them. An alert is live while its newest bad hour is among the newest three hours; bad hours no more than two hours apart are one episode.</li>
+    <li><b>Calendar events and late data.</b> A calendar event that covers an alert in time and country explains it when the graph links the metric to the calendar; among the watched rates these are <code>add_to_cart_rate</code> and <code>discount_rate</code>. The record is written with status <code>explained</code> and no incident is opened. Hours held for late data are written as one <code>pending</code> record, which is removed when the data is in and the hours are judged.</li>
+    <li><b>Resolving.</b> An incident is not closed because the alerts stop. It is resolved no earlier than three hours after the last bad hour, and only once there is enough data that the faulty rate would show, and it does not.</li>
+    <li><b>The cost follows every path.</b> Through the formulas the outcome is a sum of signed products of 13 atomic factors, and a rate that sits in several products collects from each. Traffic is taken as given: only rates are judged, so a change in sessions is not part of the cost.</li>
+    <li><b>Doubt is reported.</b> A different place that explains the counts nearly as well (less than 3 apart in log-likelihood) is named under "uncertain". So is a cost that runs through a rate the data does not show yet.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>A new metric</h2>
+  <p>A new metric arrives while the brain runs: a file <code>&lt;name&gt;.yaml</code> in <code>incoming_metrics/</code> with a name and a formula, a query or both. The live loop looks into the folder on every poll. <code>brain/extension.py</code> takes a file once it reads the same on two looks in a row, puts the definition through 12 checks in the order below and writes the answer to <code>&lt;name&gt;.result.json</code>. No language model is used.</p>
+  <figure>
+    <div class="fig"><svg class="d" viewBox="0 0 1062 529" role="img" aria-label="The checks a new metric definition goes through, in order: read, sql, formula, definition, rows, split, alias, rollup, coverage, placement, context, monitoring. The answer file gives the status validated, tentative or rejected, and every check with its numbers."><defs><marker id="x-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk"/></marker><marker id="x-am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk-m"/></marker><marker id="x-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk-c"/></marker></defs>
+<rect class="box" x="16.0" y="16" width="248.5" height="127" rx="6"/>
+<text class="tt" x="28.0" y="37">1 · read</text>
+<text class="ts" x="28.0" y="57">A mapping with a new lower_snake_case</text>
+<text class="ts" x="28.0" y="71">name and a formula, a query or both. The</text>
+<text class="ts" x="28.0" y="85">formula uses metrics the graph has. A</text>
+<text class="ts" x="28.0" y="99">tolerance, when given, is above 0 and at</text>
+<text class="ts" x="28.0" y="113">most 1e-4.</text>
+<text class="lbl" x="28.0" y="132">if not: rejected</text>
+<rect class="box" x="276.5" y="16" width="248.5" height="127" rx="6"/>
+<text class="tt" x="288.5" y="37">2 · sql</text>
+<text class="ts" x="288.5" y="57">The query runs inside the contract tables,</text>
+<text class="ts" x="288.5" y="71">for at most 3 s and 500,000 rows. It</text>
+<text class="ts" x="288.5" y="85">returns ts, value and the dimensions it</text>
+<text class="ts" x="288.5" y="99">groups by: one row per hour and</text>
+<text class="ts" x="288.5" y="113">segment.</text>
+<text class="lbl" x="288.5" y="132">if not: rejected</text>
+<line class="edge" x1="265.5" y1="79.5" x2="274.5" y2="79.5" marker-end="url(#x-ar)"/>
+<rect class="box" x="537.0" y="16" width="248.5" height="127" rx="6"/>
+<text class="tt" x="549.0" y="37">3 · formula</text>
+<text class="ts" x="549.0" y="57">The given one. With a query only: each of</text>
+<text class="ts" x="549.0" y="71">1,045 candidates (a, a / b, a * b, a + b,</text>
+<text class="ts" x="549.0" y="85">a - b over the 19 column metrics) is</text>
+<text class="ts" x="549.0" y="99">computed on the same rows. The one</text>
+<text class="ts" x="549.0" y="113">that reproduces every value is taken.</text>
+<text class="lbl" x="549.0" y="132">none fits: rejected · several fit: tentative</text>
+<line class="edge" x1="526.0" y1="79.5" x2="535.0" y2="79.5" marker-end="url(#x-ar)"/>
+<rect class="box" x="797.5" y="16" width="248.5" height="127" rx="6"/>
+<text class="tt" x="809.5" y="37">4 · definition</text>
+<text class="ts" x="809.5" y="57">The query against the formula at the</text>
+<text class="ts" x="809.5" y="71">query&#x27;s grain, row by row, within the</text>
+<text class="ts" x="809.5" y="85">tolerance (1e-6 unless the file sets its</text>
+<text class="ts" x="809.5" y="99">own).</text>
+<text class="lbl" x="809.5" y="132">a row disagrees: rejected</text>
+<line class="edge" x1="786.5" y1="79.5" x2="795.5" y2="79.5" marker-end="url(#x-ar)"/>
+<path class="edge" d="M921.8,143 L921.8,158.0 L140.25,158.0 L140.25,171" marker-end="url(#x-ar)"/>
+<rect class="box" x="16.0" y="173" width="248.5" height="127" rx="6"/>
+<text class="tt" x="28.0" y="194">5 · rows</text>
+<text class="ts" x="28.0" y="214">The two row sets, in both directions.</text>
+<text class="ts" x="28.0" y="228">Rows the query has and the facts lack:</text>
+<text class="ts" x="28.0" y="242">rejected. Rows the facts have and the</text>
+<text class="ts" x="28.0" y="256">query lacks or leaves empty: a filtered</text>
+<text class="ts" x="28.0" y="270">metric.</text>
+<text class="lbl" x="28.0" y="289">a filtered metric: tentative</text>
+<rect class="box" x="276.5" y="173" width="248.5" height="127" rx="6"/>
+<text class="tt" x="288.5" y="194">6 · split</text>
+<text class="ts" x="288.5" y="214">Is the query a function of sums? It runs</text>
+<text class="ts" x="288.5" y="228">again on a private in-memory copy of the</text>
+<text class="ts" x="288.5" y="242">last 24 hours, as they are and with every</text>
+<text class="ts" x="288.5" y="256">fact row split in two. An average or a</text>
+<text class="ts" x="288.5" y="270">count of rows changes.</text>
+<text class="lbl" x="288.5" y="289">the values change: tentative</text>
+<line class="edge" x1="265.5" y1="236.5" x2="274.5" y2="236.5" marker-end="url(#x-ar)"/>
+<rect class="box" x="537.0" y="173" width="248.5" height="127" rx="6"/>
+<text class="tt" x="549.0" y="194">7 · alias</text>
+<text class="ts" x="549.0" y="214">Its numeric signature, the value of the</text>
+<text class="ts" x="549.0" y="228">definition on 8 random points, against</text>
+<text class="ts" x="549.0" y="242">every metric of the graph. The same</text>
+<text class="ts" x="549.0" y="256">definition under another name is reported</text>
+<text class="ts" x="549.0" y="270">and not added.</text>
+<text class="lbl" x="549.0" y="289">an alias: rejected</text>
+<line class="edge" x1="526.0" y1="236.5" x2="535.0" y2="236.5" marker-end="url(#x-ar)"/>
+<rect class="box" x="797.5" y="173" width="248.5" height="127" rx="6"/>
+<text class="tt" x="809.5" y="194">8 · rollup</text>
+<text class="ts" x="809.5" y="214">What the breakdown links promise: the</text>
+<text class="ts" x="809.5" y="228">values in the segments, added up or</text>
+<text class="ts" x="809.5" y="242">weighted by the denominator, give the</text>
+<text class="ts" x="809.5" y="256">formula on the totals, for every</text>
+<text class="ts" x="809.5" y="270">dimension.</text>
+<text class="lbl" x="809.5" y="289">it does not hold: tentative</text>
+<line class="edge" x1="786.5" y1="236.5" x2="795.5" y2="236.5" marker-end="url(#x-ar)"/>
+<path class="edge" d="M921.8,300 L921.8,315.0 L114.2,315.0 L114.2,328" marker-end="url(#x-ar)"/>
+<rect class="box" x="16.0" y="330" width="196.4" height="183" rx="6"/>
+<text class="tt" x="28.0" y="351">9 · coverage</text>
+<text class="ts" x="28.0" y="371">validate.py runs on the whole</text>
+<text class="ts" x="28.0" y="385">graph with the metric in it, on</text>
+<text class="ts" x="28.0" y="399">the last 7 days: values in at</text>
+<text class="ts" x="28.0" y="413">least 95 % of the hours, and</text>
+<text class="ts" x="28.0" y="427">inside the bounds when the file</text>
+<text class="ts" x="28.0" y="441">declares them.</text>
+<text class="lbl" x="28.0" y="502">a failed check: rejected</text>
+<rect class="box" x="224.4" y="330" width="196.4" height="183" rx="6"/>
+<text class="tt" x="236.4" y="351">10 · placement</text>
+<text class="ts" x="236.4" y="371">Identities that hold for any data</text>
+<text class="ts" x="236.4" y="385">and link the metric to two</text>
+<text class="ts" x="236.4" y="399">existing ones, found by</text>
+<text class="ts" x="236.4" y="413">signature. One fitting whole</text>
+<text class="ts" x="236.4" y="427">outside the outcome tree:</text>
+<text class="ts" x="236.4" y="441">applied. Inside the outcome</text>
+<text class="ts" x="236.4" y="455">tree: proposed, left to a person.</text>
+<text class="lbl" x="236.4" y="502">two places fit: tentative</text>
+<line class="edge" x1="213.4" y1="421.5" x2="222.4" y2="421.5" marker-end="url(#x-ar)"/>
+<rect class="box" x="432.8" y="330" width="196.4" height="183" rx="6"/>
+<text class="tt" x="444.8" y="351">11 · context</text>
+<text class="ts" x="444.8" y="371">The metric takes the context of</text>
+<text class="ts" x="444.8" y="385">the metrics its formula is built</text>
+<text class="ts" x="444.8" y="399">from (and of the watched rates</text>
+<text class="ts" x="444.8" y="413">it equals the product of): their</text>
+<text class="ts" x="444.8" y="427">release systems, so it gets</text>
+<text class="ts" x="444.8" y="441">release candidates and, through</text>
+<text class="ts" x="444.8" y="455">them, the promo calendar, and</text>
+<text class="ts" x="444.8" y="469">their sources, so late data</text>
+<text class="ts" x="444.8" y="483">holds it too.</text>
+<text class="lbl" x="444.8" y="502">nothing to inherit: said so</text>
+<line class="edge" x1="421.8" y1="421.5" x2="430.8" y2="421.5" marker-end="url(#x-ar)"/>
+<rect class="box" x="641.2" y="330" width="196.4" height="183" rx="6"/>
+<text class="tt" x="653.2" y="351">12 · monitoring</text>
+<text class="ts" x="653.2" y="371">A ratio of two column metrics</text>
+<text class="ts" x="653.2" y="385">is an atomic rate, the shape the</text>
+<text class="ts" x="653.2" y="399">monitor watches.</text>
+<text class="ts" x="653.2" y="413">Monitor.rewatch adds it to the</text>
+<text class="ts" x="653.2" y="427">watch list, and it is judged from</text>
+<text class="ts" x="653.2" y="441">the next tick.</text>
+<text class="lbl" x="653.2" y="502">another shape: in the graph, not watched</text>
+<line class="edge" x1="630.2" y1="421.5" x2="639.2" y2="421.5" marker-end="url(#x-ar)"/>
+<rect class="box-a" x="849.6" y="330" width="196.4" height="183" rx="6"/>
+<text class="tt" x="861.6" y="351">&lt;name&gt;.result.json</text>
+<text class="ts" x="861.6" y="371">validated: in the graph, every</text>
+<text class="ts" x="861.6" y="385">check passed. tentative: in the</text>
+<text class="ts" x="861.6" y="399">graph, with a caveat the</text>
+<text class="ts" x="861.6" y="413">message names. rejected: not</text>
+<text class="ts" x="861.6" y="427">in the graph, and the message</text>
+<text class="ts" x="861.6" y="441">says why.</text>
+<text class="lbl" x="861.6" y="502">every check is in the file, with its numbers</text>
+<line class="edge" x1="838.6" y1="421.5" x2="847.6" y2="421.5" marker-end="url(#x-ar)"/></svg></div>
+    <figcaption>The last line of a card says what the check can cost. A check that fails ends the run: the definition is rejected and the metric is not in the graph. A check that warns lets the metric in as tentative, and the message names the caveat. The checks and their order are read from the docstring of <code>brain/extension.py</code>.</figcaption>
+  </figure>
+  <ul class="read">
+    <li><b>The file.</b> At most 64 KB; a larger one is rejected without being parsed. A changed file replaces what it defined before, and a text that is rejected withdraws the metric.</li>
+    <li><b>The query.</b> It reads the four contract tables only, runs for at most 3 s and returns at most 500,000 rows. A file can set the tolerance of its own comparison only above 0 and up to 1e-4; the default is 1e-6.</li>
+    <li><b>The formula search.</b> 1,045 candidates over the 19 column metrics, each tried on 256 rows first and then on all of them. Formulas with constants or with more than two metrics are not searched.</li>
+    <li><b>The windows.</b> The query is compared with its formula on all the data. The split test uses the last 24 hours, the check of the whole graph the last 7 days.</li>
+    <li><b>Aliases.</b> One exception to "reported and not added": when the existing twin is itself a tentative contribution and the new definition has no caveat, the new one takes its place, and the twin's file is answered as the alias.</li>
+    <li><b>Errors.</b> After three unexpected errors on the same text, a busy database for example, the file is answered as rejected with the error. The loop goes on in every case.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Measured</h2>
+  <p>A run is a simulated history of 49 days with twelve injected faults and eight innocent events. <code>python -m brain.run --replay</code> walks it hour by hour, and <code>sim/score.py</code> compares the incident files with what was injected. There are twenty runs. The seeds of ten of them are a holdout: no version of the brain was run on them before. The four tiles show the holdout. The runs used the brain at commit <code>b7b856c</code>; the replay path has not changed since (narration runs only live). All data is simulated.</p>
+  <div class="tiles">
+    <div><span class="big">120/120</span><span class="what">faults detected</span><span class="why">120/120 of them in the injected place. Mean delay 0.14 h after the first affected hour of data.</span></div>
+    <div><span class="big">116/120</span><span class="what">with the cause</span><span class="why">The report names the injected cause as supported. A cause that is only plausible does not count.</span></div>
+    <div><span class="big">0</span><span class="what">false alarms in 457 watched days</span><span class="why">An incident that matches no injected fault.</span></div>
+    <div><span class="big">80/80</span><span class="what">innocent events silent</span><span class="why">Promos and late data: explained or held, no alert.</span></div>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Seeds</th><th class="num">Runs</th><th class="num">Faults detected</th><th class="num">Localized</th><th class="num">With the cause</th><th class="num">False alarms</th><th class="num">Watched days</th><th class="num">Innocent events silent</th><th class="num">Mean delay (h)</th></tr></thead>
+      <tbody>
+<tr><td>Holdout (run once)</td><td class="num">10</td><td class="num">120/120</td><td class="num">120/120</td><td class="num">116/120</td><td class="num">0</td><td class="num">457</td><td class="num">80/80</td><td class="num">0.14</td></tr>
+<tr><td>Used while the brain was built</td><td class="num">10</td><td class="num">120/120</td><td class="num">120/120</td><td class="num">118/120</td><td class="num">0</td><td class="num">457</td><td class="num">80/80</td><td class="num">0.22</td></tr>
+<tr><td>All</td><td class="num">20</td><td class="num">240/240</td><td class="num">240/240</td><td class="num">234/240</td><td class="num">0</td><td class="num">913</td><td class="num">160/160</td><td class="num">0.18</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>What is not perfect:</p>
+  <ul class="read">
+    <li><b>Causes not confirmed.</b> In 6 of the 240 detected faults (4 of them on holdout seeds) the report does not name the injected cause as supported. All 6 are <code>stockout_surge</code> faults: sports, seed 4; electronics, seed 10; beauty, seed 112 (holdout); home, seed 115 (holdout); sports, seed 118 (holdout); home, seed 119 (holdout). Each is detected and localized, and its report says that no cause is confirmed yet. Without a release to point at, a moved rate counts as the cause only when the second movement that a cause link of the graph predicts shows in the data.</li>
+    <li><b>What the runs do not test.</b> Holdout means new random seeds of the same simulator: the same four kinds of fault (<code>ad_budget_exhausted</code>, <code>payment_failure</code>, <code>search_regression</code>, <code>stockout_surge</code>) and the same scorer. No two events overlap in these schedules, and data that never arrives is not in them. The hand-over of a new metric is not part of the runs; it has its own tests (<code>tests/test_extension.py</code>, 50 test functions).</li>
+  </ul>
+  <p>The results per run and per kind of fault and the full list of limits are in <a href="results.md">docs/results.md</a>. That page and <code>docs/results.json</code> are written by <code>scripts/summarize_evaluation.py</code>; <code>python -m sim.score score</code> reports one run.</p>
+</section>
+
+<section>
+  <h2>Not built</h2>
+  <ul class="read">
+    <li><b>A euro threshold for alerts.</b> A change is judged by its size against the rate's own history, not by what it costs.</li>
+    <li><b>Formulas with constants</b>, or with more than two metrics, in the search for the formula of a new metric.</li>
+    <li><b>Proposing cause links for a new metric.</b> A definition can declare its own; they stay assumed.</li>
+    <li><b>A range around the cost.</b> The cost is one number, and it is noisy for a short incident in a small place.</li>
+    <li><b>Judging volumes</b> such as sessions. Only rates are watched.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>What "validated" means</h2>
+  <p><code>brain/validate.py</code> checks the graph against the data: when the live loop starts and writes the graph export, each time the extension agent adds a metric, and on demand with <code>python -m brain.graph --validate</code>. The report separates two kinds of result, measured here on 28 days of simulator data.</p>
+  <div class="pair">
+    <div><span class="big">52</span><span class="what">checks on data</span><span class="why">They can fail: a metric has values in at least 95 % of the hours, values stay within bounds, a contributed SQL agrees with its formula.</span></div>
+    <div><span class="big">28</span><span class="what">hold by definition</span><span class="why">No data can break them: <code>orders = sessions × (orders / sessions)</code>. They show the definitions are consistent and are not presented as evidence.</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Modules</h2>
+  <p>Every module of <code>brain/</code>. The entry points are looked up in the code when this page is built. The last column names the test files that import the module.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Module</th><th class="num">Lines</th><th>Job</th><th>Main entry points</th><th>Tests</th></tr></thead>
+      <tbody>
+<tr><th colspan="5">Foundation: the model and the data</th></tr>
+<tr><td><code>formula.py</code></td><td class="num">178</td><td>Safe parser and evaluator for metric formulas; knows whether a formula is a sum, a product or a ratio</td><td><code>parse, Formula.kind, Formula.roles, Formula.evaluate</code></td><td><code>test_formula, test_extension</code></td></tr>
+<tr><td><code>metric_spec.py</code></td><td class="num">206</td><td>Metric definitions from YAML, checked field by field</td><td><code>MetricSpec, CauseLink, load_specs, spec_from_dict</code></td><td><code>test_attribution, test_evaluator, test_extension, test_graph and 4 more</code></td></tr>
+<tr><td><code>graph.py</code></td><td class="num">396</td><td>The typed graph: five edge kinds, declared outcome, tree view, JSON export for the console; takes over a changed graph in place, so a new metric needs no restart</td><td><code>MetricGraph.load, MetricGraph.top_outcomes, MetricGraph.sources, MetricGraph.adopt, MetricGraph.to_dict</code></td><td><code>test_graph, test_attribution, test_evaluator, test_extension and 18 more</code></td></tr>
+<tr><td><code>signature.py</code></td><td class="num">78</td><td>Numeric signature of a definition: tells an identity that holds by construction from one the data must confirm; also how an alias and a place for a new metric are found</td><td><code>signatures, same, holds_by_construction</code></td><td><code>test_plan_fixes</code></td></tr>
+<tr><td><code>data.py</code></td><td class="num">236</td><td>Read-only store; SQLite itself refuses any table outside the contract; strict timestamps; NULL never summed as zero; time and row limits for a contributed query, and its rerun on split fact rows</td><td><code>Store.sums, Store.read_sql, Store.time_range, Store.rerun_on_split_rows</code></td><td><code>test_clock, test_evaluator, test_extension, test_extension_context and 16 more</code></td></tr>
+<tr><td><code>evaluator.py</code></td><td class="num">130</td><td>Any metric for any segment, window and grouping, always from sums; any metric from a table of sums</td><td><code>Evaluator.sums, Evaluator.derive, Evaluator.frame, Evaluator.series</code></td><td><code>test_evaluator, test_incidents, test_investigate, test_plan_fixes and 1 more</code></td></tr>
+<tr><td><code>validate.py</code></td><td class="num">246</td><td>Checks of the graph against the data: coverage, identity, SQL against formula, additivity, bounds; each marked data or definition</td><td><code>validate_graph, summarize</code></td><td><code>test_validate, test_plan_fixes, test_review_fixes</code></td></tr>
+<tr><td><code>inspect_db.py</code></td><td class="num">24</td><td>Prints tables, row counts and the time range of a database</td><td><code>python -m brain.inspect_db</code></td><td><code>none</code></td></tr>
+<tr><td><code>metrics/*.yaml</code></td><td class="num">344</td><td>36 metric definitions in four files: ads and inventory, funnel, money, traffic</td><td><code>name, formula, decomposition, may_affect, systems, source</code></td><td><code>test_plan_fixes, test_validate</code></td></tr>
+<tr><th colspan="5">Monitor</th></tr>
+<tr><td><code>clock.py</code></td><td class="num">66</td><td>The clock (newest data hour plus 1 h) and the arrival gate: which sources have not arrived for an hour; with as_of it replays history without looking ahead</td><td><code>Clock.newest_hour, Clock.now, Clock.late</code></td><td><code>test_clock, test_extension</code></td></tr>
+<tr><td><code>stats.py</code></td><td class="num">82</td><td>How surprising a rate is, given its counts: the exact two-sided binomial tail for a proportion, the residual against its historical spread for any other ratio</td><td><code>binomial_surprise, ratio_surprise, robust_scale</code></td><td><code>test_stats</code></td></tr>
+<tr><td><code>monitor.py</code></td><td class="num">1191</td><td>Every tick: the expected rate of every watched series, the test of the newest hours, the hours held for late data, the watch after a release; returns alerts</td><td><code>Monitor.tick, Monitor.rewatch, watch_list, Config, Alert</code></td><td><code>test_monitor, test_extension, test_extension_context, test_extension_watch and 11 more</code></td></tr>
+<tr><th colspan="5">Investigator</th></tr>
+<tr><td><code>investigate.py</code></td><td class="num">921</td><td>For an incident: cause or symptom, the place, the cost, every explanation with its evidence, the trail and the report text</td><td><code>Investigator.report, Investigator.symptoms, Investigator.localize, Investigator.explain, Investigator.releases</code></td><td><code>test_investigate, test_investigate_fixes</code></td></tr>
+<tr><td><code>localize.py</code></td><td class="num">169</td><td>Scores every place the dimensions can name for one common shift and chooses the place to report</td><td><code>scan, choose</code></td><td><code>test_localize</code></td></tr>
+<tr><td><code>attribution.py</code></td><td class="num">131</td><td>Splits an outcome&#x27;s change over the atomic factors along every path of the formulas: LMDI, with Shapley as the fallback</td><td><code>attribute, leaves, expand</code></td><td><code>test_attribution</code></td></tr>
+<tr><td><code>impact.py</code></td><td class="num">87</td><td>The outcome recomputed through the formulas of the graph with some rates replaced by other values</td><td><code>tree_metrics, recompute, estimate</code></td><td><code>test_attribution, test_incidents, test_overlap</code></td></tr>
+<tr><th colspan="5">Incidents and the loop</th></tr>
+<tr><td><code>incidents.py</code></td><td class="num">579</td><td>Groups alerts into incidents and keeps each incident in one file from open to resolved; writes the explained and pending records</td><td><code>Book.update, Incident, write_json</code></td><td><code>test_incidents, test_extension, test_incidents_book, test_investigate and 4 more</code></td></tr>
+<tr><td><code>run.py</code></td><td class="num">311</td><td>The loop: live next to the simulator&#x27;s clock, or a replay of a finished database hour by hour</td><td><code>python -m brain.run, live, replay</code></td><td><code>test_extension, test_incidents, test_narrate, test_overlap and 1 more</code></td></tr>
+<tr><td><code>narrate.py</code></td><td class="num">292</td><td>With --narrate (live only): a language model writes a short narration of each incident from its own evidence; every number is checked against it, and the template report stays</td><td><code>Narrator.submit, Narrator.ready, evidence, numbers_backed</code></td><td><code>test_narrate, test_settings</code></td></tr>
+<tr><td><code>settings.py</code></td><td class="num">167</td><td>Runtime settings the console writes (settings.json beside the database): narration on or off and the detection thresholds, applied by the live loop without a restart; the monitor&#x27;s status file</td><td><code>read, settings_path, write_status</code></td><td><code>test_settings</code></td></tr>
+<tr><th colspan="5">New metrics</th></tr>
+<tr><td><code>extension.py</code></td><td class="num">1134</td><td>The extension agent: takes a definition from the incoming folder, checks it against the data, adds the metric to the graph or rejects it, and writes the answer file</td><td><code>Extension.poll, find_formulas, compare, identities, export</code></td><td><code>test_extension, test_extension_context, test_extension_watch</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <span>Generated by <code>docs/build_brain_architecture.py</code> from the graph the brain loads, the constants of its modules, the test files and <code>docs/results.json</code>.</span>
+  <span>The parts are described in sections 3.2 to 3.7 of the project README. The measurements behind the choice of the algorithms are in its section 3.8.</span>
+</footer>
+</main>
+</body>
+</html>

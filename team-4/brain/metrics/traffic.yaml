@@ -1,0 +1,73 @@
+# Traffic, search and the "For You" feed.
+metrics:
+  - name: sessions
+    description: Visits to the marketplace.
+    unit: count
+    column: sessions
+    systems: [demand]
+    source: traffic
+    direction: up
+
+  - name: searches
+    description: Search queries submitted.
+    unit: count
+    column: searches
+    systems: [demand, search]
+    source: search
+    direction: up
+
+  - name: search_clicks
+    description: Clicks on search results.
+    unit: count
+    column: search_clicks
+    systems: [search]
+    source: search
+    direction: up
+
+  - name: search_ctr
+    description: Clicks per search - a proxy for result relevance.
+    unit: ratio
+    formula: search_clicks / searches
+    atomic: true
+    bounds: [0, null]
+    systems: [search]
+    direction: up
+    may_affect:
+      - metric: views_per_session
+        prior: 0.5
+        sign: 1
+        note: relevant search results lead customers to product pages
+
+  - name: feed_impressions
+    description: Products shown in the personalised "For You" feed.
+    unit: count
+    column: feed_impressions
+    systems: [demand, recommendations]
+    source: recommendations
+    direction: up
+
+  - name: feed_clicks
+    description: Clicks on feed products.
+    unit: count
+    column: feed_clicks
+    systems: [recommendations]
+    source: recommendations
+    direction: up
+
+  - name: feed_ctr
+    description: Clicks per feed impression.
+    unit: ratio
+    formula: feed_clicks / feed_impressions
+    atomic: true
+    bounds: [0, 1]
+    systems: [recommendations]
+    direction: up
+    may_affect:
+      - metric: views_per_session
+        prior: 0.4
+        sign: 1
+        note: feed clicks open product pages
+      - metric: add_to_cart_rate
+        prior: 0.3
+        sign: -1
+        note: a feed that sends viewers to products they cannot buy lowers add-to-cart

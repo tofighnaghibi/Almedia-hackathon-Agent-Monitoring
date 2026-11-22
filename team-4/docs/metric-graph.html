@@ -1,0 +1,256 @@
+<title>Metric Graph Sketch</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: final outcome (profit) on the left, split into parts layer by layer toward the right; breakdown segments and context events hang below and beside. The side panel walks through the investigation. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #16202b;
+  --muted: #5d6b7a;
+  --line: #d5dbe3;
+  --formula: #2b4a6f;
+  --breakdown: #7a5a1f;
+  --may: #8a3f6b;
+  --ctx: #2d7a6b;
+  --hot: #c4402f;
+  --hot-bg: #fbe9e6;
+  --focus: #2b6fd6;
+  --ui: "Inter", system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --display: "Space Grotesk", "Inter", system-ui, "PingFang SC", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11161c; --surface: #1a212a; --fg: #e8edf3; --muted: #98a6b5; --line: #323d4a;
+    --formula: #8fb4e3; --breakdown: #e0b868; --may: #e59bc6; --ctx: #6fd0bd; --hot: #ff7d6b; --hot-bg: #3a2020;
+    --focus: #6fa6ff; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11161c; --surface: #1a212a; --fg: #e8edf3; --muted: #98a6b5; --line: #323d4a;
+  --formula: #8fb4e3; --breakdown: #e0b868; --may: #e59bc6; --ctx: #6fd0bd; --hot: #ff7d6b; --hot-bg: #3a2020;
+  --focus: #6fa6ff; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--ui); font-size: 14px; line-height: 1.55;
+  padding-block: 28px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 20px; }
+h1 { font-family: var(--display); font-size: 26px; font-weight: 600; margin: 0 0 4px; text-wrap: balance; }
+.sub { color: var(--muted); margin: 0; max-width: 70ch; }
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 16px; align-items: start; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.graphbox { padding: 12px; overflow-x: auto; }
+svg { display: block; width: 100%; min-width: 760px; height: auto; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 4px 6px 10px; font-size: 12.5px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend svg { min-width: 0; width: 34px; height: 10px; }
+.panel { padding: 16px; display: grid; gap: 12px; }
+.panel h2 { font-family: var(--display); font-size: 16px; margin: 0; }
+.step-no { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+.step-title { font-weight: 600; font-size: 15px; margin: 2px 0 4px; }
+.step-body { margin: 0; color: var(--fg); }
+.btns { display: flex; gap: 8px; flex-wrap: wrap; }
+button {
+  font: inherit; font-weight: 500; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--fg); cursor: pointer;
+}
+button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+button:focus-visible, .node:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+button[disabled] { opacity: .4; cursor: default; }
+.hyp { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 13px; }
+.hyp li { display: flex; gap: 8px; align-items: baseline; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; }
+.tag { font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 99px; border: 1px solid currentColor; white-space: nowrap; }
+.tag.ok { color: var(--ctx); } .tag.no { color: var(--muted); } .tag.pending { color: var(--breakdown); }
+.note { font-size: 12.5px; color: var(--muted); margin: 0; }
+.kinds { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.kind { padding: 14px 16px; }
+.kind b { font-family: var(--display); font-size: 15px; display: block; margin-bottom: 4px; }
+.kind p { margin: 0; color: var(--muted); font-size: 13px; }
+.kind code { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--fg); }
+
+/* SVG */
+.edge { fill: none; stroke-width: 1.6; transition: opacity .2s, stroke-width .2s; }
+.edge.formula { stroke: var(--formula); } .edge.breakdown { stroke: var(--breakdown); stroke-dasharray: 6 4; }
+.edge.may_affect { stroke: var(--may); stroke-dasharray: 2 4; stroke-linecap: round; } .edge.context { stroke: var(--ctx); stroke-width: 1.3; }
+.arrow.formula { fill: var(--formula); } .arrow.breakdown { fill: var(--breakdown); } .arrow.may_affect { fill: var(--may); } .arrow.context { fill: var(--ctx); }
+.node rect { fill: var(--surface); stroke: var(--line); stroke-width: 1.4; transition: fill .2s, stroke .2s, opacity .2s; }
+.node.metric rect { stroke: var(--formula); }
+.node.ctx rect { stroke: var(--ctx); stroke-dasharray: 4 3; }
+.node.seg rect { stroke: var(--breakdown); }
+.node text { fill: var(--fg); font-family: var(--ui); font-size: 13px; font-weight: 500; text-anchor: middle; }
+.node text.en { fill: var(--muted); font-size: 11px; font-weight: 400; }
+.node { cursor: pointer; }
+.dim .edge, .dim .node { opacity: .22; }
+.dim .edge.on, .dim .node.on { opacity: 1; }
+.dim .edge.on { stroke-width: 2.6; }
+.node.on.hot rect { stroke: var(--hot); stroke-width: 2.4; fill: var(--hot-bg); }
+.node.on rect { stroke-width: 2.2; }
+@media (max-width: 900px) { .main { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Metric graph: how the system understands the business</h1>
+    <p class="sub">A sketch of the graph for the marketplace in the Almedia track. Boxes are metrics or context events; lines show how they relate. Press "Run investigation" to see how the system follows the graph to a cause. Metrics and numbers here are examples, not real data.</p>
+  </header>
+
+  <div class="main">
+    <section class="card graphbox" aria-label="Metric graph">
+      <div class="legend" aria-hidden="true">
+        <span><svg viewBox="0 0 34 10"><line x1="0" y1="5" x2="34" y2="5" class="edge formula"/></svg>formula: exact arithmetic</span>
+        <span><svg viewBox="0 0 34 10"><line x1="0" y1="5" x2="34" y2="5" class="edge breakdown"/></svg>breakdown: split by a dimension</span>
+        <span><svg viewBox="0 0 34 10"><line x1="0" y1="5" x2="34" y2="5" class="edge may_affect"/></svg>may_affect: possible cause</span>
+        <span><svg viewBox="0 0 34 10"><line x1="0" y1="5" x2="34" y2="5" class="edge context"/></svg>context: releases, promos, data freshness</span>
+      </div>
+      <svg id="g" viewBox="0 -24 1000 400" role="img" aria-label="Metric graph diagram"></svg>
+    </section>
+
+    <aside class="card panel" aria-live="polite">
+      <h2>Demo: how a fault gets found</h2>
+      <div>
+        <div class="step-no" id="sno"></div>
+        <div class="step-title" id="stitle"></div>
+        <p class="step-body" id="sbody"></p>
+      </div>
+      <ul class="hyp" id="hyp" hidden></ul>
+      <div class="btns">
+        <button class="primary" id="next">Run investigation</button>
+        <button id="prev" disabled>Back</button>
+        <button id="reset" disabled>Reset</button>
+      </div>
+      <p class="note" id="nodeinfo">Click any box to see what it is.</p>
+    </aside>
+  </div>
+
+  <section class="kinds" aria-label="Edge types">
+    <div class="card kind"><b>formula</b><p>Exact arithmetic, such as <code>orders = checkouts × payment_success_rate</code>. Used to split a change into each part's contribution and find the biggest one.</p></div>
+    <div class="card kind"><b>breakdown</b><p>The same metric cut by country, platform or category. Used to drill down and see which segment holds the change.</p></div>
+    <div class="card kind"><b>may_affect</b><p>No formula, but a possible influence, such as stockouts lowering add-to-cart. Treated as a hypothesis, then checked with timing and correlation.</p></div>
+    <div class="card kind"><b>context</b><p>Release log, promo calendar, data arrival. Used to tell real faults from harmless changes and from data delays.</p></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  var W = 150, H = 48;
+  var nodes = {
+    contribution: { x: 100, y: 220, t: 'metric', zh: 'Platform profit', en: 'contribution', d: 'The top outcome. Every other metric is a part of it.' },
+    gmv:          { x: 300, y: 130, t: 'metric', zh: 'GMV', en: 'gmv', d: 'GMV = orders × average order value.' },
+    discounts:    { x: 300, y: 220, t: 'metric', zh: 'Discounts', en: 'discounts', d: 'Discounts the platform pays for. They lower profit.' },
+    fees:         { x: 300, y: 310, t: 'metric', zh: 'Fees & ad costs', en: 'fees_and_ads', d: 'Marketplace fees and advertising costs.' },
+    orders:       { x: 500, y: 150, t: 'metric', zh: 'Orders', en: 'orders', d: 'orders = checkouts × payment success rate.' },
+    aov:          { x: 500, y: 250, t: 'metric', zh: 'Order value', en: 'avg_order_value', d: 'Average amount per order.' },
+    promo:        { x: 500, y: 40,  t: 'ctx',    zh: 'FR promo (planned)', en: 'calendar', d: 'A planned event in the promo calendar. The order increase it causes is harmless and should not raise an alert.' },
+    checkouts:    { x: 700, y: 100, t: 'metric', zh: 'Checkouts', en: 'checkouts', d: 'Number of checkouts started, fed by add-to-cart.' },
+    psr:          { x: 700, y: 200, t: 'metric', zh: 'Payment success', en: 'payment_success_rate', d: 'Share of payment attempts that succeed.' },
+    cart:         { x: 900, y: 100, t: 'metric', zh: 'Add to cart', en: 'add_to_cart', d: 'Number of add-to-cart events.' },
+    stock:        { x: 900, y: 10,  t: 'metric', zh: 'Stockouts', en: 'stockouts', d: 'Number of out-of-stock products. May affect add-to-cart, but there is no exact formula, so this is only a hypothesis edge.' },
+    release:      { x: 900, y: 200, t: 'ctx',    zh: 'SDK 4.2 release', en: 'releases', d: 'A deployment in the release log, scoped to Germany on Android.' },
+    seg:          { x: 700, y: 310, t: 'seg',    zh: 'Germany × Android', en: 'country × platform', d: 'One segment of payment success rate after splitting by country and platform.' },
+    fresh:        { x: 900, y: 310, t: 'ctx',    zh: 'Payment data arrival', en: 'ingestion_log', d: 'Whether the data arrived on time. Hours with incomplete data are held back to avoid false alarms.' }
+  };
+    var edges = [
+    ['contribution','gmv','formula'], ['contribution','discounts','formula'], ['contribution','fees','formula'],
+    ['gmv','orders','formula'], ['gmv','aov','formula'],
+    ['orders','checkouts','formula'], ['orders','psr','formula'], ['checkouts','cart','formula'],
+    ['psr','seg','breakdown'],
+    ['promo','orders','context'], ['release','psr','context'], ['fresh','psr','context'],
+    ['stock','cart','may_affect']
+  ];
+  var steps = [
+    { no: 'Start', title: 'All normal, the system keeps watching', body: 'Once the graph is built, the system checks the top metrics and their direct components every hour. Other segments are scanned in turn, ordered by business impact.', on: [], hot: [], hyp: null },
+    { no: 'Step 1', title: 'Detect: orders are about 32% below expected', body: 'Against the baseline for the same hour of the week, the drop has lasted 3 hours and is large enough to be worth investigating.', on: ['orders'], hot: ['orders'], hyp: null },
+    { no: 'Step 2', title: 'Follow formula: the problem is payment success', body: 'orders = checkouts × payment success rate. Checkouts are normal and payment success dropped sharply, so the search follows that line.', on: ['orders', 'checkouts', 'psr'], hot: ['psr'], edges: ['orders>checkouts', 'orders>psr'], hyp: [['Traffic drop', 'no', 'Rejected'], ['Checkout flow got worse', 'no', 'Rejected'], ['Payment success dropped', 'pending', 'Cause unknown']] },
+    { no: 'Step 3', title: 'Follow breakdown: it is Germany on Android', body: 'Splitting payment success by country and platform shows the drop comes almost entirely from Android users in Germany. Other segments are normal.', on: ['orders', 'psr', 'seg'], hot: ['seg'], edges: ['orders>psr', 'psr>seg'], hyp: [['Payment problem on every platform', 'no', 'Rejected'], ['Only Germany on Android', 'pending', 'Cause unknown']] },
+    { no: 'Step 4', title: 'Check context: a release lines up', body: 'In the same hour, payment SDK 4.2 went live for Germany on Android. The payment data arrived on time, so this is not a data-delay artefact.', on: ['orders', 'psr', 'seg', 'release', 'fresh'], hot: ['release'], edges: ['orders>psr', 'psr>seg', 'release>psr', 'fresh>psr'], hyp: [['Data-delay artefact', 'no', 'Rejected'], ['Payment SDK 4.2 release', 'ok', 'Supported']] },
+    { no: 'Result', title: 'Report: the first cause is this release', body: 'The order drop is the symptom, the payment success drop is the middle link, and the release is the first cause. The report states the business impact, the evidence trail and what is still uncertain, for example whether all Android versions are affected.', on: ['contribution', 'gmv', 'orders', 'psr', 'seg', 'release'], hot: ['release'], edges: ['contribution>gmv', 'gmv>orders', 'orders>psr', 'psr>seg', 'release>psr'], hyp: [['Payment SDK 4.2 release', 'ok', 'Supported'], ['Other hypotheses', 'no', 'Rejected']] }
+  ];
+
+  var NS = 'http://www.w3.org/2000/svg';
+  var svg = document.getElementById('g');
+  function el(n, a, p) { var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); (p || svg).appendChild(e); return e; }
+
+  var defs = el('defs', {});
+  ['formula', 'breakdown', 'may_affect', 'context'].forEach(function (t) {
+    var m = el('marker', { id: 'ar-' + t, viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' }, defs);
+    el('path', { d: 'M0,1 L10,5 L0,9 z', 'class': 'arrow ' + t }, m);
+  });
+
+  function side(a, b, from) {
+    var dx = b.x - a.x, dy = b.y - a.y;
+    if (Math.abs(dx) > 20) {
+      var right = dx > 0;
+      return from ? { x: a.x + (right ? W / 2 : -W / 2), y: a.y, h: true, s: right ? 1 : -1 }
+                  : { x: a.x + (right ? -W / 2 : W / 2), y: a.y, h: true, s: right ? -1 : 1 };
+    }
+    var down = dy > 0;
+    return from ? { x: a.x, y: a.y + (down ? H / 2 : -H / 2), h: false, s: down ? 1 : -1 }
+                : { x: a.x, y: a.y + (down ? -H / 2 : H / 2), h: false, s: down ? -1 : 1 };
+  }
+
+  var gE = el('g', {}), gN = el('g', {});
+  var edgeEls = {};
+  edges.forEach(function (e) {
+    var a = nodes[e[0]], b = nodes[e[1]];
+    // formula/breakdown point from the parent to its parts; context and may_affect point from cause to effect
+    var p1 = side(a, b, true), p2 = side(b, a, false);
+    var d;
+    if (p1.h) { var c = (p2.x - p1.x) / 2; d = 'M' + p1.x + ',' + p1.y + ' C' + (p1.x + c) + ',' + p1.y + ' ' + (p2.x - c) + ',' + p2.y + ' ' + p2.x + ',' + p2.y; }
+    else { var c2 = (p2.y - p1.y) / 2; d = 'M' + p1.x + ',' + p1.y + ' C' + p1.x + ',' + (p1.y + c2) + ' ' + p2.x + ',' + (p2.y - c2) + ' ' + p2.x + ',' + p2.y; }
+    var path = el('path', { d: d, 'class': 'edge ' + e[2], 'marker-end': 'url(#ar-' + e[2] + ')' }, gE);
+    edgeEls[e[0] + '>' + e[1]] = path;
+  });
+
+  var nodeEls = {};
+  Object.keys(nodes).forEach(function (k) {
+    var n = nodes[k];
+    var g = el('g', { 'class': 'node ' + n.t, tabindex: 0, role: 'button', 'aria-label': n.zh + ': ' + n.d, transform: 'translate(' + (n.x - W / 2) + ',' + (n.y - H / 2) + ')' }, gN);
+    el('rect', { width: W, height: H, rx: 8 }, g);
+    var t1 = el('text', { x: W / 2, y: 21 }, g); t1.textContent = n.zh;
+    var t2 = el('text', { x: W / 2, y: 37, 'class': 'en' }, g); t2.textContent = n.en;
+    function show() { document.getElementById('nodeinfo').textContent = n.zh + ' (' + n.en + '): ' + n.d; }
+    g.addEventListener('click', show);
+    g.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); show(); } });
+    nodeEls[k] = g;
+  });
+
+  var i = 0;
+  var $ = function (id) { return document.getElementById(id); };
+  function render() {
+    var s = steps[i];
+    $('sno').textContent = s.no;
+    $('stitle').textContent = s.title;
+    $('sbody').textContent = s.body;
+    var dimmed = i > 0;
+    svg.classList.toggle('dim', dimmed);
+    Object.keys(nodeEls).forEach(function (k) {
+      nodeEls[k].classList.toggle('on', s.on.indexOf(k) >= 0);
+      nodeEls[k].classList.toggle('hot', (s.hot || []).indexOf(k) >= 0);
+    });
+    Object.keys(edgeEls).forEach(function (k) { edgeEls[k].classList.toggle('on', (s.edges || []).indexOf(k) >= 0); });
+    var h = $('hyp');
+    if (s.hyp) {
+      h.hidden = false; h.textContent = '';
+      s.hyp.forEach(function (x) {
+        var li = document.createElement('li');
+        var tag = document.createElement('span'); tag.className = 'tag ' + x[1]; tag.textContent = x[2];
+        var tx = document.createElement('span'); tx.textContent = x[0];
+        li.appendChild(tag); li.appendChild(tx); h.appendChild(li);
+      });
+    } else { h.hidden = true; }
+    $('prev').disabled = i === 0;
+    $('reset').disabled = i === 0;
+    $('next').disabled = i === steps.length - 1;
+    $('next').textContent = i === 0 ? 'Run investigation' : 'Next step';
+  }
+  $('next').addEventListener('click', function () { if (i < steps.length - 1) { i++; render(); } });
+  $('prev').addEventListener('click', function () { if (i > 0) { i--; render(); } });
+  $('reset').addEventListener('click', function () { i = 0; render(); });
+  render();
+})();
+</script>

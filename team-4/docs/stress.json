@@ -1,0 +1,1218 @@
+{
+  "days": 30,
+  "cases": [
+    {
+      "case": "traffic_drop",
+      "injected": "traffic_drop DE x Android, sessions -50 % for 6 h, every rate unchanged, no release",
+      "expectation": "detected in DE x Android, and the report or a hypothesis names sessions or traffic as what moved",
+      "events": [
+        {
+          "kind": "traffic_drop",
+          "country": "DE",
+          "end": "2026-11-21T14:00:00Z",
+          "platform": "Android",
+          "severity": 0.5,
+          "start": "2026-11-21T08:00:00Z"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "inc-0001",
+          "status": "resolved",
+          "metric": "contribution",
+          "moved": "sessions",
+          "place": "DE x Android",
+          "segment": {
+            "country": "DE",
+            "platform": "Android"
+          },
+          "first_seen": "2026-11-21T08:00:00Z",
+          "last_seen": "2026-11-21T13:00:00Z",
+          "supported": [],
+          "leading": "traffic fell in DE x Android (sessions -48 %); every rate of the chain stayed normal (plausible)",
+          "recurrence_of": null,
+          "innocent": null
+        }
+      ],
+      "records": [],
+      "score": {
+        "faults": 1,
+        "detected": 1,
+        "localized_rate": 1.0,
+        "correct_cause_rate": 1.0,
+        "false_alarms": 0,
+        "innocents": 0,
+        "innocents_silent": 0
+      },
+      "per_fault": [
+        {
+          "kind": "traffic_drop",
+          "fault": {
+            "country": "DE",
+            "end": "2026-11-21T14:00:00Z",
+            "platform": "Android",
+            "severity": 0.5,
+            "start": "2026-11-21T08:00:00Z"
+          },
+          "detected": true,
+          "delay_h": 0.0,
+          "localized": true,
+          "correct_cause": true,
+          "incident": "inc-0001",
+          "supported_causes": 0
+        }
+      ],
+      "checks": [
+        {
+          "check": "detected",
+          "ok": true,
+          "detail": "1 of 1 fault(s) detected"
+        },
+        {
+          "check": "localized",
+          "ok": true,
+          "detail": "1 of 1 localized to the injected place"
+        },
+        {
+          "check": "cause",
+          "ok": true,
+          "detail": "1 of 1 with the right cause (sim.score rule)"
+        },
+        {
+          "check": "no_false_alarm",
+          "ok": true,
+          "detail": "no false alarm"
+        },
+        {
+          "check": "incidents",
+          "ok": true,
+          "detail": "1 incident(s), at most 1 expected"
+        }
+      ],
+      "pass": true,
+      "replay": {
+        "from": "2026-11-21T05:00:00Z",
+        "to": "2026-11-22T02:00:00Z",
+        "brain": "replayed 22 hours in 8.5 s: 1 incident(s) in D:\\hacklab2\\stress-final7\\traffic_drop-incidents",
+        "seconds": 14.2
+      },
+      "seed": 11
+    },
+    {
+      "case": "small_payment_fault",
+      "injected": "payment_failure DE x Android, severity 0.085 (failures about 6 % -> 14 %) for 8 h, with its release at the onset",
+      "expectation": "detected in DE x Android with the payments-sdk release supported",
+      "events": [
+        {
+          "kind": "payment_failure",
+          "country": "DE",
+          "end": "2026-11-21T16:00:00Z",
+          "platform": "Android",
+          "severity": 0.085,
+          "start": "2026-11-21T08:00:00Z"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "inc-0001",
+          "status": "resolved",
+          "metric": "contribution",
+          "moved": "payment_success_rate",
+          "place": "DE x Android",
+          "segment": {
+            "country": "DE",
+            "platform": "Android"
+          },
+          "first_seen": "2026-11-21T12:00:00Z",
+          "last_seen": "2026-11-21T15:00:00Z",
+          "supported": [
+            "release payments-sdk: payments-sdk 4.2 rollout (DE, Android)"
+          ],
+          "leading": "release payments-sdk: payments-sdk 4.2 rollout (DE, Android) (supported)",
+          "recurrence_of": null,
+          "innocent": null
+        }
+      ],
+      "records": [],
+      "score": {
+        "faults": 1,
+        "detected": 1,
+        "localized_rate": 1.0,
+        "correct_cause_rate": 1.0,
+        "false_alarms": 0,
+        "innocents": 0,
+        "innocents_silent": 0
+      },
+      "per_fault": [
+        {
+          "kind": "payment_failure",
+          "fault": {
+            "country": "DE",
+            "end": "2026-11-21T16:00:00Z",
+            "platform": "Android",
+            "severity": 0.085,
+            "start": "2026-11-21T08:00:00Z"
+          },
+          "detected": true,
+          "delay_h": 4.0,
+          "localized": true,
+          "correct_cause": true,
+          "incident": "inc-0001",
+          "supported_causes": 1
+        }
+      ],
+      "checks": [
+        {
+          "check": "detected",
+          "ok": true,
+          "detail": "1 of 1 fault(s) detected"
+        },
+        {
+          "check": "localized",
+          "ok": true,
+          "detail": "1 of 1 localized to the injected place"
+        },
+        {
+          "check": "cause",
+          "ok": true,
+          "detail": "1 of 1 with the right cause (sim.score rule)"
+        },
+        {
+          "check": "no_false_alarm",
+          "ok": true,
+          "detail": "no false alarm"
+        },
+        {
+          "check": "incidents",
+          "ok": true,
+          "detail": "1 incident(s), at most 1 expected"
+        }
+      ],
+      "pass": true,
+      "replay": {
+        "from": "2026-11-21T05:00:00Z",
+        "to": "2026-11-22T04:00:00Z",
+        "brain": "replayed 24 hours in 9.1 s: 1 incident(s) in D:\\hacklab2\\stress-final7\\small_payment_fault-incidents",
+        "seconds": 15.0
+      },
+      "seed": 11
+    },
+    {
+      "case": "payment_during_promo",
+      "injected": "FR promo 08:00-20:00 (in the calendar) and payment_failure FR x iOS, severity 0.4, 11:00-17:00",
+      "expectation": "the payment fault is detected in FR x iOS with its release supported; the promo itself raises nothing",
+      "events": [
+        {
+          "kind": "promo",
+          "conversion_lift": 0.2,
+          "country": "FR",
+          "end": "2026-11-21T20:00:00Z",
+          "extra_discount": 0.03,
+          "start": "2026-11-21T08:00:00Z",
+          "traffic_lift": 0.4
+        },
+        {
+          "kind": "payment_failure",
+          "country": "FR",
+          "end": "2026-11-21T17:00:00Z",
+          "platform": "iOS",
+          "severity": 0.4,
+          "start": "2026-11-21T11:00:00Z"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "inc-0001",
+          "status": "resolved",
+          "metric": "contribution",
+          "moved": "payment_success_rate",
+          "place": "FR x iOS",
+          "segment": {
+            "country": "FR",
+            "platform": "iOS"
+          },
+          "first_seen": "2026-11-21T11:00:00Z",
+          "last_seen": "2026-11-21T16:00:00Z",
+          "supported": [
+            "release payments-sdk: payments-sdk 4.2 rollout (FR, iOS)"
+          ],
+          "leading": "release payments-sdk: payments-sdk 4.2 rollout (FR, iOS) (supported)",
+          "recurrence_of": null,
+          "innocent": null
+        }
+      ],
+      "records": [
+        {
+          "id": "explained-promo-FR-2026-11-21T080000Z",
+          "status": "explained",
+          "metric": "sessions",
+          "moved": "discount_rate",
+          "place": "FR",
+          "segment": {
+            "country": "FR"
+          },
+          "first_seen": "2026-11-21T08:00:00Z",
+          "last_seen": "2026-11-21T19:00:00Z",
+          "supported": [
+            "planned event: FR promo"
+          ],
+          "leading": "planned event: FR promo (supported)",
+          "recurrence_of": null,
+          "innocent": null
+        }
+      ],
+      "score": {
+        "faults": 1,
+        "detected": 1,
+        "localized_rate": 1.0,
+        "correct_cause_rate": 1.0,
+        "false_alarms": 0,
+        "innocents": 1,
+        "innocents_silent": 1
+      },
+      "per_fault": [
+        {
+          "kind": "payment_failure",
+          "fault": {
+            "country": "FR",
+            "end": "2026-11-21T17:00:00Z",
+            "platform": "iOS",
+            "severity": 0.4,
+            "start": "2026-11-21T11:00:00Z"
+          },
+          "detected": true,
+          "delay_h": 0.0,
+          "localized": true,
+          "correct_cause": true,
+          "incident": "inc-0001",
+          "supported_causes": 1
+        }
+      ],
+      "checks": [
+        {
+          "check": "detected",
+          "ok": true,
+          "detail": "1 of 1 fault(s) detected"
+        },
+        {
+          "check": "localized",
+          "ok": true,
+          "detail": "1 of 1 localized to the injected place"
+        },
+        {
+          "check": "cause",
+          "ok": true,
+          "detail": "1 of 1 with the right cause (sim.score rule)"
+        },
+        {
+          "check": "silent",
+          "ok": true,
+          "detail": "1 of 1 innocent event(s) silent"
+        },
+        {
+          "check": "no_false_alarm",
+          "ok": true,
+          "detail": "no false alarm"
+        },
+        {
+          "check": "incidents",
+          "ok": true,
+          "detail": "1 incident(s), at most 1 expected"
+        }
+      ],
+      "pass": true,
+      "replay": {
+        "from": "2026-11-21T05:00:00Z",
+        "to": "2026-11-22T08:00:00Z",
+        "brain": "replayed 28 hours in 10.1 s: 1 incident(s) in D:\\hacklab2\\stress-final7\\payment_during_promo-incidents",
+        "seconds": 16.0
+      },
+      "seed": 11
+    },
+    {
+      "case": "mix_shift",
+      "injected": "mix_shift: electronics gets 50 % of sessions (normally 25 %) for 8 h, every per-category rate unchanged, not in the calendar",
+      "expectation": "no incident: the change is innocent (an explained record is fine)",
+      "events": [
+        {
+          "kind": "mix_shift",
+          "category": "electronics",
+          "end": "2026-11-21T16:00:00Z",
+          "share": 0.5,
+          "start": "2026-11-21T08:00:00Z"
+        }
+      ],
+      "incidents": [],
+      "records": [
+        {
+          "id": "explained-mix-aov-all-2026-11-21T080000Z",
+          "status": "explained",
+          "metric": "contribution",
+          "moved": "aov",
+          "place": "everywhere",
+          "segment": {},
+          "first_seen": "2026-11-21T09:00:00Z",
+          "last_seen": "2026-11-21T15:00:00Z",
+          "supported": [
+            "a shift in the mix of segments inside all segments, with unchanged rates"
+          ],
+          "leading": "a shift in the mix of segments inside all segments, with unchanged rates (supported)",
+          "recurrence_of": null,
+          "innocent": {
+            "kind": "mix",
+            "reason": "A shift in the mix of segments inside all segments explains 98% of the change in aov: the changed weights of the cells account for +13.3394, the cells' own rates for +0.2427."
+          }
+        },
+        {
+          "id": "explained-mix-discount_rate-all-2026-11-21T080000Z",
+          "status": "explained",
+          "metric": "contribution",
+          "moved": "discount_rate",
+          "place": "everywhere",
+          "segment": {},
+          "first_seen": "2026-11-21T09:00:00Z",
+          "last_seen": "2026-11-21T15:00:00Z",
+          "supported": [
+            "a shift in the mix of segments inside all segments, with unchanged rates",
+            "discount_rate fell in all segments without a matching release or planned event"
+          ],
+          "leading": "a shift in the mix of segments inside all segments, with unchanged rates (supported)",
+          "recurrence_of": null,
+          "innocent": {
+            "kind": "mix",
+            "reason": "A shift in the mix of segments inside all segments explains 98% of the change in discount_rate: the changed weights of the cells account for -0.0058, the cells' own rates for -0.0001."
+          }
+        },
+        {
+          "id": "explained-mix-take_rate-all-2026-11-21T080000Z",
+          "status": "explained",
+          "metric": "contribution",
+          "moved": "take_rate",
+          "place": "everywhere",
+          "segment": {},
+          "first_seen": "2026-11-21T09:00:00Z",
+          "last_seen": "2026-11-21T15:00:00Z",
+          "supported": [
+            "a shift in the mix of segments inside all segments, with unchanged rates"
+          ],
+          "leading": "a shift in the mix of segments inside all segments, with unchanged rates (supported)",
+          "recurrence_of": null,
+          "innocent": {
+            "kind": "mix",
+            "reason": "A shift in the mix of segments inside all segments explains 100% of the change in take_rate: the changed weights of the cells account for -0.0157, the cells' own rates for -0.0000."
+          }
+        }
+      ],
+      "score": {
+        "faults": 0,
+        "detected": 0,
+        "localized_rate": null,
+        "correct_cause_rate": null,
+        "false_alarms": 0,
+        "innocents": 1,
+        "innocents_silent": 1
+      },
+      "per_fault": [],
+      "checks": [
+        {
+          "check": "silent",
+          "ok": true,
+          "detail": "1 of 1 innocent event(s) silent"
+        },
+        {
+          "check": "no_false_alarm",
+          "ok": true,
+          "detail": "no false alarm"
+        },
+        {
+          "check": "incidents",
+          "ok": true,
+          "detail": "0 incident(s), at most 0 expected"
+        }
+      ],
+      "pass": true,
+      "replay": {
+        "from": "2026-11-21T05:00:00Z",
+        "to": "2026-11-22T04:00:00Z",
+        "brain": "replayed 24 hours in 12.3 s: 0 incident(s) in D:\\hacklab2\\stress-final7\\mix_shift-incidents",
+        "seconds": 18.3
+      },
+      "seed": 11
+    },
+    {
+      "case": "feed_unavailable",
+      "injected": "feed_unavailable: out-of-stock views x12 and feed clicks +25 % in channel=recommendations for 8 h, with a 'recommendations model 3.1 rollout' release at the onset",
+      "expectation": "detected in channel=recommendations with the recommendations release supported, one incident",
+      "events": [
+        {
+          "kind": "feed_unavailable",
+          "channel": "recommendations",
+          "end": "2026-11-21T16:00:00Z",
+          "feed_ctr_lift": 0.25,
+          "multiplier": 12.0,
+          "start": "2026-11-21T08:00:00Z"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "inc-0001",
+          "status": "resolved",
+          "metric": "contribution",
+          "moved": "stockout_rate",
+          "place": "recommendations",
+          "segment": {
+            "channel": "recommendations"
+          },
+          "first_seen": "2026-11-21T08:00:00Z",
+          "last_seen": "2026-11-21T15:00:00Z",
+          "supported": [
+            "release recommendations: recommendations model 3.1 rollout"
+          ],
+          "leading": "release recommendations: recommendations model 3.1 rollout (supported)",
+          "recurrence_of": null,
+          "innocent": null
+        }
+      ],
+      "records": [],
+      "score": {
+        "faults": 1,
+        "detected": 1,
+        "localized_rate": 1.0,
+        "correct_cause_rate": 1.0,
+        "false_alarms": 0,
+        "innocents": 0,
+        "innocents_silent": 0
+      },
+      "per_fault": [
+        {
+          "kind": "feed_unavailable",
+          "fault": {
+            "channel": "recommendations",
+            "end": "2026-11-21T16:00:00Z",
+            "feed_ctr_lift": 0.25,
+            "multiplier": 12.0,
+            "start": "2026-11-21T08:00:00Z"
+          },
+          "detected": true,
+          "delay_h": 0.0,
+          "localized": true,
+          "correct_cause": true,
+          "incident": "inc-0001",
+          "supported_causes": 1
+        }
+      ],
+      "checks": [
+        {
+          "check": "detected",
+          "ok": true,
+          "detail": "1 of 1 fault(s) detected"
+        },
+        {
+          "check": "localized",
+          "ok": true,
+          "detail": "1 of 1 localized to the injected place"
+        },
+        {
+          "check": "cause",
+          "ok": true,
+          "detail": "1 of 1 with the right cause (sim.score rule)"
+        },
+        {
+          "check": "no_false_alarm",
+          "ok": true,
+          "detail": "no false alarm"
+        },
+        {
+          "check": "incidents",
+          "ok": true,
+          "detail": "1 incident(s), at most 1 expected"
+        }
+      ],
+      "pass": true,
+      "replay": {
+        "from": "2026-11-21T05:00:00Z",
+        "to": "2026-11-22T04:00:00Z",
+        "brain": "replayed 24 hours in 9.5 s: 1 incident(s) in D:\\hacklab2\\stress-final7\\feed_unavailable-incidents",
+        "seconds": 15.5
+      },
+      "seed": 11
+    },
+    {
+      "case": "discount_push",
+      "injected": "discount_push: discount per euro +60 % and conversion +15 % in channel=recommendations for 8 h (orders up, contribution down), with a 'recommendations ranking 3.2 rollout' release at the onset",
+      "expectation": "detected in channel=recommendations with the recommendations release supported, one incident",
+      "events": [
+        {
+          "kind": "discount_push",
+          "channel": "recommendations",
+          "conversion_lift": 0.15,
+          "end": "2026-11-21T16:00:00Z",
+          "lift": 0.6,
+          "start": "2026-11-21T08:00:00Z"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "inc-0001",
+          "status": "resolved",
+          "metric": "contribution",
+          "moved": "discount_rate",
+          "place": "recommendations",
+          "segment": {
+            "channel": "recommendations"
+          },
+          "first_seen": "2026-11-21T08:00:00Z",
+          "last_seen": "2026-11-21T15:00:00Z",
+          "supported": [
+            "release recommendations: recommendations ranking 3.2 rollout"
+          ],
+          "leading": "release recommendations: recommendations ranking 3.2 rollout (supported)",
+          "recurrence_of": null,
+          "innocent": null
+        }
+      ],
+      "records": [],
+      "score": {
+        "faults": 1,
+        "detected": 1,
+        "localized_rate": 1.0,
+        "correct_cause_rate": 1.0,
+        "false_alarms": 0,
+        "innocents": 0,
+        "innocents_silent": 0
+      },
+      "per_fault": [
+        {
+          "kind": "discount_push",
+          "fault": {
+            "channel": "recommendations",
+            "conversion_lift": 0.15,
+            "end": "2026-11-21T16:00:00Z",
+            "lift": 0.6,
+            "start": "2026-11-21T08:00:00Z"
+          },
+          "detected": true,
+          "delay_h": 0.0,
+          "localized": true,
+          "correct_cause": true,
+          "incident": "inc-0001",
+          "supported_causes": 1
+        }
+      ],
+      "checks": [
+        {
+          "check": "detected",
+          "ok": true,
+          "detail": "1 of 1 fault(s) detected"
+        },
+        {
+          "check": "localized",
+          "ok": true,
+          "detail": "1 of 1 localized to the injected place"
+        },
+        {
+          "check": "cause",
+          "ok": true,
+          "detail": "1 of 1 with the right cause (sim.score rule)"
+        },
+        {
+          "check": "no_false_alarm",
+          "ok": true,
+          "detail": "no false alarm"
+        },
+        {
+          "check": "incidents",
+          "ok": true,
+          "detail": "1 incident(s), at most 1 expected"
+        }
+      ],
+      "pass": true,
+      "replay": {
+        "from": "2026-11-21T05:00:00Z",
+        "to": "2026-11-22T04:00:00Z",
+        "brain": "replayed 24 hours in 9.7 s: 1 incident(s) in D:\\hacklab2\\stress-final7\\discount_push-incidents",
+        "seconds": 15.8
+      },
+      "seed": 11
+    },
+    {
+      "case": "payment_no_release",
+      "injected": "payment_failure DE x Web, severity 0.4 for 6 h, with no release row at all",
+      "expectation": "detected in DE x Web; no release is called the cause (the report says no cause is confirmed)",
+      "events": [
+        {
+          "kind": "payment_failure",
+          "country": "DE",
+          "end": "2026-11-21T14:00:00Z",
+          "platform": "Web",
+          "release": "none",
+          "severity": 0.4,
+          "start": "2026-11-21T08:00:00Z"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "inc-0001",
+          "status": "resolved",
+          "metric": "contribution",
+          "moved": "payment_success_rate",
+          "place": "DE x Web",
+          "segment": {
+            "country": "DE",
+            "platform": "Web"
+          },
+          "first_seen": "2026-11-21T09:00:00Z",
+          "last_seen": "2026-11-21T13:00:00Z",
+          "supported": [],
+          "leading": "payment_success_rate fell in DE x Web without a matching release or planned event (plausible)",
+          "recurrence_of": null,
+          "innocent": null
+        }
+      ],
+      "records": [],
+      "score": {
+        "faults": 1,
+        "detected": 1,
+        "localized_rate": 1.0,
+        "correct_cause_rate": 0.0,
+        "false_alarms": 0,
+        "innocents": 0,
+        "innocents_silent": 0
+      },
+      "per_fault": [
+        {
+          "kind": "payment_failure",
+          "fault": {
+            "country": "DE",
+            "end": "2026-11-21T14:00:00Z",
+            "platform": "Web",
+            "release": "none",
+            "severity": 0.4,
+            "start": "2026-11-21T08:00:00Z"
+          },
+          "detected": true,
+          "delay_h": 1.0,
+          "localized": true,
+          "correct_cause": false,
+          "incident": "inc-0001",
+          "supported_causes": 0,
+          "release": "none"
+        }
+      ],
+      "checks": [
+        {
+          "check": "detected",
+          "ok": true,
+          "detail": "1 of 1 fault(s) detected"
+        },
+        {
+          "check": "localized",
+          "ok": true,
+          "detail": "1 of 1 localized to the injected place"
+        },
+        {
+          "check": "no_supported_release",
+          "ok": true,
+          "detail": "no release is called the cause"
+        },
+        {
+          "check": "no_false_alarm",
+          "ok": true,
+          "detail": "no false alarm"
+        },
+        {
+          "check": "incidents",
+          "ok": true,
+          "detail": "1 incident(s), at most 1 expected"
+        }
+      ],
+      "pass": true,
+      "replay": {
+        "from": "2026-11-21T05:00:00Z",
+        "to": "2026-11-22T02:00:00Z",
+        "brain": "replayed 22 hours in 8.7 s: 1 incident(s) in D:\\hacklab2\\stress-final7\\payment_no_release-incidents",
+        "seconds": 14.6
+      },
+      "seed": 11
+    },
+    {
+      "case": "payment_release_late",
+      "injected": "payment_failure ES x Android, severity 0.4 for 6 h; its release row is written 3 h after the onset",
+      "expectation": "detected in ES x Android; the release that came after the onset is not called the cause",
+      "events": [
+        {
+          "kind": "payment_failure",
+          "country": "ES",
+          "end": "2026-11-21T14:00:00Z",
+          "platform": "Android",
+          "release": "late",
+          "severity": 0.4,
+          "start": "2026-11-21T08:00:00Z"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "inc-0001",
+          "status": "resolved",
+          "metric": "contribution",
+          "moved": "payment_success_rate",
+          "place": "ES x Android",
+          "segment": {
+            "country": "ES",
+            "platform": "Android"
+          },
+          "first_seen": "2026-11-21T08:00:00Z",
+          "last_seen": "2026-11-21T13:00:00Z",
+          "supported": [],
+          "leading": "payment_success_rate fell in ES x Android without a matching release or planned event (plausible)",
+          "recurrence_of": null,
+          "innocent": null
+        }
+      ],
+      "records": [],
+      "score": {
+        "faults": 1,
+        "detected": 1,
+        "localized_rate": 1.0,
+        "correct_cause_rate": 0.0,
+        "false_alarms": 0,
+        "innocents": 0,
+        "innocents_silent": 0
+      },
+      "per_fault": [
+        {
+          "kind": "payment_failure",
+          "fault": {
+            "country": "ES",
+            "end": "2026-11-21T14:00:00Z",
+            "platform": "Android",
+            "release": "late",
+            "severity": 0.4,
+            "start": "2026-11-21T08:00:00Z"
+          },
+          "detected": true,
+          "delay_h": 0.0,
+          "localized": true,
+          "correct_cause": false,
+          "incident": "inc-0001",
+          "supported_causes": 0,
+          "release": "late"
+        }
+      ],
+      "checks": [
+        {
+          "check": "detected",
+          "ok": true,
+          "detail": "1 of 1 fault(s) detected"
+        },
+        {
+          "check": "localized",
+          "ok": true,
+          "detail": "1 of 1 localized to the injected place"
+        },
+        {
+          "check": "late_release_not_supported",
+          "ok": true,
+          "detail": "the release that came after the onset is not supported"
+        },
+        {
+          "check": "no_false_alarm",
+          "ok": true,
+          "detail": "no false alarm"
+        },
+        {
+          "check": "incidents",
+          "ok": true,
+          "detail": "1 incident(s), at most 1 expected"
+        }
+      ],
+      "pass": true,
+      "replay": {
+        "from": "2026-11-21T05:00:00Z",
+        "to": "2026-11-22T02:00:00Z",
+        "brain": "replayed 22 hours in 9.1 s: 1 incident(s) in D:\\hacklab2\\stress-final7\\payment_release_late-incidents",
+        "seconds": 15.3
+      },
+      "seed": 11
+    },
+    {
+      "case": "sibling_stockouts",
+      "injected": "stockout_surge in home, x12, in DE and in FR only (two sibling places), 8 h",
+      "expectation": "both detected, each in home x its country, as at most two incidents",
+      "events": [
+        {
+          "kind": "stockout_surge",
+          "category": "home",
+          "country": "DE",
+          "end": "2026-11-21T16:00:00Z",
+          "feed_ctr_lift": 0.25,
+          "multiplier": 12.0,
+          "start": "2026-11-21T08:00:00Z"
+        },
+        {
+          "kind": "stockout_surge",
+          "category": "home",
+          "country": "FR",
+          "end": "2026-11-21T16:00:00Z",
+          "feed_ctr_lift": 0.25,
+          "multiplier": 12.0,
+          "start": "2026-11-21T08:00:00Z"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "inc-0001",
+          "status": "resolved",
+          "metric": "contribution",
+          "moved": "stockout_rate",
+          "place": "home",
+          "segment": {
+            "category": "home"
+          },
+          "first_seen": "2026-11-21T08:00:00Z",
+          "last_seen": "2026-11-21T15:00:00Z",
+          "supported": [
+            "stockouts rose in home (stockout_rate 0.127 against 0.0151); no first cause beyond them is in the data (the simulator has no supplier deliveries or purchase orders)"
+          ],
+          "leading": "stockouts rose in home (stockout_rate 0.127 against 0.0151); no first cause beyond them is in the data (the simulator has no supplier deliveries or purchase orders) (supported)",
+          "recurrence_of": null,
+          "innocent": null
+        }
+      ],
+      "records": [],
+      "score": {
+        "faults": 2,
+        "detected": 1,
+        "localized_rate": 0.0,
+        "correct_cause_rate": 1.0,
+        "false_alarms": 0,
+        "innocents": 0,
+        "innocents_silent": 0
+      },
+      "per_fault": [
+        {
+          "kind": "stockout_surge",
+          "fault": {
+            "category": "home",
+            "country": "DE",
+            "end": "2026-11-21T16:00:00Z",
+            "feed_ctr_lift": 0.25,
+            "multiplier": 12.0,
+            "start": "2026-11-21T08:00:00Z"
+          },
+          "detected": true,
+          "delay_h": 0.0,
+          "localized": false,
+          "correct_cause": true,
+          "incident": "inc-0001",
+          "supported_causes": 1
+        },
+        {
+          "kind": "stockout_surge",
+          "fault": {
+            "category": "home",
+            "country": "FR",
+            "end": "2026-11-21T16:00:00Z",
+            "feed_ctr_lift": 0.25,
+            "multiplier": 12.0,
+            "start": "2026-11-21T08:00:00Z"
+          },
+          "detected": false
+        }
+      ],
+      "checks": [
+        {
+          "check": "detected",
+          "ok": false,
+          "detail": "1 of 2 fault(s) detected"
+        },
+        {
+          "check": "localized",
+          "ok": false,
+          "detail": "0 of 2 localized to the injected place"
+        },
+        {
+          "check": "cause",
+          "ok": false,
+          "detail": "1 of 2 with the right cause (sim.score rule)"
+        },
+        {
+          "check": "no_false_alarm",
+          "ok": true,
+          "detail": "no false alarm"
+        },
+        {
+          "check": "incidents",
+          "ok": true,
+          "detail": "1 incident(s), at most 2 expected"
+        }
+      ],
+      "pass": false,
+      "replay": {
+        "from": "2026-11-21T05:00:00Z",
+        "to": "2026-11-22T04:00:00Z",
+        "brain": "replayed 24 hours in 9.5 s: 1 incident(s) in D:\\hacklab2\\stress-final7\\sibling_stockouts-incidents",
+        "seconds": 15.6
+      },
+      "seed": 11
+    },
+    {
+      "case": "recurrence",
+      "injected": "payment_failure DE x Android, severity 0.4, 08:00-14:00 on two days in a row (18 h apart), each with its release",
+      "expectation": "both detected with the release supported; the second incident is linked to the first (recurrence_of)",
+      "events": [
+        {
+          "kind": "payment_failure",
+          "country": "DE",
+          "end": "2026-11-21T14:00:00Z",
+          "platform": "Android",
+          "severity": 0.4,
+          "start": "2026-11-21T08:00:00Z"
+        },
+        {
+          "kind": "payment_failure",
+          "country": "DE",
+          "end": "2026-11-22T14:00:00Z",
+          "platform": "Android",
+          "severity": 0.4,
+          "start": "2026-11-22T08:00:00Z"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "inc-0001",
+          "status": "resolved",
+          "metric": "contribution",
+          "moved": "payment_success_rate",
+          "place": "DE x Android",
+          "segment": {
+            "country": "DE",
+            "platform": "Android"
+          },
+          "first_seen": "2026-11-21T08:00:00Z",
+          "last_seen": "2026-11-21T13:00:00Z",
+          "supported": [
+            "release payments-sdk: payments-sdk 4.2 rollout (DE, Android)"
+          ],
+          "leading": "release payments-sdk: payments-sdk 4.2 rollout (DE, Android) (supported)",
+          "recurrence_of": null,
+          "innocent": null
+        },
+        {
+          "id": "inc-0002",
+          "status": "resolved",
+          "metric": "contribution",
+          "moved": "payment_success_rate",
+          "place": "DE x Android",
+          "segment": {
+            "country": "DE",
+            "platform": "Android"
+          },
+          "first_seen": "2026-11-22T08:00:00Z",
+          "last_seen": "2026-11-22T13:00:00Z",
+          "supported": [
+            "release payments-sdk: payments-sdk 4.2 rollout (DE, Android)"
+          ],
+          "leading": "release payments-sdk: payments-sdk 4.2 rollout (DE, Android) (supported)",
+          "recurrence_of": "inc-0001",
+          "innocent": null
+        }
+      ],
+      "records": [],
+      "score": {
+        "faults": 2,
+        "detected": 2,
+        "localized_rate": 1.0,
+        "correct_cause_rate": 1.0,
+        "false_alarms": 0,
+        "innocents": 0,
+        "innocents_silent": 0
+      },
+      "per_fault": [
+        {
+          "kind": "payment_failure",
+          "fault": {
+            "country": "DE",
+            "end": "2026-11-21T14:00:00Z",
+            "platform": "Android",
+            "severity": 0.4,
+            "start": "2026-11-21T08:00:00Z"
+          },
+          "detected": true,
+          "delay_h": 0.0,
+          "localized": true,
+          "correct_cause": true,
+          "incident": "inc-0001",
+          "supported_causes": 1
+        },
+        {
+          "kind": "payment_failure",
+          "fault": {
+            "country": "DE",
+            "end": "2026-11-22T14:00:00Z",
+            "platform": "Android",
+            "severity": 0.4,
+            "start": "2026-11-22T08:00:00Z"
+          },
+          "detected": true,
+          "delay_h": 0.0,
+          "localized": true,
+          "correct_cause": true,
+          "incident": "inc-0002",
+          "supported_causes": 1
+        }
+      ],
+      "checks": [
+        {
+          "check": "detected",
+          "ok": true,
+          "detail": "2 of 2 fault(s) detected"
+        },
+        {
+          "check": "localized",
+          "ok": true,
+          "detail": "2 of 2 localized to the injected place"
+        },
+        {
+          "check": "cause",
+          "ok": true,
+          "detail": "2 of 2 with the right cause (sim.score rule)"
+        },
+        {
+          "check": "recurrence",
+          "ok": true,
+          "detail": "inc-0002 is linked to inc-0001"
+        },
+        {
+          "check": "no_false_alarm",
+          "ok": true,
+          "detail": "no false alarm"
+        },
+        {
+          "check": "incidents",
+          "ok": true,
+          "detail": "2 incident(s), at most 2 expected"
+        }
+      ],
+      "pass": true,
+      "replay": {
+        "from": "2026-11-21T05:00:00Z",
+        "to": "2026-11-23T02:00:00Z",
+        "brain": "replayed 46 hours in 16.1 s: 2 incident(s) in D:\\hacklab2\\stress-final7\\recurrence-incidents",
+        "seconds": 22.2
+      },
+      "seed": 11
+    },
+    {
+      "case": "payment_with_late_source",
+      "injected": "payment_failure DE x Web, severity 0.4 for 6 h, while the payments source arrives 2 h late over the same hours",
+      "expectation": "detected in DE x Web with the release supported (later is fine); the late source raises nothing of its own",
+      "events": [
+        {
+          "kind": "payment_failure",
+          "country": "DE",
+          "end": "2026-11-21T14:00:00Z",
+          "platform": "Web",
+          "severity": 0.4,
+          "start": "2026-11-21T08:00:00Z"
+        },
+        {
+          "kind": "data_delay",
+          "delay_hours": 2,
+          "end": "2026-11-21T14:00:00Z",
+          "source": "payments",
+          "start": "2026-11-21T08:00:00Z"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "inc-0001",
+          "status": "resolved",
+          "metric": "contribution",
+          "moved": "payment_success_rate",
+          "place": "DE x Web",
+          "segment": {
+            "country": "DE",
+            "platform": "Web"
+          },
+          "first_seen": "2026-11-21T10:00:00Z",
+          "last_seen": "2026-11-21T13:00:00Z",
+          "supported": [
+            "release payments-sdk: payments-sdk 4.2 rollout (DE, Web)"
+          ],
+          "leading": "release payments-sdk: payments-sdk 4.2 rollout (DE, Web) (supported)",
+          "recurrence_of": null,
+          "innocent": null
+        }
+      ],
+      "records": [],
+      "score": {
+        "faults": 1,
+        "detected": 1,
+        "localized_rate": 1.0,
+        "correct_cause_rate": 1.0,
+        "false_alarms": 0,
+        "innocents": 1,
+        "innocents_silent": 1
+      },
+      "per_fault": [
+        {
+          "kind": "payment_failure",
+          "fault": {
+            "country": "DE",
+            "end": "2026-11-21T14:00:00Z",
+            "platform": "Web",
+            "severity": 0.4,
+            "start": "2026-11-21T08:00:00Z"
+          },
+          "detected": true,
+          "delay_h": 2.0,
+          "localized": true,
+          "correct_cause": true,
+          "incident": "inc-0001",
+          "supported_causes": 1
+        }
+      ],
+      "checks": [
+        {
+          "check": "detected",
+          "ok": true,
+          "detail": "1 of 1 fault(s) detected"
+        },
+        {
+          "check": "localized",
+          "ok": true,
+          "detail": "1 of 1 localized to the injected place"
+        },
+        {
+          "check": "cause",
+          "ok": true,
+          "detail": "1 of 1 with the right cause (sim.score rule)"
+        },
+        {
+          "check": "silent",
+          "ok": true,
+          "detail": "1 of 1 innocent event(s) silent"
+        },
+        {
+          "check": "no_false_alarm",
+          "ok": true,
+          "detail": "no false alarm"
+        },
+        {
+          "check": "incidents",
+          "ok": true,
+          "detail": "1 incident(s), at most 1 expected"
+        }
+      ],
+      "pass": true,
+      "replay": {
+        "from": "2026-11-21T05:00:00Z",
+        "to": "2026-11-22T02:00:00Z",
+        "brain": "replayed 22 hours in 8.8 s: 1 incident(s) in D:\\hacklab2\\stress-final7\\payment_with_late_source-incidents",
+        "seconds": 15.0
+      },
+      "seed": 11
+    }
+  ]
+}

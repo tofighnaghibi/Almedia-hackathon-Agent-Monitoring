@@ -1,0 +1,221 @@
+<title>Monitoring Brain Architecture</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+<style>
+/* Layout: one left-aligned reading column; figures sit on colour blocks and scroll sideways on phones.
+   Tokens follow the project's console style (ui/static/console.css): warm neutrals, one amber accent, flat surfaces. */
+:root {
+  --bg: #FAF7F2; --block: #F0EBE2; --line: #D9D1C3; --edge: #A89F8F; --ink: #1C1917; --muted: #57534E;
+  --accent: #B45309; --hot: #B42318; --ok: #1F6F5C;
+  --ui: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12100D; --block: #1C1915; --line: #332E27; --edge: #5E574B; --ink: #F5F1EA; --muted: #A8A196;
+    --accent: #F59E0B; --hot: #FF8A7A; --ok: #6FD0BD; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12100D; --block: #1C1915; --line: #332E27; --edge: #5E574B; --ink: #F5F1EA; --muted: #A8A196;
+  --accent: #F59E0B; --hot: #FF8A7A; --ok: #6FD0BD; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.6 var(--ui); font-variant-numeric: tabular-nums; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 40px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 48px; }
+header { display: grid; gap: 12px; }
+.eyebrow { font: 500 12px/1.4 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 0; font-size: 32px; font-weight: 700; line-height: 1.15; text-wrap: balance; }
+h2 { margin: 0; font-size: 21px; font-weight: 700; line-height: 1.25; text-wrap: balance; }
+p { margin: 0; max-width: 70ch; }
+a { color: var(--accent); text-underline-offset: 2px; }
+.lede { font-size: 17px; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px 24px; margin: 0; padding: 0; list-style: none; font: 400 13px/1.5 var(--mono); color: var(--muted); }
+.facts b { color: var(--ink); font-weight: 700; }
+section { display: grid; gap: 16px; min-width: 0; }
+figure { margin: 0; display: grid; gap: 10px; min-width: 0; }
+.fig { overflow-x: auto; background: var(--block); border-radius: 8px; padding: 16px; }
+figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
+code { font: 400 0.9em var(--mono); }
+ul.read { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 80ch; }
+
+svg.d { display: block; width: 100%; min-width: 900px; height: auto; color: var(--ink); font-family: var(--ui); }
+.d .box { fill: var(--bg); stroke: var(--edge); stroke-width: 1.2; }
+.d .box-a { fill: var(--bg); stroke: var(--ink); stroke-width: 2; }
+.d .tt { fill: var(--ink); font: 700 12.5px var(--mono); }
+.d .tm { fill: var(--muted); font-size: 11.5px; }
+.d .ts { fill: var(--muted); font-size: 11px; }
+.d .mono { fill: var(--ink); font: 400 11.5px var(--mono); }
+.d .tw { fill: var(--hot); font-size: 11.5px; font-weight: 500; }
+.d .lbl { fill: var(--muted); font-size: 11px; font-style: italic; }
+.d .edge { stroke: var(--ink); stroke-width: 1.3; fill: none; }
+.d .mk { fill: var(--ink); }
+.d .mk-m { fill: var(--accent); }
+.d .mk-c { fill: var(--ok); }
+.d .n { fill: var(--bg); stroke: var(--edge); stroke-width: 1.2; }
+.d .n-root { fill: var(--ink); stroke: var(--ink); stroke-width: 1.2; }
+.d .n-root + .nt { fill: var(--bg); font-weight: 700; }
+.d .n-shared { fill: var(--bg); stroke: var(--ink); stroke-width: 2.4; }
+.d .n-cause { fill: var(--bg); stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 6 3; }
+.d .n-ref { fill: none; stroke: var(--accent); stroke-width: 1.2; stroke-dasharray: 2 4; }
+.d .n-ctx { fill: none; stroke: var(--ok); stroke-width: 1.4; stroke-dasharray: 2 3; }
+.d .nt { fill: var(--ink); font: 400 11.5px var(--mono); }
+.d .nt-s { font-size: 10.5px; }
+.d .e-f { stroke: var(--edge); stroke-width: 1.4; fill: none; }
+.d .e-m { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 6 3; fill: none; }
+.d .e-c { stroke: var(--ok); stroke-width: 1.4; stroke-dasharray: 2 3; fill: none; }
+.d .op { fill: var(--muted); font: 700 12px var(--mono); }
+.d .sg { fill: var(--accent); font: 700 14px var(--mono); }
+
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+th { font-size: 12px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); background: var(--block); }
+th.num { text-align: right; }
+tbody th { color: var(--ink); font-weight: 700; }
+tr:last-child td { border-bottom: none; }
+td.num { text-align: right; font-family: var(--mono); white-space: nowrap; }
+td:first-child code { white-space: nowrap; }
+.pair, .tiles { display: grid; gap: 16px; }
+.pair { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.tiles { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.pair > div, .tiles > div { background: var(--block); border-radius: 8px; padding: 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.big { font: 700 28px/1.1 var(--ui); }
+.what { font-weight: 500; }
+.why { font-size: 14px; color: var(--muted); }
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 4px; }
+@media (max-width: 560px) { h1 { font-size: 27px; } .lede { font-size: 16px; } }
+</style>
+
+<main class="wrap">
+<header>
+  <div class="eyebrow">Eye of the System · brain · HackLab #2 Berlin · state of {{STATE}}</div>
+  <h1>Monitoring Brain Architecture</h1>
+  <p class="lede">The brain is the part of the system that understands the marketplace. It keeps a graph of metrics and how they depend on each other, and computes any metric for any segment from the simulator's data. For every new hour of data it uses both to notice a change, find where it happened and what caused it, and write a report without being asked. It also takes in new metric definitions while it runs.</p>
+  <ul class="facts">
+    <li><b>{{N_METRICS}}</b> metrics, <b>{{N_EDGES}}</b> typed edges</li>
+    <li><b>{{N_MODULES}}</b> modules, <b>{{N_LINES}}</b> lines</li>
+    <li><b>{{N_TESTS}}</b> test functions in the <b>{{N_TEST_FILES}}</b> test files that import <code>brain/</code></li>
+    <li>{{HOLDOUT_LINE}}</li>
+  </ul>
+</header>
+
+<section>
+  <h2>From data to incident</h2>
+  <p>On the left is what comes in, and the two modules through which every part reads the data. On the right, from top to bottom: a new metric that arrives at run time, the model of the business, and the loop that runs. Every box that names a <code>.py</code> file is a module of <code>brain/</code> with tests. The other boxes are the files and tables the brain reads and writes.</p>
+  <figure>
+    <div class="fig">{{FIG_PIPELINE}}</div>
+    <figcaption>The brain reads {{N_TABLES}} tables of the simulator through a read-only connection. The table with the injected faults is refused by SQLite itself, so no query, written by us or contributed with a new metric, can read the answer. The extension agent and <code>validate.py</code> read the data through the same store. All data is simulated.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>The metric graph</h2>
+  <p>Drawn from the graph the code loads, not by hand. Every line downward is an exact identity, so a change at the top can be split into the parts each factor explains.</p>
+  <figure>
+    <div class="fig">{{FIG_GRAPH}}</div>
+    <figcaption>{{N_FORMULA}} formula edges are shown in full, all {{N_MAY}} possible-cause edges, and 3 of the {{N_CONTEXT}} context edges. Not drawn: {{N_DEFINITION}} definition edges (how each rate is computed from its numerator and denominator) and {{N_BREAKDOWN}} breakdown edges (every metric by country, platform, category and channel).</figcaption>
+  </figure>
+  <ul class="read">
+    <li><b>Formula edges</b> carry a role: <code>contribution = marketplace_fees + ad_spend − discounts</code>, and everything below is a product. The six boxes in the lowest row of the tree (views_per_session to order_rate) are the step rates of the funnel.</li>
+    <li><b><code>gmv</code> and <code>sessions</code> feed two parents.</b> The graph is a DAG, so the effect of a factor on the outcome is summed over all paths: <code>gmv</code> raises fees and raises discounts, with opposite signs at the top.</li>
+    <li><b>Possible causes</b> are hypotheses with a sign: more stock-outs should lower the add-to-cart rate. They stay assumed in the graph: an incident tests the links of what moved, and the result goes into that incident's report, not into the graph; a question mark means the direction is unknown.</li>
+    <li><b>Context</b> links a metric to releases of the systems behind it, to the freshness of its data sources and to the promo calendar. A derived metric inherits the sources of its parts.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>One tick of the loop</h2>
+  <p><code>python -m brain.run</code> ticks for every new hour of data, and the live loop ticks again while it waits for the next one. Steps 1 to 5 are the monitor and end in alerts. Step 6 turns alerts into incident files. Steps 7 to 10 are the investigator: they run on every tick for every open incident that has a live alert. Every number in the figure is read from the code when this page is built.</p>
+  <figure>
+    <div class="fig">{{FIG_TICK}}</div>
+    <figcaption>Why rates in cells and not the top numbers: with a payment fault in one country and platform, total orders moved by {{NOISE_TOTAL}} units of noise, orders in the affected cell by {{NOISE_CELL}}, and the payment success rate in that cell by {{NOISE_RATE}}. Measured on the simulator's data when the design was reviewed (project README, section 3.8).</figcaption>
+  </figure>
+  <ul class="read">
+    <li><b>Which test.</b> {{N_COUNT_RATES}} of the {{N_WATCHED}} watched rates are counts over counts. Such a rate gets an exact test when its spread from hour to hour is what a binomial gives: the two-sided binomial tail, or the same on the surplus for a ratio that never falls below 1 (payment attempts per checkout). Every other rate, money per order for example, is judged on its residual against its own historical spread, on at least {{MIN_RATIO_VOLUME}} of denominator.</li>
+    <li><b>When a series is judged.</b> After {{MIN_HISTORY_HOURS}} usable hours of history with at least {{MIN_HISTORY_VOLUME}} of pooled denominator. The newest {{REREAD_HOURS}} hours are read and judged again on every tick, because late data and an injection can rewrite them. An alert is live while its newest bad hour is among the newest {{ACTIVE_HOURS}} hours; bad hours no more than {{EPISODE_GAP}} hours apart are one episode.</li>
+    <li><b>Calendar events and late data.</b> A calendar event that covers an alert in time and country explains it when the graph links the metric to the calendar; among the watched rates these are {{CALENDAR_RATES}}. The record is written with status <code>explained</code> and no incident is opened. Hours held for late data are written as one <code>pending</code> record, which is removed when the data is in and the hours are judged.</li>
+    <li><b>Resolving.</b> An incident is not closed because the alerts stop. It is resolved no earlier than {{RESOLVE_HOURS}} hours after the last bad hour, and only once there is enough data that the faulty rate would show, and it does not.</li>
+    <li><b>The cost follows every path.</b> Through the formulas the outcome is a sum of signed products of {{N_ATOMS}} atomic factors, and a rate that sits in several products collects from each. Traffic is taken as given: only rates are judged, so a change in sessions is not part of the cost.</li>
+    <li><b>Doubt is reported.</b> A different place that explains the counts nearly as well (less than {{CLEAR_MARGIN}} apart in log-likelihood) is named under "uncertain". So is a cost that runs through a rate the data does not show yet.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>A new metric</h2>
+  <p>A new metric arrives while the brain runs: a file <code>&lt;name&gt;.yaml</code> in <code>incoming_metrics/</code> with a name and a formula, a query or both. The live loop looks into the folder on every poll. <code>brain/extension.py</code> takes a file once it reads the same on {{SETTLE_LOOKS}} looks in a row, puts the definition through {{N_CHECKS}} checks in the order below and writes the answer to <code>&lt;name&gt;.result.json</code>. No language model is used.</p>
+  <figure>
+    <div class="fig">{{FIG_NEW_METRIC}}</div>
+    <figcaption>The last line of a card says what the check can cost. A check that fails ends the run: the definition is rejected and the metric is not in the graph. A check that warns lets the metric in as tentative, and the message names the caveat. The checks and their order are read from the docstring of <code>brain/extension.py</code>.</figcaption>
+  </figure>
+  <ul class="read">
+    <li><b>The file.</b> At most {{MAX_KB}} KB; a larger one is rejected without being parsed. A changed file replaces what it defined before, and a text that is rejected withdraws the metric.</li>
+    <li><b>The query.</b> It reads the {{N_TABLES}} contract tables only, runs for at most {{SQL_TIMEOUT}} s and returns at most {{SQL_MAX_ROWS}} rows. A file can set the tolerance of its own comparison only above 0 and up to {{MAX_TOLERANCE}}; the default is {{DEFAULT_TOLERANCE}}.</li>
+    <li><b>The formula search.</b> {{N_CANDIDATES}} candidates over the {{N_COLUMN_METRICS}} column metrics, each tried on {{PROBE_ROWS}} rows first and then on all of them. Formulas with constants or with more than two metrics are not searched.</li>
+    <li><b>The windows.</b> The query is compared with its formula on all the data. The split test uses the last {{SPLIT_HOURS}} hours, the check of the whole graph the last {{VALIDATE_DAYS}} days.</li>
+    <li><b>Aliases.</b> One exception to "reported and not added": when the existing twin is itself a tentative contribution and the new definition has no caveat, the new one takes its place, and the twin's file is answered as the alias.</li>
+    <li><b>Errors.</b> After {{MAX_ATTEMPTS}} unexpected errors on the same text, a busy database for example, the file is answered as rejected with the error. The loop goes on in every case.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Measured</h2>
+  <p>A run is a simulated history of {{RUN_DAYS}} days with {{FAULTS_PER_RUN}} injected faults and {{INNOCENTS_PER_RUN}} innocent events. <code>python -m brain.run --replay</code> walks it hour by hour, and <code>sim/score.py</code> compares the incident files with what was injected. There are {{N_RUNS}} runs. The seeds of {{N_HOLDOUT_RUNS}} of them are a holdout: no version of the brain was run on them before. The four tiles show the holdout. The runs used the brain at commit <code>{{RESULTS_COMMIT}}</code>; the replay path has not changed since (narration runs only live). All data is simulated.</p>
+  <div class="tiles">
+{{TILES}}
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Seeds</th><th class="num">Runs</th><th class="num">Faults detected</th><th class="num">Localized</th><th class="num">With the cause</th><th class="num">False alarms</th><th class="num">Watched days</th><th class="num">Innocent events silent</th><th class="num">Mean delay (h)</th></tr></thead>
+      <tbody>
+{{RESULT_ROWS}}
+      </tbody>
+    </table>
+  </div>
+  <p>What is not perfect:</p>
+  <ul class="read">
+{{NOT_PERFECT}}
+  </ul>
+  <p>The results per run and per kind of fault and the full list of limits are in <a href="results.md">docs/results.md</a>. That page and <code>docs/results.json</code> are written by <code>scripts/summarize_evaluation.py</code>; <code>python -m sim.score score</code> reports one run.</p>
+</section>
+
+<section>
+  <h2>Not built</h2>
+  <ul class="read">
+    <li><b>A euro threshold for alerts.</b> A change is judged by its size against the rate's own history, not by what it costs.</li>
+    <li><b>Formulas with constants</b>, or with more than two metrics, in the search for the formula of a new metric.</li>
+    <li><b>Proposing cause links for a new metric.</b> A definition can declare its own; they stay assumed.</li>
+    <li><b>A range around the cost.</b> The cost is one number, and it is noisy for a short incident in a small place.</li>
+    <li><b>Judging volumes</b> such as sessions. Only rates are watched.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>What "validated" means</h2>
+  <p><code>brain/validate.py</code> checks the graph against the data: when the live loop starts and writes the graph export, each time the extension agent adds a metric, and on demand with <code>python -m brain.graph --validate</code>. The report separates two kinds of result, measured here on {{VALIDATION_DAYS}} days of simulator data.</p>
+  <div class="pair">
+    <div><span class="big">{{N_DATA_CHECKS}}</span><span class="what">checks on data</span><span class="why">They can fail: a metric has values in at least {{MIN_COVERAGE}} of the hours, values stay within bounds, a contributed SQL agrees with its formula.</span></div>
+    <div><span class="big">{{N_DEF_CHECKS}}</span><span class="what">hold by definition</span><span class="why">No data can break them: <code>orders = sessions × (orders / sessions)</code>. They show the definitions are consistent and are not presented as evidence.</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Modules</h2>
+  <p>Every module of <code>brain/</code>. The entry points are looked up in the code when this page is built. The last column names the test files that import the module.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Module</th><th class="num">Lines</th><th>Job</th><th>Main entry points</th><th>Tests</th></tr></thead>
+      <tbody>
+{{MODULE_ROWS}}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <span>Generated by <code>docs/build_brain_architecture.py</code> from the graph the brain loads, the constants of its modules, the test files and <code>docs/results.json</code>.</span>
+  <span>The parts are described in sections 3.2 to 3.7 of the project README. The measurements behind the choice of the algorithms are in its section 3.8.</span>
+</footer>
+</main>
