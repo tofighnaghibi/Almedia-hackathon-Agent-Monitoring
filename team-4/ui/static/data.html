@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulator data</title>
+<script>var t = new URLSearchParams(location.search).get('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;</script>
+<link rel="stylesheet" href="/static/console.css">
+<style>
+.topbar { position: sticky; top: 0; z-index: 10; margin-bottom: 16px; }
+.top .sub { font-size: 13px; color: var(--muted); }
+.note { color: var(--ink); max-width: 80ch; margin: 0 0 4px; }
+.legend { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; margin: 0 0 16px; }
+.legend::before { content: ""; width: 14px; height: 10px; border-radius: 3px; background: var(--hot-bg); border: 1px solid var(--hot); flex: none; }
+.legend b { color: var(--hot); font-weight: 600; }
+#filters { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: end; padding: 0 0 16px; }
+#filters label { display: grid; gap: 4px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+#filters input, #filters select { font-family: var(--mono); font-size: 12px; letter-spacing: 0; text-transform: none; font-weight: 400; }
+.wrap { background: var(--block); border: 1px solid var(--line); border-radius: 8px; overflow: auto; max-height: 66vh; }
+table { border-collapse: collapse; width: 100%; font: 400 12px/1.4 var(--mono); font-variant-numeric: tabular-nums; }
+th, td { padding: 8px 16px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--line); }
+th { position: sticky; top: 0; background: var(--block); color: var(--muted); font-size: 11px; font-weight: 600; z-index: 1; }
+td.l, th.l { text-align: left; }
+tr:last-child td { border-bottom: 0; }
+tr:hover td { background: var(--surface); }
+tr.low td { background: var(--hot-bg); }
+tr.low td.psr { color: var(--hot); font-weight: 600; }
+.pager { display: flex; gap: 8px; align-items: center; padding: 16px 0 48px; color: var(--muted); }
+#count { margin-left: 8px; font: 400 12px var(--mono); }
+@media (max-width: 900px) { .page { padding: 0 16px; } }
+@media (max-width: 600px) { .topbar { position: static; } }
+</style>
+</head>
+<body>
+<div class="topbar bar">
+  <div class="page">
+    <header class="top">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12C5 6.5 19 6.5 22 12C19 17.5 5 17.5 2 12Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle class="pupil" cx="12" cy="12" r="3.2"/></svg>
+        <h1>Simulator data</h1>
+      </div>
+      <span class="sub">Read only, straight from data/market.db</span>
+      <a class="navlink grow" href="/">&larr; Console</a>
+    </header>
+  </div>
+</div>
+<div class="page">
+<p class="note" id="note" hidden></p>
+<p class="legend" id="legend" hidden><span><b>Red rows</b>: payment success rate below 0.75 in an hour with at least 5 payment attempts (fewer attempts are too noisy to call).</span></p>
+<div id="filters"></div>
+<div class="wrap"><table id="t"></table></div>
+<div class="pager"><button id="prev">&larr; Newer</button><button id="next">Older &rarr;</button><span id="count"></span></div>
+</div>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var tables = [], cur = null, offset = 0, LIMIT = 50;
+  var NOTES = { ground_truth: 'This is the hidden answer: what was really injected. The monitor never reads this table; the scoring script does.',
+                facts_hourly: 'One row per hour and segment (country, platform, category, channel). All numbers are simulated.',
+                ingestion_log: 'When each source delivered the data for an hour. Normally a few minutes after the hour ends; a late source shows up here.',
+                releases: 'Deployments the monitor may use as context.', calendar: 'Planned events (promos) the monitor may use as context.',
+                sim_meta: 'Simulator bookkeeping: seed, first hour, countries.' };
+  function el(t, c, k) { var e = document.createElement(t); if (c) e.className = c; (k || []).forEach(function (x) { e.appendChild(typeof x === 'string' ? document.createTextNode(x) : x); }); return e; }
+  function get(u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
+
+  var timer = null;
+  function again() { clearTimeout(timer); timer = setTimeout(function () { offset = 0; load(); }, 300); }
+  function filterControls() {
+    var f = $('filters'); f.textContent = '';
+    var sel = el('select'); sel.id = 'table-select';
+    tables.forEach(function (t) { var o = el('option', null, [t.name + ' (' + t.rows.toLocaleString('en') + ' rows)']); o.value = t.name; sel.appendChild(o); });
+    sel.value = cur.name; sel.onchange = function () { select(tables.filter(function (t) { return t.name === sel.value; })[0]); };
+    f.appendChild(el('label', null, ['table', sel]));
+    var cols = cur.columns;
+    ['country', 'platform', 'category', 'channel', 'source', 'kind'].forEach(function (n) {
+      if (cols.indexOf(n) < 0) return;
+      var i = el('input'); i.id = 'f-' + n; i.size = 11; i.placeholder = n; i.oninput = again;
+      f.appendChild(el('label', null, [n, i]));
+    });
+    ['ts_from', 'ts_to'].forEach(function (n) {
+      var i = el('input'); i.id = 'f-' + n; i.size = 20; i.placeholder = '2026-11-22T04:00:00Z'; i.oninput = again;
+      f.appendChild(el('label', null, [n === 'ts_from' ? 'from (UTC)' : 'to (UTC)', i]));
+    });
+    var clr = el('button', null, ['Clear']); clr.onclick = function () { f.querySelectorAll('input').forEach(function (i) { i.value = ''; }); offset = 0; load(); }; f.appendChild(clr);
+  }
+  function query() {
+    var q = 'table=' + cur.name + '&limit=' + LIMIT + '&offset=' + offset;
+    document.querySelectorAll('#filters input').forEach(function (i) { if (i.value.trim()) q += '&' + i.id.slice(2) + '=' + encodeURIComponent(i.value.trim()); });
+    return q;
+  }
+  function load() {
+    get('/api/db/rows?' + query()).then(function (r) {
+      var t = $('t'); t.textContent = '';
+      var head = el('tr'), facts = r.table === 'facts_hourly';
+      r.columns.forEach(function (c, i) {
+        head.appendChild(el('th', i < 5 && typeof r.rows[0] !== 'undefined' && typeof r.rows[0][i] === 'string' ? 'l' : '', [c]));
+        if (facts && i === 4) head.appendChild(el('th', null, ['payment_success_rate']));   // right after the segment columns
+      });
+      t.appendChild(head);
+      $('legend').hidden = !facts;
+      var ia = r.columns.indexOf('payment_attempts'), is = r.columns.indexOf('payment_successes');
+      r.rows.forEach(function (row) {
+        var tr = el('tr');
+        var rate = facts && row[ia] ? row[is] / row[ia] : null;
+        if (facts && rate != null && row[ia] >= 5 && rate < 0.75) tr.className = 'low';
+        row.forEach(function (v, i) {
+          tr.appendChild(el('td', typeof v === 'string' ? 'l' : '', [v == null ? '' : String(v)]));
+          if (facts && i === 4) tr.appendChild(el('td', 'psr', [rate == null ? '' : rate.toFixed(2)]));
+        });
+        t.appendChild(tr);
+      });
+      $('count').textContent = r.total ? (offset + 1) + ' to ' + (offset + r.rows.length) + ' of ' + r.total.toLocaleString('en') + ' rows' : 'no rows';
+      $('prev').disabled = offset === 0; $('next').disabled = offset + LIMIT >= r.total;
+    }).catch(function (e) { $('count').textContent = 'Could not load: ' + e.message; });
+  }
+  function select(t) {
+    cur = t; offset = 0;
+    var n = $('note'); n.hidden = false; n.textContent = NOTES[t.name] || '';
+    filterControls(); load();
+  }
+  $('prev').onclick = function () { offset = Math.max(0, offset - LIMIT); load(); };
+  $('next').onclick = function () { offset += LIMIT; load(); };
+  get('/api/db/tables').then(function (ts) { tables = ts; select(ts[0]); })
+    .catch(function (e) { $('count').textContent = 'No database: ' + e.message; });
+})();
+</script>
+</body>
+</html>

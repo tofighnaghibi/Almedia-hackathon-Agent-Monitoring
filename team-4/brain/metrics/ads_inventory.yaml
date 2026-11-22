@@ -1,0 +1,87 @@
+# Advertising (platform ad revenue) and inventory.
+# Sponsored products are shown on the marketplace itself, so ad impressions follow traffic:
+# ad_impressions = sessions x ad_load separates a traffic surge from a pacing change.
+# Assumption to confirm with the simulator: `stockouts` counts out-of-stock listings that
+# customers tried to view or were shown in an hour.
+metrics:
+  - name: ad_spend
+    description: What advertisers pay for clicks on sponsored products (platform ad revenue).
+    unit: eur
+    column: ad_spend
+    decomposition: ad_clicks * ad_cpc
+    systems: [ads, pacing]
+    source: ads
+    direction: up
+
+  - name: ad_clicks
+    description: Clicks on sponsored products.
+    unit: count
+    column: ad_clicks
+    decomposition: ad_impressions * ad_ctr
+    systems: [ads]
+    source: ads
+    direction: up
+
+  - name: ad_impressions
+    description: Sponsored product impressions.
+    unit: count
+    column: ad_impressions
+    decomposition: sessions * ad_load
+    systems: [ads, pacing]
+    source: ads
+    direction: up
+
+  - name: ad_load
+    description: Sponsored impressions per session - set by the pacing controller, not by traffic.
+    unit: ratio
+    formula: ad_impressions / sessions
+    atomic: true
+    bounds: [0, null]
+    systems: [ads, pacing]
+    direction: none
+
+  - name: ad_ctr
+    description: Clicks per sponsored impression.
+    unit: ratio
+    formula: ad_clicks / ad_impressions
+    atomic: true
+    bounds: [0, 1]
+    systems: [ads]
+    direction: up
+
+  - name: ad_cpc
+    description: Average price per ad click.
+    unit: eur
+    formula: ad_spend / ad_clicks
+    atomic: true
+    bounds: [0, null]
+    systems: [ads, pacing]
+    direction: none
+
+  - name: stockouts
+    description: Out-of-stock listings customers ran into.
+    unit: count
+    column: stockouts
+    systems: [inventory, purchasing, recommendations]
+    source: inventory
+    direction: down
+    # Cause links start here, at the level, not at stockout_rate: the ratio is driven by its
+    # denominator (traffic), so it would "explain" any traffic change, a promo included.
+    may_affect:
+      - metric: add_to_cart_rate
+        prior: 0.6
+        sign: -1
+        note: unavailable products cannot be added to the cart
+      - metric: feed_ctr
+        prior: 0.3
+        sign: 0
+        note: a feed full of unavailable products changes what people click
+
+  - name: stockout_rate
+    description: Out-of-stock listings met per product view (for display; moves with traffic, so it is not used as a cause).
+    unit: ratio
+    formula: stockouts / product_views
+    atomic: true
+    bounds: [0, null]
+    systems: [inventory, purchasing, recommendations]
+    direction: down

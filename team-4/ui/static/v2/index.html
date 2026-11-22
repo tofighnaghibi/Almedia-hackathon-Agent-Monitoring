@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eye of the System</title>
+<script>var t = new URLSearchParams(location.search).get('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;</script>
+<link rel="stylesheet" href="/static/v2/style.css">
+</head>
+<body>
+<header class="masthead" id="masthead">
+  <div class="mast-row">
+    <a class="brand" href="/static/v2/index.html" aria-label="Eye of the System, reload">
+      <svg class="mark" viewBox="0 0 28 28" aria-hidden="true"><path d="M2.5 14C6.2 7.6 21.8 7.6 25.5 14C21.8 20.4 6.2 20.4 2.5 14Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle class="pupil" cx="14" cy="14" r="3.8"/></svg>
+      <span class="brand-name">Eye of the System</span>
+    </a>
+    <div class="clock" title="The newest hour of simulated data the monitor has read">
+      <span class="clock-mode" id="clock-mode">Simulated</span>
+      <span id="clock" class="clock-read">connecting&hellip;</span>
+    </div>
+    <div class="counts" id="counts" aria-label="Incidents by status, all domains"></div>
+    <span id="notice" role="status"></span>
+    <div class="mast-actions">
+      <a class="navlink" href="/data">Data<span class="long"> browser</span></a>
+      <button id="bench-toggle" class="bench-btn" type="button" aria-expanded="false" aria-controls="bench"><span class="demo-dot" aria-hidden="true"></span>Test bench</button>
+    </div>
+  </div>
+  <div class="sub-row">
+    <div class="views" role="tablist" aria-label="View">
+      <button type="button" role="tab" id="tab-brief" aria-selected="true" aria-controls="view-brief">Brief</button>
+      <button type="button" role="tab" id="tab-graph" aria-selected="false" aria-controls="view-graph" tabindex="-1">How the business works</button>
+    </div>
+    <div class="domain-row"><span class="domain-label" id="domain-label">Domain</span><nav id="domains" aria-labelledby="domain-label"></nav></div>
+  </div>
+</header>
+
+<div class="shell" id="shell">
+  <aside class="rail" aria-labelledby="feed-title">
+    <div class="rail-head"><h2 id="feed-title">Incidents</h2></div>
+    <div id="exbadge"></div>
+    <div id="feed"></div>
+  </aside>
+
+  <main class="stage" id="stage">
+    <section id="view-brief" class="view" role="tabpanel" aria-labelledby="tab-brief">
+      <article id="brief" class="brief"></article>
+    </section>
+    <section id="view-graph" class="view view-graph" role="tabpanel" aria-labelledby="tab-graph" hidden>
+      <div class="graph-pane">
+        <div class="graph-head">
+          <div><h2 id="graph-title">How the business works</h2>
+          <p class="graph-sub">Every metric is a formula of the ones to its right. The selected incident lights its path, from the rate that moved up to the outcome.</p></div>
+        </div>
+        <div id="graphwrap"><svg id="g" role="group" aria-label="Metric graph"></svg></div>
+        <div class="legend" aria-hidden="true">
+          <span><i class="sw st-open"></i>Open</span>
+          <span><i class="sw st-ongoing"></i>Ongoing</span>
+          <span><i class="sw st-resolved"></i>Resolved</span>
+          <span><i class="sw"></i>No incident</span>
+          <span><i class="sw outcome"></i>Outcome</span>
+          <span><svg viewBox="0 0 24 10"><line x1="0" y1="5" x2="24" y2="5"/></svg>Formula</span>
+          <span><svg viewBox="0 0 24 10"><line class="may" x1="0" y1="5" x2="24" y2="5"/></svg>Possible cause, + or &minus;</span>
+          <span title="The same metric under a second parent"><i class="sw again"></i>Shown again</span>
+        </div>
+        <div id="extra"></div>
+      </div>
+      <aside class="metric-pane" aria-label="Metric details"><div id="metric" class="metric-detail"></div></aside>
+    </section>
+  </main>
+
+  <aside id="bench" class="bench" aria-labelledby="bench-title" hidden>
+    <div class="bench-head">
+      <span class="demo-tag">Demo</span>
+      <div class="bench-title"><h2 id="bench-title">Test bench</h2>
+        <p>Writes simulated faults into the simulator. The monitor is not told: it has to find them in the data.</p></div>
+      <button id="bench-close" class="icon-btn" type="button" aria-label="Close the test bench">&times;</button>
+    </div>
+    <div class="bench-body">
+      <section class="bench-sec">
+        <h3>Inject a fault</h3>
+        <div class="field"><label for="f-kind">Fault</label><select id="f-kind"></select></div>
+        <div class="field-row">
+          <div class="field" id="w-country"><label for="f-country">Country</label><select id="f-country"></select></div>
+          <div class="field" id="w-platform"><label for="f-platform">Platform</label><select id="f-platform"></select></div>
+          <div class="field" id="w-category"><label for="f-category">Category</label><select id="f-category"></select></div>
+        </div>
+        <button id="f-go" class="primary wide" type="button">Inject fault</button>
+      </section>
+      <section class="bench-sec" id="end-grp" hidden>
+        <h3>In progress</h3>
+        <ul id="end-list" class="end-list"></ul>
+      </section>
+      <section class="bench-sec">
+        <h3>Innocent changes</h3>
+        <div class="inline"><div class="field"><label for="pr-country">Country</label><select id="pr-country"></select></div><button id="pr-go" type="button">Promo (12 h)</button></div>
+        <div class="inline"><div class="field"><label for="ms-category">Category</label><select id="ms-category" aria-label="Category the traffic moves toward"></select></div><button id="ms-go" type="button" title="Traffic moves toward one category; every rate stays the same; no calendar announces it">Mix shift (innocent)</button></div>
+      </section>
+      <section class="bench-sec">
+        <h3>Data</h3>
+        <div class="inline"><div class="field"><label for="dd-source">Source</label><select id="dd-source"></select></div><button id="dd-go" type="button">Arrives 2 h late</button></div>
+      </section>
+      <section class="bench-sec">
+        <h3>New metric</h3>
+        <div class="btn-row"><button id="nm-go" type="button">Add refund_rate</button><button id="nm-dup" type="button" title="payment_rate: the query of payment_success_rate under another name">Add a duplicate metric</button></div>
+      </section>
+      <section class="bench-sec log-sec">
+        <h3>Answers</h3>
+        <ol id="log" class="log" aria-live="polite"><li class="log-empty">Nothing sent yet.</li></ol>
+      </section>
+    </div>
+  </aside>
+</div>
+
+<div id="toast" class="toast" role="status" hidden></div>
+<script src="/static/v2/app.js"></script>
+</body>
+</html>

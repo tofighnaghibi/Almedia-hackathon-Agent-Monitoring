@@ -1,0 +1,69 @@
+{
+  "id": "inc-0001",
+  "status": "open",
+  "fingerprint": "orders|country=DE,platform=Android|release:payments",
+  "first_seen": "2026-11-15T14:00:00Z",
+  "last_seen": "2026-11-15T17:00:00Z",
+  "metric": "orders",
+  "segment": {"country": "DE", "platform": "Android"},
+  "change": {
+    "window": {"start": "2026-11-15T14:00:00Z", "end": "2026-11-15T18:00:00Z"},
+    "observed": 412,
+    "expected": 1190,
+    "delta": -778,
+    "delta_pct": -65.4,
+    "z": -9.8
+  },
+  "impact": {"orders": -778, "gmv_eur": -35010, "contribution_eur": -4201},
+  "contributions": [
+    {"node": "payment_success_rate", "edge": "formula", "share_of_delta": 0.91, "observed": 0.31, "expected": 0.93},
+    {"node": "sessions", "edge": "formula", "share_of_delta": 0.04, "observed": 18350, "expected": 18110},
+    {"node": "checkout_rate", "edge": "formula", "share_of_delta": 0.03, "observed": 0.49, "expected": 0.50}
+  ],
+  "localization": [
+    {"dimension": "country", "segment": "DE", "share_of_delta": 0.97, "surprise": 0.82},
+    {"dimension": "platform", "segment": "Android", "share_of_delta": 0.95, "surprise": 0.79}
+  ],
+  "hypotheses": [
+    {
+      "cause": "release payments-sdk 4.2 for Android in DE at 13:40",
+      "kind": "release",
+      "status": "supported",
+      "score": 0.93,
+      "evidence": [
+        "payment_success_rate in DE x Android fell from 0.93 to 0.31 in the first hour after the release",
+        "iOS and Web in DE are unchanged (0.93, 0.94)",
+        "the release scope (payments, DE, Android) matches the localized segment"
+      ]
+    },
+    {
+      "cause": "traffic drop",
+      "kind": "metric",
+      "status": "rejected",
+      "score": 0.02,
+      "evidence": ["sessions are within 1.3% of expected"]
+    },
+    {
+      "cause": "late payments data",
+      "kind": "freshness",
+      "status": "rejected",
+      "score": 0.0,
+      "evidence": ["all payments hours arrived within 6 minutes"]
+    }
+  ],
+  "trail": [
+    {"step": 1, "action": "detect", "target": "orders", "result": "orders 35% below hour-of-week baseline for 3 hours, z = -6.1"},
+    {"step": 2, "action": "decompose", "target": "orders = sessions * conversion_rate", "result": "conversion_rate explains 96% of the change"},
+    {"step": 3, "action": "decompose", "target": "conversion_rate = ... * payment_success_rate * ...", "result": "payment_success_rate explains 91%"},
+    {"step": 4, "action": "drill_down", "target": "payment_success_rate by country", "result": "DE explains 97%"},
+    {"step": 5, "action": "drill_down", "target": "payment_success_rate in DE by platform", "result": "Android explains 95%"},
+    {"step": 6, "action": "check_context", "target": "freshness:payments", "result": "complete"},
+    {"step": 7, "action": "check_context", "target": "release:payments", "result": "payments-sdk 4.2 for DE Android at 13:40"},
+    {"step": 8, "action": "stop", "target": null, "result": "leading hypothesis explains 91% of the change; nothing upstream explains it better"}
+  ],
+  "uncertain": [
+    "whether all Android app versions are affected or only the newest",
+    "whether payment failures also hit FR once the rollout continues"
+  ],
+  "report": "Orders from Android customers in Germany fell 65% from 14:00. Almost all of it comes from payments: the payment success rate dropped from 93% to 31% right after payments-sdk 4.2 was released for Android in Germany at 13:40. Traffic and checkouts are normal and the data is complete. Estimated loss so far: 778 orders, EUR 35k GMV, EUR 4.2k contribution. Not yet known: which app versions are affected."
+}

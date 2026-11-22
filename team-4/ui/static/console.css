@@ -1,0 +1,102 @@
+/* Console style: graphite on porcelain. Precise, quiet, intentional.
+   One accent (cobalt) for focus, selection and links; status colours only for status. Flat surfaces: a hairline
+   border, never a shadow, glow or colour ramp. Radius 6-8px, 8px grid, weights 400 and 600 (500 only for the large
+   mono readouts). System fonts only: Segoe UI Variable / SF Pro for words, Cascadia Mono / SF Mono for data and ids.
+   Both themes are defined here; ?theme=light|dark (or data-theme on <html>) overrides the system setting. */
+:root {
+  --bg: #F4F5F7;        /* porcelain */
+  --block: #FFFFFF;     /* cards */
+  --line: #E2E5EA;      /* hairlines */
+  --edge: #9AA1AE;      /* graph lines and node outlines */
+  --ink: #13161C;       /* graphite */
+  --muted: #5A6170;
+  --accent: #2F4AC6;    /* cobalt: focus, selection, links, possible-cause lines */
+  --accent-bg: #EDF0FB; /* selected row */
+  --surface: #F7F8FA;   /* quiet panels inside a card, hover */
+  --sel-bg: #13161C;    /* selected segment / primary button */
+  --sel-fg: #FFFFFF;
+  --hot: #B42318;   --hot-bg: #FDECEA;      /* open incident */
+  --amber: #8A5A00; --amber-bg: #FBF0D9;    /* ongoing */
+  --ok: #11694A;    --ok-bg: #E3F3EC;       /* resolved */
+  --ui: "Segoe UI Variable Text", "Segoe UI Variable Display", "SF Pro Text", "SF Pro Display", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display: "Segoe UI Variable Display", "Segoe UI Variable Text", "SF Pro Display", "SF Pro Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Cascadia Mono", "SF Mono", "JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1218; --block: #161B24; --line: #263041; --edge: #4A5568; --ink: #E8ECF2; --muted: #9AA3B2;
+    --accent: #8EA2FF; --accent-bg: #1C2440; --surface: #121720;
+    --sel-bg: #E8ECF2; --sel-fg: #0F1218;
+    --hot: #FF8B7B; --hot-bg: #3A1A18; --amber: #F2C063; --amber-bg: #33280F; --ok: #5FD3A7; --ok-bg: #11291F;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1218; --block: #161B24; --line: #263041; --edge: #4A5568; --ink: #E8ECF2; --muted: #9AA3B2;
+  --accent: #8EA2FF; --accent-bg: #1C2440; --surface: #121720;
+  --sel-bg: #E8ECF2; --sel-fg: #0F1218;
+  --hot: #FF8B7B; --hot-bg: #3A1A18; --amber: #F2C063; --amber-bg: #33280F; --ok: #5FD3A7; --ok-bg: #11291F;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }      /* a hidden element stays hidden even where a rule sets display */
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 14px/1.5 var(--ui); font-variant-numeric: tabular-nums;
+       -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+h1, h2, h3 { margin: 0; line-height: 1.25; font-weight: 600; }
+h1 { font: 600 20px/1.2 var(--display); letter-spacing: -.01em; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.mono, code { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* page frame and the top bar both pages share */
+.page { max-width: 1680px; margin: 0 auto; padding: 0 24px; }
+.bar { background: var(--block); border-bottom: 1px solid var(--line); }
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; min-height: 56px; padding: 8px 0; }
+.top .grow { margin-left: auto; }
+.brand { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.mark { width: 24px; height: 24px; flex: none; color: var(--ink); }
+.mark .pupil { fill: var(--accent); }
+.navlink { font-weight: 600; font-size: 13px; color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 4px 12px; white-space: nowrap; }
+.navlink:hover { border-color: var(--edge); text-decoration: none; }
+
+/* controls */
+button, select, input { font: inherit; font-size: 13px; color: var(--ink); background: var(--block); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; min-height: 32px; }
+select { padding: 4px 8px; }
+input { padding: 4px 8px; }
+button { cursor: pointer; font-weight: 600; }
+button:hover, select:hover { border-color: var(--edge); }
+button.primary, button.on { background: var(--sel-bg); color: var(--sel-fg); border-color: var(--sel-bg); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:disabled { opacity: .45; cursor: default; }
+button:disabled:hover { border-color: var(--line); }
+
+/* status: a word in one colour; open, ongoing and resolved are counted, explained and pending stay muted */
+.pill { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.pill.open { color: var(--hot); } .pill.ongoing, .pill.plausible, .pill.example { color: var(--amber); }
+.pill.example { text-transform: none; letter-spacing: 0; font-size: 12px; white-space: normal; background: var(--amber-bg); border-radius: 6px; padding: 2px 8px; }
+.pill.resolved, .pill.supported { color: var(--ok); } .pill.rejected, .pill.explained, .pill.pending { color: var(--muted); }
+.sev { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-left: 8px; }
+.sev.high { color: var(--hot); } .sev.medium { color: var(--amber); } .sev.low { color: var(--muted); }
+.linkish { background: none; border: 0; padding: 0; margin: 4px 0 12px; color: var(--accent); cursor: pointer; font: inherit; text-align: left; }
+.linkish:hover { text-decoration: underline; }
+/* the colour of a status, for rails, bars and the trace in the graph */
+.st-open { --st: var(--hot); --st-bg: var(--hot-bg); }
+.st-ongoing { --st: var(--amber); --st-bg: var(--amber-bg); }
+.st-resolved { --st: var(--ok); --st-bg: var(--ok-bg); }
+.st-explained, .st-pending, .st-other { --st: var(--muted); --st-bg: var(--surface); }
+
+/* a card: white surface, one hairline, no shadow */
+.card { background: var(--block); border: 1px solid var(--line); border-radius: 8px; }
+.card-head { display: flex; align-items: center; gap: 8px 16px; flex-wrap: wrap; min-height: 48px; padding: 8px 16px; border-bottom: 1px solid var(--line); }
+.card-head h2, .card > h2 { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.empty { padding: 16px; color: var(--muted); }
+.kv { display: grid; grid-template-columns: minmax(104px, max-content) minmax(0, 1fr); gap: 4px 16px; font-size: 13px; }
+.kv > span:nth-child(odd) { color: var(--muted); }      /* the label; a value's own spans (mono) keep the ink */
+.kv > span:nth-child(even) { overflow-wrap: anywhere; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

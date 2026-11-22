@@ -1,0 +1,5158 @@
+{
+  "nodes": [
+    {
+      "id": "ad_spend",
+      "kind": "metric",
+      "label": "ad_spend",
+      "status": "validated",
+      "unit": "eur",
+      "description": "What advertisers pay for clicks on sponsored products (platform ad revenue).",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "ads",
+        "pacing"
+      ],
+      "source": "ads",
+      "sources": [
+        "ads"
+      ],
+      "formula": null,
+      "decomposition": "ad_clicks * ad_cpc",
+      "column": "ad_spend",
+      "outcome": false
+    },
+    {
+      "id": "ad_clicks",
+      "kind": "metric",
+      "label": "ad_clicks",
+      "status": "validated",
+      "unit": "count",
+      "description": "Clicks on sponsored products.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "ads"
+      ],
+      "source": "ads",
+      "sources": [
+        "ads"
+      ],
+      "formula": null,
+      "decomposition": "ad_impressions * ad_ctr",
+      "column": "ad_clicks",
+      "outcome": false
+    },
+    {
+      "id": "ad_impressions",
+      "kind": "metric",
+      "label": "ad_impressions",
+      "status": "validated",
+      "unit": "count",
+      "description": "Sponsored product impressions.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "ads",
+        "pacing"
+      ],
+      "source": "ads",
+      "sources": [
+        "ads"
+      ],
+      "formula": null,
+      "decomposition": "sessions * ad_load",
+      "column": "ad_impressions",
+      "outcome": false
+    },
+    {
+      "id": "ad_load",
+      "kind": "metric",
+      "label": "ad_load",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Sponsored impressions per session - set by the pacing controller, not by traffic.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "none",
+      "systems": [
+        "ads",
+        "pacing"
+      ],
+      "source": null,
+      "sources": [
+        "ads",
+        "traffic"
+      ],
+      "formula": "ad_impressions / sessions",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "ad_ctr",
+      "kind": "metric",
+      "label": "ad_ctr",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Clicks per sponsored impression.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "ads"
+      ],
+      "source": null,
+      "sources": [
+        "ads"
+      ],
+      "formula": "ad_clicks / ad_impressions",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "ad_cpc",
+      "kind": "metric",
+      "label": "ad_cpc",
+      "status": "validated",
+      "unit": "eur",
+      "description": "Average price per ad click.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "none",
+      "systems": [
+        "ads",
+        "pacing"
+      ],
+      "source": null,
+      "sources": [
+        "ads"
+      ],
+      "formula": "ad_spend / ad_clicks",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "stockouts",
+      "kind": "metric",
+      "label": "stockouts",
+      "status": "validated",
+      "unit": "count",
+      "description": "Out-of-stock listings customers ran into.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "down",
+      "systems": [
+        "inventory",
+        "purchasing",
+        "recommendations"
+      ],
+      "source": "inventory",
+      "sources": [
+        "inventory"
+      ],
+      "formula": null,
+      "decomposition": null,
+      "column": "stockouts",
+      "outcome": false
+    },
+    {
+      "id": "stockout_rate",
+      "kind": "metric",
+      "label": "stockout_rate",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Out-of-stock listings met per product view (for display; moves with traffic, so it is not used as a cause).",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "down",
+      "systems": [
+        "inventory",
+        "purchasing",
+        "recommendations"
+      ],
+      "source": null,
+      "sources": [
+        "inventory",
+        "traffic"
+      ],
+      "formula": "stockouts / product_views",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "orders",
+      "kind": "metric",
+      "label": "orders",
+      "status": "validated",
+      "unit": "count",
+      "description": "Completed orders.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [],
+      "source": "orders",
+      "sources": [
+        "orders"
+      ],
+      "formula": null,
+      "decomposition": "sessions * conversion_rate",
+      "column": "orders",
+      "outcome": false
+    },
+    {
+      "id": "conversion_rate",
+      "kind": "metric",
+      "label": "conversion_rate",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Orders per session.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [],
+      "source": null,
+      "sources": [
+        "orders",
+        "traffic"
+      ],
+      "formula": "orders / sessions",
+      "decomposition": "views_per_session * add_to_cart_rate * checkout_rate * payment_attempt_rate * payment_success_rate * order_rate",
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "views_per_session",
+      "kind": "metric",
+      "label": "views_per_session",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Product page views per session.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "search",
+        "recommendations"
+      ],
+      "source": null,
+      "sources": [
+        "traffic"
+      ],
+      "formula": "product_views / sessions",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "add_to_cart_rate",
+      "kind": "metric",
+      "label": "add_to_cart_rate",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Add-to-cart events per product view.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "catalog",
+        "promotions"
+      ],
+      "source": null,
+      "sources": [
+        "traffic"
+      ],
+      "formula": "add_to_cart / product_views",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "checkout_rate",
+      "kind": "metric",
+      "label": "checkout_rate",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Checkouts started per add-to-cart.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "checkout"
+      ],
+      "source": null,
+      "sources": [
+        "orders",
+        "traffic"
+      ],
+      "formula": "checkouts / add_to_cart",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "payment_attempt_rate",
+      "kind": "metric",
+      "label": "payment_attempt_rate",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Payment attempts per checkout (above 1 means retries).",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "none",
+      "systems": [
+        "checkout",
+        "payments",
+        "payments-sdk"
+      ],
+      "source": null,
+      "sources": [
+        "orders",
+        "payments"
+      ],
+      "formula": "payment_attempts / checkouts",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "payment_success_rate",
+      "kind": "metric",
+      "label": "payment_success_rate",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Successful payments per payment attempt.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "payments",
+        "payments-sdk"
+      ],
+      "source": "payments",
+      "sources": [
+        "payments"
+      ],
+      "formula": "payment_successes / payment_attempts",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "order_rate",
+      "kind": "metric",
+      "label": "order_rate",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Orders per successful payment (should stay near 1).",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "orders"
+      ],
+      "source": null,
+      "sources": [
+        "orders",
+        "payments"
+      ],
+      "formula": "orders / payment_successes",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "product_views",
+      "kind": "metric",
+      "label": "product_views",
+      "status": "validated",
+      "unit": "count",
+      "description": "Product page views.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [],
+      "source": "traffic",
+      "sources": [
+        "traffic"
+      ],
+      "formula": null,
+      "decomposition": null,
+      "column": "product_views",
+      "outcome": false
+    },
+    {
+      "id": "add_to_cart",
+      "kind": "metric",
+      "label": "add_to_cart",
+      "status": "validated",
+      "unit": "count",
+      "description": "Add-to-cart events.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [],
+      "source": "traffic",
+      "sources": [
+        "traffic"
+      ],
+      "formula": null,
+      "decomposition": null,
+      "column": "add_to_cart",
+      "outcome": false
+    },
+    {
+      "id": "checkouts",
+      "kind": "metric",
+      "label": "checkouts",
+      "status": "validated",
+      "unit": "count",
+      "description": "Checkouts started.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [],
+      "source": "orders",
+      "sources": [
+        "orders"
+      ],
+      "formula": null,
+      "decomposition": null,
+      "column": "checkouts",
+      "outcome": false
+    },
+    {
+      "id": "payment_attempts",
+      "kind": "metric",
+      "label": "payment_attempts",
+      "status": "validated",
+      "unit": "count",
+      "description": "Payment attempts.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "none",
+      "systems": [
+        "payments",
+        "payments-sdk"
+      ],
+      "source": "payments",
+      "sources": [
+        "payments"
+      ],
+      "formula": null,
+      "decomposition": null,
+      "column": "payment_attempts",
+      "outcome": false
+    },
+    {
+      "id": "payment_successes",
+      "kind": "metric",
+      "label": "payment_successes",
+      "status": "validated",
+      "unit": "count",
+      "description": "Successful payments.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "payments",
+        "payments-sdk"
+      ],
+      "source": "payments",
+      "sources": [
+        "payments"
+      ],
+      "formula": null,
+      "decomposition": null,
+      "column": "payment_successes",
+      "outcome": false
+    },
+    {
+      "id": "contribution",
+      "kind": "metric",
+      "label": "contribution",
+      "status": "validated",
+      "unit": "eur",
+      "description": "Marketplace contribution per hour - fees and ad revenue minus platform-funded discounts.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [],
+      "source": null,
+      "sources": [
+        "ads",
+        "orders"
+      ],
+      "formula": "marketplace_fees + ad_spend - discounts",
+      "decomposition": "marketplace_fees + ad_spend - discounts",
+      "column": null,
+      "outcome": true
+    },
+    {
+      "id": "marketplace_fees",
+      "kind": "metric",
+      "label": "marketplace_fees",
+      "status": "validated",
+      "unit": "eur",
+      "description": "Commission the marketplace earns on sales.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "billing"
+      ],
+      "source": "orders",
+      "sources": [
+        "orders"
+      ],
+      "formula": null,
+      "decomposition": "gmv * take_rate",
+      "column": "marketplace_fees",
+      "outcome": false
+    },
+    {
+      "id": "take_rate",
+      "kind": "metric",
+      "label": "take_rate",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Commission as a share of GMV.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "billing"
+      ],
+      "source": null,
+      "sources": [
+        "orders"
+      ],
+      "formula": "marketplace_fees / gmv",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "discounts",
+      "kind": "metric",
+      "label": "discounts",
+      "status": "validated",
+      "unit": "eur",
+      "description": "Platform-funded discounts given on orders.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "down",
+      "systems": [
+        "pricing"
+      ],
+      "source": "orders",
+      "sources": [
+        "orders"
+      ],
+      "formula": null,
+      "decomposition": "gmv * discount_rate",
+      "column": "discounts",
+      "outcome": false
+    },
+    {
+      "id": "discount_rate",
+      "kind": "metric",
+      "label": "discount_rate",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Platform-funded discounts as a share of GMV.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "down",
+      "systems": [
+        "pricing"
+      ],
+      "source": null,
+      "sources": [
+        "orders"
+      ],
+      "formula": "discounts / gmv",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "gmv",
+      "kind": "metric",
+      "label": "gmv",
+      "status": "validated",
+      "unit": "eur",
+      "description": "Gross merchandise value of completed orders.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [],
+      "source": "orders",
+      "sources": [
+        "orders"
+      ],
+      "formula": null,
+      "decomposition": "orders * aov",
+      "column": "gmv",
+      "outcome": false
+    },
+    {
+      "id": "aov",
+      "kind": "metric",
+      "label": "aov",
+      "status": "validated",
+      "unit": "eur",
+      "description": "Average order value.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [],
+      "source": null,
+      "sources": [
+        "orders"
+      ],
+      "formula": "gmv / orders",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "refunds",
+      "kind": "metric",
+      "label": "refunds",
+      "status": "validated",
+      "unit": "count",
+      "description": "Number of orders refunded.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "down",
+      "systems": [],
+      "source": "orders",
+      "sources": [
+        "orders"
+      ],
+      "formula": null,
+      "decomposition": null,
+      "column": "refunds",
+      "outcome": false
+    },
+    {
+      "id": "sessions",
+      "kind": "metric",
+      "label": "sessions",
+      "status": "validated",
+      "unit": "count",
+      "description": "Visits to the marketplace.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "demand"
+      ],
+      "source": "traffic",
+      "sources": [
+        "traffic"
+      ],
+      "formula": null,
+      "decomposition": null,
+      "column": "sessions",
+      "outcome": false
+    },
+    {
+      "id": "searches",
+      "kind": "metric",
+      "label": "searches",
+      "status": "validated",
+      "unit": "count",
+      "description": "Search queries submitted.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "demand",
+        "search"
+      ],
+      "source": "search",
+      "sources": [
+        "search"
+      ],
+      "formula": null,
+      "decomposition": null,
+      "column": "searches",
+      "outcome": false
+    },
+    {
+      "id": "search_clicks",
+      "kind": "metric",
+      "label": "search_clicks",
+      "status": "validated",
+      "unit": "count",
+      "description": "Clicks on search results.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "search"
+      ],
+      "source": "search",
+      "sources": [
+        "search"
+      ],
+      "formula": null,
+      "decomposition": null,
+      "column": "search_clicks",
+      "outcome": false
+    },
+    {
+      "id": "search_ctr",
+      "kind": "metric",
+      "label": "search_ctr",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Clicks per search - a proxy for result relevance.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "search"
+      ],
+      "source": null,
+      "sources": [
+        "search"
+      ],
+      "formula": "search_clicks / searches",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "feed_impressions",
+      "kind": "metric",
+      "label": "feed_impressions",
+      "status": "validated",
+      "unit": "count",
+      "description": "Products shown in the personalised \"For You\" feed.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "demand",
+        "recommendations"
+      ],
+      "source": "recommendations",
+      "sources": [
+        "recommendations"
+      ],
+      "formula": null,
+      "decomposition": null,
+      "column": "feed_impressions",
+      "outcome": false
+    },
+    {
+      "id": "feed_clicks",
+      "kind": "metric",
+      "label": "feed_clicks",
+      "status": "validated",
+      "unit": "count",
+      "description": "Clicks on feed products.",
+      "origin": "core",
+      "additive": true,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "recommendations"
+      ],
+      "source": "recommendations",
+      "sources": [
+        "recommendations"
+      ],
+      "formula": null,
+      "decomposition": null,
+      "column": "feed_clicks",
+      "outcome": false
+    },
+    {
+      "id": "feed_ctr",
+      "kind": "metric",
+      "label": "feed_ctr",
+      "status": "validated",
+      "unit": "ratio",
+      "description": "Clicks per feed impression.",
+      "origin": "core",
+      "additive": false,
+      "dimensions": [
+        "country",
+        "platform",
+        "category",
+        "channel"
+      ],
+      "direction": "up",
+      "systems": [
+        "recommendations"
+      ],
+      "source": null,
+      "sources": [
+        "recommendations"
+      ],
+      "formula": "feed_clicks / feed_impressions",
+      "decomposition": null,
+      "column": null,
+      "outcome": false
+    },
+    {
+      "id": "ad_spend@country",
+      "kind": "breakdown",
+      "label": "ad_spend by country",
+      "status": "",
+      "metric": "ad_spend",
+      "dimension": "country"
+    },
+    {
+      "id": "ad_spend@platform",
+      "kind": "breakdown",
+      "label": "ad_spend by platform",
+      "status": "",
+      "metric": "ad_spend",
+      "dimension": "platform"
+    },
+    {
+      "id": "ad_spend@category",
+      "kind": "breakdown",
+      "label": "ad_spend by category",
+      "status": "",
+      "metric": "ad_spend",
+      "dimension": "category"
+    },
+    {
+      "id": "ad_spend@channel",
+      "kind": "breakdown",
+      "label": "ad_spend by channel",
+      "status": "",
+      "metric": "ad_spend",
+      "dimension": "channel"
+    },
+    {
+      "id": "release:ads",
+      "kind": "context",
+      "label": "releases of ads",
+      "status": "",
+      "table": "releases",
+      "system": "ads"
+    },
+    {
+      "id": "release:pacing",
+      "kind": "context",
+      "label": "releases of pacing",
+      "status": "",
+      "table": "releases",
+      "system": "pacing"
+    },
+    {
+      "id": "freshness:ads",
+      "kind": "context",
+      "label": "freshness of ads",
+      "status": "",
+      "table": "ingestion_log",
+      "source": "ads"
+    },
+    {
+      "id": "ad_clicks@country",
+      "kind": "breakdown",
+      "label": "ad_clicks by country",
+      "status": "",
+      "metric": "ad_clicks",
+      "dimension": "country"
+    },
+    {
+      "id": "ad_clicks@platform",
+      "kind": "breakdown",
+      "label": "ad_clicks by platform",
+      "status": "",
+      "metric": "ad_clicks",
+      "dimension": "platform"
+    },
+    {
+      "id": "ad_clicks@category",
+      "kind": "breakdown",
+      "label": "ad_clicks by category",
+      "status": "",
+      "metric": "ad_clicks",
+      "dimension": "category"
+    },
+    {
+      "id": "ad_clicks@channel",
+      "kind": "breakdown",
+      "label": "ad_clicks by channel",
+      "status": "",
+      "metric": "ad_clicks",
+      "dimension": "channel"
+    },
+    {
+      "id": "ad_impressions@country",
+      "kind": "breakdown",
+      "label": "ad_impressions by country",
+      "status": "",
+      "metric": "ad_impressions",
+      "dimension": "country"
+    },
+    {
+      "id": "ad_impressions@platform",
+      "kind": "breakdown",
+      "label": "ad_impressions by platform",
+      "status": "",
+      "metric": "ad_impressions",
+      "dimension": "platform"
+    },
+    {
+      "id": "ad_impressions@category",
+      "kind": "breakdown",
+      "label": "ad_impressions by category",
+      "status": "",
+      "metric": "ad_impressions",
+      "dimension": "category"
+    },
+    {
+      "id": "ad_impressions@channel",
+      "kind": "breakdown",
+      "label": "ad_impressions by channel",
+      "status": "",
+      "metric": "ad_impressions",
+      "dimension": "channel"
+    },
+    {
+      "id": "ad_load@country",
+      "kind": "breakdown",
+      "label": "ad_load by country",
+      "status": "",
+      "metric": "ad_load",
+      "dimension": "country"
+    },
+    {
+      "id": "ad_load@platform",
+      "kind": "breakdown",
+      "label": "ad_load by platform",
+      "status": "",
+      "metric": "ad_load",
+      "dimension": "platform"
+    },
+    {
+      "id": "ad_load@category",
+      "kind": "breakdown",
+      "label": "ad_load by category",
+      "status": "",
+      "metric": "ad_load",
+      "dimension": "category"
+    },
+    {
+      "id": "ad_load@channel",
+      "kind": "breakdown",
+      "label": "ad_load by channel",
+      "status": "",
+      "metric": "ad_load",
+      "dimension": "channel"
+    },
+    {
+      "id": "freshness:traffic",
+      "kind": "context",
+      "label": "freshness of traffic",
+      "status": "",
+      "table": "ingestion_log",
+      "source": "traffic"
+    },
+    {
+      "id": "ad_ctr@country",
+      "kind": "breakdown",
+      "label": "ad_ctr by country",
+      "status": "",
+      "metric": "ad_ctr",
+      "dimension": "country"
+    },
+    {
+      "id": "ad_ctr@platform",
+      "kind": "breakdown",
+      "label": "ad_ctr by platform",
+      "status": "",
+      "metric": "ad_ctr",
+      "dimension": "platform"
+    },
+    {
+      "id": "ad_ctr@category",
+      "kind": "breakdown",
+      "label": "ad_ctr by category",
+      "status": "",
+      "metric": "ad_ctr",
+      "dimension": "category"
+    },
+    {
+      "id": "ad_ctr@channel",
+      "kind": "breakdown",
+      "label": "ad_ctr by channel",
+      "status": "",
+      "metric": "ad_ctr",
+      "dimension": "channel"
+    },
+    {
+      "id": "ad_cpc@country",
+      "kind": "breakdown",
+      "label": "ad_cpc by country",
+      "status": "",
+      "metric": "ad_cpc",
+      "dimension": "country"
+    },
+    {
+      "id": "ad_cpc@platform",
+      "kind": "breakdown",
+      "label": "ad_cpc by platform",
+      "status": "",
+      "metric": "ad_cpc",
+      "dimension": "platform"
+    },
+    {
+      "id": "ad_cpc@category",
+      "kind": "breakdown",
+      "label": "ad_cpc by category",
+      "status": "",
+      "metric": "ad_cpc",
+      "dimension": "category"
+    },
+    {
+      "id": "ad_cpc@channel",
+      "kind": "breakdown",
+      "label": "ad_cpc by channel",
+      "status": "",
+      "metric": "ad_cpc",
+      "dimension": "channel"
+    },
+    {
+      "id": "stockouts@country",
+      "kind": "breakdown",
+      "label": "stockouts by country",
+      "status": "",
+      "metric": "stockouts",
+      "dimension": "country"
+    },
+    {
+      "id": "stockouts@platform",
+      "kind": "breakdown",
+      "label": "stockouts by platform",
+      "status": "",
+      "metric": "stockouts",
+      "dimension": "platform"
+    },
+    {
+      "id": "stockouts@category",
+      "kind": "breakdown",
+      "label": "stockouts by category",
+      "status": "",
+      "metric": "stockouts",
+      "dimension": "category"
+    },
+    {
+      "id": "stockouts@channel",
+      "kind": "breakdown",
+      "label": "stockouts by channel",
+      "status": "",
+      "metric": "stockouts",
+      "dimension": "channel"
+    },
+    {
+      "id": "release:inventory",
+      "kind": "context",
+      "label": "releases of inventory",
+      "status": "",
+      "table": "releases",
+      "system": "inventory"
+    },
+    {
+      "id": "release:purchasing",
+      "kind": "context",
+      "label": "releases of purchasing",
+      "status": "",
+      "table": "releases",
+      "system": "purchasing"
+    },
+    {
+      "id": "release:recommendations",
+      "kind": "context",
+      "label": "releases of recommendations",
+      "status": "",
+      "table": "releases",
+      "system": "recommendations"
+    },
+    {
+      "id": "freshness:inventory",
+      "kind": "context",
+      "label": "freshness of inventory",
+      "status": "",
+      "table": "ingestion_log",
+      "source": "inventory"
+    },
+    {
+      "id": "stockout_rate@country",
+      "kind": "breakdown",
+      "label": "stockout_rate by country",
+      "status": "",
+      "metric": "stockout_rate",
+      "dimension": "country"
+    },
+    {
+      "id": "stockout_rate@platform",
+      "kind": "breakdown",
+      "label": "stockout_rate by platform",
+      "status": "",
+      "metric": "stockout_rate",
+      "dimension": "platform"
+    },
+    {
+      "id": "stockout_rate@category",
+      "kind": "breakdown",
+      "label": "stockout_rate by category",
+      "status": "",
+      "metric": "stockout_rate",
+      "dimension": "category"
+    },
+    {
+      "id": "stockout_rate@channel",
+      "kind": "breakdown",
+      "label": "stockout_rate by channel",
+      "status": "",
+      "metric": "stockout_rate",
+      "dimension": "channel"
+    },
+    {
+      "id": "orders@country",
+      "kind": "breakdown",
+      "label": "orders by country",
+      "status": "",
+      "metric": "orders",
+      "dimension": "country"
+    },
+    {
+      "id": "orders@platform",
+      "kind": "breakdown",
+      "label": "orders by platform",
+      "status": "",
+      "metric": "orders",
+      "dimension": "platform"
+    },
+    {
+      "id": "orders@category",
+      "kind": "breakdown",
+      "label": "orders by category",
+      "status": "",
+      "metric": "orders",
+      "dimension": "category"
+    },
+    {
+      "id": "orders@channel",
+      "kind": "breakdown",
+      "label": "orders by channel",
+      "status": "",
+      "metric": "orders",
+      "dimension": "channel"
+    },
+    {
+      "id": "freshness:orders",
+      "kind": "context",
+      "label": "freshness of orders",
+      "status": "",
+      "table": "ingestion_log",
+      "source": "orders"
+    },
+    {
+      "id": "conversion_rate@country",
+      "kind": "breakdown",
+      "label": "conversion_rate by country",
+      "status": "",
+      "metric": "conversion_rate",
+      "dimension": "country"
+    },
+    {
+      "id": "conversion_rate@platform",
+      "kind": "breakdown",
+      "label": "conversion_rate by platform",
+      "status": "",
+      "metric": "conversion_rate",
+      "dimension": "platform"
+    },
+    {
+      "id": "conversion_rate@category",
+      "kind": "breakdown",
+      "label": "conversion_rate by category",
+      "status": "",
+      "metric": "conversion_rate",
+      "dimension": "category"
+    },
+    {
+      "id": "conversion_rate@channel",
+      "kind": "breakdown",
+      "label": "conversion_rate by channel",
+      "status": "",
+      "metric": "conversion_rate",
+      "dimension": "channel"
+    },
+    {
+      "id": "views_per_session@country",
+      "kind": "breakdown",
+      "label": "views_per_session by country",
+      "status": "",
+      "metric": "views_per_session",
+      "dimension": "country"
+    },
+    {
+      "id": "views_per_session@platform",
+      "kind": "breakdown",
+      "label": "views_per_session by platform",
+      "status": "",
+      "metric": "views_per_session",
+      "dimension": "platform"
+    },
+    {
+      "id": "views_per_session@category",
+      "kind": "breakdown",
+      "label": "views_per_session by category",
+      "status": "",
+      "metric": "views_per_session",
+      "dimension": "category"
+    },
+    {
+      "id": "views_per_session@channel",
+      "kind": "breakdown",
+      "label": "views_per_session by channel",
+      "status": "",
+      "metric": "views_per_session",
+      "dimension": "channel"
+    },
+    {
+      "id": "release:search",
+      "kind": "context",
+      "label": "releases of search",
+      "status": "",
+      "table": "releases",
+      "system": "search"
+    },
+    {
+      "id": "add_to_cart_rate@country",
+      "kind": "breakdown",
+      "label": "add_to_cart_rate by country",
+      "status": "",
+      "metric": "add_to_cart_rate",
+      "dimension": "country"
+    },
+    {
+      "id": "add_to_cart_rate@platform",
+      "kind": "breakdown",
+      "label": "add_to_cart_rate by platform",
+      "status": "",
+      "metric": "add_to_cart_rate",
+      "dimension": "platform"
+    },
+    {
+      "id": "add_to_cart_rate@category",
+      "kind": "breakdown",
+      "label": "add_to_cart_rate by category",
+      "status": "",
+      "metric": "add_to_cart_rate",
+      "dimension": "category"
+    },
+    {
+      "id": "add_to_cart_rate@channel",
+      "kind": "breakdown",
+      "label": "add_to_cart_rate by channel",
+      "status": "",
+      "metric": "add_to_cart_rate",
+      "dimension": "channel"
+    },
+    {
+      "id": "release:catalog",
+      "kind": "context",
+      "label": "releases of catalog",
+      "status": "",
+      "table": "releases",
+      "system": "catalog"
+    },
+    {
+      "id": "release:promotions",
+      "kind": "context",
+      "label": "releases of promotions",
+      "status": "",
+      "table": "releases",
+      "system": "promotions"
+    },
+    {
+      "id": "calendar",
+      "kind": "context",
+      "label": "promo and holiday calendar",
+      "status": "",
+      "table": "calendar"
+    },
+    {
+      "id": "checkout_rate@country",
+      "kind": "breakdown",
+      "label": "checkout_rate by country",
+      "status": "",
+      "metric": "checkout_rate",
+      "dimension": "country"
+    },
+    {
+      "id": "checkout_rate@platform",
+      "kind": "breakdown",
+      "label": "checkout_rate by platform",
+      "status": "",
+      "metric": "checkout_rate",
+      "dimension": "platform"
+    },
+    {
+      "id": "checkout_rate@category",
+      "kind": "breakdown",
+      "label": "checkout_rate by category",
+      "status": "",
+      "metric": "checkout_rate",
+      "dimension": "category"
+    },
+    {
+      "id": "checkout_rate@channel",
+      "kind": "breakdown",
+      "label": "checkout_rate by channel",
+      "status": "",
+      "metric": "checkout_rate",
+      "dimension": "channel"
+    },
+    {
+      "id": "release:checkout",
+      "kind": "context",
+      "label": "releases of checkout",
+      "status": "",
+      "table": "releases",
+      "system": "checkout"
+    },
+    {
+      "id": "payment_attempt_rate@country",
+      "kind": "breakdown",
+      "label": "payment_attempt_rate by country",
+      "status": "",
+      "metric": "payment_attempt_rate",
+      "dimension": "country"
+    },
+    {
+      "id": "payment_attempt_rate@platform",
+      "kind": "breakdown",
+      "label": "payment_attempt_rate by platform",
+      "status": "",
+      "metric": "payment_attempt_rate",
+      "dimension": "platform"
+    },
+    {
+      "id": "payment_attempt_rate@category",
+      "kind": "breakdown",
+      "label": "payment_attempt_rate by category",
+      "status": "",
+      "metric": "payment_attempt_rate",
+      "dimension": "category"
+    },
+    {
+      "id": "payment_attempt_rate@channel",
+      "kind": "breakdown",
+      "label": "payment_attempt_rate by channel",
+      "status": "",
+      "metric": "payment_attempt_rate",
+      "dimension": "channel"
+    },
+    {
+      "id": "release:payments",
+      "kind": "context",
+      "label": "releases of payments",
+      "status": "",
+      "table": "releases",
+      "system": "payments"
+    },
+    {
+      "id": "release:payments-sdk",
+      "kind": "context",
+      "label": "releases of payments-sdk",
+      "status": "",
+      "table": "releases",
+      "system": "payments-sdk"
+    },
+    {
+      "id": "freshness:payments",
+      "kind": "context",
+      "label": "freshness of payments",
+      "status": "",
+      "table": "ingestion_log",
+      "source": "payments"
+    },
+    {
+      "id": "payment_success_rate@country",
+      "kind": "breakdown",
+      "label": "payment_success_rate by country",
+      "status": "",
+      "metric": "payment_success_rate",
+      "dimension": "country"
+    },
+    {
+      "id": "payment_success_rate@platform",
+      "kind": "breakdown",
+      "label": "payment_success_rate by platform",
+      "status": "",
+      "metric": "payment_success_rate",
+      "dimension": "platform"
+    },
+    {
+      "id": "payment_success_rate@category",
+      "kind": "breakdown",
+      "label": "payment_success_rate by category",
+      "status": "",
+      "metric": "payment_success_rate",
+      "dimension": "category"
+    },
+    {
+      "id": "payment_success_rate@channel",
+      "kind": "breakdown",
+      "label": "payment_success_rate by channel",
+      "status": "",
+      "metric": "payment_success_rate",
+      "dimension": "channel"
+    },
+    {
+      "id": "order_rate@country",
+      "kind": "breakdown",
+      "label": "order_rate by country",
+      "status": "",
+      "metric": "order_rate",
+      "dimension": "country"
+    },
+    {
+      "id": "order_rate@platform",
+      "kind": "breakdown",
+      "label": "order_rate by platform",
+      "status": "",
+      "metric": "order_rate",
+      "dimension": "platform"
+    },
+    {
+      "id": "order_rate@category",
+      "kind": "breakdown",
+      "label": "order_rate by category",
+      "status": "",
+      "metric": "order_rate",
+      "dimension": "category"
+    },
+    {
+      "id": "order_rate@channel",
+      "kind": "breakdown",
+      "label": "order_rate by channel",
+      "status": "",
+      "metric": "order_rate",
+      "dimension": "channel"
+    },
+    {
+      "id": "release:orders",
+      "kind": "context",
+      "label": "releases of orders",
+      "status": "",
+      "table": "releases",
+      "system": "orders"
+    },
+    {
+      "id": "product_views@country",
+      "kind": "breakdown",
+      "label": "product_views by country",
+      "status": "",
+      "metric": "product_views",
+      "dimension": "country"
+    },
+    {
+      "id": "product_views@platform",
+      "kind": "breakdown",
+      "label": "product_views by platform",
+      "status": "",
+      "metric": "product_views",
+      "dimension": "platform"
+    },
+    {
+      "id": "product_views@category",
+      "kind": "breakdown",
+      "label": "product_views by category",
+      "status": "",
+      "metric": "product_views",
+      "dimension": "category"
+    },
+    {
+      "id": "product_views@channel",
+      "kind": "breakdown",
+      "label": "product_views by channel",
+      "status": "",
+      "metric": "product_views",
+      "dimension": "channel"
+    },
+    {
+      "id": "add_to_cart@country",
+      "kind": "breakdown",
+      "label": "add_to_cart by country",
+      "status": "",
+      "metric": "add_to_cart",
+      "dimension": "country"
+    },
+    {
+      "id": "add_to_cart@platform",
+      "kind": "breakdown",
+      "label": "add_to_cart by platform",
+      "status": "",
+      "metric": "add_to_cart",
+      "dimension": "platform"
+    },
+    {
+      "id": "add_to_cart@category",
+      "kind": "breakdown",
+      "label": "add_to_cart by category",
+      "status": "",
+      "metric": "add_to_cart",
+      "dimension": "category"
+    },
+    {
+      "id": "add_to_cart@channel",
+      "kind": "breakdown",
+      "label": "add_to_cart by channel",
+      "status": "",
+      "metric": "add_to_cart",
+      "dimension": "channel"
+    },
+    {
+      "id": "checkouts@country",
+      "kind": "breakdown",
+      "label": "checkouts by country",
+      "status": "",
+      "metric": "checkouts",
+      "dimension": "country"
+    },
+    {
+      "id": "checkouts@platform",
+      "kind": "breakdown",
+      "label": "checkouts by platform",
+      "status": "",
+      "metric": "checkouts",
+      "dimension": "platform"
+    },
+    {
+      "id": "checkouts@category",
+      "kind": "breakdown",
+      "label": "checkouts by category",
+      "status": "",
+      "metric": "checkouts",
+      "dimension": "category"
+    },
+    {
+      "id": "checkouts@channel",
+      "kind": "breakdown",
+      "label": "checkouts by channel",
+      "status": "",
+      "metric": "checkouts",
+      "dimension": "channel"
+    },
+    {
+      "id": "payment_attempts@country",
+      "kind": "breakdown",
+      "label": "payment_attempts by country",
+      "status": "",
+      "metric": "payment_attempts",
+      "dimension": "country"
+    },
+    {
+      "id": "payment_attempts@platform",
+      "kind": "breakdown",
+      "label": "payment_attempts by platform",
+      "status": "",
+      "metric": "payment_attempts",
+      "dimension": "platform"
+    },
+    {
+      "id": "payment_attempts@category",
+      "kind": "breakdown",
+      "label": "payment_attempts by category",
+      "status": "",
+      "metric": "payment_attempts",
+      "dimension": "category"
+    },
+    {
+      "id": "payment_attempts@channel",
+      "kind": "breakdown",
+      "label": "payment_attempts by channel",
+      "status": "",
+      "metric": "payment_attempts",
+      "dimension": "channel"
+    },
+    {
+      "id": "payment_successes@country",
+      "kind": "breakdown",
+      "label": "payment_successes by country",
+      "status": "",
+      "metric": "payment_successes",
+      "dimension": "country"
+    },
+    {
+      "id": "payment_successes@platform",
+      "kind": "breakdown",
+      "label": "payment_successes by platform",
+      "status": "",
+      "metric": "payment_successes",
+      "dimension": "platform"
+    },
+    {
+      "id": "payment_successes@category",
+      "kind": "breakdown",
+      "label": "payment_successes by category",
+      "status": "",
+      "metric": "payment_successes",
+      "dimension": "category"
+    },
+    {
+      "id": "payment_successes@channel",
+      "kind": "breakdown",
+      "label": "payment_successes by channel",
+      "status": "",
+      "metric": "payment_successes",
+      "dimension": "channel"
+    },
+    {
+      "id": "contribution@country",
+      "kind": "breakdown",
+      "label": "contribution by country",
+      "status": "",
+      "metric": "contribution",
+      "dimension": "country"
+    },
+    {
+      "id": "contribution@platform",
+      "kind": "breakdown",
+      "label": "contribution by platform",
+      "status": "",
+      "metric": "contribution",
+      "dimension": "platform"
+    },
+    {
+      "id": "contribution@category",
+      "kind": "breakdown",
+      "label": "contribution by category",
+      "status": "",
+      "metric": "contribution",
+      "dimension": "category"
+    },
+    {
+      "id": "contribution@channel",
+      "kind": "breakdown",
+      "label": "contribution by channel",
+      "status": "",
+      "metric": "contribution",
+      "dimension": "channel"
+    },
+    {
+      "id": "marketplace_fees@country",
+      "kind": "breakdown",
+      "label": "marketplace_fees by country",
+      "status": "",
+      "metric": "marketplace_fees",
+      "dimension": "country"
+    },
+    {
+      "id": "marketplace_fees@platform",
+      "kind": "breakdown",
+      "label": "marketplace_fees by platform",
+      "status": "",
+      "metric": "marketplace_fees",
+      "dimension": "platform"
+    },
+    {
+      "id": "marketplace_fees@category",
+      "kind": "breakdown",
+      "label": "marketplace_fees by category",
+      "status": "",
+      "metric": "marketplace_fees",
+      "dimension": "category"
+    },
+    {
+      "id": "marketplace_fees@channel",
+      "kind": "breakdown",
+      "label": "marketplace_fees by channel",
+      "status": "",
+      "metric": "marketplace_fees",
+      "dimension": "channel"
+    },
+    {
+      "id": "release:billing",
+      "kind": "context",
+      "label": "releases of billing",
+      "status": "",
+      "table": "releases",
+      "system": "billing"
+    },
+    {
+      "id": "take_rate@country",
+      "kind": "breakdown",
+      "label": "take_rate by country",
+      "status": "",
+      "metric": "take_rate",
+      "dimension": "country"
+    },
+    {
+      "id": "take_rate@platform",
+      "kind": "breakdown",
+      "label": "take_rate by platform",
+      "status": "",
+      "metric": "take_rate",
+      "dimension": "platform"
+    },
+    {
+      "id": "take_rate@category",
+      "kind": "breakdown",
+      "label": "take_rate by category",
+      "status": "",
+      "metric": "take_rate",
+      "dimension": "category"
+    },
+    {
+      "id": "take_rate@channel",
+      "kind": "breakdown",
+      "label": "take_rate by channel",
+      "status": "",
+      "metric": "take_rate",
+      "dimension": "channel"
+    },
+    {
+      "id": "discounts@country",
+      "kind": "breakdown",
+      "label": "discounts by country",
+      "status": "",
+      "metric": "discounts",
+      "dimension": "country"
+    },
+    {
+      "id": "discounts@platform",
+      "kind": "breakdown",
+      "label": "discounts by platform",
+      "status": "",
+      "metric": "discounts",
+      "dimension": "platform"
+    },
+    {
+      "id": "discounts@category",
+      "kind": "breakdown",
+      "label": "discounts by category",
+      "status": "",
+      "metric": "discounts",
+      "dimension": "category"
+    },
+    {
+      "id": "discounts@channel",
+      "kind": "breakdown",
+      "label": "discounts by channel",
+      "status": "",
+      "metric": "discounts",
+      "dimension": "channel"
+    },
+    {
+      "id": "release:pricing",
+      "kind": "context",
+      "label": "releases of pricing",
+      "status": "",
+      "table": "releases",
+      "system": "pricing"
+    },
+    {
+      "id": "discount_rate@country",
+      "kind": "breakdown",
+      "label": "discount_rate by country",
+      "status": "",
+      "metric": "discount_rate",
+      "dimension": "country"
+    },
+    {
+      "id": "discount_rate@platform",
+      "kind": "breakdown",
+      "label": "discount_rate by platform",
+      "status": "",
+      "metric": "discount_rate",
+      "dimension": "platform"
+    },
+    {
+      "id": "discount_rate@category",
+      "kind": "breakdown",
+      "label": "discount_rate by category",
+      "status": "",
+      "metric": "discount_rate",
+      "dimension": "category"
+    },
+    {
+      "id": "discount_rate@channel",
+      "kind": "breakdown",
+      "label": "discount_rate by channel",
+      "status": "",
+      "metric": "discount_rate",
+      "dimension": "channel"
+    },
+    {
+      "id": "gmv@country",
+      "kind": "breakdown",
+      "label": "gmv by country",
+      "status": "",
+      "metric": "gmv",
+      "dimension": "country"
+    },
+    {
+      "id": "gmv@platform",
+      "kind": "breakdown",
+      "label": "gmv by platform",
+      "status": "",
+      "metric": "gmv",
+      "dimension": "platform"
+    },
+    {
+      "id": "gmv@category",
+      "kind": "breakdown",
+      "label": "gmv by category",
+      "status": "",
+      "metric": "gmv",
+      "dimension": "category"
+    },
+    {
+      "id": "gmv@channel",
+      "kind": "breakdown",
+      "label": "gmv by channel",
+      "status": "",
+      "metric": "gmv",
+      "dimension": "channel"
+    },
+    {
+      "id": "aov@country",
+      "kind": "breakdown",
+      "label": "aov by country",
+      "status": "",
+      "metric": "aov",
+      "dimension": "country"
+    },
+    {
+      "id": "aov@platform",
+      "kind": "breakdown",
+      "label": "aov by platform",
+      "status": "",
+      "metric": "aov",
+      "dimension": "platform"
+    },
+    {
+      "id": "aov@category",
+      "kind": "breakdown",
+      "label": "aov by category",
+      "status": "",
+      "metric": "aov",
+      "dimension": "category"
+    },
+    {
+      "id": "aov@channel",
+      "kind": "breakdown",
+      "label": "aov by channel",
+      "status": "",
+      "metric": "aov",
+      "dimension": "channel"
+    },
+    {
+      "id": "refunds@country",
+      "kind": "breakdown",
+      "label": "refunds by country",
+      "status": "",
+      "metric": "refunds",
+      "dimension": "country"
+    },
+    {
+      "id": "refunds@platform",
+      "kind": "breakdown",
+      "label": "refunds by platform",
+      "status": "",
+      "metric": "refunds",
+      "dimension": "platform"
+    },
+    {
+      "id": "refunds@category",
+      "kind": "breakdown",
+      "label": "refunds by category",
+      "status": "",
+      "metric": "refunds",
+      "dimension": "category"
+    },
+    {
+      "id": "refunds@channel",
+      "kind": "breakdown",
+      "label": "refunds by channel",
+      "status": "",
+      "metric": "refunds",
+      "dimension": "channel"
+    },
+    {
+      "id": "sessions@country",
+      "kind": "breakdown",
+      "label": "sessions by country",
+      "status": "",
+      "metric": "sessions",
+      "dimension": "country"
+    },
+    {
+      "id": "sessions@platform",
+      "kind": "breakdown",
+      "label": "sessions by platform",
+      "status": "",
+      "metric": "sessions",
+      "dimension": "platform"
+    },
+    {
+      "id": "sessions@category",
+      "kind": "breakdown",
+      "label": "sessions by category",
+      "status": "",
+      "metric": "sessions",
+      "dimension": "category"
+    },
+    {
+      "id": "sessions@channel",
+      "kind": "breakdown",
+      "label": "sessions by channel",
+      "status": "",
+      "metric": "sessions",
+      "dimension": "channel"
+    },
+    {
+      "id": "release:demand",
+      "kind": "context",
+      "label": "releases of demand",
+      "status": "",
+      "table": "releases",
+      "system": "demand"
+    },
+    {
+      "id": "searches@country",
+      "kind": "breakdown",
+      "label": "searches by country",
+      "status": "",
+      "metric": "searches",
+      "dimension": "country"
+    },
+    {
+      "id": "searches@platform",
+      "kind": "breakdown",
+      "label": "searches by platform",
+      "status": "",
+      "metric": "searches",
+      "dimension": "platform"
+    },
+    {
+      "id": "searches@category",
+      "kind": "breakdown",
+      "label": "searches by category",
+      "status": "",
+      "metric": "searches",
+      "dimension": "category"
+    },
+    {
+      "id": "searches@channel",
+      "kind": "breakdown",
+      "label": "searches by channel",
+      "status": "",
+      "metric": "searches",
+      "dimension": "channel"
+    },
+    {
+      "id": "freshness:search",
+      "kind": "context",
+      "label": "freshness of search",
+      "status": "",
+      "table": "ingestion_log",
+      "source": "search"
+    },
+    {
+      "id": "search_clicks@country",
+      "kind": "breakdown",
+      "label": "search_clicks by country",
+      "status": "",
+      "metric": "search_clicks",
+      "dimension": "country"
+    },
+    {
+      "id": "search_clicks@platform",
+      "kind": "breakdown",
+      "label": "search_clicks by platform",
+      "status": "",
+      "metric": "search_clicks",
+      "dimension": "platform"
+    },
+    {
+      "id": "search_clicks@category",
+      "kind": "breakdown",
+      "label": "search_clicks by category",
+      "status": "",
+      "metric": "search_clicks",
+      "dimension": "category"
+    },
+    {
+      "id": "search_clicks@channel",
+      "kind": "breakdown",
+      "label": "search_clicks by channel",
+      "status": "",
+      "metric": "search_clicks",
+      "dimension": "channel"
+    },
+    {
+      "id": "search_ctr@country",
+      "kind": "breakdown",
+      "label": "search_ctr by country",
+      "status": "",
+      "metric": "search_ctr",
+      "dimension": "country"
+    },
+    {
+      "id": "search_ctr@platform",
+      "kind": "breakdown",
+      "label": "search_ctr by platform",
+      "status": "",
+      "metric": "search_ctr",
+      "dimension": "platform"
+    },
+    {
+      "id": "search_ctr@category",
+      "kind": "breakdown",
+      "label": "search_ctr by category",
+      "status": "",
+      "metric": "search_ctr",
+      "dimension": "category"
+    },
+    {
+      "id": "search_ctr@channel",
+      "kind": "breakdown",
+      "label": "search_ctr by channel",
+      "status": "",
+      "metric": "search_ctr",
+      "dimension": "channel"
+    },
+    {
+      "id": "feed_impressions@country",
+      "kind": "breakdown",
+      "label": "feed_impressions by country",
+      "status": "",
+      "metric": "feed_impressions",
+      "dimension": "country"
+    },
+    {
+      "id": "feed_impressions@platform",
+      "kind": "breakdown",
+      "label": "feed_impressions by platform",
+      "status": "",
+      "metric": "feed_impressions",
+      "dimension": "platform"
+    },
+    {
+      "id": "feed_impressions@category",
+      "kind": "breakdown",
+      "label": "feed_impressions by category",
+      "status": "",
+      "metric": "feed_impressions",
+      "dimension": "category"
+    },
+    {
+      "id": "feed_impressions@channel",
+      "kind": "breakdown",
+      "label": "feed_impressions by channel",
+      "status": "",
+      "metric": "feed_impressions",
+      "dimension": "channel"
+    },
+    {
+      "id": "freshness:recommendations",
+      "kind": "context",
+      "label": "freshness of recommendations",
+      "status": "",
+      "table": "ingestion_log",
+      "source": "recommendations"
+    },
+    {
+      "id": "feed_clicks@country",
+      "kind": "breakdown",
+      "label": "feed_clicks by country",
+      "status": "",
+      "metric": "feed_clicks",
+      "dimension": "country"
+    },
+    {
+      "id": "feed_clicks@platform",
+      "kind": "breakdown",
+      "label": "feed_clicks by platform",
+      "status": "",
+      "metric": "feed_clicks",
+      "dimension": "platform"
+    },
+    {
+      "id": "feed_clicks@category",
+      "kind": "breakdown",
+      "label": "feed_clicks by category",
+      "status": "",
+      "metric": "feed_clicks",
+      "dimension": "category"
+    },
+    {
+      "id": "feed_clicks@channel",
+      "kind": "breakdown",
+      "label": "feed_clicks by channel",
+      "status": "",
+      "metric": "feed_clicks",
+      "dimension": "channel"
+    },
+    {
+      "id": "feed_ctr@country",
+      "kind": "breakdown",
+      "label": "feed_ctr by country",
+      "status": "",
+      "metric": "feed_ctr",
+      "dimension": "country"
+    },
+    {
+      "id": "feed_ctr@platform",
+      "kind": "breakdown",
+      "label": "feed_ctr by platform",
+      "status": "",
+      "metric": "feed_ctr",
+      "dimension": "platform"
+    },
+    {
+      "id": "feed_ctr@category",
+      "kind": "breakdown",
+      "label": "feed_ctr by category",
+      "status": "",
+      "metric": "feed_ctr",
+      "dimension": "category"
+    },
+    {
+      "id": "feed_ctr@channel",
+      "kind": "breakdown",
+      "label": "feed_ctr by channel",
+      "status": "",
+      "metric": "feed_ctr",
+      "dimension": "channel"
+    }
+  ],
+  "edges": [
+    {
+      "id": "formula:ad_spend->ad_clicks",
+      "source": "ad_spend",
+      "target": "ad_clicks",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "ad_clicks * ad_cpc",
+      "role": "factor"
+    },
+    {
+      "id": "formula:ad_spend->ad_cpc",
+      "source": "ad_spend",
+      "target": "ad_cpc",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "ad_clicks * ad_cpc",
+      "role": "factor"
+    },
+    {
+      "id": "breakdown:ad_spend->ad_spend@country",
+      "source": "ad_spend",
+      "target": "ad_spend@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:ad_spend->ad_spend@platform",
+      "source": "ad_spend",
+      "target": "ad_spend@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:ad_spend->ad_spend@category",
+      "source": "ad_spend",
+      "target": "ad_spend@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:ad_spend->ad_spend@channel",
+      "source": "ad_spend",
+      "target": "ad_spend@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:release:ads->ad_spend",
+      "source": "release:ads",
+      "target": "ad_spend",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:pacing->ad_spend",
+      "source": "release:pacing",
+      "target": "ad_spend",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:ads->ad_spend",
+      "source": "freshness:ads",
+      "target": "ad_spend",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "formula:ad_clicks->ad_impressions",
+      "source": "ad_clicks",
+      "target": "ad_impressions",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "ad_impressions * ad_ctr",
+      "role": "factor"
+    },
+    {
+      "id": "formula:ad_clicks->ad_ctr",
+      "source": "ad_clicks",
+      "target": "ad_ctr",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "ad_impressions * ad_ctr",
+      "role": "factor"
+    },
+    {
+      "id": "breakdown:ad_clicks->ad_clicks@country",
+      "source": "ad_clicks",
+      "target": "ad_clicks@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:ad_clicks->ad_clicks@platform",
+      "source": "ad_clicks",
+      "target": "ad_clicks@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:ad_clicks->ad_clicks@category",
+      "source": "ad_clicks",
+      "target": "ad_clicks@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:ad_clicks->ad_clicks@channel",
+      "source": "ad_clicks",
+      "target": "ad_clicks@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:release:ads->ad_clicks",
+      "source": "release:ads",
+      "target": "ad_clicks",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:ads->ad_clicks",
+      "source": "freshness:ads",
+      "target": "ad_clicks",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "formula:ad_impressions->sessions",
+      "source": "ad_impressions",
+      "target": "sessions",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "sessions * ad_load",
+      "role": "factor"
+    },
+    {
+      "id": "formula:ad_impressions->ad_load",
+      "source": "ad_impressions",
+      "target": "ad_load",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "sessions * ad_load",
+      "role": "factor"
+    },
+    {
+      "id": "breakdown:ad_impressions->ad_impressions@country",
+      "source": "ad_impressions",
+      "target": "ad_impressions@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:ad_impressions->ad_impressions@platform",
+      "source": "ad_impressions",
+      "target": "ad_impressions@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:ad_impressions->ad_impressions@category",
+      "source": "ad_impressions",
+      "target": "ad_impressions@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:ad_impressions->ad_impressions@channel",
+      "source": "ad_impressions",
+      "target": "ad_impressions@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:release:ads->ad_impressions",
+      "source": "release:ads",
+      "target": "ad_impressions",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:pacing->ad_impressions",
+      "source": "release:pacing",
+      "target": "ad_impressions",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:ads->ad_impressions",
+      "source": "freshness:ads",
+      "target": "ad_impressions",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "definition:ad_load->ad_impressions",
+      "source": "ad_load",
+      "target": "ad_impressions",
+      "kind": "definition",
+      "status": "",
+      "formula": "ad_impressions / sessions",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:ad_load->sessions",
+      "source": "ad_load",
+      "target": "sessions",
+      "kind": "definition",
+      "status": "",
+      "formula": "ad_impressions / sessions",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:ad_load->ad_load@country",
+      "source": "ad_load",
+      "target": "ad_load@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:ad_load->ad_load@platform",
+      "source": "ad_load",
+      "target": "ad_load@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:ad_load->ad_load@category",
+      "source": "ad_load",
+      "target": "ad_load@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:ad_load->ad_load@channel",
+      "source": "ad_load",
+      "target": "ad_load@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:release:ads->ad_load",
+      "source": "release:ads",
+      "target": "ad_load",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:pacing->ad_load",
+      "source": "release:pacing",
+      "target": "ad_load",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:ads->ad_load",
+      "source": "freshness:ads",
+      "target": "ad_load",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "context:freshness:traffic->ad_load",
+      "source": "freshness:traffic",
+      "target": "ad_load",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "definition:ad_ctr->ad_clicks",
+      "source": "ad_ctr",
+      "target": "ad_clicks",
+      "kind": "definition",
+      "status": "",
+      "formula": "ad_clicks / ad_impressions",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:ad_ctr->ad_impressions",
+      "source": "ad_ctr",
+      "target": "ad_impressions",
+      "kind": "definition",
+      "status": "",
+      "formula": "ad_clicks / ad_impressions",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:ad_ctr->ad_ctr@country",
+      "source": "ad_ctr",
+      "target": "ad_ctr@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:ad_ctr->ad_ctr@platform",
+      "source": "ad_ctr",
+      "target": "ad_ctr@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:ad_ctr->ad_ctr@category",
+      "source": "ad_ctr",
+      "target": "ad_ctr@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:ad_ctr->ad_ctr@channel",
+      "source": "ad_ctr",
+      "target": "ad_ctr@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:release:ads->ad_ctr",
+      "source": "release:ads",
+      "target": "ad_ctr",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:ads->ad_ctr",
+      "source": "freshness:ads",
+      "target": "ad_ctr",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "definition:ad_cpc->ad_spend",
+      "source": "ad_cpc",
+      "target": "ad_spend",
+      "kind": "definition",
+      "status": "",
+      "formula": "ad_spend / ad_clicks",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:ad_cpc->ad_clicks",
+      "source": "ad_cpc",
+      "target": "ad_clicks",
+      "kind": "definition",
+      "status": "",
+      "formula": "ad_spend / ad_clicks",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:ad_cpc->ad_cpc@country",
+      "source": "ad_cpc",
+      "target": "ad_cpc@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:ad_cpc->ad_cpc@platform",
+      "source": "ad_cpc",
+      "target": "ad_cpc@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:ad_cpc->ad_cpc@category",
+      "source": "ad_cpc",
+      "target": "ad_cpc@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:ad_cpc->ad_cpc@channel",
+      "source": "ad_cpc",
+      "target": "ad_cpc@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:release:ads->ad_cpc",
+      "source": "release:ads",
+      "target": "ad_cpc",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:pacing->ad_cpc",
+      "source": "release:pacing",
+      "target": "ad_cpc",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:ads->ad_cpc",
+      "source": "freshness:ads",
+      "target": "ad_cpc",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "breakdown:stockouts->stockouts@country",
+      "source": "stockouts",
+      "target": "stockouts@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:stockouts->stockouts@platform",
+      "source": "stockouts",
+      "target": "stockouts@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:stockouts->stockouts@category",
+      "source": "stockouts",
+      "target": "stockouts@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:stockouts->stockouts@channel",
+      "source": "stockouts",
+      "target": "stockouts@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "may_affect:stockouts->add_to_cart_rate",
+      "source": "stockouts",
+      "target": "add_to_cart_rate",
+      "kind": "may_affect",
+      "status": "assumed",
+      "prior": 0.6,
+      "sign": -1,
+      "note": "unavailable products cannot be added to the cart"
+    },
+    {
+      "id": "may_affect:stockouts->feed_ctr",
+      "source": "stockouts",
+      "target": "feed_ctr",
+      "kind": "may_affect",
+      "status": "assumed",
+      "prior": 0.3,
+      "sign": 0,
+      "note": "a feed full of unavailable products changes what people click"
+    },
+    {
+      "id": "context:release:inventory->stockouts",
+      "source": "release:inventory",
+      "target": "stockouts",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:purchasing->stockouts",
+      "source": "release:purchasing",
+      "target": "stockouts",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:recommendations->stockouts",
+      "source": "release:recommendations",
+      "target": "stockouts",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:inventory->stockouts",
+      "source": "freshness:inventory",
+      "target": "stockouts",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "definition:stockout_rate->stockouts",
+      "source": "stockout_rate",
+      "target": "stockouts",
+      "kind": "definition",
+      "status": "",
+      "formula": "stockouts / product_views",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:stockout_rate->product_views",
+      "source": "stockout_rate",
+      "target": "product_views",
+      "kind": "definition",
+      "status": "",
+      "formula": "stockouts / product_views",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:stockout_rate->stockout_rate@country",
+      "source": "stockout_rate",
+      "target": "stockout_rate@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:stockout_rate->stockout_rate@platform",
+      "source": "stockout_rate",
+      "target": "stockout_rate@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:stockout_rate->stockout_rate@category",
+      "source": "stockout_rate",
+      "target": "stockout_rate@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:stockout_rate->stockout_rate@channel",
+      "source": "stockout_rate",
+      "target": "stockout_rate@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:release:inventory->stockout_rate",
+      "source": "release:inventory",
+      "target": "stockout_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:purchasing->stockout_rate",
+      "source": "release:purchasing",
+      "target": "stockout_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:recommendations->stockout_rate",
+      "source": "release:recommendations",
+      "target": "stockout_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:inventory->stockout_rate",
+      "source": "freshness:inventory",
+      "target": "stockout_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "context:freshness:traffic->stockout_rate",
+      "source": "freshness:traffic",
+      "target": "stockout_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "formula:orders->sessions",
+      "source": "orders",
+      "target": "sessions",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "sessions * conversion_rate",
+      "role": "factor"
+    },
+    {
+      "id": "formula:orders->conversion_rate",
+      "source": "orders",
+      "target": "conversion_rate",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "sessions * conversion_rate",
+      "role": "factor"
+    },
+    {
+      "id": "breakdown:orders->orders@country",
+      "source": "orders",
+      "target": "orders@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:orders->orders@platform",
+      "source": "orders",
+      "target": "orders@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:orders->orders@category",
+      "source": "orders",
+      "target": "orders@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:orders->orders@channel",
+      "source": "orders",
+      "target": "orders@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:freshness:orders->orders",
+      "source": "freshness:orders",
+      "target": "orders",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "formula:conversion_rate->views_per_session",
+      "source": "conversion_rate",
+      "target": "views_per_session",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "views_per_session * add_to_cart_rate * checkout_rate * payment_attempt_rate * payment_success_rate * order_rate",
+      "role": "factor"
+    },
+    {
+      "id": "formula:conversion_rate->add_to_cart_rate",
+      "source": "conversion_rate",
+      "target": "add_to_cart_rate",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "views_per_session * add_to_cart_rate * checkout_rate * payment_attempt_rate * payment_success_rate * order_rate",
+      "role": "factor"
+    },
+    {
+      "id": "formula:conversion_rate->checkout_rate",
+      "source": "conversion_rate",
+      "target": "checkout_rate",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "views_per_session * add_to_cart_rate * checkout_rate * payment_attempt_rate * payment_success_rate * order_rate",
+      "role": "factor"
+    },
+    {
+      "id": "formula:conversion_rate->payment_attempt_rate",
+      "source": "conversion_rate",
+      "target": "payment_attempt_rate",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "views_per_session * add_to_cart_rate * checkout_rate * payment_attempt_rate * payment_success_rate * order_rate",
+      "role": "factor"
+    },
+    {
+      "id": "formula:conversion_rate->payment_success_rate",
+      "source": "conversion_rate",
+      "target": "payment_success_rate",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "views_per_session * add_to_cart_rate * checkout_rate * payment_attempt_rate * payment_success_rate * order_rate",
+      "role": "factor"
+    },
+    {
+      "id": "formula:conversion_rate->order_rate",
+      "source": "conversion_rate",
+      "target": "order_rate",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "views_per_session * add_to_cart_rate * checkout_rate * payment_attempt_rate * payment_success_rate * order_rate",
+      "role": "factor"
+    },
+    {
+      "id": "definition:conversion_rate->orders",
+      "source": "conversion_rate",
+      "target": "orders",
+      "kind": "definition",
+      "status": "",
+      "formula": "orders / sessions",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:conversion_rate->sessions",
+      "source": "conversion_rate",
+      "target": "sessions",
+      "kind": "definition",
+      "status": "",
+      "formula": "orders / sessions",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:conversion_rate->conversion_rate@country",
+      "source": "conversion_rate",
+      "target": "conversion_rate@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:conversion_rate->conversion_rate@platform",
+      "source": "conversion_rate",
+      "target": "conversion_rate@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:conversion_rate->conversion_rate@category",
+      "source": "conversion_rate",
+      "target": "conversion_rate@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:conversion_rate->conversion_rate@channel",
+      "source": "conversion_rate",
+      "target": "conversion_rate@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:freshness:orders->conversion_rate",
+      "source": "freshness:orders",
+      "target": "conversion_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "context:freshness:traffic->conversion_rate",
+      "source": "freshness:traffic",
+      "target": "conversion_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "definition:views_per_session->product_views",
+      "source": "views_per_session",
+      "target": "product_views",
+      "kind": "definition",
+      "status": "",
+      "formula": "product_views / sessions",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:views_per_session->sessions",
+      "source": "views_per_session",
+      "target": "sessions",
+      "kind": "definition",
+      "status": "",
+      "formula": "product_views / sessions",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:views_per_session->views_per_session@country",
+      "source": "views_per_session",
+      "target": "views_per_session@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:views_per_session->views_per_session@platform",
+      "source": "views_per_session",
+      "target": "views_per_session@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:views_per_session->views_per_session@category",
+      "source": "views_per_session",
+      "target": "views_per_session@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:views_per_session->views_per_session@channel",
+      "source": "views_per_session",
+      "target": "views_per_session@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:release:search->views_per_session",
+      "source": "release:search",
+      "target": "views_per_session",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:recommendations->views_per_session",
+      "source": "release:recommendations",
+      "target": "views_per_session",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:traffic->views_per_session",
+      "source": "freshness:traffic",
+      "target": "views_per_session",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "definition:add_to_cart_rate->add_to_cart",
+      "source": "add_to_cart_rate",
+      "target": "add_to_cart",
+      "kind": "definition",
+      "status": "",
+      "formula": "add_to_cart / product_views",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:add_to_cart_rate->product_views",
+      "source": "add_to_cart_rate",
+      "target": "product_views",
+      "kind": "definition",
+      "status": "",
+      "formula": "add_to_cart / product_views",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:add_to_cart_rate->add_to_cart_rate@country",
+      "source": "add_to_cart_rate",
+      "target": "add_to_cart_rate@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:add_to_cart_rate->add_to_cart_rate@platform",
+      "source": "add_to_cart_rate",
+      "target": "add_to_cart_rate@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:add_to_cart_rate->add_to_cart_rate@category",
+      "source": "add_to_cart_rate",
+      "target": "add_to_cart_rate@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:add_to_cart_rate->add_to_cart_rate@channel",
+      "source": "add_to_cart_rate",
+      "target": "add_to_cart_rate@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:release:catalog->add_to_cart_rate",
+      "source": "release:catalog",
+      "target": "add_to_cart_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:promotions->add_to_cart_rate",
+      "source": "release:promotions",
+      "target": "add_to_cart_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:calendar->add_to_cart_rate",
+      "source": "calendar",
+      "target": "add_to_cart_rate",
+      "kind": "context",
+      "status": "",
+      "via": "calendar.country"
+    },
+    {
+      "id": "context:freshness:traffic->add_to_cart_rate",
+      "source": "freshness:traffic",
+      "target": "add_to_cart_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "definition:checkout_rate->checkouts",
+      "source": "checkout_rate",
+      "target": "checkouts",
+      "kind": "definition",
+      "status": "",
+      "formula": "checkouts / add_to_cart",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:checkout_rate->add_to_cart",
+      "source": "checkout_rate",
+      "target": "add_to_cart",
+      "kind": "definition",
+      "status": "",
+      "formula": "checkouts / add_to_cart",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:checkout_rate->checkout_rate@country",
+      "source": "checkout_rate",
+      "target": "checkout_rate@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:checkout_rate->checkout_rate@platform",
+      "source": "checkout_rate",
+      "target": "checkout_rate@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:checkout_rate->checkout_rate@category",
+      "source": "checkout_rate",
+      "target": "checkout_rate@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:checkout_rate->checkout_rate@channel",
+      "source": "checkout_rate",
+      "target": "checkout_rate@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:release:checkout->checkout_rate",
+      "source": "release:checkout",
+      "target": "checkout_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:orders->checkout_rate",
+      "source": "freshness:orders",
+      "target": "checkout_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "context:freshness:traffic->checkout_rate",
+      "source": "freshness:traffic",
+      "target": "checkout_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "definition:payment_attempt_rate->payment_attempts",
+      "source": "payment_attempt_rate",
+      "target": "payment_attempts",
+      "kind": "definition",
+      "status": "",
+      "formula": "payment_attempts / checkouts",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:payment_attempt_rate->checkouts",
+      "source": "payment_attempt_rate",
+      "target": "checkouts",
+      "kind": "definition",
+      "status": "",
+      "formula": "payment_attempts / checkouts",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:payment_attempt_rate->payment_attempt_rate@country",
+      "source": "payment_attempt_rate",
+      "target": "payment_attempt_rate@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:payment_attempt_rate->payment_attempt_rate@platform",
+      "source": "payment_attempt_rate",
+      "target": "payment_attempt_rate@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:payment_attempt_rate->payment_attempt_rate@category",
+      "source": "payment_attempt_rate",
+      "target": "payment_attempt_rate@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:payment_attempt_rate->payment_attempt_rate@channel",
+      "source": "payment_attempt_rate",
+      "target": "payment_attempt_rate@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:release:checkout->payment_attempt_rate",
+      "source": "release:checkout",
+      "target": "payment_attempt_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:payments->payment_attempt_rate",
+      "source": "release:payments",
+      "target": "payment_attempt_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:payments-sdk->payment_attempt_rate",
+      "source": "release:payments-sdk",
+      "target": "payment_attempt_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:orders->payment_attempt_rate",
+      "source": "freshness:orders",
+      "target": "payment_attempt_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "context:freshness:payments->payment_attempt_rate",
+      "source": "freshness:payments",
+      "target": "payment_attempt_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "definition:payment_success_rate->payment_successes",
+      "source": "payment_success_rate",
+      "target": "payment_successes",
+      "kind": "definition",
+      "status": "",
+      "formula": "payment_successes / payment_attempts",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:payment_success_rate->payment_attempts",
+      "source": "payment_success_rate",
+      "target": "payment_attempts",
+      "kind": "definition",
+      "status": "",
+      "formula": "payment_successes / payment_attempts",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:payment_success_rate->payment_success_rate@country",
+      "source": "payment_success_rate",
+      "target": "payment_success_rate@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:payment_success_rate->payment_success_rate@platform",
+      "source": "payment_success_rate",
+      "target": "payment_success_rate@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:payment_success_rate->payment_success_rate@category",
+      "source": "payment_success_rate",
+      "target": "payment_success_rate@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:payment_success_rate->payment_success_rate@channel",
+      "source": "payment_success_rate",
+      "target": "payment_success_rate@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:release:payments->payment_success_rate",
+      "source": "release:payments",
+      "target": "payment_success_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:payments-sdk->payment_success_rate",
+      "source": "release:payments-sdk",
+      "target": "payment_success_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:payments->payment_success_rate",
+      "source": "freshness:payments",
+      "target": "payment_success_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "definition:order_rate->orders",
+      "source": "order_rate",
+      "target": "orders",
+      "kind": "definition",
+      "status": "",
+      "formula": "orders / payment_successes",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:order_rate->payment_successes",
+      "source": "order_rate",
+      "target": "payment_successes",
+      "kind": "definition",
+      "status": "",
+      "formula": "orders / payment_successes",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:order_rate->order_rate@country",
+      "source": "order_rate",
+      "target": "order_rate@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:order_rate->order_rate@platform",
+      "source": "order_rate",
+      "target": "order_rate@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:order_rate->order_rate@category",
+      "source": "order_rate",
+      "target": "order_rate@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:order_rate->order_rate@channel",
+      "source": "order_rate",
+      "target": "order_rate@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:release:orders->order_rate",
+      "source": "release:orders",
+      "target": "order_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:orders->order_rate",
+      "source": "freshness:orders",
+      "target": "order_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "context:freshness:payments->order_rate",
+      "source": "freshness:payments",
+      "target": "order_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "breakdown:product_views->product_views@country",
+      "source": "product_views",
+      "target": "product_views@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:product_views->product_views@platform",
+      "source": "product_views",
+      "target": "product_views@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:product_views->product_views@category",
+      "source": "product_views",
+      "target": "product_views@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:product_views->product_views@channel",
+      "source": "product_views",
+      "target": "product_views@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:freshness:traffic->product_views",
+      "source": "freshness:traffic",
+      "target": "product_views",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "breakdown:add_to_cart->add_to_cart@country",
+      "source": "add_to_cart",
+      "target": "add_to_cart@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:add_to_cart->add_to_cart@platform",
+      "source": "add_to_cart",
+      "target": "add_to_cart@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:add_to_cart->add_to_cart@category",
+      "source": "add_to_cart",
+      "target": "add_to_cart@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:add_to_cart->add_to_cart@channel",
+      "source": "add_to_cart",
+      "target": "add_to_cart@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:freshness:traffic->add_to_cart",
+      "source": "freshness:traffic",
+      "target": "add_to_cart",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "breakdown:checkouts->checkouts@country",
+      "source": "checkouts",
+      "target": "checkouts@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:checkouts->checkouts@platform",
+      "source": "checkouts",
+      "target": "checkouts@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:checkouts->checkouts@category",
+      "source": "checkouts",
+      "target": "checkouts@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:checkouts->checkouts@channel",
+      "source": "checkouts",
+      "target": "checkouts@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:freshness:orders->checkouts",
+      "source": "freshness:orders",
+      "target": "checkouts",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "breakdown:payment_attempts->payment_attempts@country",
+      "source": "payment_attempts",
+      "target": "payment_attempts@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:payment_attempts->payment_attempts@platform",
+      "source": "payment_attempts",
+      "target": "payment_attempts@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:payment_attempts->payment_attempts@category",
+      "source": "payment_attempts",
+      "target": "payment_attempts@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:payment_attempts->payment_attempts@channel",
+      "source": "payment_attempts",
+      "target": "payment_attempts@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:release:payments->payment_attempts",
+      "source": "release:payments",
+      "target": "payment_attempts",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:payments-sdk->payment_attempts",
+      "source": "release:payments-sdk",
+      "target": "payment_attempts",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:payments->payment_attempts",
+      "source": "freshness:payments",
+      "target": "payment_attempts",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "breakdown:payment_successes->payment_successes@country",
+      "source": "payment_successes",
+      "target": "payment_successes@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:payment_successes->payment_successes@platform",
+      "source": "payment_successes",
+      "target": "payment_successes@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:payment_successes->payment_successes@category",
+      "source": "payment_successes",
+      "target": "payment_successes@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:payment_successes->payment_successes@channel",
+      "source": "payment_successes",
+      "target": "payment_successes@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:release:payments->payment_successes",
+      "source": "release:payments",
+      "target": "payment_successes",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:release:payments-sdk->payment_successes",
+      "source": "release:payments-sdk",
+      "target": "payment_successes",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:payments->payment_successes",
+      "source": "freshness:payments",
+      "target": "payment_successes",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "formula:contribution->marketplace_fees",
+      "source": "contribution",
+      "target": "marketplace_fees",
+      "kind": "formula",
+      "status": "",
+      "formula": "marketplace_fees + ad_spend - discounts",
+      "role": "term+"
+    },
+    {
+      "id": "formula:contribution->ad_spend",
+      "source": "contribution",
+      "target": "ad_spend",
+      "kind": "formula",
+      "status": "",
+      "formula": "marketplace_fees + ad_spend - discounts",
+      "role": "term+"
+    },
+    {
+      "id": "formula:contribution->discounts",
+      "source": "contribution",
+      "target": "discounts",
+      "kind": "formula",
+      "status": "",
+      "formula": "marketplace_fees + ad_spend - discounts",
+      "role": "term-"
+    },
+    {
+      "id": "breakdown:contribution->contribution@country",
+      "source": "contribution",
+      "target": "contribution@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:contribution->contribution@platform",
+      "source": "contribution",
+      "target": "contribution@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:contribution->contribution@category",
+      "source": "contribution",
+      "target": "contribution@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:contribution->contribution@channel",
+      "source": "contribution",
+      "target": "contribution@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:freshness:ads->contribution",
+      "source": "freshness:ads",
+      "target": "contribution",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "context:freshness:orders->contribution",
+      "source": "freshness:orders",
+      "target": "contribution",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "formula:marketplace_fees->gmv",
+      "source": "marketplace_fees",
+      "target": "gmv",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "gmv * take_rate",
+      "role": "factor"
+    },
+    {
+      "id": "formula:marketplace_fees->take_rate",
+      "source": "marketplace_fees",
+      "target": "take_rate",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "gmv * take_rate",
+      "role": "factor"
+    },
+    {
+      "id": "breakdown:marketplace_fees->marketplace_fees@country",
+      "source": "marketplace_fees",
+      "target": "marketplace_fees@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:marketplace_fees->marketplace_fees@platform",
+      "source": "marketplace_fees",
+      "target": "marketplace_fees@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:marketplace_fees->marketplace_fees@category",
+      "source": "marketplace_fees",
+      "target": "marketplace_fees@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:marketplace_fees->marketplace_fees@channel",
+      "source": "marketplace_fees",
+      "target": "marketplace_fees@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:release:billing->marketplace_fees",
+      "source": "release:billing",
+      "target": "marketplace_fees",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:orders->marketplace_fees",
+      "source": "freshness:orders",
+      "target": "marketplace_fees",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "definition:take_rate->marketplace_fees",
+      "source": "take_rate",
+      "target": "marketplace_fees",
+      "kind": "definition",
+      "status": "",
+      "formula": "marketplace_fees / gmv",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:take_rate->gmv",
+      "source": "take_rate",
+      "target": "gmv",
+      "kind": "definition",
+      "status": "",
+      "formula": "marketplace_fees / gmv",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:take_rate->take_rate@country",
+      "source": "take_rate",
+      "target": "take_rate@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:take_rate->take_rate@platform",
+      "source": "take_rate",
+      "target": "take_rate@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:take_rate->take_rate@category",
+      "source": "take_rate",
+      "target": "take_rate@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:take_rate->take_rate@channel",
+      "source": "take_rate",
+      "target": "take_rate@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:release:billing->take_rate",
+      "source": "release:billing",
+      "target": "take_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:orders->take_rate",
+      "source": "freshness:orders",
+      "target": "take_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "formula:discounts->gmv",
+      "source": "discounts",
+      "target": "gmv",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "gmv * discount_rate",
+      "role": "factor"
+    },
+    {
+      "id": "formula:discounts->discount_rate",
+      "source": "discounts",
+      "target": "discount_rate",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "gmv * discount_rate",
+      "role": "factor"
+    },
+    {
+      "id": "breakdown:discounts->discounts@country",
+      "source": "discounts",
+      "target": "discounts@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:discounts->discounts@platform",
+      "source": "discounts",
+      "target": "discounts@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:discounts->discounts@category",
+      "source": "discounts",
+      "target": "discounts@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:discounts->discounts@channel",
+      "source": "discounts",
+      "target": "discounts@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:release:pricing->discounts",
+      "source": "release:pricing",
+      "target": "discounts",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:calendar->discounts",
+      "source": "calendar",
+      "target": "discounts",
+      "kind": "context",
+      "status": "",
+      "via": "calendar.country"
+    },
+    {
+      "id": "context:freshness:orders->discounts",
+      "source": "freshness:orders",
+      "target": "discounts",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "definition:discount_rate->discounts",
+      "source": "discount_rate",
+      "target": "discounts",
+      "kind": "definition",
+      "status": "",
+      "formula": "discounts / gmv",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:discount_rate->gmv",
+      "source": "discount_rate",
+      "target": "gmv",
+      "kind": "definition",
+      "status": "",
+      "formula": "discounts / gmv",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:discount_rate->discount_rate@country",
+      "source": "discount_rate",
+      "target": "discount_rate@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:discount_rate->discount_rate@platform",
+      "source": "discount_rate",
+      "target": "discount_rate@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:discount_rate->discount_rate@category",
+      "source": "discount_rate",
+      "target": "discount_rate@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:discount_rate->discount_rate@channel",
+      "source": "discount_rate",
+      "target": "discount_rate@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "may_affect:discount_rate->add_to_cart_rate",
+      "source": "discount_rate",
+      "target": "add_to_cart_rate",
+      "kind": "may_affect",
+      "status": "assumed",
+      "prior": 0.4,
+      "sign": 1,
+      "note": "deeper discounts make more viewers add to cart"
+    },
+    {
+      "id": "context:release:pricing->discount_rate",
+      "source": "release:pricing",
+      "target": "discount_rate",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:calendar->discount_rate",
+      "source": "calendar",
+      "target": "discount_rate",
+      "kind": "context",
+      "status": "",
+      "via": "calendar.country"
+    },
+    {
+      "id": "context:freshness:orders->discount_rate",
+      "source": "freshness:orders",
+      "target": "discount_rate",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "formula:gmv->orders",
+      "source": "gmv",
+      "target": "orders",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "orders * aov",
+      "role": "factor"
+    },
+    {
+      "id": "formula:gmv->aov",
+      "source": "gmv",
+      "target": "aov",
+      "kind": "formula",
+      "status": "validated",
+      "formula": "orders * aov",
+      "role": "factor"
+    },
+    {
+      "id": "breakdown:gmv->gmv@country",
+      "source": "gmv",
+      "target": "gmv@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:gmv->gmv@platform",
+      "source": "gmv",
+      "target": "gmv@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:gmv->gmv@category",
+      "source": "gmv",
+      "target": "gmv@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:gmv->gmv@channel",
+      "source": "gmv",
+      "target": "gmv@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:freshness:orders->gmv",
+      "source": "freshness:orders",
+      "target": "gmv",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "definition:aov->gmv",
+      "source": "aov",
+      "target": "gmv",
+      "kind": "definition",
+      "status": "",
+      "formula": "gmv / orders",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:aov->orders",
+      "source": "aov",
+      "target": "orders",
+      "kind": "definition",
+      "status": "",
+      "formula": "gmv / orders",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:aov->aov@country",
+      "source": "aov",
+      "target": "aov@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:aov->aov@platform",
+      "source": "aov",
+      "target": "aov@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:aov->aov@category",
+      "source": "aov",
+      "target": "aov@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:aov->aov@channel",
+      "source": "aov",
+      "target": "aov@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "context:freshness:orders->aov",
+      "source": "freshness:orders",
+      "target": "aov",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "breakdown:refunds->refunds@country",
+      "source": "refunds",
+      "target": "refunds@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:refunds->refunds@platform",
+      "source": "refunds",
+      "target": "refunds@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:refunds->refunds@category",
+      "source": "refunds",
+      "target": "refunds@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:refunds->refunds@channel",
+      "source": "refunds",
+      "target": "refunds@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:freshness:orders->refunds",
+      "source": "freshness:orders",
+      "target": "refunds",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "breakdown:sessions->sessions@country",
+      "source": "sessions",
+      "target": "sessions@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:sessions->sessions@platform",
+      "source": "sessions",
+      "target": "sessions@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:sessions->sessions@category",
+      "source": "sessions",
+      "target": "sessions@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:sessions->sessions@channel",
+      "source": "sessions",
+      "target": "sessions@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:release:demand->sessions",
+      "source": "release:demand",
+      "target": "sessions",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:calendar->sessions",
+      "source": "calendar",
+      "target": "sessions",
+      "kind": "context",
+      "status": "",
+      "via": "calendar.country"
+    },
+    {
+      "id": "context:freshness:traffic->sessions",
+      "source": "freshness:traffic",
+      "target": "sessions",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "breakdown:searches->searches@country",
+      "source": "searches",
+      "target": "searches@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:searches->searches@platform",
+      "source": "searches",
+      "target": "searches@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:searches->searches@category",
+      "source": "searches",
+      "target": "searches@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:searches->searches@channel",
+      "source": "searches",
+      "target": "searches@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:release:demand->searches",
+      "source": "release:demand",
+      "target": "searches",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:calendar->searches",
+      "source": "calendar",
+      "target": "searches",
+      "kind": "context",
+      "status": "",
+      "via": "calendar.country"
+    },
+    {
+      "id": "context:release:search->searches",
+      "source": "release:search",
+      "target": "searches",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:search->searches",
+      "source": "freshness:search",
+      "target": "searches",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "breakdown:search_clicks->search_clicks@country",
+      "source": "search_clicks",
+      "target": "search_clicks@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:search_clicks->search_clicks@platform",
+      "source": "search_clicks",
+      "target": "search_clicks@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:search_clicks->search_clicks@category",
+      "source": "search_clicks",
+      "target": "search_clicks@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:search_clicks->search_clicks@channel",
+      "source": "search_clicks",
+      "target": "search_clicks@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:release:search->search_clicks",
+      "source": "release:search",
+      "target": "search_clicks",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:search->search_clicks",
+      "source": "freshness:search",
+      "target": "search_clicks",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "definition:search_ctr->search_clicks",
+      "source": "search_ctr",
+      "target": "search_clicks",
+      "kind": "definition",
+      "status": "",
+      "formula": "search_clicks / searches",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:search_ctr->searches",
+      "source": "search_ctr",
+      "target": "searches",
+      "kind": "definition",
+      "status": "",
+      "formula": "search_clicks / searches",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:search_ctr->search_ctr@country",
+      "source": "search_ctr",
+      "target": "search_ctr@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:search_ctr->search_ctr@platform",
+      "source": "search_ctr",
+      "target": "search_ctr@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:search_ctr->search_ctr@category",
+      "source": "search_ctr",
+      "target": "search_ctr@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:search_ctr->search_ctr@channel",
+      "source": "search_ctr",
+      "target": "search_ctr@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "may_affect:search_ctr->views_per_session",
+      "source": "search_ctr",
+      "target": "views_per_session",
+      "kind": "may_affect",
+      "status": "assumed",
+      "prior": 0.5,
+      "sign": 1,
+      "note": "relevant search results lead customers to product pages"
+    },
+    {
+      "id": "context:release:search->search_ctr",
+      "source": "release:search",
+      "target": "search_ctr",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:search->search_ctr",
+      "source": "freshness:search",
+      "target": "search_ctr",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    },
+    {
+      "id": "breakdown:feed_impressions->feed_impressions@country",
+      "source": "feed_impressions",
+      "target": "feed_impressions@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:feed_impressions->feed_impressions@platform",
+      "source": "feed_impressions",
+      "target": "feed_impressions@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:feed_impressions->feed_impressions@category",
+      "source": "feed_impressions",
+      "target": "feed_impressions@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:feed_impressions->feed_impressions@channel",
+      "source": "feed_impressions",
+      "target": "feed_impressions@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:release:demand->feed_impressions",
+      "source": "release:demand",
+      "target": "feed_impressions",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:calendar->feed_impressions",
+      "source": "calendar",
+      "target": "feed_impressions",
+      "kind": "context",
+      "status": "",
+      "via": "calendar.country"
+    },
+    {
+      "id": "context:release:recommendations->feed_impressions",
+      "source": "release:recommendations",
+      "target": "feed_impressions",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:recommendations->feed_impressions",
+      "source": "freshness:recommendations",
+      "target": "feed_impressions",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "breakdown:feed_clicks->feed_clicks@country",
+      "source": "feed_clicks",
+      "target": "feed_clicks@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:feed_clicks->feed_clicks@platform",
+      "source": "feed_clicks",
+      "target": "feed_clicks@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:feed_clicks->feed_clicks@category",
+      "source": "feed_clicks",
+      "target": "feed_clicks@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "sum"
+    },
+    {
+      "id": "breakdown:feed_clicks->feed_clicks@channel",
+      "source": "feed_clicks",
+      "target": "feed_clicks@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "sum"
+    },
+    {
+      "id": "context:release:recommendations->feed_clicks",
+      "source": "release:recommendations",
+      "target": "feed_clicks",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:recommendations->feed_clicks",
+      "source": "freshness:recommendations",
+      "target": "feed_clicks",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": false
+    },
+    {
+      "id": "definition:feed_ctr->feed_clicks",
+      "source": "feed_ctr",
+      "target": "feed_clicks",
+      "kind": "definition",
+      "status": "",
+      "formula": "feed_clicks / feed_impressions",
+      "role": "numerator"
+    },
+    {
+      "id": "definition:feed_ctr->feed_impressions",
+      "source": "feed_ctr",
+      "target": "feed_impressions",
+      "kind": "definition",
+      "status": "",
+      "formula": "feed_clicks / feed_impressions",
+      "role": "denominator"
+    },
+    {
+      "id": "breakdown:feed_ctr->feed_ctr@country",
+      "source": "feed_ctr",
+      "target": "feed_ctr@country",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "country",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:feed_ctr->feed_ctr@platform",
+      "source": "feed_ctr",
+      "target": "feed_ctr@platform",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "platform",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:feed_ctr->feed_ctr@category",
+      "source": "feed_ctr",
+      "target": "feed_ctr@category",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "category",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "breakdown:feed_ctr->feed_ctr@channel",
+      "source": "feed_ctr",
+      "target": "feed_ctr@channel",
+      "kind": "breakdown",
+      "status": "",
+      "dimension": "channel",
+      "aggregation": "ratio_of_sums"
+    },
+    {
+      "id": "may_affect:feed_ctr->views_per_session",
+      "source": "feed_ctr",
+      "target": "views_per_session",
+      "kind": "may_affect",
+      "status": "assumed",
+      "prior": 0.4,
+      "sign": 1,
+      "note": "feed clicks open product pages"
+    },
+    {
+      "id": "may_affect:feed_ctr->add_to_cart_rate",
+      "source": "feed_ctr",
+      "target": "add_to_cart_rate",
+      "kind": "may_affect",
+      "status": "assumed",
+      "prior": 0.3,
+      "sign": -1,
+      "note": "a feed that sends viewers to products they cannot buy lowers add-to-cart"
+    },
+    {
+      "id": "context:release:recommendations->feed_ctr",
+      "source": "release:recommendations",
+      "target": "feed_ctr",
+      "kind": "context",
+      "status": "",
+      "via": "releases.system"
+    },
+    {
+      "id": "context:freshness:recommendations->feed_ctr",
+      "source": "freshness:recommendations",
+      "target": "feed_ctr",
+      "kind": "context",
+      "status": "",
+      "via": "ingestion_log.source",
+      "inherited": true
+    }
+  ],
+  "top_outcomes": [
+    "contribution"
+  ],
+  "unplaced_roots": [],
+  "trees": [
+    {
+      "metric": "contribution",
+      "role": null,
+      "repeated": false,
+      "children": [
+        {
+          "metric": "marketplace_fees",
+          "role": "term+",
+          "repeated": false,
+          "children": [
+            {
+              "metric": "gmv",
+              "role": "factor",
+              "repeated": false,
+              "children": [
+                {
+                  "metric": "orders",
+                  "role": "factor",
+                  "repeated": false,
+                  "children": [
+                    {
+                      "metric": "sessions",
+                      "role": "factor",
+                      "repeated": false,
+                      "children": []
+                    },
+                    {
+                      "metric": "conversion_rate",
+                      "role": "factor",
+                      "repeated": false,
+                      "children": [
+                        {
+                          "metric": "views_per_session",
+                          "role": "factor",
+                          "repeated": false,
+                          "children": []
+                        },
+                        {
+                          "metric": "add_to_cart_rate",
+                          "role": "factor",
+                          "repeated": false,
+                          "children": []
+                        },
+                        {
+                          "metric": "checkout_rate",
+                          "role": "factor",
+                          "repeated": false,
+                          "children": []
+                        },
+                        {
+                          "metric": "payment_attempt_rate",
+                          "role": "factor",
+                          "repeated": false,
+                          "children": []
+                        },
+                        {
+                          "metric": "payment_success_rate",
+                          "role": "factor",
+                          "repeated": false,
+                          "children": []
+                        },
+                        {
+                          "metric": "order_rate",
+                          "role": "factor",
+                          "repeated": false,
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "metric": "aov",
+                  "role": "factor",
+                  "repeated": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "metric": "take_rate",
+              "role": "factor",
+              "repeated": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "metric": "ad_spend",
+          "role": "term+",
+          "repeated": false,
+          "children": [
+            {
+              "metric": "ad_clicks",
+              "role": "factor",
+              "repeated": false,
+              "children": [
+                {
+                  "metric": "ad_impressions",
+                  "role": "factor",
+                  "repeated": false,
+                  "children": [
+                    {
+                      "metric": "sessions",
+                      "role": "factor",
+                      "repeated": true,
+                      "children": []
+                    },
+                    {
+                      "metric": "ad_load",
+                      "role": "factor",
+                      "repeated": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "metric": "ad_ctr",
+                  "role": "factor",
+                  "repeated": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "metric": "ad_cpc",
+              "role": "factor",
+              "repeated": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "metric": "discounts",
+          "role": "term-",
+          "repeated": false,
+          "children": [
+            {
+              "metric": "gmv",
+              "role": "factor",
+              "repeated": true,
+              "children": []
+            },
+            {
+              "metric": "discount_rate",
+              "role": "factor",
+              "repeated": false,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "dimensions": [
+    "country",
+    "platform",
+    "category",
+    "channel"
+  ]
+}

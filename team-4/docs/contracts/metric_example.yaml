@@ -1,0 +1,11 @@
+# How a new metric arrives (README §3.1). The contributor does not say where it belongs
+# in the graph; the extension agent finds its connections and validates them.
+name: refund_rate
+description: Share of orders refunded
+formula: refunds / orders          # optional; the agent infers it when missing
+sql: >
+  SELECT ts, country, platform, category, channel,
+         SUM(refunds) * 1.0 / NULLIF(SUM(orders), 0) AS value
+  FROM facts_hourly GROUP BY ts, country, platform, category, channel
+dimensions: [country, platform, category, channel]
+unit: ratio

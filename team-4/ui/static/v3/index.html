@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eye of the System</title>
+<script>var t = new URLSearchParams(location.search).get('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;</script>
+<link rel="icon" id="favicon" href="data:,">
+<link rel="stylesheet" href="/static/v3/style.css">
+</head>
+<body>
+<div class="app" id="app">
+  <header class="hdr">
+    <div class="hdr-row">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.25" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 12L18.54 5.46A9.25 9.25 0 0 0 8.84 3.31Q14.5 8.68 12 12Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle class="acc" cx="8.46" cy="15.54" r="2"/></svg>
+        <h1>Eye of the System</h1>
+      </div>
+      <div class="clock" title="The newest hour of simulated data the monitor has read">
+        <span class="clock-mode" id="clock-mode">Simulated</span>
+        <span id="clock" class="clock-read">connecting...</span>
+        <span class="clock-tz" id="clock-tz"></span>
+      </div>
+      <span id="notice" role="status"></span>
+      <div class="counts" id="counts" aria-label="Incidents by status"></div>
+      <div class="hdr-actions">
+        <a class="hbtn" href="/data">Data browser <span aria-hidden="true">&rarr;</span></a>
+        <button class="hbtn bench-btn" id="bench-btn" aria-expanded="false" aria-controls="bench"><span class="demo-tag">DEMO</span>Test bench</button>
+        <button class="hbtn icon" id="settings-btn" aria-label="Settings" title="Settings (,)" aria-haspopup="dialog" aria-expanded="false" aria-controls="settings">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8.6 2.5h2.8l.4 2.1 1.3.7 2-.8 1.4 2.4-1.6 1.4v1.4l1.6 1.4-1.4 2.4-2-.8-1.3.7-.4 2.1H8.6l-.4-2.1-1.3-.7-2 .8-1.4-2.4 1.6-1.4V8.3L3.5 6.9l1.4-2.4 2 .8 1.3-.7z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="10" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+        <button class="hbtn icon" id="theme-btn" aria-label="Switch between light and dark theme" title="Switch between light and dark theme">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 3.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="scope-row">
+      <span class="lbl" id="dom-lbl">Domain</span>
+      <nav id="domains" aria-labelledby="dom-lbl"></nav>
+      <span id="exbadge"></span>
+    </div>
+  </header>
+
+  <!-- the dock comes before the canvas in the tab order (pick an incident, then its graph and report); the grid puts it at the bottom -->
+  <footer class="dock" aria-label="Incidents">
+    <div class="dock-head"><h2 id="feed-title">Incidents</h2><span class="dock-sub" id="feed-sub"></span></div>
+    <div class="dock-track" id="feed"></div>
+  </footer>
+
+  <main class="stage" id="stage">
+    <div class="canvas" id="canvas">
+      <svg id="g" aria-label="Metric graph"><g id="vp"><g id="l-edges"></g><g id="l-trace"></g><g id="l-nodes"></g><g id="l-tags"></g><g id="l-pins"></g></g></svg>
+      <div class="cv-empty" id="cv-empty" hidden></div>
+
+      <div class="cv-title" id="cv-title">
+        <span class="cv-name" id="graph-title">Metric graph</span>
+        <span class="cv-hint">Drag to move, right-drag a box to place it, scroll to zoom, click a metric for its definition</span>
+      </div>
+      <button class="replay-fab" id="replay-fab" hidden>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>
+        Replay the investigation
+      </button>
+
+      <section class="replay" id="replay" hidden aria-label="Replay of the investigation">
+        <div class="rp-top">
+          <span class="rp-count" id="rp-count">Step 1 of 1</span>
+          <span class="rp-verb" id="rp-verb">watch</span>
+          <span class="rp-target" id="rp-target"></span>
+          <button class="rp-x" id="rp-close" aria-label="Stop the replay">Stop replay</button>
+        </div>
+        <p class="rp-result" id="rp-result" aria-live="polite"></p>
+        <div class="rp-nav">
+          <button id="rp-prev" aria-label="Previous step"><span aria-hidden="true">&larr;</span> Previous</button>
+          <div class="rp-rail" id="rp-rail"></div>
+          <button id="rp-play" class="rp-play">Play</button>
+          <button id="rp-next" class="primary" aria-label="Next step">Next <span aria-hidden="true">&rarr;</span></button>
+        </div>
+      </section>
+
+      <div class="legend" id="legend">
+        <button class="legend-toggle" id="legend-btn" aria-expanded="false" aria-controls="legend-body">Legend</button>
+        <div class="legend-body" id="legend-body" hidden>
+          <div class="lg-col">
+            <span class="lg-h">Incident on the metric</span>
+            <span><i class="dot st-open"></i>Open</span>
+            <span><i class="dot st-ongoing"></i>Ongoing</span>
+            <span><i class="dot st-resolved"></i>Resolved</span>
+            <span><i class="dot none"></i>No incident</span>
+          </div>
+          <div class="lg-col">
+            <span class="lg-h">In the selected incident</span>
+            <span><i class="bdg bad">&#9660; 12%</i>Moved down</span>
+            <span><i class="bdg up">&#9650; 8%</i>Moved up</span>
+            <span><i class="bdg held">held</i>Checked, normal</span>
+            <span><i class="pin">3</i>Replay step</span>
+          </div>
+          <div class="lg-col lg-links">
+            <span class="lg-h">Links</span>
+            <span><svg class="lg-sign" viewBox="0 0 56 20" aria-hidden="true"><path d="M2,12 L46,12" class="lg-line"/><rect class="lg-target" x="46" y="4.5" width="14" height="15" rx="3"/></svg>Formula</span>
+            <!-- the possible-cause samples are drawn by app.js (drawSignSamples) in the cause mark picked on the right -->
+            <span><svg class="lg-sign" id="lg-sign-up" viewBox="0 0 56 20" aria-hidden="true"></svg>Possible cause, may raise</span>
+            <span><svg class="lg-sign" id="lg-sign-down" viewBox="0 0 56 20" aria-hidden="true"></svg>May lower</span>
+            <span><svg class="lg-sign" id="lg-sign-any" viewBox="0 0 56 20" aria-hidden="true"></svg>May affect, sign unknown</span>
+            <span class="lg-note">Heavier dashes: more likely</span>
+            <span><i class="sw outcome"></i>Outcome</span>
+            <span><i class="sw again"></i>Shown again</span>
+          </div>
+          <div class="lg-col lg-pick" role="radiogroup" aria-labelledby="lg-pick-h">
+            <span class="lg-h" id="lg-pick-h">Cause mark</span>
+            <label title="A small grey diamond with + or &minus; half way along the link, an arrowhead at the metric it affects"><input type="radio" name="cause-mark" value="1" checked><b>1</b>Tag on the line</label>
+            <label title="An open arrowhead at the metric it affects, with + or &minus; beside it"><input type="radio" name="cause-mark" value="2"><b>2</b>Sign at the arrow</label>
+            <label title="A chip half way along with a rising or falling line, a small arrow after it towards the metric it affects"><input type="radio" name="cause-mark" value="3"><b>3</b>Trend chip</label>
+            <label title="The link ends in an arrowhead if it may raise the metric, a flat bar if it may lower it, a ring if unknown; heavier dashes are more likely"><input type="radio" name="cause-mark" value="4"><b>4</b>Arrow, bar or ring</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="tools">
+        <div class="zoom" role="group" aria-label="View">
+          <button id="z-out" aria-label="Zoom out" title="Zoom out">&minus;</button>
+          <span id="z-level" class="z-level">100%</span>
+          <button id="z-in" aria-label="Zoom in" title="Zoom in">+</button>
+          <button id="z-fit" title="Fit the whole graph in view">Fit</button>
+          <button id="z-reset" title="Back to 100%, the graph's start in the top left">Reset</button>
+          <button id="z-map" aria-pressed="true" title="Show or hide the minimap">Map</button>
+          <button id="z-layout" title="Put every box you moved back in its place" hidden>Layout</button>
+        </div>
+        <svg id="mini" class="mini" aria-label="Minimap: click to move the view"><g id="mini-nodes"></g><rect id="mini-view" class="mini-view"></rect></svg>
+      </div>
+      <div class="flash" id="flash" role="status" hidden></div>
+    </div>
+
+    <section class="bench" id="bench" hidden aria-label="Test bench">
+      <div class="bench-head">
+        <span class="demo-tag">DEMO</span>
+        <b>Test bench</b>
+        <span class="muted">Writes simulated faults into the simulator. The monitor cannot see these buttons; it has to find the change in the data.</span>
+        <button class="hbtn bench-close" id="bench-close">Close</button>
+      </div>
+      <div class="controls">
+        <div class="grp grp-fault"><label for="f-kind">Fault</label>
+          <div><select id="f-kind"></select><select id="f-country" aria-label="Country"></select><select id="f-platform" aria-label="Platform"></select><select id="f-category" aria-label="Category"></select>
+          <button id="f-go" class="primary">Inject fault</button></div></div>
+        <div class="grp" id="end-grp" hidden><label for="end-select">In progress</label>
+          <div><select id="end-select"></select><button id="end-go">End it (rollback)</button></div></div>
+        <div class="grp"><label for="pr-country">Innocent change</label>
+          <div><select id="pr-country"></select><button id="pr-go">Promo (12 h)</button>
+          <select id="ms-category" aria-label="Category the traffic moves toward"></select><button id="ms-go" title="Traffic moves toward one category; every rate stays the same; no calendar announces it">Mix shift (innocent)</button></div></div>
+        <div class="grp"><label for="dd-source">Data</label>
+          <div><select id="dd-source"></select><button id="dd-go">Arrives 2 h late</button></div></div>
+        <div class="grp"><label>New metric</label><div><button id="nm-go">Add refund_rate</button><button id="nm-dup" title="payment_rate: the query of payment_success_rate under another name">Add a duplicate metric</button></div></div>
+      </div>
+      <div id="toast" role="status"></div>
+    </section>
+
+    <aside class="sheet" id="sheet" aria-label="Report" hidden>
+      <div class="sheet-head">
+        <div class="sheet-title" id="detail-title">Details</div>
+        <span id="detail-status"></span>
+        <button class="hbtn icon pin-btn" id="pin-btn" aria-pressed="true" title="Pinned: the report keeps its own column">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 2.5h6l-1 5 3 3v1.5H5V10.5l3-3z M10 12v6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <span id="pin-lbl">Pinned</span>
+        </button>
+        <button class="hbtn icon" id="sheet-close" aria-label="Close the report" title="Close the report (Esc)">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="sheet-body" id="detail"></div>
+    </aside>
+  </main>
+
+</div>
+
+<div class="set-scrim" id="set-scrim" hidden></div>
+<section class="settings" id="settings" role="dialog" aria-modal="true" aria-labelledby="set-title" aria-describedby="set-sub" tabindex="-1" hidden>
+  <div class="set-head">
+    <div class="set-titles">
+      <h2 id="set-title">Settings</h2>
+      <p class="set-sub" id="set-sub">How this stack runs. Saved in settings.json beside the market database; the monitor and the clock read it on their next tick.</p>
+    </div>
+    <button class="hbtn icon" id="set-close" aria-label="Close the settings" title="Close (Esc)">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="set-body" id="set-body">
+    <section class="set-sec" aria-labelledby="set-h-mon">
+      <h3 id="set-h-mon">Monitor</h3>
+      <p class="mon-line" id="set-mon-line"><i class="mon-dot"></i><span id="set-mon-text">Reading...</span></p>
+      <p class="small muted" id="set-mon-help" hidden>The live monitor writes brain_status.json beside the database on every poll. Until it does, settings are still saved here and apply when a monitor that reads them runs.</p>
+      <div class="kv" id="set-mon-kv"></div>
+      <p class="set-err" id="set-mon-err" hidden></p>
+    </section>
+
+    <section class="set-sec" aria-labelledby="set-h-llm">
+      <h3 id="set-h-llm">Language model</h3>
+      <p class="set-row"><span class="muted">In brief</span><span class="pill" id="set-narr-pill">-</span><span class="small" id="set-narr-why"></span><span class="mono small muted" id="set-narr-model"></span></p>
+      <div class="switch-row">
+        <label for="set-narrate"><b>Write In brief with the language model</b><span class="small muted">A short paragraph on top of each report; every number in it is checked against the evidence. Needs the API key.</span></label>
+        <input type="checkbox" role="switch" class="switch" id="set-narrate">
+      </div>
+      <div class="key-box">
+        <div class="key-head"><label for="set-key" class="set-lbl">Anthropic API key</label><span class="pill" id="set-key-state">Not set</span></div>
+        <div class="key-row">
+          <input type="password" id="set-key" autocomplete="off" spellcheck="false" autocapitalize="off" maxlength="300" placeholder="Paste a key to set or replace it">
+          <button class="primary" id="set-key-save">Save key</button>
+          <button id="set-key-remove">Remove key</button>
+        </div>
+        <p class="small muted" id="set-key-note">The key is stored in .env on this computer and never sent back to the page. The monitor reads the file again when it changes, without a restart.</p>
+        <p class="set-msg" id="set-key-msg" role="status"></p>
+      </div>
+    </section>
+
+    <section class="set-sec" aria-labelledby="set-h-clock">
+      <h3 id="set-h-clock">Clock</h3>
+      <div class="set-field">
+        <label for="set-sph" class="set-lbl">Seconds per simulated hour</label>
+        <div class="seg-row">
+          <div class="seg" role="group" aria-label="Seconds per simulated hour: presets" id="set-sph-seg"></div>
+          <input type="number" id="set-sph" min="0.25" max="60" step="0.25"><span class="muted small">s</span>
+        </div>
+        <p class="small muted" id="set-sph-words"></p>
+        <p class="set-note" id="set-clock-off" hidden>The clock follows real time in this stack (wall clock): one hour of data per real hour. This setting is used only by the accelerated clock.</p>
+      </div>
+    </section>
+
+    <section class="set-sec" aria-labelledby="set-h-det">
+      <div class="sec-top"><h3 id="set-h-det">Detection</h3><button class="hbtn small-btn" id="set-det-reset">Reset to defaults</button></div>
+      <p class="set-caution">Changing these changes what the monitor reports from its next tick.</p>
+      <div class="slider" data-k="min_surprise">
+        <div class="sl-top"><label for="set-min_surprise">Surprise needed for an alert</label><output id="set-min_surprise-out" for="set-min_surprise"></output></div>
+        <div class="sl-track"><input type="range" id="set-min_surprise" min="5" max="10" step="0.5"><span class="def-mark"></span></div>
+      </div>
+      <div class="slider" data-k="min_effect">
+        <div class="sl-top"><label for="set-min_effect">Smallest move of a rate</label><output id="set-min_effect-out" for="set-min_effect"></output></div>
+        <div class="sl-track"><input type="range" id="set-min_effect" min="0.03" max="0.5" step="0.01"><span class="def-mark"></span></div>
+      </div>
+      <div class="slider" data-k="volume_min_effect">
+        <div class="sl-top"><label for="set-volume_min_effect">Smallest move of a count</label><output id="set-volume_min_effect-out" for="set-volume_min_effect"></output></div>
+        <div class="sl-track"><input type="range" id="set-volume_min_effect" min="0.05" max="0.6" step="0.01"><span class="def-mark"></span></div>
+      </div>
+      <div class="slider" data-k="release_min_surprise">
+        <div class="sl-top"><label for="set-release_min_surprise">Surprise to blame a release</label><output id="set-release_min_surprise-out" for="set-release_min_surprise"></output></div>
+        <div class="sl-track"><input type="range" id="set-release_min_surprise" min="3" max="7" step="0.5"><span class="def-mark"></span></div>
+      </div>
+    </section>
+
+    <section class="set-sec" aria-labelledby="set-h-env">
+      <h3 id="set-h-env">Environment</h3>
+      <div class="env-list" id="set-env"></div>
+    </section>
+  </div>
+  <div class="set-foot">
+    <p class="set-feedback" id="set-feedback" role="status" aria-live="polite"></p>
+    <button id="set-reset-all" title="Write the defaults of every setting to settings.json">Reset all</button>
+    <button class="primary" id="set-save">Save</button>
+  </div>
+</section>
+<!-- /settings -->
+<script src="/static/v3/route.js"></script>
+<script src="/static/v3/app.js"></script>
+</body>
+</html>

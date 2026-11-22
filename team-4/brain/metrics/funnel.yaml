@@ -1,0 +1,109 @@
+# The purchase funnel: orders = sessions x conversion, conversion = product of step rates.
+metrics:
+  - name: orders
+    description: Completed orders.
+    unit: count
+    column: orders
+    decomposition: sessions * conversion_rate
+    source: orders
+    direction: up
+
+  - name: conversion_rate
+    description: Orders per session.
+    unit: ratio
+    formula: orders / sessions
+    decomposition: views_per_session * add_to_cart_rate * checkout_rate * payment_attempt_rate * payment_success_rate * order_rate
+    bounds: [0, 1]
+    direction: up
+
+  - name: views_per_session
+    description: Product page views per session.
+    unit: ratio
+    formula: product_views / sessions
+    atomic: true
+    bounds: [0, null]
+    systems: [search, recommendations]
+    direction: up
+
+  - name: add_to_cart_rate
+    description: Add-to-cart events per product view.
+    unit: ratio
+    formula: add_to_cart / product_views
+    atomic: true
+    bounds: [0, 1]
+    systems: [catalog, promotions]
+    direction: up
+
+  - name: checkout_rate
+    description: Checkouts started per add-to-cart.
+    unit: ratio
+    formula: checkouts / add_to_cart
+    atomic: true
+    bounds: [0, 1]
+    systems: [checkout]
+    direction: up
+
+  - name: payment_attempt_rate
+    description: Payment attempts per checkout (above 1 means retries).
+    unit: ratio
+    formula: payment_attempts / checkouts
+    atomic: true
+    bounds: [0, null]
+    systems: [checkout, payments, payments-sdk]
+    direction: none
+
+  - name: payment_success_rate
+    description: Successful payments per payment attempt.
+    unit: ratio
+    formula: payment_successes / payment_attempts
+    atomic: true
+    bounds: [0, 1]
+    systems: [payments, payments-sdk]
+    source: payments
+    direction: up
+
+  - name: order_rate
+    description: Orders per successful payment (should stay near 1).
+    unit: ratio
+    formula: orders / payment_successes
+    atomic: true
+    bounds: [0, null]
+    systems: [orders]
+    direction: up
+
+  - name: product_views
+    description: Product page views.
+    unit: count
+    column: product_views
+    source: traffic
+    direction: up
+
+  - name: add_to_cart
+    description: Add-to-cart events.
+    unit: count
+    column: add_to_cart
+    source: traffic
+    direction: up
+
+  - name: checkouts
+    description: Checkouts started.
+    unit: count
+    column: checkouts
+    source: orders
+    direction: up
+
+  - name: payment_attempts
+    description: Payment attempts.
+    unit: count
+    column: payment_attempts
+    systems: [payments, payments-sdk]
+    source: payments
+    direction: none
+
+  - name: payment_successes
+    description: Successful payments.
+    unit: count
+    column: payment_successes
+    systems: [payments, payments-sdk]
+    source: payments
+    direction: up

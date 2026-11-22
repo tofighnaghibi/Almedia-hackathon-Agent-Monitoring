@@ -1,0 +1,75 @@
+# Money: the top outcome and what it is made of.
+# Assumption to confirm with the simulator: `discounts` are platform-funded (EUR),
+# `ad_spend` is what advertisers pay the marketplace (platform ad revenue, EUR).
+metrics:
+  - name: contribution
+    description: Marketplace contribution per hour - fees and ad revenue minus platform-funded discounts.
+    unit: eur
+    formula: marketplace_fees + ad_spend - discounts
+    outcome: true
+    direction: up
+
+  - name: marketplace_fees
+    description: Commission the marketplace earns on sales.
+    unit: eur
+    column: marketplace_fees
+    decomposition: gmv * take_rate
+    systems: [billing]
+    source: orders
+    direction: up
+
+  - name: take_rate
+    description: Commission as a share of GMV.
+    unit: ratio
+    formula: marketplace_fees / gmv
+    atomic: true
+    bounds: [0, 1]
+    systems: [billing]
+    direction: up
+
+  - name: discounts
+    description: Platform-funded discounts given on orders.
+    unit: eur
+    column: discounts
+    decomposition: gmv * discount_rate
+    systems: [pricing]
+    source: orders
+    direction: down
+
+  - name: discount_rate
+    description: Platform-funded discounts as a share of GMV.
+    unit: ratio
+    formula: discounts / gmv
+    atomic: true
+    bounds: [0, 1]
+    # recommendations: a ranking that pushes discounted products raises the discount share of what is sold
+    systems: [pricing, recommendations]
+    direction: down
+    may_affect:
+      - metric: add_to_cart_rate
+        prior: 0.4
+        sign: 1
+        note: deeper discounts make more viewers add to cart
+
+  - name: gmv
+    description: Gross merchandise value of completed orders.
+    unit: eur
+    column: gmv
+    decomposition: orders * aov
+    source: orders
+    direction: up
+
+  - name: aov
+    description: Average order value.
+    unit: eur
+    formula: gmv / orders
+    atomic: true
+    bounds: [0, null]
+    direction: up
+
+  - name: refunds
+    description: Number of orders refunded.
+    unit: count
+    column: refunds
+    source: orders
+    direction: down
