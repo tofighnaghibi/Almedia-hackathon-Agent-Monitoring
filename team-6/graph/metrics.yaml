@@ -1,0 +1,282 @@
+# Seed metric definitions (format: contracts/contracts.md section 2).
+#
+# `calculation` is a DuckDB aggregate expression over `source_table`
+# (default marketplace_hourly). Ratios are always ratio-of-sums, so they stay
+# correct for any window, segment or breakdown.
+
+# --- traffic -----------------------------------------------------------------
+- name: sessions
+  description: User visits (traffic)
+  unit: count
+  calculation: "SUM(sessions)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.8
+
+# --- search ------------------------------------------------------------------
+- name: searches
+  description: Search queries executed
+  unit: count
+  calculation: "SUM(searches)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.5
+
+- name: searches_per_session
+  description: Average number of searches per visit
+  unit: rate
+  calculation: "CAST(SUM(searches) AS DOUBLE) / NULLIF(SUM(sessions), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: null
+  business_weight: 0.3
+
+- name: search_clicks
+  description: Clicks on search results
+  unit: count
+  calculation: "SUM(search_clicks)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.5
+
+- name: search_ctr
+  description: Share of searches that lead to a click on a result (search relevance)
+  unit: ratio
+  calculation: "CAST(SUM(search_clicks) AS DOUBLE) / NULLIF(SUM(searches), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.7
+
+# --- recommendations ---------------------------------------------------------
+- name: recommendation_impressions
+  description: Recommendation widget views
+  unit: count
+  calculation: "SUM(recommendation_impressions)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.3
+
+- name: recommendation_clicks
+  description: Clicks on recommended products
+  unit: count
+  calculation: "SUM(recommendation_clicks)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.4
+
+- name: recommendation_ctr
+  description: Share of recommendation impressions that are clicked
+  unit: ratio
+  calculation: "CAST(SUM(recommendation_clicks) AS DOUBLE) / NULLIF(SUM(recommendation_impressions), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.5
+
+# --- product views and inventory ---------------------------------------------
+- name: product_clicks
+  description: Product page visits from search, recommendations and ads
+  unit: count
+  calculation: "SUM(search_clicks + recommendation_clicks + ad_clicks)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.5
+
+- name: out_of_stock_views
+  description: Product views that land on an out-of-stock item
+  unit: count
+  calculation: "SUM(out_of_stock_views)"
+  dimensions: [country, platform, category]
+  higher_is_better: false
+  business_weight: 0.5
+
+- name: out_of_stock_rate
+  description: Out-of-stock product views per product click (availability problem indicator)
+  unit: rate
+  calculation: "CAST(SUM(out_of_stock_views) AS DOUBLE) / NULLIF(SUM(search_clicks + recommendation_clicks + ad_clicks), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: false
+  business_weight: 0.7
+
+- name: avg_active_listings
+  description: >-
+    Average number of in-stock listed products per category. active_listings is a
+    stock level repeated on every platform row, so it is averaged, never summed,
+    and cannot be broken down by platform.
+  unit: count
+  calculation: "AVG(active_listings)"
+  dimensions: [country, category]
+  higher_is_better: true
+  business_weight: 0.5
+
+# --- cart, checkout, payment -------------------------------------------------
+- name: cart_adds
+  description: Add-to-cart events
+  unit: count
+  calculation: "SUM(cart_adds)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.6
+
+- name: add_to_cart_rate
+  description: Add-to-cart events per product click
+  unit: rate
+  calculation: "CAST(SUM(cart_adds) AS DOUBLE) / NULLIF(SUM(search_clicks + recommendation_clicks + ad_clicks), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.7
+
+- name: checkouts
+  description: Checkout flows started
+  unit: count
+  calculation: "SUM(checkouts)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.6
+
+- name: checkout_rate
+  description: Share of cart adds that start a checkout
+  unit: ratio
+  calculation: "CAST(SUM(checkouts) AS DOUBLE) / NULLIF(SUM(cart_adds), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.7
+
+- name: payment_attempts
+  description: Payment submissions
+  unit: count
+  calculation: "SUM(payment_attempts)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.6
+
+- name: payment_attempt_rate
+  description: Share of checkouts that reach a payment submission
+  unit: ratio
+  calculation: "CAST(SUM(payment_attempts) AS DOUBLE) / NULLIF(SUM(checkouts), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.7
+
+- name: payment_success_rate
+  description: Share of payment attempts that result in a completed order
+  unit: ratio
+  calculation: "CAST(SUM(orders) AS DOUBLE) / NULLIF(SUM(payment_attempts), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.9
+
+# --- outcomes ----------------------------------------------------------------
+- name: orders
+  description: Total completed orders
+  unit: count
+  calculation: "SUM(orders)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 1.0
+
+- name: conversion_rate
+  description: Orders per session
+  unit: ratio
+  calculation: "CAST(SUM(orders) AS DOUBLE) / NULLIF(SUM(sessions), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.9
+
+- name: revenue
+  description: Gross merchandise value in EUR
+  unit: currency_eur
+  calculation: "SUM(revenue)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 1.0
+
+- name: average_order_value
+  description: Revenue per order in EUR
+  unit: currency_eur
+  calculation: "SUM(revenue) / NULLIF(SUM(orders), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.7
+
+- name: revenue_per_session
+  description: Revenue per visit in EUR
+  unit: currency_eur
+  calculation: "SUM(revenue) / NULLIF(SUM(sessions), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.7
+
+- name: refunds
+  description: Refunded orders
+  unit: count
+  calculation: "SUM(refunds)"
+  dimensions: [country, platform, category]
+  higher_is_better: false
+  business_weight: 0.5
+
+- name: refund_rate
+  description: Share of completed orders that are refunded
+  unit: ratio
+  calculation: "CAST(SUM(refunds) AS DOUBLE) / NULLIF(SUM(orders), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: false
+  business_weight: 0.7
+
+# --- advertising -------------------------------------------------------------
+- name: ad_impressions
+  description: Paid ad impressions
+  unit: count
+  calculation: "SUM(ad_impressions)"
+  dimensions: [country, platform, category]
+  higher_is_better: null
+  business_weight: 0.4
+
+- name: ad_clicks
+  description: Paid ad clicks
+  unit: count
+  calculation: "SUM(ad_clicks)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.5
+
+- name: ad_ctr
+  description: Share of ad impressions that are clicked
+  unit: ratio
+  calculation: "CAST(SUM(ad_clicks) AS DOUBLE) / NULLIF(SUM(ad_impressions), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.5
+
+- name: ad_spend
+  description: Ad spend in EUR
+  unit: currency_eur
+  calculation: "SUM(ad_spend)"
+  dimensions: [country, platform, category]
+  higher_is_better: null
+  business_weight: 0.7
+
+- name: cost_per_click
+  description: Average price paid per ad click in EUR
+  unit: currency_eur
+  calculation: "SUM(ad_spend) / NULLIF(SUM(ad_clicks), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: false
+  business_weight: 0.5
+
+- name: return_on_ad_spend
+  description: Revenue per EUR of ad spend
+  unit: rate
+  calculation: "SUM(revenue) / NULLIF(SUM(ad_spend), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.6
+
+# --- data quality ------------------------------------------------------------
+- name: row_count
+  description: >-
+    Number of data rows received. A drop with normal per-row values means
+    late or missing data, not a business change.
+  unit: count
+  calculation: "COUNT(*)"
+  dimensions: [country, platform, category]
+  higher_is_better: null
+  business_weight: 0.3

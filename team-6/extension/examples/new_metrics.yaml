@@ -1,0 +1,35 @@
+# Example new metrics. Each has only a definition and a calculation; nothing
+# says where it belongs in the graph.
+#   python -m extension --metric extension/examples/new_metrics.yaml
+
+- name: orders_per_search
+  description: Orders per search query (how well search turns into purchases)
+  unit: rate
+  calculation: "CAST(SUM(orders) AS DOUBLE) / NULLIF(SUM(searches), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.7
+
+- name: cart_abandonment_rate
+  description: Share of cart adds that never start a checkout
+  unit: ratio
+  calculation: "1 - CAST(SUM(checkouts) AS DOUBLE) / NULLIF(SUM(cart_adds), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: false
+  business_weight: 0.6
+
+- name: ad_click_share
+  description: Share of product clicks that come from paid ads
+  unit: ratio
+  calculation: "CAST(SUM(ad_clicks) AS DOUBLE) / NULLIF(SUM(search_clicks + recommendation_clicks + ad_clicks), 0)"
+  dimensions: [country, platform, category]
+  higher_is_better: null
+  business_weight: 0.5
+
+- name: organic_clicks
+  description: Product clicks from search and recommendations (not paid)
+  unit: count
+  calculation: "SUM(search_clicks + recommendation_clicks)"
+  dimensions: [country, platform, category]
+  higher_is_better: true
+  business_weight: 0.5

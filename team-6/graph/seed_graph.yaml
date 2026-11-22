@@ -1,0 +1,236 @@
+# Seed metric graph for the marketplace (all edges start as 'uncertain' until checked).
+
+# --- Formula edges -----------------------------------------------------------
+- from: payment_attempts
+  to: orders
+  type: formula
+  formula: "orders = payment_attempts * payment_success_rate"
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: checkouts
+  to: payment_attempts
+  type: formula
+  formula: "payment_attempts = checkouts * payment_attempt_rate"
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: cart_adds
+  to: checkouts
+  type: formula
+  formula: "checkouts = cart_adds * checkout_rate"
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: product_clicks
+  to: cart_adds
+  type: formula
+  formula: "cart_adds = product_clicks * add_to_cart_rate"
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: search_clicks
+  to: product_clicks
+  type: formula
+  formula: "product_clicks = search_clicks + recommendation_clicks + ad_clicks"
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: sessions
+  to: searches
+  type: formula
+  formula: "searches = sessions * searches_per_session"
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: searches
+  to: search_clicks
+  type: formula
+  formula: "search_clicks = searches * search_ctr"
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: orders
+  to: revenue
+  type: formula
+  formula: "revenue = orders * average_order_value"
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: orders
+  to: refunds
+  type: formula
+  formula: "refunds = orders * refund_rate"
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: ad_impressions
+  to: ad_clicks
+  type: formula
+  formula: "ad_clicks = ad_impressions * ad_ctr"
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: ad_clicks
+  to: ad_spend
+  type: formula
+  formula: "ad_spend = ad_clicks * cost_per_click"
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+# --- Breakdown edges (metric -> itself, one per dimension) -------------------
+- from: orders
+  to: orders
+  type: breakdown
+  dimension: country
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: orders
+  to: orders
+  type: breakdown
+  dimension: platform
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: orders
+  to: orders
+  type: breakdown
+  dimension: category
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: revenue
+  to: revenue
+  type: breakdown
+  dimension: country
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: revenue
+  to: revenue
+  type: breakdown
+  dimension: platform
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: revenue
+  to: revenue
+  type: breakdown
+  dimension: category
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: sessions
+  to: sessions
+  type: breakdown
+  dimension: country
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: sessions
+  to: sessions
+  type: breakdown
+  dimension: platform
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: sessions
+  to: sessions
+  type: breakdown
+  dimension: category
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: payment_attempts
+  to: payment_attempts
+  type: breakdown
+  dimension: country
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: payment_attempts
+  to: payment_attempts
+  type: breakdown
+  dimension: platform
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: payment_attempts
+  to: payment_attempts
+  type: breakdown
+  dimension: category
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: payment_success_rate
+  to: payment_success_rate
+  type: breakdown
+  dimension: country
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: payment_success_rate
+  to: payment_success_rate
+  type: breakdown
+  dimension: platform
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+- from: payment_success_rate
+  to: payment_success_rate
+  type: breakdown
+  dimension: category
+  confidence: 1.0
+  status: uncertain
+  source: seed
+
+# --- Possible-cause edges ----------------------------------------------------
+- from: out_of_stock_rate
+  to: cart_adds
+  type: possible_cause
+  confidence: 0.5
+  lag_hours: 0
+  status: uncertain
+  source: seed
+
+- from: ad_spend
+  to: sessions
+  type: possible_cause
+  confidence: 0.5
+  lag_hours: 1
+  status: uncertain
+  source: seed
+
+- from: search_ctr
+  to: cart_adds
+  type: possible_cause
+  confidence: 0.5
+  lag_hours: 0
+  status: uncertain
+  source: seed

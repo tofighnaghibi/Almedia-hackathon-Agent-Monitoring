@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eye of the System</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #eef3fa;
+  --surface: #ffffff;
+  --surface-2: #f5f8fd;
+  --surface-3: #e8eff9;
+  --border: #d9e3f0;
+  --border-strong: #c3d2e6;
+  --text: #0f1b2d;
+  --text-2: #3d4f68;
+  --text-3: #6b7d96;
+  --brand: #1d4ed8;
+  --brand-2: #2563eb;
+  --brand-soft: #e0eaff;
+  --brand-ink: #1e40af;
+  --nav: #0b2a5b;
+  --nav-2: #123a78;
+  --nav-text: #e8f0ff;
+  --nav-muted: #a9bde0;
+  --series: #2563eb;
+  --expected: #64748b;
+  --band: rgba(37, 99, 235, 0.10);
+  --grid: #e4ebf5;
+  --critical: #d03b3b;
+  --serious: #ec835a;
+  --warning: #e3a008;
+  --good: #0ca30c;
+  --low: #94a3b8;
+  --shadow: 0 1px 2px rgba(15, 27, 45, .06), 0 2px 8px rgba(15, 27, 45, .05);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0a1220;
+    --surface: #101b2e;
+    --surface-2: #14223a;
+    --surface-3: #1a2b48;
+    --border: #22344f;
+    --border-strong: #2e4466;
+    --text: #e8eef8;
+    --text-2: #b4c2d8;
+    --text-3: #7f92af;
+    --brand: #3b82f6;
+    --brand-2: #60a5fa;
+    --brand-soft: #172a4d;
+    --brand-ink: #93c5fd;
+    --nav: #0a1630;
+    --nav-2: #13254a;
+    --nav-text: #e8f0ff;
+    --nav-muted: #8fa6cc;
+    --series: #60a5fa;
+    --expected: #94a3b8;
+    --band: rgba(96, 165, 250, 0.14);
+    --grid: #1c2c46;
+    --low: #64748b;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0a1220;
+  --surface: #101b2e;
+  --surface-2: #14223a;
+  --surface-3: #1a2b48;
+  --border: #22344f;
+  --border-strong: #2e4466;
+  --text: #e8eef8;
+  --text-2: #b4c2d8;
+  --text-3: #7f92af;
+  --brand: #3b82f6;
+  --brand-2: #60a5fa;
+  --brand-soft: #172a4d;
+  --brand-ink: #93c5fd;
+  --nav: #0a1630;
+  --nav-2: #13254a;
+  --nav-text: #e8f0ff;
+  --nav-muted: #8fa6cc;
+  --series: #60a5fa;
+  --expected: #94a3b8;
+  --band: rgba(96, 165, 250, 0.14);
+  --grid: #1c2c46;
+  --low: #64748b;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--bg); color: var(--text);
+  font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  display: flex; flex-direction: column; min-height: 100vh;
+}
+button, select, input { font: inherit; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- top bar ---------- */
+.topbar {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px;
+  padding: 0 20px; height: 60px; background: linear-gradient(90deg, var(--nav), var(--nav-2)); color: var(--nav-text);
+  position: sticky; top: 0; z-index: 10; flex-shrink: 0;
+}
+.brand { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+.brand .logo { width: 28px; height: 28px; border-radius: 8px; background: var(--brand-2); display: grid; place-items: center; }
+.brand .logo svg { width: 18px; height: 18px; }
+.brand b { font-size: 16px; letter-spacing: .2px; }
+.brand span { color: var(--nav-muted); font-size: 13px; }
+.clockbox { display: flex; align-items: center; gap: 14px; justify-self: center; min-width: 0; max-width: 100%; overflow: hidden; }
+.clock { font-size: 13px; line-height: 1.35; color: var(--nav-text); white-space: nowrap; min-width: 0; overflow: hidden; }
+.clock small { display: block; color: var(--nav-muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 1400px) { .brand span { display: none; } }
+.progress { width: 200px; height: 6px; background: rgba(255, 255, 255, .15); border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+.progress > div { height: 100%; width: 0; background: #7fb2ff; border-radius: 3px; transition: width .4s; }
+.controls { display: flex; align-items: center; gap: 8px; }
+.nbtn {
+  height: 34px; padding: 0 14px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, .22);
+  background: rgba(255, 255, 255, .08); color: var(--nav-text); cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+}
+.nbtn:hover { background: rgba(255, 255, 255, .16); }
+.nbtn.primary { background: #ffffff; color: var(--nav); border-color: #ffffff; font-weight: 600; min-width: 96px; justify-content: center; }
+.nbtn.icon { width: 34px; padding: 0; justify-content: center; }
+select.nbtn option { color: #0f1b2d; }
+
+/* ---------- stats + scenario bar ---------- */
+.subbar { display: grid; grid-template-columns: minmax(460px, auto) 1fr; gap: 16px; padding: 16px 20px 0; align-items: stretch; flex-shrink: 0; }
+.stats { display: grid; grid-template-columns: repeat(5, 1fr); background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+.stat { padding: 12px 18px; display: flex; flex-direction: column; justify-content: center; border-left: 1px solid var(--border); }
+.stat:first-child { border-left: none; }
+.stat b { display: block; font-size: 26px; line-height: 1.15; }
+.stat span { color: var(--text-3); font-size: 12px; }
+.stat.hl b { color: var(--brand); }
+.scenarios {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; box-shadow: var(--shadow);
+  display: flex; flex-direction: column; justify-content: center; gap: 8px; min-width: 0;
+}
+.group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.group .gl { width: 118px; flex-shrink: 0; font-size: 11px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--text-3); }
+.chip {
+  height: 28px; padding: 0 12px; border-radius: 14px; border: 1px solid var(--border-strong); background: var(--surface-2);
+  color: var(--text); cursor: pointer; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.chip:hover:not(:disabled) { border-color: var(--brand); color: var(--brand-ink); background: var(--brand-soft); }
+.chip:disabled { opacity: .45; cursor: default; }
+.chip .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.chip.fault .dot { background: var(--critical); }
+.chip.innocent .dot { background: var(--good); }
+.chip.metric .dot { background: var(--brand); }
+
+/* ---------- main grid ---------- */
+main {
+  flex: 1; min-height: 0; display: grid; grid-template-columns: 330px minmax(0, 1fr) 360px; gap: 16px; padding: 16px 20px 20px;
+}
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column;
+  min-height: 0; box-shadow: var(--shadow); overflow: hidden; }
+.phead { display: flex; align-items: center; gap: 10px; height: 50px; padding: 0 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.phead h2 { margin: 0; font-size: 14px; font-weight: 700; }
+.phead .count { color: var(--text-3); font-size: 12px; }
+.phead .tog { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-2); cursor: pointer; white-space: nowrap; }
+.scroll { overflow: auto; min-height: 0; flex: 1; }
+
+/* issues */
+.issue { position: relative; padding: 12px 16px 12px 20px; border-bottom: 1px solid var(--border); cursor: pointer; }
+.issue::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--sev, var(--low)); }
+.issue:hover { background: var(--surface-2); }
+.issue.sel { background: var(--brand-soft); }
+.issue .row { display: flex; align-items: center; gap: 6px; }
+.issue .id { margin-left: auto; color: var(--text-3); font-size: 12px; }
+.issue .t { font-weight: 600; margin: 6px 0 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.issue .m { color: var(--text-3); font-size: 12px; }
+.sev { display: inline-flex; align-items: center; gap: 5px; height: 20px; padding: 0 8px; border-radius: 10px; font-size: 11px; font-weight: 700;
+  letter-spacing: .3px; text-transform: uppercase; background: var(--surface-3); color: var(--text); }
+.sev i { width: 7px; height: 7px; border-radius: 50%; background: var(--sev); }
+.pill { display: inline-flex; align-items: center; height: 20px; padding: 0 8px; border-radius: 10px; font-size: 11px; color: var(--text-2);
+  border: 1px solid var(--border-strong); background: var(--surface); }
+.pill.st-ongoing, .pill.st-new, .pill.st-investigating { color: var(--brand-ink); border-color: var(--brand); background: var(--brand-soft); }
+
+/* tabs */
+.tabbar { padding: 10px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.tabs { display: inline-flex; gap: 4px; padding: 4px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; }
+.tab { height: 32px; padding: 0 14px; border: none; border-radius: 7px; background: none; color: var(--text-2); cursor: pointer; font-weight: 500; }
+.tab.on { background: var(--surface); color: var(--brand-ink); box-shadow: var(--shadow); font-weight: 700; }
+.view { padding: 18px 20px 24px; }
+.empty { padding: 40px 20px; color: var(--text-3); text-align: center; }
+
+/* report */
+.rhead { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--text-3); font-size: 12px; }
+.rtitle { font-size: 20px; line-height: 1.3; margin: 8px 0 12px; font-weight: 700; }
+.headline { padding: 12px 14px; border-radius: 10px; background: var(--brand-soft); border-left: 4px solid var(--brand); color: var(--text); margin-bottom: 14px; }
+.headline.unc { background: var(--surface-2); border-left-color: var(--warning); }
+.tiles { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.tiles .tile { flex: 1 1 130px; }
+.tile { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; min-width: 0; }
+.tile b { display: block; font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tile span { color: var(--text-3); font-size: 12px; }
+.tiles .tile.wide { flex: 2 1 240px; }
+.tile.wide b { white-space: normal; font-size: 16px; word-break: break-word; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+.card + .card { margin-top: 12px; }
+.card h4 { margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--text-3); }
+.card ul { margin: 0; padding-left: 18px; }
+.card li { margin: 4px 0; color: var(--text-2); }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.cols .card + .card { margin-top: 0; }
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline li { position: relative; padding: 0 0 12px 28px; color: var(--text-2); }
+.timeline li::before { content: attr(data-n); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--brand); color: #fff; font-size: 10px; font-weight: 700; display: grid; place-items: center; }
+.timeline li::after { content: ""; position: absolute; left: 8.5px; top: 21px; bottom: 2px; width: 1px; background: var(--border-strong); }
+.timeline li:last-child::after { display: none; }
+.timeline b { color: var(--text); text-transform: capitalize; }
+.timeline code { font-size: 12px; color: var(--text-3); word-break: break-word; }
+.timeline .why { color: var(--text-3); font-size: 12px; }
+.by { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 9px; font-size: 10.5px; font-weight: 700;
+  line-height: 17px; vertical-align: 1px; letter-spacing: .3px; border: 1px solid var(--border-strong); color: var(--text-3); }
+.by.llm { background: var(--brand-soft); border-color: transparent; color: var(--brand-ink); }
+.by-count { float: right; font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--text-3); }
+.textby { color: var(--text-3); font-size: 12px; margin: -4px 0 8px; }
+
+/* chart */
+.chart { position: relative; }
+.chart + .chart { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border); }
+.chart svg { width: 100%; height: 200px; display: block; overflow: visible; }
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; font-size: 12px; color: var(--text-2); margin-bottom: 6px; }
+.legend b { color: var(--text); font-size: 13px; }
+.legend .sw { display: inline-block; width: 16px; height: 0; border-top: 2px solid var(--series); vertical-align: middle; margin-right: 5px; }
+.legend .sw.exp { border-top: 2px dashed var(--expected); }
+.legend .sw.band { height: 10px; border: none; background: var(--band); border-radius: 2px; }
+.legend .sw.out { width: 8px; height: 8px; border: none; border-radius: 50%; background: var(--critical); }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px;
+  padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 16px rgba(15, 27, 45, .14); white-space: nowrap; display: none; z-index: 3; color: var(--text-2); }
+.tip b { color: var(--text); }
+
+/* feed */
+.feed .f { position: relative; padding: 10px 16px 10px 32px; border-bottom: 1px solid var(--border); }
+.feed .f::before { content: ""; position: absolute; left: 15px; top: 16px; width: 8px; height: 8px; border-radius: 50%; background: var(--kc, var(--low)); }
+.feed .f .h { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-3); margin-bottom: 2px; }
+.feed .f .k { font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--kc, var(--text-3)); }
+.feed .f .h .iid { margin-left: auto; }
+.feed .f .x { color: var(--text-2); font-size: 13px; }
+.feed .f.alert { background: color-mix(in srgb, var(--critical) 7%, transparent); }
+
+/* graph */
+.tree ul { list-style: none; padding-left: 20px; margin: 0; border-left: 1px solid var(--border-strong); }
+.tree > ul { border-left: none; padding-left: 0; }
+.tree li { margin: 5px 0; }
+.node { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: 7px; background: var(--surface-2);
+  border: 1px solid var(--border); font-size: 13px; }
+.node small { color: var(--text-3); font-size: 11px; }
+.node.anom { border-color: var(--critical); box-shadow: 0 0 0 1px var(--critical) inset; }
+.node.root { background: var(--critical); border-color: var(--critical); color: #fff; }
+.node.root small { color: #fff; }
+.node.watched { border-color: var(--brand); }
+.formula { color: var(--text-3); font-size: 12px; margin-left: 6px; }
+.tag { display: inline-flex; height: 18px; align-items: center; padding: 0 6px; border-radius: 9px; background: var(--brand-soft); color: var(--brand-ink);
+  font-size: 11px; font-weight: 600; margin-left: 6px; }
+.keyrow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 4px 0 14px; }
+
+/* tables */
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { color: var(--text-3); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; background: var(--surface-2); }
+tr:last-child td { border-bottom: none; }
+.ok { color: var(--good); font-weight: 700; }
+.bad { color: var(--critical); font-weight: 700; }
+.muted { color: var(--text-3); }
+h3.vt { margin: 0 0 4px; font-size: 18px; }
+p.lead { margin: 0 0 14px; color: var(--text-3); }
+
+@media (max-width: 1360px) {
+  .subbar { grid-template-columns: 1fr; }
+}
+@media (max-width: 1100px) {
+  body { height: auto; }
+  main { grid-template-columns: 1fr; }
+  .panel { max-height: 78vh; }
+  .topbar { grid-template-columns: 1fr auto; height: auto; padding: 10px 16px; row-gap: 8px; }
+  .clockbox { grid-column: 1 / -1; grid-row: 2; justify-self: start; }
+  .cols { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .topbar, .subbar, main { padding-left: 16px; padding-right: 16px; }
+  .brand span { display: none; }
+  .progress { width: 110px; }
+  .stats { grid-template-columns: repeat(3, 1fr); }
+  .group .gl { width: 100%; }
+  .controls { flex-wrap: wrap; justify-content: flex-end; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div>
+    <b>Eye of the System</b><span>autonomous marketplace monitoring</span>
+  </div>
+  <div class="clockbox">
+    <div class="clock num" id="clock">starting…</div>
+    <div class="progress" title="simulated time"><div id="prog"></div></div>
+  </div>
+  <div class="controls">
+    <button class="nbtn primary" id="play">Pause</button>
+    <button class="nbtn" id="step" title="advance one simulated hour">Step 1h</button>
+    <select class="nbtn" id="speed" title="extra delay between simulated hours">
+      <option value="0">Fastest</option><option value="1">1 s / hour</option><option value="2">2 s / hour</option><option value="4">4 s / hour</option>
+    </select>
+    <button class="nbtn icon" id="theme" title="toggle light / dark">◐</button>
+  </div>
+</header>
+
+<section class="subbar">
+  <div class="stats" id="stats"></div>
+  <div class="scenarios" id="scenarios"></div>
+</section>
+
+<main>
+  <section class="panel">
+    <div class="phead"><h2>Issues</h2><span class="count" id="ncount"></span>
+      <label class="tog"><input type="checkbox" id="quiet"> show quiet</label></div>
+    <div class="scroll" id="issues"><div class="empty">Watching… no issues yet.</div></div>
+  </section>
+  <section class="panel">
+    <div class="tabbar"><div class="tabs">
+      <button class="tab on" data-v="detail">Issue report</button>
+      <button class="tab" data-v="graph">Metric graph</button>
+      <button class="tab" data-v="watch">What it watches</button>
+      <button class="tab" data-v="score">Scorecard</button>
+    </div></div>
+    <div class="scroll"><div class="view" id="view"><div class="empty">Select an issue on the left.</div></div></div>
+  </section>
+  <section class="panel">
+    <div class="phead"><h2>Agent decisions</h2>
+      <label class="tog"><input type="checkbox" id="onlydec" checked> decisions &amp; alerts only</label></div>
+    <div class="scroll feed" id="feed"></div>
+  </section>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = (v, d = 0) => (v === null || v === undefined || Number.isNaN(+v)) ? "–" : (+v).toLocaleString("en-US", { maximumFractionDigits: d, minimumFractionDigits: d });
+const seg = (s) => Object.entries(s || {}).map(([k, v]) => `${k}=${v}`).join(", ") || "all segments";
+const when = (t) => (t || "").slice(5, 16).replace("T", " ");
+const SEV = { critical: ["var(--critical)", "▲"], high: ["var(--serious)", "◆"], medium: ["var(--warning)", "●"], low: ["var(--low)", "○"] };
+const KIND = { alert: "var(--critical)", issue: "var(--brand)", investigate: "var(--brand-2)", triage: "var(--good)",
+  detect: "var(--serious)", data: "var(--warning)", inject: "var(--text-3)", metric: "var(--brand)", watch: "var(--text-3)", system: "var(--text-3)" };
+let state = null, selected = null, tab = "detail", lastIssueFetch = 0, issueCache = null;
+
+const qs = new URLSearchParams(location.search);
+if (qs.get("theme")) document.documentElement.dataset.theme = qs.get("theme");
+else { try { const t = localStorage.getItem("eye-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {} }
+
+function sevBadge(sev) {
+  const [c, icon] = SEV[sev] || SEV.low;
+  return `<span class="sev" style="--sev:${c}" title="severity: ${esc(sev)}"><i></i>${icon} ${esc(sev)}</span>`;
+}
+async function api(path, body) {
+  const r = await fetch(path, body ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {});
+  return r.json();
+}
+
+// ---------------- investigation trail: who chose each step ----------------
+function trailCount(trail) {
+  const steps = (trail || []).filter((t) => t.chosen_by);
+  if (!steps.length) return "";
+  const n = steps.filter((t) => t.chosen_by === "llm").length;
+  return `<span class="by-count">model-chosen steps: ${n} of ${steps.length}</span>`;
+}
+function trailStep(t, k) {
+  const llm = t.chosen_by === "llm";
+  const badge = t.chosen_by ? `<span class="by ${llm ? "llm" : ""}" title="${llm ? "chosen by the model" : "chosen by the rule-based fallback"}">${llm ? "llm" : "fallback"}</span>` : "";
+  const reason = (t.reason || "").replace(/ \(fallback_used: .*\)$/, "");
+  const cause = !llm && t.fallback_cause ? `<br><span class="why">fallback: ${esc(t.fallback_cause)}</span>` : "";
+  return `<li data-n="${k + 1}"><b>${esc(t.action.replace(/_/g, " "))}</b>${badge} <code>${esc(t.query)}</code><br>${esc(t.observation)}` +
+    (reason ? `<br><span class="why">why: ${esc(reason)}</span>` : "") + cause + `</li>`;
+}
+
+// ---------------- header, stats, scenarios ----------------
+function renderHeader(s) {
+  $("clock").innerHTML = `${esc(s.now.replace("T", " ").slice(0, 16))} UTC<small>hour ${s.hours_done} / ${s.hours_total}` +
+    (s.tick_seconds ? ` · ${s.tick_seconds}s per hour` : "") + (s.finished ? " · finished" : "") +
+    (s.llm ? (s.llm.enabled ? ` · model-chosen steps: ${s.llm.steps_llm} of ${s.llm.steps_total}` : " · rules only (no LLM)") : "") + `</small>`;
+  $("prog").style.width = `${100 * s.hours_done / Math.max(1, s.hours_total)}%`;
+  $("play").textContent = s.paused ? "▶ Resume" : "❚❚ Pause";
+  const c = s.counts;
+  $("stats").innerHTML = [["investigating", "Investigating"], ["new", "New"], ["ongoing", "Ongoing"], ["resolved", "Resolved"]]
+    .map(([k, l]) => `<div class="stat ${k === "ongoing" && c[k] ? "hl" : ""}"><b class="num">${c[k]}</b><span>${l}</span></div>`).join("") +
+    `<div class="stat"><b class="num">${s.alerts.length}</b><span>Alerts sent</span></div>`;
+}
+let scenariosBuilt = false;
+function renderScenarios(s) {
+  const box = $("scenarios");
+  if (!scenariosBuilt) {
+    const group = (label, items) => `<div class="group"><span class="gl">${label}</span>${items}</div>`;
+    const chip = (cls, key, text, title, attr) => `<button class="chip ${cls}" ${attr}="${esc(key)}" title="${esc(title)}"><span class="dot"></span>${esc(text)}</button>`;
+    const faults = s.presets.filter((p) => p.kind === "fault").map((p) => chip("fault", p.key, p.label, "Fault: starts next hour. The monitor is not told.", "data-preset")).join("");
+    const inn = s.presets.filter((p) => p.kind !== "fault").map((p) => chip("innocent", p.key, p.label, "Innocent change: starts next hour. The monitor is not told.", "data-preset")).join("");
+    const mets = s.examples.map((m) => chip("metric", m.name, m.name, m.description, "data-metric")).join("");
+    box.innerHTML = group("Inject fault", faults) + group("Innocent change", inn) + group("New metric", mets);
+    box.querySelectorAll("[data-preset]").forEach((b) => b.onclick = async () => { b.disabled = true; await api("/api/inject", { key: b.dataset.preset }); setTimeout(() => b.disabled = false, 1500); refresh(); });
+    box.querySelectorAll("[data-metric]").forEach((b) => b.onclick = async () => { b.disabled = true; await api("/api/metric", { name: b.dataset.metric }); refresh(); });
+    scenariosBuilt = true;
+  }
+  for (const m of s.examples) {
+    const b = box.querySelector(`[data-metric="${m.name}"]`);
+    if (b) b.disabled = m.added;
+  }
+}
+
+// ---------------- issues ----------------
+function renderIssues(s) {
+  const el = $("issues");
+  const showQuiet = $("quiet").checked;
+  const quiet = s.issues.filter((i) => !i.alerts && i.status === "resolved").length;
+  const shown = s.issues.filter((i) => showQuiet || i.alerts || i.status !== "resolved");
+  $("ncount").textContent = s.issues.length ? `${shown.length} shown${quiet && !showQuiet ? ` · ${quiet} quiet hidden` : ""}` : "";
+  if (!shown.length) { el.innerHTML = `<div class="empty">Watching ${Object.keys(s.watchlist).length} metrics.<br>No issues yet.</div>`; return; }
+  el.innerHTML = shown.map((i) => {
+    const [c] = SEV[i.severity] || SEV.low;
+    return `<div class="issue ${i.id === selected ? "sel" : ""}" data-id="${i.id}" style="--sev:${c}">
+      <div class="row">${sevBadge(i.severity)}<span class="pill st-${esc(i.status)}">${esc(i.status)}</span>${i.kind === "data_quality" ? `<span class="pill">data</span>` : ""}<span class="id">${esc(i.id)}</span></div>
+      <div class="t">${esc(i.title)}</div>
+      <div class="m num">opened ${esc(when(i.opened_at))}${i.resolved_at ? ` · resolved ${esc(when(i.resolved_at))}` : ""} · ${i.alerts} alert${i.alerts === 1 ? "" : "s"} · ${i.episodes} signal${i.episodes === 1 ? "" : "s"}</div>
+    </div>`;
+  }).join("");
+  el.querySelectorAll(".issue").forEach((d) => d.onclick = () => { selected = d.dataset.id; tab = "detail"; setTab(); issueCache = null; renderIssues(state); loadIssue(true); });
+}
+
+// ---------------- feed ----------------
+function renderFeed(s) {
+  const only = $("onlydec").checked;
+  const items = s.feed.filter((f) => !only || f.level !== "info" || ["inject", "metric", "system"].includes(f.kind)).slice(-150).reverse();
+  $("feed").innerHTML = items.map((f) => `
+    <div class="f ${f.level}" style="--kc:${KIND[f.kind] || "var(--text-3)"}">
+      <div class="h"><span class="k">${esc(f.kind)}</span><span class="num">${esc(when(f.time))}</span>${f.issue ? `<span class="iid">${esc(f.issue)}</span>` : ""}</div>
+      <div class="x">${esc(f.text)}</div>
+    </div>`).join("") || `<div class="empty">Starting…</div>`;
+}
+
+// ---------------- chart ----------------
+function chart(series) {
+  const id = "c" + Math.random().toString(36).slice(2, 8);
+  return `<div class="chart" id="${id}" data-s='${esc(JSON.stringify(series))}'>
+    <div class="legend"><b>${esc(series.metric)}</b><span class="muted">${esc(seg(series.segment))} · last ${series.time.length} h</span>
+      <span><span class="sw"></span>actual</span><span><span class="sw exp"></span>expected</span><span><span class="sw band"></span>normal range</span><span><span class="sw out"></span>outside range</span></div>
+    <svg role="img" aria-label="${esc(series.metric)}: actual versus expected"></svg><div class="tip"></div></div>`;
+}
+function drawCharts() {
+  document.querySelectorAll(".chart[data-s]").forEach((box) => {
+    const s = JSON.parse(box.dataset.s);
+    const svg = box.querySelector("svg"), tip = box.querySelector(".tip");
+    const W = Math.max(320, box.clientWidth), H = 200, L = 58, R = 12, T = 10, B = 26;
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const n = s.time.length;
+    const vals = [...s.actual, ...s.lower, ...s.upper, ...s.expected].filter((v) => v !== null);
+    if (!vals.length || n < 2) { svg.innerHTML = ""; return; }
+    let lo = Math.min(...vals), hi = Math.max(...vals); if (hi === lo) hi = lo + 1;
+    const pad = (hi - lo) * 0.08; lo -= pad; hi += pad; if (Math.min(...vals) >= 0 && lo < 0) lo = 0;
+    const x = (i) => L + (W - L - R) * i / (n - 1), y = (v) => T + (H - T - B) * (1 - (v - lo) / (hi - lo));
+    const path = (arr) => { let d = "", pen = false; arr.forEach((v, i) => { if (v === null) { pen = false; return; } d += `${pen ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`; pen = true; }); return d; };
+    let band = "", run = [];
+    const flush = () => { if (run.length > 1) band += `<path d="M${run.map((i) => `${x(i).toFixed(1)},${y(s.upper[i]).toFixed(1)}`).join("L")}L${run.slice().reverse().map((i) => `${x(i).toFixed(1)},${y(s.lower[i]).toFixed(1)}`).join("L")}Z" fill="var(--band)"/>`; run = []; };
+    s.upper.forEach((u, i) => { if (u !== null && s.lower[i] !== null) run.push(i); else flush(); }); flush();
+    const digits = Math.abs(hi) < 10 ? 3 : 0;
+    let grid = [0, 1, 2, 3].map((k) => lo + (hi - lo) * k / 3).map((v) => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)" stroke-width="1"/>
+      <text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="var(--text-3)">${fmt(v, digits)}</text>`).join("");
+    for (let i = 0; i < n; i++) {
+      if (s.time[i].slice(11, 13) === "00") grid += `<line x1="${x(i)}" x2="${x(i)}" y1="${T}" y2="${H - B}" stroke="var(--grid)" stroke-width="1"/>
+        <text x="${x(i)}" y="${H - 7}" text-anchor="middle" font-size="11" fill="var(--text-3)">${s.time[i].slice(5, 10)}</text>`;
+    }
+    let marks = "";
+    s.actual.forEach((v, i) => {
+      if (v === null || s.upper[i] === null || s.lower[i] === null) return;
+      if (v > s.upper[i] || v < s.lower[i]) marks += `<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="var(--critical)" stroke="var(--surface)" stroke-width="2"/>`;
+    });
+    svg.innerHTML = `${grid}${band}<path d="${path(s.expected)}" fill="none" stroke="var(--expected)" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <path d="${path(s.actual)}" fill="none" stroke="var(--series)" stroke-width="2" stroke-linejoin="round"/>${marks}
+      <line class="xh" x1="0" x2="0" y1="${T}" y2="${H - B}" stroke="var(--text-3)" stroke-width="1" visibility="hidden"/>
+      <rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent"/>`;
+    const xh = svg.querySelector(".xh");
+    svg.onmousemove = (ev) => {
+      const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) * W / r.width;
+      const i = Math.max(0, Math.min(n - 1, Math.round((px - L) / (W - L - R) * (n - 1))));
+      xh.setAttribute("x1", x(i)); xh.setAttribute("x2", x(i)); xh.setAttribute("visibility", "visible");
+      const out = s.actual[i] !== null && s.upper[i] !== null && (s.actual[i] > s.upper[i] || s.actual[i] < s.lower[i]);
+      tip.innerHTML = `<b>${esc(when(s.time[i]))} UTC</b><br>actual <b>${fmt(s.actual[i], digits)}</b>${out ? ` <span style="color:var(--critical)">outside range</span>` : ""}<br>expected ${fmt(s.expected[i], digits)}<br>range ${fmt(s.lower[i], digits)} – ${fmt(s.upper[i], digits)}`;
+      tip.style.display = "block";
+      const left = (x(i) / W) * box.clientWidth;
+      tip.style.left = `${Math.min(box.clientWidth - 180, Math.max(0, left + 12))}px`; tip.style.top = "34px";
+    };
+    svg.onmouseleave = () => { tip.style.display = "none"; xh.setAttribute("visibility", "hidden"); };
+  });
+}
+
+// ---------------- views ----------------
+function setTab() { document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("on", t.dataset.v === tab)); }
+document.querySelectorAll(".tab").forEach((t) => t.onclick = () => { tab = t.dataset.v; setTab(); renderView(true); });
+
+async function loadIssue(force) {
+  if (!selected || tab !== "detail") return;
+  if (!force && Date.now() - lastIssueFetch < 3000) return;
+  lastIssueFetch = Date.now();
+  issueCache = await api(`/api/issue?id=${encodeURIComponent(selected)}`);
+  renderDetail();
+}
+const list = (items) => items && items.length ? `<ul>${items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : `<div class="muted">none</div>`;
+function impactTiles(imp) {
+  const out = [];
+  if (imp.lost_orders !== undefined) {
+    const v = +imp.lost_orders;
+    out.push(v >= 0 ? `<div class="tile"><b class="num">${fmt(v)}</b><span>orders lost</span></div>`
+                    : `<div class="tile"><b class="num">+${fmt(-v)}</b><span>orders above expected</span></div>`);
+  }
+  if (imp.lost_revenue_eur !== undefined) {
+    const v = +imp.lost_revenue_eur;
+    out.push(v >= 0 ? `<div class="tile"><b class="num">€${fmt(v)}</b><span>revenue lost</span></div>`
+                    : `<div class="tile"><b class="num">+€${fmt(-v)}</b><span>revenue above expected</span></div>`);
+  }
+  return out.join("");
+}
+function renderDetail() {
+  const d = issueCache; if (!d || d.error) { $("view").innerHTML = `<div class="empty">Select an issue on the left.</div>`; return; }
+  const r = d.report, root = r.root_cause || {};
+  const confirmed = root.status === "confirmed" || r.kind === "data_quality";
+  $("view").innerHTML = `
+    <div class="rhead">${sevBadge(r.severity)}<span class="pill st-${esc(r.status)}">${esc(r.status)}</span><span>${esc(r.issue_id)}</span>
+      <span>· opened ${esc(when(r.opened_at))}${r.resolved_at ? " · resolved " + esc(when(r.resolved_at)) : ""}</span></div>
+    <div class="rtitle">${esc(r.title)}</div>
+    <div class="headline ${confirmed ? "" : "unc"}">${esc(r.headline)}</div>
+    ${r.narrative ? `<p>${esc(r.narrative)}</p><div class="textby">summary written by the model; every number checked against the finding</div>` : ""}
+    ${!r.narrative && r.text_fallback_reason ? `<div class="textby">template text (model text not used: ${esc(r.text_fallback_reason)})</div>` : ""}
+    <div class="tiles">
+      ${impactTiles(r.business_impact || {})}
+      ${root.node ? `<div class="tile wide"><b title="${esc(root.node)}">${esc(root.node)}</b><span>root · ${esc(root.status || "?")} · ${esc(seg(root.segment))}</span></div>` : ""}
+      ${root.explained_share ? `<div class="tile"><b class="num">${fmt(100 * root.explained_share)}%</b><span>of the change explained</span></div>` : ""}
+    </div>
+    ${(d.charts || []).length ? `<div class="card">${d.charts.map(chart).join("")}</div>` : ""}
+    <div class="cols">
+      <div class="card"><h4>What happened</h4>${list(r.what_happened)}</div>
+      <div class="card"><h4>Recommended actions</h4>${list(r.recommended_actions)}</div>
+      <div class="card"><h4>Evidence</h4>${list(r.evidence)}</div>
+      <div class="card"><h4>Still uncertain</h4>${list(r.uncertainty)}${r.ruled_out && r.ruled_out.length ? `<h4 style="margin-top:12px">Ruled out</h4>${list(r.ruled_out)}` : ""}</div>
+    </div>
+    <div class="card" style="margin-top:12px"><h4>Investigation trail${trailCount(r.trail)}</h4>${r.trail && r.trail.length ? `<ol class="timeline">${r.trail.map(trailStep).join("")}</ol>` : `<div class="muted">no investigation needed</div>`}</div>
+    <div class="cols">
+      <div class="card"><h4>Also affected (grouped here)</h4>${r.symptoms && r.symptoms.length ? `<ul>${r.symptoms.map((x) => `<li>${esc(x.metric)} ${esc(x.direction)} in ${esc(seg(x.segment))} <span class="muted">(${esc(x.rel_change_pct)}%)</span></li>`).join("")}</ul>` : `<div class="muted">none</div>`}</div>
+      <div class="card"><h4>History</h4><ul>${(d.issue.history || []).map((h) => `<li><span class="num">${esc(when(h.time))}</span> ${esc(h.event)}${h.detail ? ": " + esc(h.detail) : ""}</li>`).join("")}</ul></div>
+    </div>`;
+  drawCharts();
+}
+async function renderGraph() {
+  const g = await api("/api/tree");
+  const byId = Object.fromEntries(g.nodes.map((n) => [n.id, n]));
+  const inputs = {};
+  for (const e of g.edges) if (e.type === "formula") (inputs[e.to] = inputs[e.to] || []).push(e);
+  const used = new Set(g.edges.filter((e) => e.type === "formula").map((e) => e.from));
+  const seen = new Set();
+  const node = (id) => {
+    const n = byId[id] || { id };
+    const cls = n.root_cause ? "root" : n.anomalous ? "anom" : (n.watched ? "watched" : "");
+    const tag = n.root_cause ? "<small>root cause</small>" : n.anomalous ? `<small>z=${fmt(n.anomalous, 0)}</small>` : "";
+    return `<span class="node ${cls}">${esc(id)} ${tag}</span>`;
+  };
+  const walk = (id, depth) => {
+    if (seen.has(id) || depth > 12) return `<li>${node(id)} <span class="formula">(see above)</span></li>`;
+    seen.add(id);
+    const kids = [...new Set((inputs[id] || []).flatMap((e) => ((e.formula || "").split("=")[1] || "").match(/[a-z_]+/g) || []))];
+    const f = (inputs[id] || [])[0];
+    return `<li>${node(id)}${f ? `<span class="formula">= ${esc((f.formula || "").split("=")[1])}</span>${f.source !== "seed" ? `<span class="tag">auto-discovered</span>` : ""}` : ""}${kids.length ? `<ul>${kids.map((k) => walk(k, depth + 1)).join("")}</ul>` : ""}</li>`;
+  };
+  const roots = ["revenue", ...Object.keys(inputs).filter((t) => !used.has(t) && t !== "revenue")];
+  const causes = g.edges.filter((e) => e.type === "possible_cause");
+  $("view").innerHTML = `<h3 class="vt">Metric graph</h3>
+    <p class="lead">How the business is built, as formulas validated on the data. New metrics appear once the system places them.</p>
+    <div class="keyrow"><span class="node anom">anomalous now</span><span class="node root">root cause</span><span class="node watched">watched</span><span class="tag">auto-discovered</span></div>
+    <div class="card tree"><ul>${roots.map((r) => walk(r, 0)).join("")}</ul></div>
+    <div class="card" style="margin-top:12px"><h4>Possible causes (hypotheses, not facts)</h4>
+    <ul>${causes.map((e) => `<li>${node(e.from)} → ${node(e.to)} <span class="formula">${esc(e.status)}</span>${e.source !== "seed" ? `<span class="tag">auto-discovered</span>` : ""}</li>`).join("")}</ul></div>`;
+}
+function renderWatch() {
+  const s = state; if (!s) return;
+  $("view").innerHTML = `<h3 class="vt">What it watches and why</h3>
+    <p class="lead">Re-chosen every simulated day from graph importance, business weight and noisiness, plus the root causes of open issues. Each metric is scored every hour in 4 groupings (total, country, country × platform, category) over 1 h and 6 h windows.</p>
+    <div class="card" style="padding:0;overflow:hidden"><table><tr><th>Metric</th><th>Why it is watched</th></tr>${Object.entries(s.watchlist).map(([m, why]) => `<tr><td><b>${esc(m)}</b></td><td class="muted">${esc(why)}</td></tr>`).join("")}</table></div>
+    <div class="card" style="margin-top:12px;padding:0;overflow:hidden"><table><tr><th>Open anomaly</th><th>Segment</th><th>Change</th><th>z</th></tr>
+    ${s.open_anomalies.length ? s.open_anomalies.map((a) => `<tr><td>${esc(a.metric)}</td><td>${esc(seg(a.segment))}</td><td class="num">${esc(a.rel_change_pct)}%</td><td class="num">${fmt(a.peak_z, 1)}</td></tr>`).join("") : `<tr><td colspan="4" class="muted">none right now</td></tr>`}</table></div>
+    ${s.scripted.length ? `<div class="card" style="margin-top:12px"><h4>Still scheduled by the demo script (hidden from the monitor)</h4>${list(s.scripted.map((x) => `${x.at} ${x.action} ${x.what}`))}</div>` : ""}`;
+}
+async function renderScore() {
+  const sc = await api("/api/score");
+  const rows = sc.scenarios.map((r) => {
+    const ok = r.result === "FOUND" || r.result === "PASS";
+    let detail = "";
+    if (r.kind === "fault" && r.result === "FOUND") detail = `${r.issue}: root ${r.root} (${r.confirmed ? "confirmed" : "hypothesis"}), alert after ${r.hours_to_alert} h${r.trigger_named ? ", trigger event named" : ""}${r.resolved ? ", resolved" : ""}`;
+    else if (r.preset === "late_missing_data") detail = `data issue ${r.data_issue || "–"}${r.resolved ? " resolved by backfill" : ""}`;
+    else if (r.kind === "innocent") detail = ok ? "no incident raised" : `false incidents: ${(r.false_incidents || []).join(", ")}`;
+    return `<tr><td class="${ok ? "ok" : "bad"}">${ok ? "✓" : "✗"} ${esc(r.result)}</td><td>${esc(r.kind)}</td><td>${esc(r.preset)}</td><td>${esc(r.segment)}</td><td>${esc(detail)}</td></tr>`;
+  }).join("");
+  const s = sc.summary;
+  $("view").innerHTML = `<h3 class="vt">Scorecard</h3>
+    <p class="lead">The only place that reads the simulator's ground truth: what was injected, compared with what the monitor reported on its own.</p>
+    <div class="tiles"><div class="tile"><b class="num">${esc(s.faults_found)}</b><span>faults found</span></div><div class="tile"><b class="num">${s.root_causes_confirmed}</b><span>root causes confirmed</span></div>
+      <div class="tile"><b class="num">${esc(s.innocent_passed)}</b><span>innocent changes not reported</span></div><div class="tile"><b class="num">${s.alerts_sent}</b><span>alerts sent</span></div></div>
+    <div class="card" style="padding:0;overflow:hidden">${rows ? `<table><tr><th>Result</th><th>Kind</th><th>Scenario</th><th>Segment</th><th>Detail</th></tr>${rows}</table>` : `<div class="empty">Nothing injected yet.</div>`}</div>
+    ${s.other_alerted_issues.length ? `<div class="card" style="margin-top:12px"><h4>Other alerted issues</h4>${list(s.other_alerted_issues)}</div>` : ""}`;
+}
+function renderView(force) {
+  if (tab === "detail") { if (selected) loadIssue(force); else $("view").innerHTML = `<div class="empty">Select an issue on the left.</div>`; }
+  else if (tab === "graph" && force) renderGraph();
+  else if (tab === "watch") renderWatch();
+  else if (tab === "score" && force) renderScore();
+}
+
+// ---------------- loop ----------------
+async function refresh() {
+  try {
+    state = await api("/api/state");
+    renderHeader(state); renderScenarios(state); renderIssues(state); renderFeed(state);
+    if (!selected && state.issues.length) selected = (state.issues.find((i) => i.alerts) || state.issues[0]).id;
+    renderView(false);
+  } catch (e) { $("clock").textContent = "waiting for the server…"; }
+}
+$("play").onclick = async () => { await api("/api/control", { action: state && state.paused ? "resume" : "pause" }); refresh(); };
+$("step").onclick = async () => { await api("/api/control", { action: "step" }); setTimeout(refresh, 400); };
+$("speed").onchange = (e) => api("/api/control", { action: "speed", value: e.target.value });
+$("onlydec").onchange = () => state && renderFeed(state);
+$("quiet").onchange = () => state && renderIssues(state);
+$("theme").onclick = () => {
+  const cur = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  document.documentElement.dataset.theme = cur === "dark" ? "light" : "dark";
+  try { localStorage.setItem("eye-theme", document.documentElement.dataset.theme); } catch (e) {}
+  if (tab === "detail") renderDetail();
+};
+if (["#graph", "#watch", "#score"].includes(location.hash)) { tab = location.hash.slice(1); setTab(); setTimeout(() => renderView(true), 300); }
+window.addEventListener("resize", () => drawCharts());
+refresh(); setInterval(refresh, 1500);
+setInterval(() => { if (tab === "graph") renderGraph(); }, 5000);
+</script>
+</body>
+</html>
