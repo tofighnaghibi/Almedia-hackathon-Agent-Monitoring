@@ -1,0 +1,379 @@
+@import 'tailwindcss';
+
+/* "Aurora" palette: the only colours in the app. Mint = fine / verified / best, pink = problem,
+   neutral = explained / normal-zone band, violet = glow and focus accent only (never data meaning). */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --color-bg: #05060d;
+  --color-panel: #0e1020;
+  --color-line: #1e2140;
+  --color-fg: #f1f0ff;
+  --color-fg-2: #9a9cc4;
+  --color-ok: #3cf2c4;
+  --color-problem: #ff4d8d;
+  --color-neutral: #7b7fa8;
+  --color-accent: #8b7cff;
+  --color-land: #23305a;
+  --color-border: #2a2f5c;
+  --color-ocean-in: #141436;
+  --color-ocean-out: #06061a;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+/* Tabular figures for numbers (not globally: Inter's tabular hyphen looks spaced in words). */
+svg text {
+  font-variant-numeric: tabular-nums;
+}
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.card {
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+}
+
+.section-title {
+  font-size: 14px;
+  color: var(--color-fg-2);
+}
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fade-up {
+  animation: fade-up 0.45s ease-out both;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+/* opacity only: safe on SVG elements that carry a transform attribute */
+.fade-in {
+  animation: fade-in 0.5s ease-out both;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 1.2s ease-out forwards;
+}
+
+@keyframes flow {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+.flow {
+  stroke-dasharray: 5 3;
+  animation: flow 0.8s linear infinite;
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+.grow-x {
+  animation: grow-x 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Globe markers */
+.argus-marker {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  --c: var(--color-problem);
+}
+.argus-marker i {
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: var(--c);
+}
+.argus-marker span {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--c);
+  animation: pulse 2s ease-out infinite;
+}
+.argus-marker span:nth-child(2) {
+  animation-delay: 1s;
+}
+.argus-marker--watch {
+  --c: color-mix(in oklab, var(--color-problem) 60%, var(--color-neutral));
+}
+/* Only incidents pulse; everything else is a still dot. */
+.argus-marker:not(.argus-marker--incident) span {
+  display: none;
+}
+.argus-marker--explained {
+  --c: var(--color-neutral);
+}
+.argus-marker--explained span,
+.argus-marker--waiting span {
+  animation-duration: 3.5s;
+}
+.argus-marker--waiting {
+  --c: var(--color-fg-2);
+}
+.argus-marker--explained span:nth-child(2),
+.argus-marker--waiting span:nth-child(2) {
+  display: none;
+}
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(3.6);
+    opacity: 0;
+  }
+}
+
+.argus-popup {
+  pointer-events: none; /* a tooltip must never capture the pointer (stale hovers near the globe edge) */
+}
+.argus-popup .maplibregl-popup-content {
+  background: var(--color-panel);
+  color: var(--color-fg);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+.argus-popup .maplibregl-popup-tip {
+  display: none;
+}
+
+/* Argus' eye (TopBar): levels of focus. */
+.argus-eye {
+  display: block;
+  overflow: visible;
+  --spin: 1; /* 1 = calm; investigating turns ~3× faster */
+}
+.argus-eye--investigating {
+  --spin: 0.33;
+}
+.argus-eye__lid {
+  transform-box: view-box;
+  transform-origin: 22px 13px;
+  transition: transform 0.25s ease;
+}
+.argus-eye--problem .argus-eye__lid {
+  transform: scale(1.04, 1.14); /* widens slightly */
+}
+.argus-eye--blink .argus-eye__lid {
+  transform: scaleY(0.08);
+  transition: transform 0.09s ease-in;
+}
+.argus-eye__iris {
+  transition: transform 0.7s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+.argus-eye__ring {
+  transform-box: view-box;
+  transform-origin: 22px 13px;
+  animation: eye-turn linear infinite;
+}
+.argus-eye__ring--outer {
+  animation-duration: calc(18s * var(--spin));
+}
+.argus-eye__ring--middle {
+  animation-duration: calc(12s * var(--spin));
+  animation-direction: reverse;
+}
+.argus-eye__ring--inner {
+  animation-duration: calc(8s * var(--spin));
+}
+.argus-eye__pupil {
+  transform-box: view-box;
+  transform-origin: 22px 13px;
+  transition: transform 0.5s ease, fill 0.6s ease;
+}
+.argus-eye--investigating .argus-eye__pupil {
+  transform: scale(0.55); /* narrows while zooming in through the levels */
+}
+.argus-eye__outline {
+  transition: stroke 0.6s ease;
+}
+@keyframes eye-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .argus-eye__ring {
+    animation: none;
+  }
+  .argus-eye__lid,
+  .argus-eye__iris,
+  .argus-eye__pupil {
+    transition: none;
+  }
+  .argus-eye--blink .argus-eye__lid,
+  .argus-eye--problem .argus-eye__lid,
+  .argus-eye--investigating .argus-eye__pupil {
+    transform: none;
+  }
+}
+
+/* Fly-in breadcrumb: segments appear one by one, then the line fades out. */
+.crumb {
+  transition: opacity 0.6s ease;
+}
+.crumb--out {
+  opacity: 0;
+}
+.crumb-part {
+  opacity: 0;
+  animation: crumb-in 0.35s ease forwards;
+}
+@keyframes crumb-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Replay: the cause node pulses once found. */
+.cg-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cg-pulse 1.6s ease-out infinite;
+}
+@keyframes cg-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.12, 1.35);
+    opacity: 0;
+  }
+}
+.replay-glow {
+  animation: replay-glow 1.4s ease-in-out infinite alternate;
+}
+@keyframes replay-glow {
+  from {
+    box-shadow: 0 0 0 0 rgba(255, 77, 141, 0.2);
+  }
+  to {
+    box-shadow: 0 0 18px 4px rgba(255, 77, 141, 0.55);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cg-pulse,
+  .replay-glow {
+    animation: none;
+  }
+}
+
+/* A newly added metric flies into its place in the graph; its edges draw in (.draw). */
+.cg-new {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cg-new 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes cg-new {
+  from {
+    transform: translate(120px, -90px) scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+/* Demo: the best of the four futures glows. */
+.fix-glow {
+  animation: fix-glow 1.2s ease-in-out infinite alternate;
+}
+@keyframes fix-glow {
+  from {
+    filter: drop-shadow(0 0 0 rgba(60, 242, 196, 0));
+  }
+  to {
+    filter: drop-shadow(0 0 8px rgba(60, 242, 196, 0.9));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cg-new,
+  .fix-glow {
+    animation: none;
+  }
+}
+
+/* Readable surface for any text over the globe: frosted dark glass. */
+.frost {
+  background: rgba(5, 6, 13, 0.65);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* Demo: the primary card button is visibly pressed before its view opens. */
+.press-hint {
+  animation: press-hint 0.9s ease-in-out;
+}
+@keyframes press-hint {
+  0%,
+  100% {
+    transform: none;
+    box-shadow: 0 0 0 0 rgba(60, 242, 196, 0);
+  }
+  40% {
+    transform: scale(0.97);
+    box-shadow: 0 0 0 6px rgba(60, 242, 196, 0.35);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .press-hint {
+    animation: none;
+  }
+}
