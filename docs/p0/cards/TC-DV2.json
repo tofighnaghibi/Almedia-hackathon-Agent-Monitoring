@@ -1,0 +1,38 @@
+{
+ "id": "TC-DV2",
+ "fitted_at": "2026-11-22T10:19:33+00:00",
+ "source": "Google Analytics sample (merchandise store), sessions with revenue",
+ "source_population": "one US online store, Aug 2016 - Aug 2017",
+ "target_population": "synthetic sessions, Brazil 2018",
+ "estimate": {
+  "conversion": {
+   "desktop": 0.015794329090911826,
+   "mobile": 0.004081925979159181,
+   "tablet": 0.005517422575454038
+  },
+  "ratio_mobile_desktop": 0.25844250526019186,
+  "ratio_tablet_desktop": 0.34932934116389935
+ },
+ "ci95": {
+  "ratio_mobile_desktop": [
+   0.23962596781992243,
+   0.2761001534978144
+  ]
+ },
+ "n_sessions": 903653,
+ "trained_through": "20170801",
+ "heldout": {
+  "H5 mobile:desktop conversion ratio, halves (rel diff <= 30%)": {
+   "halves": {
+    "first": 0.33490286418702964,
+    "second": 0.2061725672841016
+   },
+   "rel_diff": 0.384380997204722,
+   "pass": false
+  }
+ },
+ "assumptions": [
+  "the ratio carries over, the level does not"
+ ],
+ "status": "unsupported transfer (held-out unstable; sensitivity = both halves)"
+}

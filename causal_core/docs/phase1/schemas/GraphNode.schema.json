@@ -1,0 +1,61 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "enum": [
+        "VARIABLE",
+        "ENTITY",
+        "INTERVENTION",
+        "STUDY",
+        "OBSERVATION_MECHANISM",
+        "LATENT",
+        "EFFECT_CLAIM"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "layer": {
+      "default": "DOMAIN",
+      "enum": [
+        "DOMAIN",
+        "OBSERVATION"
+      ],
+      "title": "Layer",
+      "type": "string"
+    },
+    "node_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Node Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "variable_id": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Variable Id"
+    }
+  },
+  "required": [
+    "schema_version",
+    "node_id",
+    "kind"
+  ],
+  "title": "GraphNode",
+  "type": "object"
+}

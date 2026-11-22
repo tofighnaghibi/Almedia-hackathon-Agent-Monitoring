@@ -1,0 +1,1027 @@
+{
+  "$defs": {
+    "AggregateStats": {
+      "additionalProperties": false,
+      "properties": {
+        "covariance_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Covariance Ref"
+        },
+        "denominator": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Denominator"
+        },
+        "iid": {
+          "default": "UNKNOWN",
+          "enum": [
+            "UNKNOWN",
+            "ASSERTED_BY_SOURCE",
+            "NOT_IID"
+          ],
+          "title": "Iid",
+          "type": "string"
+        },
+        "mean": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean"
+        },
+        "n": {
+          "minimum": 0,
+          "title": "N",
+          "type": "integer"
+        },
+        "numerator": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Numerator"
+        },
+        "se": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Se"
+        },
+        "shape": {
+          "const": "aggregate_stats",
+          "title": "Shape",
+          "type": "string"
+        },
+        "sum_sq": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sum Sq"
+        },
+        "total": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total"
+        },
+        "window": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TimeWindow"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "shape",
+        "n"
+      ],
+      "title": "AggregateStats",
+      "type": "object"
+    },
+    "AssignedUnit": {
+      "additionalProperties": false,
+      "properties": {
+        "arm": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Arm",
+          "type": "string"
+        },
+        "cluster_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cluster Id"
+        },
+        "exposure": {
+          "anyOf": [
+            {
+              "enum": [
+                0,
+                1
+              ],
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exposure"
+        },
+        "outcome": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Outcome"
+        },
+        "unit_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Unit Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "unit_id",
+        "arm"
+      ],
+      "title": "AssignedUnit",
+      "type": "object"
+    },
+    "AssignmentOutcomes": {
+      "additionalProperties": false,
+      "properties": {
+        "arms": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 2,
+          "title": "Arms",
+          "type": "array"
+        },
+        "shape": {
+          "const": "assignment_outcomes",
+          "title": "Shape",
+          "type": "string"
+        },
+        "study_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Study Id",
+          "type": "string"
+        },
+        "units": {
+          "items": {
+            "$ref": "#/$defs/AssignedUnit"
+          },
+          "minItems": 1,
+          "title": "Units",
+          "type": "array"
+        }
+      },
+      "required": [
+        "shape",
+        "study_id",
+        "arms",
+        "units"
+      ],
+      "title": "AssignmentOutcomes",
+      "type": "object"
+    },
+    "CategoricalValue": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Category",
+          "type": "string"
+        },
+        "shape": {
+          "const": "categorical",
+          "title": "Shape",
+          "type": "string"
+        }
+      },
+      "required": [
+        "shape",
+        "category"
+      ],
+      "title": "CategoricalValue",
+      "type": "object"
+    },
+    "Clock": {
+      "additionalProperties": false,
+      "description": "A timestamp with an honest quality label. UNKNOWN never carries a value.",
+      "properties": {
+        "quality": {
+          "enum": [
+            "KNOWN",
+            "ESTIMATED",
+            "UNKNOWN"
+          ],
+          "title": "Quality",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "quality"
+      ],
+      "title": "Clock",
+      "type": "object"
+    },
+    "DataQuality": {
+      "additionalProperties": false,
+      "properties": {
+        "completeness": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Completeness"
+        },
+        "maturity": {
+          "default": "UNKNOWN",
+          "enum": [
+            "MATURE",
+            "IMMATURE",
+            "UNKNOWN"
+          ],
+          "title": "Maturity",
+          "type": "string"
+        },
+        "missingness": {
+          "default": "unknown",
+          "enum": [
+            "none_declared",
+            "declared",
+            "unknown"
+          ],
+          "title": "Missingness",
+          "type": "string"
+        },
+        "selection": {
+          "default": "unknown",
+          "enum": [
+            "none_declared",
+            "declared",
+            "unknown"
+          ],
+          "title": "Selection",
+          "type": "string"
+        }
+      },
+      "title": "DataQuality",
+      "type": "object"
+    },
+    "EnvironmentScope": {
+      "additionalProperties": false,
+      "properties": {
+        "data_cut": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Cut"
+        },
+        "dataset_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dataset Version"
+        },
+        "environment_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Environment Id",
+          "type": "string"
+        },
+        "environment_kind": {
+          "enum": [
+            "production",
+            "staging",
+            "emulator",
+            "offline_replay",
+            "legacy_unscoped"
+          ],
+          "title": "Environment Kind",
+          "type": "string"
+        },
+        "generator_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generator Version"
+        }
+      },
+      "required": [
+        "environment_id",
+        "environment_kind"
+      ],
+      "title": "EnvironmentScope",
+      "type": "object"
+    },
+    "EventBatch": {
+      "additionalProperties": false,
+      "properties": {
+        "events": {
+          "items": {
+            "$ref": "#/$defs/EventRecord"
+          },
+          "minItems": 1,
+          "title": "Events",
+          "type": "array"
+        },
+        "shape": {
+          "const": "event_batch",
+          "title": "Shape",
+          "type": "string"
+        }
+      },
+      "required": [
+        "shape",
+        "events"
+      ],
+      "title": "EventBatch",
+      "type": "object"
+    },
+    "EventRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "default": {},
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "propertyNames": {
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "title": "Attributes",
+          "type": "object"
+        },
+        "event_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "occurred_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Clock"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "event_id"
+      ],
+      "title": "EventRecord",
+      "type": "object"
+    },
+    "ObservationClocks": {
+      "additionalProperties": false,
+      "properties": {
+        "as_of": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "As Of"
+        },
+        "available_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Clock"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "ingested_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ingested At"
+        },
+        "observed_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Clock"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_timezone": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Timezone"
+        }
+      },
+      "title": "ObservationClocks",
+      "type": "object"
+    },
+    "Panel": {
+      "additionalProperties": false,
+      "properties": {
+        "cells": {
+          "items": {
+            "$ref": "#/$defs/PanelCell"
+          },
+          "minItems": 1,
+          "title": "Cells",
+          "type": "array"
+        },
+        "shape": {
+          "const": "panel",
+          "title": "Shape",
+          "type": "string"
+        }
+      },
+      "required": [
+        "shape",
+        "cells"
+      ],
+      "title": "Panel",
+      "type": "object"
+    },
+    "PanelCell": {
+      "additionalProperties": false,
+      "properties": {
+        "period": {
+          "title": "Period",
+          "type": "integer"
+        },
+        "unit": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "unit",
+        "period",
+        "value"
+      ],
+      "title": "PanelCell",
+      "type": "object"
+    },
+    "ProvenanceLineage": {
+      "additionalProperties": false,
+      "description": "Ancestry, not independence: distinct roots do not imply independent evidence (I10).",
+      "properties": {
+        "content_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "generator_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generator Version"
+        },
+        "lineage_root_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Lineage Root Id",
+          "type": "string"
+        },
+        "origin_kind": {
+          "enum": [
+            "original",
+            "synthetic_generated",
+            "synthetic_replica",
+            "model_prediction",
+            "external_study",
+            "legacy_unknown"
+          ],
+          "title": "Origin Kind",
+          "type": "string"
+        },
+        "parent_evidence_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "title": "Parent Evidence Ids",
+          "type": "array"
+        },
+        "source_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "transformation_hash": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Transformation Hash"
+        }
+      },
+      "required": [
+        "source_id",
+        "origin_kind",
+        "lineage_root_id",
+        "content_hash"
+      ],
+      "title": "ProvenanceLineage",
+      "type": "object"
+    },
+    "Scalar": {
+      "additionalProperties": false,
+      "properties": {
+        "shape": {
+          "const": "scalar",
+          "title": "Shape",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "shape",
+        "value"
+      ],
+      "title": "Scalar",
+      "type": "object"
+    },
+    "SegmentKey": {
+      "additionalProperties": false,
+      "description": "One coordinate of a breakdown: which dimension, which value (CP-031). The value is free text so source labels\nsuch as \"Test Group 1\" survive unchanged; the dimension id must name a registered DimensionSpec or \"arm\".",
+      "properties": {
+        "dimension_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Dimension Id",
+          "type": "string"
+        },
+        "value": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dimension_id",
+        "value"
+      ],
+      "title": "SegmentKey",
+      "type": "object"
+    },
+    "StateSample": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            }
+          ],
+          "title": "State"
+        },
+        "t": {
+          "format": "date-time",
+          "title": "T",
+          "type": "string"
+        }
+      },
+      "required": [
+        "t",
+        "state"
+      ],
+      "title": "StateSample",
+      "type": "object"
+    },
+    "StateTrajectory": {
+      "additionalProperties": false,
+      "properties": {
+        "samples": {
+          "items": {
+            "$ref": "#/$defs/StateSample"
+          },
+          "minItems": 1,
+          "title": "Samples",
+          "type": "array"
+        },
+        "shape": {
+          "const": "state_trajectory",
+          "title": "Shape",
+          "type": "string"
+        }
+      },
+      "required": [
+        "shape",
+        "samples"
+      ],
+      "title": "StateTrajectory",
+      "type": "object"
+    },
+    "TimePoint": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "format": "date-time",
+          "title": "T",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "t",
+        "value"
+      ],
+      "title": "TimePoint",
+      "type": "object"
+    },
+    "TimeSeries": {
+      "additionalProperties": false,
+      "properties": {
+        "points": {
+          "items": {
+            "$ref": "#/$defs/TimePoint"
+          },
+          "minItems": 1,
+          "title": "Points",
+          "type": "array"
+        },
+        "shape": {
+          "const": "time_series",
+          "title": "Shape",
+          "type": "string"
+        }
+      },
+      "required": [
+        "shape",
+        "points"
+      ],
+      "title": "TimeSeries",
+      "type": "object"
+    },
+    "TimeWindow": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "TimeWindow",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "clocks": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ObservationClocks"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "dq": {
+      "$ref": "#/$defs/DataQuality",
+      "default": {
+        "completeness": null,
+        "maturity": "UNKNOWN",
+        "missingness": "unknown",
+        "selection": "unknown"
+      }
+    },
+    "lineage": {
+      "$ref": "#/$defs/ProvenanceLineage"
+    },
+    "observation_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Observation Id",
+      "type": "string"
+    },
+    "observation_mechanisms": {
+      "default": [],
+      "items": {
+        "maxLength": 200,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+        "type": "string"
+      },
+      "title": "Observation Mechanisms",
+      "type": "array"
+    },
+    "payload": {
+      "discriminator": {
+        "mapping": {
+          "aggregate_stats": "#/$defs/AggregateStats",
+          "assignment_outcomes": "#/$defs/AssignmentOutcomes",
+          "categorical": "#/$defs/CategoricalValue",
+          "event_batch": "#/$defs/EventBatch",
+          "panel": "#/$defs/Panel",
+          "scalar": "#/$defs/Scalar",
+          "state_trajectory": "#/$defs/StateTrajectory",
+          "time_series": "#/$defs/TimeSeries"
+        },
+        "propertyName": "shape"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Scalar"
+        },
+        {
+          "$ref": "#/$defs/CategoricalValue"
+        },
+        {
+          "$ref": "#/$defs/AggregateStats"
+        },
+        {
+          "$ref": "#/$defs/TimeSeries"
+        },
+        {
+          "$ref": "#/$defs/Panel"
+        },
+        {
+          "$ref": "#/$defs/EventBatch"
+        },
+        {
+          "$ref": "#/$defs/AssignmentOutcomes"
+        },
+        {
+          "$ref": "#/$defs/StateTrajectory"
+        }
+      ],
+      "title": "Payload"
+    },
+    "record_key": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Record Key",
+      "type": "string"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/EnvironmentScope"
+    },
+    "segment": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/SegmentKey"
+      },
+      "title": "Segment",
+      "type": "array"
+    },
+    "source_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Source Id",
+      "type": "string"
+    },
+    "variable_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Variable Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "observation_id",
+    "variable_id",
+    "payload",
+    "source_id",
+    "record_key",
+    "revision",
+    "lineage",
+    "scope"
+  ],
+  "title": "Observation",
+  "type": "object"
+}

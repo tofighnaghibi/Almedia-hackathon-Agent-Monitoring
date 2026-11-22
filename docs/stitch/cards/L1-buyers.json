@@ -1,0 +1,109 @@
+{
+ "status": "partially supported (fitted on Olist; drifts between halves)",
+ "estimate": {
+  "region_share_2017": {
+   "MG": 0.12004168421986208,
+   "PE": 0.01711713709230394,
+   "BA": 0.035298552138533515,
+   "PA": 0.011174918516219153,
+   "RS": 0.05900090907075231,
+   "DF": 0.020420833240948094,
+   "GO": 0.02117469679164542,
+   "ES": 0.021462938737500277,
+   "MA": 0.00858074100352542,
+   "PB": 0.005764838917097182,
+   "AC": 0.0011973126981663377,
+   "SP": 0.39378284295248445,
+   "RJ": 0.1380235471497306,
+   "PR": 0.05033147823773309,
+   "SC": 0.0381366266823352,
+   "MT": 0.009312432096849293,
+   "MS": 0.006673909669408661,
+   "CE": 0.014633821866477461,
+   "AL": 0.004589698676304294,
+   "PI": 0.005010975366399858,
+   "AM": 0.0016629343030088025,
+   "RO": 0.0031263164896565485,
+   "SE": 0.004279284273075985,
+   "RR": 0.0003991042327221126,
+   "TO": 0.0029711092880423937,
+   "RN": 0.005188355025387463,
+   "AP": 0.0006430012638300702
+  }
+ },
+ "heldout": [
+  {
+   "name": "max region-share difference 2017 vs 2018",
+   "halves": [
+    0,
+    0.04818268258860903
+   ],
+   "diff": 0.04818268258860903,
+   "tol": 0.03,
+   "rel": false,
+   "pass": false
+  }
+ ],
+ "trained_through": "2017-12-31",
+ "target": true,
+ "assumptions": [],
+ "bridges": [],
+ "status_override": null,
+ "id": "L1-buyers",
+ "layer": "L1",
+ "data_type": "Buyers, regions",
+ "method": "fit",
+ "sources": [
+  "olist"
+ ],
+ "consumed_by": "sim.chain",
+ "heldout_plan": "region shares: 2017 vs 2018",
+ "seconds": 0.6,
+ "cache_key": "3381012b30a511c3",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ]
+ }
+}

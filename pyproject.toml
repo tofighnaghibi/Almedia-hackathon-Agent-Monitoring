@@ -1,0 +1,24 @@
+[project]
+name = "mkt"
+version = "0.1.0"
+description = "Real-data-grounded marketplace reconstruction and benchmark generator"
+requires-python = ">=3.11"
+dependencies = ["duckdb>=1.1", "polars>=1.0", "pyarrow>=15", "numpy>=1.26", "pydantic>=2.6"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+fetch = ["kaggle>=1.6"]
+
+[project.scripts]
+mkt = "mkt.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["mkt*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

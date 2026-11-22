@@ -1,0 +1,342 @@
+[
+ {
+  "layer": true,
+  "scenario": "9a_checkout_failure",
+  "seed": 61,
+  "classification": "localised",
+  "stage": "checkouts_count -> orders_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'checkouts_count -> orders_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9a_checkout_failure",
+  "seed": 62,
+  "classification": "undetermined",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "funnel evidence mixed across flagged periods ([None]): abstaining"
+ },
+ {
+  "layer": true,
+  "scenario": "9a_checkout_failure",
+  "seed": 63,
+  "classification": "localised",
+  "stage": "checkouts_count -> orders_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'checkouts_count -> orders_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9a_checkout_failure",
+  "seed": 64,
+  "classification": "localised",
+  "stage": "checkouts_count -> orders_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'checkouts_count -> orders_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9a_checkout_failure",
+  "seed": 65,
+  "classification": "localised",
+  "stage": "checkouts_count -> orders_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'checkouts_count -> orders_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9b_demand_drop",
+  "seed": 61,
+  "classification": "localised",
+  "stage": "upstream of sessions_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'upstream of sessions_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9b_demand_drop",
+  "seed": 62,
+  "classification": "undetermined",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "funnel evidence mixed across flagged periods ([None]): abstaining"
+ },
+ {
+  "layer": true,
+  "scenario": "9b_demand_drop",
+  "seed": 63,
+  "classification": "localised",
+  "stage": "upstream of sessions_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'upstream of sessions_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9b_demand_drop",
+  "seed": 64,
+  "classification": "undetermined",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "funnel evidence mixed across flagged periods ([None]): abstaining"
+ },
+ {
+  "layer": true,
+  "scenario": "9b_demand_drop",
+  "seed": 65,
+  "classification": "localised",
+  "stage": "checkouts_count -> orders_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'checkouts_count -> orders_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 61,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 62,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 63,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 64,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 65,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ },
+ {
+  "layer": false,
+  "scenario": "9a_checkout_failure",
+  "seed": 61,
+  "classification": "cannot_localise",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "the metric moved, but no funnel stages are declared for it"
+ },
+ {
+  "layer": false,
+  "scenario": "9a_checkout_failure",
+  "seed": 62,
+  "classification": "cannot_localise",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "the metric moved, but no funnel stages are declared for it"
+ },
+ {
+  "layer": false,
+  "scenario": "9a_checkout_failure",
+  "seed": 63,
+  "classification": "cannot_localise",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "the metric moved, but no funnel stages are declared for it"
+ },
+ {
+  "layer": false,
+  "scenario": "9a_checkout_failure",
+  "seed": 64,
+  "classification": "cannot_localise",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "the metric moved, but no funnel stages are declared for it"
+ },
+ {
+  "layer": false,
+  "scenario": "9a_checkout_failure",
+  "seed": 65,
+  "classification": "cannot_localise",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "the metric moved, but no funnel stages are declared for it"
+ },
+ {
+  "layer": false,
+  "scenario": "9b_demand_drop",
+  "seed": 61,
+  "classification": "cannot_localise",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "the metric moved, but no funnel stages are declared for it"
+ },
+ {
+  "layer": false,
+  "scenario": "9b_demand_drop",
+  "seed": 62,
+  "classification": "cannot_localise",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "the metric moved, but no funnel stages are declared for it"
+ },
+ {
+  "layer": false,
+  "scenario": "9b_demand_drop",
+  "seed": 63,
+  "classification": "cannot_localise",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "the metric moved, but no funnel stages are declared for it"
+ },
+ {
+  "layer": false,
+  "scenario": "9b_demand_drop",
+  "seed": 64,
+  "classification": "cannot_localise",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "the metric moved, but no funnel stages are declared for it"
+ },
+ {
+  "layer": false,
+  "scenario": "9b_demand_drop",
+  "seed": 65,
+  "classification": "cannot_localise",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "the metric moved, but no funnel stages are declared for it"
+ },
+ {
+  "layer": false,
+  "scenario": "control",
+  "seed": 61,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ },
+ {
+  "layer": false,
+  "scenario": "control",
+  "seed": 62,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ },
+ {
+  "layer": false,
+  "scenario": "control",
+  "seed": 63,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ },
+ {
+  "layer": false,
+  "scenario": "control",
+  "seed": 64,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ },
+ {
+  "layer": false,
+  "scenario": "control",
+  "seed": 65,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ }
+]

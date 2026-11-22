@@ -1,0 +1,60 @@
+{
+ "status": "partially supported (transferred; held-out stable)",
+ "estimate": {
+  "stockout_snapshot_share": [
+   0.6433321477457669,
+   0.5212802573720515
+  ],
+  "stockout_starts": 441359,
+  "items": 417053
+ },
+ "heldout": [
+  {
+   "name": "stock-out snapshot share, first vs second half",
+   "halves": [
+    0.6433321477457669,
+    0.5212802573720515
+   ],
+   "diff": 0.18971831393998365,
+   "tol": 0.2,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2015-09-18",
+ "target": false,
+ "assumptions": [
+  "availability snapshots are weekly-ish: spell lengths are interval-censored"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L2-stock",
+ "layer": "L2",
+ "data_type": "Inventory, stock-outs",
+ "method": "transfer",
+ "sources": [
+  "retailrocket"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "stock-out share and spell length: first vs second half of snapshots",
+ "seconds": 3.4,
+ "cache_key": "8e3977feb707d1d1",
+ "inputs": {
+  "retailrocket/category_tree.csv": [
+   14454,
+   1795273490
+  ],
+  "retailrocket/events.csv": [
+   94237913,
+   1795273491
+  ],
+  "retailrocket/item_properties_part1.csv": [
+   484315749,
+   1795273494
+  ],
+  "retailrocket/item_properties_part2.csv": [
+   408929907,
+   1795273496
+  ]
+ }
+}

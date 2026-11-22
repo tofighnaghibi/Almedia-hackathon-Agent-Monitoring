@@ -1,0 +1,61 @@
+{
+ "status": "joined",
+ "estimate": {
+  "usd_brl": {
+   "n": 750,
+   "first": "04/01/2016",
+   "last": "31/12/2018",
+   "min": 3.051,
+   "max": 4.1879
+  },
+  "selic_target_pct": {
+   "n": 1096,
+   "first": "01/01/2016",
+   "last": "31/12/2018",
+   "min": 6.5,
+   "max": 14.25
+  },
+  "ipca_monthly_pct": {
+   "n": 36,
+   "first": "01/01/2016",
+   "last": "01/12/2018",
+   "min": -0.23,
+   "max": 1.27
+  }
+ },
+ "heldout": [],
+ "trained_through": "2018-12-31",
+ "target": true,
+ "assumptions": [
+  "exogenous context joined by date; not fitted"
+ ],
+ "bridges": [
+  "/home/sneha/data/mkt/stitch/bridges/L0-macro.parquet"
+ ],
+ "status_override": "joined",
+ "id": "L0-macro",
+ "layer": "L0",
+ "data_type": "Macro: inflation, FX, interest",
+ "method": "join on date",
+ "sources": [
+  "bcb"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "none: exogenous series, joined by date",
+ "seconds": 0.1,
+ "cache_key": "c0db6d54b1c262e3",
+ "inputs": {
+  "bcb/ipca_monthly_pct.json": [
+   1336,
+   1795281636
+  ],
+  "bcb/selic_target_pct.json": [
+   41126,
+   1795281637
+  ],
+  "bcb/usd_brl.json": [
+   29251,
+   1795281638
+  ]
+ }
+}

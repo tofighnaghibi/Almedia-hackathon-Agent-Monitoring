@@ -1,0 +1,77 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "blocks_claim": {
+      "anyOf": [
+        {
+          "enum": [
+            "MATHEMATICAL_IDENTITY",
+            "DESCRIPTIVE",
+            "ASSOCIATION",
+            "CAUSAL_EFFECT_CONDITIONAL",
+            "STRUCTURAL_CAUSAL_HYPOTHESIS",
+            "MODEL_PREDICTION",
+            "INCONCLUSIVE",
+            "DQ_FAILURE",
+            "ACTION_RECOMMENDATION"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Blocks Claim"
+    },
+    "executable_now": {
+      "default": false,
+      "title": "Executable Now",
+      "type": "boolean"
+    },
+    "gap_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Gap Id",
+      "type": "string"
+    },
+    "missing": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Missing",
+      "type": "string"
+    },
+    "recommended_measurements": {
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Recommended Measurements",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "task_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "gap_id",
+    "task_id",
+    "missing",
+    "recommended_measurements"
+  ],
+  "title": "EvidenceGap",
+  "type": "object"
+}

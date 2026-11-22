@@ -1,0 +1,64 @@
+{
+ "status": "partially supported (transferred; held-out stable)",
+ "estimate": {
+  "open_bandit_items_and_cv": [
+   80,
+   0.023542277878548977
+  ],
+  "criteo_treated_share": 0.8500001287591226
+ },
+ "heldout": [
+  {
+   "name": "Criteo treated share vs design 0.85",
+   "halves": [
+    0.85,
+    0.8500001287591226
+   ],
+   "diff": 1.2875912258625277e-07,
+   "tol": 0.01,
+   "rel": false,
+   "pass": true
+  }
+ ],
+ "trained_through": null,
+ "target": false,
+ "assumptions": [
+  "assignment designs transfer as StudyDesign shapes; outcomes come from the simulator"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L7-experiments",
+ "layer": "L7",
+ "data_type": "Experiments, assignments",
+ "method": "transfer",
+ "sources": [
+  "open_bandit",
+  "criteo"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "allocation balance (sample-ratio check) in each source",
+ "seconds": 17.6,
+ "cache_key": "3999eaf0b30c6930",
+ "inputs": {
+  "open_bandit/bts/all.csv": [
+   6321017454,
+   1795282638
+  ],
+  "open_bandit/bts/item_context.csv": [
+   10041,
+   1795282639
+  ],
+  "open_bandit/random/all.csv": [
+   695501426,
+   1795282312
+  ],
+  "open_bandit/random/item_context.csv": [
+   10041,
+   1795282313
+  ],
+  "criteo/criteo-research-uplift-v2.1.csv.gz": [
+   311422618,
+   1795281706
+  ]
+ }
+}

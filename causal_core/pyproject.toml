@@ -1,0 +1,18 @@
+[project]
+name = "causal-core"
+version = "0.1.0"
+description = "Domain-agnostic dynamic causal graph and reasoning engine (Causal Core v3.2 blueprint)"
+requires-python = ">=3.10"
+# Phase 4 numeric kernels need NumPy/SciPy (v2.1 base footprint). SciPy >= 1.16 on purpose: 1.15 does not
+# import on macOS 27 (inventory D8). The Phase 0 oracle stays stdlib-only so it remains independent.
+dependencies = ["pydantic>=2.7,<3", "numpy>=1.26", "scipy>=1.16"]
+
+[project.optional-dependencies]
+# Phase 7 (optional) TabPFN extra is added only after the Phase 6 harness shows a benefit (ROADMAP, D7).
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["causal_core*", "adapters*", "emulator*", "evaluation*"]

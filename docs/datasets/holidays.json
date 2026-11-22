@@ -1,0 +1,24 @@
+{
+ "fetch_status": "ok",
+ "origin": "reference file generated from rules (scripts/stitch.py _easter + fixed dates); checked against python-holidays",
+ "fetched": "2026-11-21T20:24:04",
+ "files": {
+  "holidays_br_2016_2018.csv": {
+   "bytes": 1596,
+   "sha256": "8fe91b880fb320dcbd6a887acb73e838b63581c4ef901fb3020fdbb8204975be"
+  }
+ },
+ "bytes": 1596,
+ "licence": "n/a",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Seasonality, holidays, Black Friday",
+   "role": "secondary",
+   "claim": "national holiday calendar",
+   "status": "PASS",
+   "evidence": "vs python-holidays Brazil: missing [], extra [] (carnival/corpus christi are optional points in the reference)"
+  }
+ ],
+ "audited": "2026-11-21T20:24:07"
+}

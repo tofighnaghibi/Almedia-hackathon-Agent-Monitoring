@@ -1,0 +1,32 @@
+{
+ "fetch_status": "ok",
+ "reason": "NotImplementedError: That compression method is not supported",
+ "origin": "kaggle competition expedia-personalized-sort (data.zip: train.csv)",
+ "fetched": "2026-11-21T20:56:04",
+ "files": {
+  "train.csv": {
+   "bytes": 2358114793,
+   "sha256": "84a53139ea92df1e9400f84852facbd78f3136f366a08440f4ab4518e71a49a9"
+  }
+ },
+ "bytes": 2358114793,
+ "licence": "competition rules",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Exposure, position, clicks",
+   "role": "primary",
+   "claim": "position + click/booking under randomly ordered results",
+   "status": "PASS",
+   "evidence": "9,917,530 result rows, 399,344 searches, 136,886 hotels; 29.6% of rows from randomly ordered searches; click rate relative to position 1 (random order): [(1, 1.0), (2, 0.76), (3, 0.64), (4, 0.55), (5, 0.39), (6, 0.49), (7, 0.43), (8, 0.39), (9, 0.36), (10, 0.33)]; booking@1 0.0184 vs @10 0.0056"
+  },
+  {
+   "row": "Multi-seller offers",
+   "role": "secondary",
+   "claim": "(bonus) many sellers competing in one result list",
+   "status": "PASS",
+   "evidence": "columns include ['prop_starrating', 'prop_review_score', 'price_usd', 'promotion_flag', 'comp1_rate']"
+  }
+ ],
+ "audited": "2026-11-21T20:56:13"
+}

@@ -1,0 +1,92 @@
+{
+ "status": "supported (fitted on Olist; held-out stable)",
+ "estimate": {
+  "late_share_promise_days": {
+   "2017": [
+    0.06627060882380031,
+    24.0
+   ],
+   "2018": [
+    0.09366652141788076,
+    23.0
+   ]
+  }
+ },
+ "heldout": [
+  {
+   "name": "late share 2017 vs 2018 (2018 includes the strike)",
+   "halves": [
+    0.06627060882380031,
+    0.09366652141788076
+   ],
+   "diff": 0.41339461158294843,
+   "tol": 0.6,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2017-12-31",
+ "target": true,
+ "assumptions": [
+  "the chain uses the full fitted delivery model (phase 3); this card is its summary"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L5-delivery",
+ "layer": "L5",
+ "data_type": "Delivery promise, delays",
+ "method": "fit",
+ "sources": [
+  "olist"
+ ],
+ "consumed_by": "sim.chain",
+ "heldout_plan": "late share and promise days: 2017 vs 2018 (phase-3 F7-F10)",
+ "seconds": 0.3,
+ "cache_key": "23f3e7bc426d4de8",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ]
+ }
+}

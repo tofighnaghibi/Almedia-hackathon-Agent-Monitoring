@@ -1,0 +1,177 @@
+{
+  "$defs": {
+    "EnvironmentScope": {
+      "additionalProperties": false,
+      "properties": {
+        "data_cut": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Cut"
+        },
+        "dataset_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dataset Version"
+        },
+        "environment_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Environment Id",
+          "type": "string"
+        },
+        "environment_kind": {
+          "enum": [
+            "production",
+            "staging",
+            "emulator",
+            "offline_replay",
+            "legacy_unscoped"
+          ],
+          "title": "Environment Kind",
+          "type": "string"
+        },
+        "generator_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generator Version"
+        }
+      },
+      "required": [
+        "environment_id",
+        "environment_kind"
+      ],
+      "title": "EnvironmentScope",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "What a certificate identifies, and between which two graph nodes, exactly.\n\nA CAUSALLY_IDENTIFIED edge may cite a certificate only if the certificate's (source, target)\nequals the edge's and it identifies a direct effect or mechanism link. A total-effect\ncertificate (e.g. randomized assignment -> outcome, ITT) supports an EffectClaim, never an\nedge (C01, F05, I06).",
+  "properties": {
+    "assessment_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Assessment Id",
+      "type": "string"
+    },
+    "assessment_status": {
+      "enum": [
+        "CONDITIONAL_IDENTIFICATION",
+        "PARTIAL_IDENTIFICATION"
+      ],
+      "title": "Assessment Status",
+      "type": "string"
+    },
+    "assumptions": {
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Assumptions",
+      "type": "array"
+    },
+    "basis": {
+      "enum": [
+        "randomized_assignment",
+        "instrumental_variable",
+        "quasi_experimental",
+        "structural_assumption"
+      ],
+      "title": "Basis",
+      "type": "string"
+    },
+    "certificate_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Certificate Id",
+      "type": "string"
+    },
+    "evidence_ids": {
+      "items": {
+        "maxLength": 200,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "identifies": {
+      "enum": [
+        "total_effect_of_source",
+        "direct_effect",
+        "mechanism_link"
+      ],
+      "title": "Identifies",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/EnvironmentScope"
+    },
+    "source_node": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Source Node",
+      "type": "string"
+    },
+    "target_node": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Target Node",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "certificate_id",
+    "source_node",
+    "target_node",
+    "basis",
+    "identifies",
+    "assessment_id",
+    "assessment_status",
+    "scope",
+    "evidence_ids",
+    "assumptions"
+  ],
+  "title": "StructuralCertificate",
+  "type": "object"
+}

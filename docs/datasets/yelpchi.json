@@ -1,0 +1,28 @@
+{
+ "fetch_status": "ok",
+ "origin": "github YingtongDou/CARE-GNN data/YelpChi.zip (graph version of Rayana & Akoglu 2015)",
+ "fetched": "2026-11-21T18:20:50",
+ "files": {
+  "YelpChi.mat": {
+   "bytes": 207676376,
+   "sha256": "fedb35a8fa539b27866244d3515a47a76b20080cdacb33112da3458fd2487b42"
+  },
+  "YelpChi.zip": {
+   "bytes": 17980652,
+   "sha256": "3a31296b951e6c8158dddb783ff2c62709fa987d106bbe21e59f8e119053cec3"
+  }
+ },
+ "bytes": 225657028,
+ "licence": "research use",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Fake reviews, fraud rings",
+   "role": "primary",
+   "claim": "fraud labels + reviewer relations + timing for bursts",
+   "status": "PARTIAL",
+   "evidence": "45,954 reviews, 14.5% labelled spam; arrays {'homo': (45954, 45954), 'net_rur': (45954, 45954), 'net_rtr': (45954, 45954), 'net_rsr': (45954, 45954), 'features': (45954, 32), 'label': (1, 45954)}; relations R-U-R / R-T-R / R-S-R present, but NO raw timestamps or text -> burst sizes not measurable from this version"
+  }
+ ],
+ "audited": "2026-11-21T18:22:07"
+}

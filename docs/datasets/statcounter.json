@@ -1,0 +1,24 @@
+{
+ "fetch_status": "ok",
+ "origin": "gs.statcounter.com: Brazil desktop/mobile/tablet share, monthly 2016-2018 (CSV export)",
+ "fetched": "2026-11-22T00:13:36",
+ "files": {
+  "brazil_device_share_2016_2018.csv": {
+   "bytes": 924,
+   "sha256": "7612ab5d7e162bacad3943ca5fa05ae1163c4b717d42d829f3baabd833ab801e"
+  }
+ },
+ "bytes": 924,
+ "licence": "free with attribution (CC BY-SA, per site) [verify]",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Devices, channels",
+   "role": "primary",
+   "claim": "Brazil device share per month (Olist years)",
+   "status": "PARTIAL",
+   "evidence": "36 months; mobile 28.66% (2016-01) -> 23.99% (2018-12); desktop 69.14% -> 75.18%. Brazil-specific (differs from worldwide 55.9%->47.2% mobile and US), but it counts page views on sites using Statcounter, not shoppers -> a prior for device mix, not a measured shopper share"
+  }
+ ],
+ "audited": "2026-11-21T20:57:01"
+}

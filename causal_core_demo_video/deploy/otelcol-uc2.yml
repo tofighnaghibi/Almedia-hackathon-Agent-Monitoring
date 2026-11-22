@@ -1,0 +1,4 @@
+# Video 2 only: this Mac's Docker Engine 23.0.5 serves API <= 1.42; the collector's docker_stats receiver defaults to 1.44.
+receivers:
+  docker_stats:
+    api_version: "1.42"

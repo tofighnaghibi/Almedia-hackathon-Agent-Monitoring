@@ -1,0 +1,83 @@
+{
+ "status": "partially supported (transferred shape; held-out stable)",
+ "estimate": {
+  "rel_ctr": [
+   1.0,
+   0.7609370581775778,
+   0.6386396500911717,
+   0.550769043563059,
+   0.39443240086114506,
+   0.49234412746199074,
+   0.43178984514063073,
+   0.3860372458356137,
+   0.3631619618777295,
+   0.3301107120994396
+  ]
+ },
+ "heldout": [
+  {
+   "name": "H4 rel CTR positions 2-10, odd vs even dates (CIs overlap)",
+   "even": [
+    1.0,
+    0.7491647607911399,
+    0.6359574330955523,
+    0.5386101217009713,
+    0.4541321675848864,
+    0.4796670395342333,
+    0.43238130970348604,
+    0.39003399297030766,
+    0.35712329329561854,
+    0.3236517865908261
+   ],
+   "odd": [
+    1.0,
+    0.7729962617589848,
+    0.6413887799773494,
+    0.5632257185026837,
+    0.33311333290728906,
+    0.5053277435222951,
+    0.43118734353052807,
+    0.38194823675322837,
+    0.36934894354796743,
+    0.33673180074687237
+   ],
+   "overlap": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "pass": true
+  }
+ ],
+ "trained_through": "2013-06-30",
+ "target": false,
+ "assumptions": [
+  "relative decay over positions 1-10 carries over; absolute click level not used",
+  "lodging, desktop-heavy population"
+ ],
+ "bridges": [],
+ "status_override": "partially supported (transferred shape; held-out stable)",
+ "id": "L4-exposure",
+ "layer": "L4",
+ "data_type": "Exposure, position, clicks",
+ "method": "transfer",
+ "sources": [
+  "expedia"
+ ],
+ "consumed_by": "sim.sessions",
+ "heldout_plan": "card TC-EX1 (odd vs even dates)",
+ "seconds": 21.9,
+ "cache_key": "6764bfe705202fe7",
+ "inputs": {
+  "expedia/train.csv": [
+   2358114793,
+   1377645964
+  ]
+ }
+}

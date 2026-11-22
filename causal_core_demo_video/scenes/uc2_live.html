@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Marketplace watcher</title>
+<meta name="viewport" content="width=1920">
+<style>
+:root{
+  --bg:#0e1115; --surface:#161a20; --surface2:#1d222a; --border:#2b323c; --grid:#262c35;
+  --text:#e9ecf0; --text2:#b1b9c4; --muted:#7f8996;
+  --blue:#3987e5; --orange:#d95926; --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);color:var(--text);
+  font-family:-apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.mono{font-family:"SF Mono",Menlo,monospace}
+#top{height:68px;display:flex;align-items:center;padding:0 40px;border-bottom:1px solid var(--border);background:#11151a;gap:18px}
+#brand{font-size:23px;font-weight:600;display:flex;align-items:center;gap:12px}
+#brand .dot{width:13px;height:13px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px rgba(57,135,229,.18)}
+.chip{font-size:14px;font-weight:600;letter-spacing:1.5px;color:var(--text2);border:1px solid var(--border);border-radius:6px;padding:3px 9px}
+#phase{margin-left:8px}
+#clock{margin-left:auto;font-size:22px;color:var(--text2)} #clock b{color:var(--text)}
+#sandbox{font-size:16px;font-weight:650;letter-spacing:.5px;color:#f3c55a;border:1.5px solid #6b5520;background:rgba(250,178,25,.08);border-radius:999px;padding:6px 15px}
+#main{display:flex;gap:24px;padding:20px 32px;height:1012px}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;position:relative}
+.ttl{font-size:15px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.ttl .side{margin-left:auto;letter-spacing:.3px;text-transform:none;font-weight:500;font-size:14px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:650;border-radius:999px;padding:4px 11px;border:1.5px solid}
+.ok{color:#5fd35f;border-color:#1f6b1f;background:rgba(12,163,12,.10)}
+.bad{color:#ff7b7b;border-color:#7a2626;background:rgba(208,59,59,.12)}
+.wait{color:#f7c75a;border-color:#6b5520;background:rgba(250,178,25,.10)}
+.neutral{color:#c3cad4;border-color:#3e4652;background:rgba(138,148,163,.12)}
+/* sessions */
+#sess{font-size:16px;line-height:1.75}
+#sess .r{display:flex;gap:12px;align-items:center;white-space:nowrap}
+#sess .t{color:var(--muted);width:52px} #sess .p{flex:1;overflow:hidden;text-overflow:ellipsis;color:var(--text2)}
+/* console */
+#console{font-size:15.5px;line-height:1.6;height:236px;overflow:hidden}
+#console .l{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#console .who{display:inline-block;width:78px;color:var(--muted)}
+#console .w-engine{color:#ff9a9a} #console .w-policy{color:#7fb2f0} #console .w-human{color:#5fd35f} #console .w-sandbox{color:#5fd35f} #console .w-agent{color:#e9ecf0}
+/* engine */
+.stage{display:flex;align-items:center;gap:10px;padding:5px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);font-size:16px;transition:all .25s;min-width:0}
+.stage .n{width:24px;height:24px;border-radius:50%;border:1.5px solid #3e4652;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--muted);flex:none}
+.stage .nm{font-weight:650;width:170px;flex:none}
+.stage .d{color:var(--text2);font-size:14.5px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage .ms{color:var(--muted);font-size:14px;width:70px;flex:none;text-align:right}
+.stage.on{border-color:#3987e5;background:rgba(57,135,229,.10)} .stage.on .n{border-color:#3987e5;color:#7fb2f0}
+.stage.hot{box-shadow:0 0 0 2px rgba(57,135,229,.55)}
+.arrow{height:5px;margin-left:21px;border-left:2px solid #3e4652}
+.kv{display:flex;justify-content:space-between;font-size:16px;color:var(--text2);padding:3px 0}
+.kv b{color:var(--text)}
+.big{font-size:40px;font-weight:700;letter-spacing:-.5px}
+/* action card */
+#act .row{display:flex;gap:12px;align-items:center;font-size:17px;padding:7px 0;border-top:1px solid var(--border)}
+#act .row:first-of-type{border-top:0}
+.ic{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex:none;border:1.5px solid}
+.foot{font-size:13px;color:var(--muted)}
+svg text{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div id="top">
+  <div id="brand"><span class="dot"></span>Marketplace watcher <span class="chip">DEMO</span></div>
+  <span id="phase" class="pill neutral">setup</span>
+  <div id="clock">—</div>
+  <div id="sandbox">SANDBOX ONLY · no production writes</div>
+</div>
+<div id="main">
+  <div class="col" style="width:1080px">
+    <div style="display:flex;gap:16px">
+      <div class="card" style="width:452px;padding:12px">
+        <div class="ttl">The shop <span class="side" id="shopside">real Astronomy Shop · local</span></div>
+        <img id="shopimg" src="../videos/uc2_images/shop_home.png" style="width:426px;height:240px;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--border)" onerror="this.style.visibility='hidden'">
+        <div id="shopbox" style="display:none;width:426px;height:240px;overflow:hidden;border-radius:8px;border:1px solid var(--border);background:#fff">
+          <iframe id="shopframe" src="about:blank" style="width:1278px;height:720px;border:0;transform:scale(.3333);transform-origin:0 0" scrolling="no"></iframe></div>
+        <div class="foot" style="margin-top:8px" id="shopfoot">200 real Olist products synced into its catalog</div>
+      </div>
+      <div class="card" style="flex:1">
+        <div class="ttl">Shoppers going through the shop <span class="side">the world · not visible to the agent</span></div>
+        <div id="sess"></div>
+      </div>
+    </div>
+    <div class="card" style="height:300px">
+      <div class="ttl">What the agent sees: checkouts per 3-hour block <span class="side" id="legend"></span></div>
+      <div id="chart"></div>
+    </div>
+    <div class="card" style="flex:1">
+      <div class="ttl">Agent console <span class="side mono" id="tasks"></span></div>
+      <div id="console" class="mono"></div>
+    </div>
+  </div>
+  <div class="col" style="width:752px;flex:none">
+    <div class="card">
+      <div class="ttl">Inside the engine service · last task <span class="side mono" id="tid"></span></div>
+      <div id="pipe"></div>
+      <div class="foot mono" id="proof" style="margin-top:8px"></div>
+    </div>
+    <div class="card" id="act" style="display:none"></div>
+  </div>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const q = new URLSearchParams(location.search);
+const esc = s => String(s ?? "").replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const fmtSim = s => { if (!s) return "—"; const d = new Date(s); return `${DOW[d.getUTCDay()]} ${d.getUTCDate()} ${MON[d.getUTCMonth()]} 2018 · <b>${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}</b> <span style="font-size:15px">simulated</span>`; };
+const hm = s => { const d = new Date(s); return `${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}`; };
+const STAGES = ["FRAME", "AUDIT_INPUTS", "SELECT_CAPABILITIES", "ACQUIRE", "EVALUATE", "CHALLENGE", "REPORT"];
+const STAGE_TXT = { FRAME: "question → plan state", AUDIT_INPUTS: "contracts, scope, clocks checked", SELECT_CAPABILITIES: "which methods can apply",
+  ACQUIRE: "evidence requested through the port", EVALUATE: "methods run", CHALLENGE: "assumptions and refusals checked", REPORT: "report revision published" };
+function stageText(T, s, used, refused, mon) {     // what the engine itself logged at this stage, in this task
+  const log = (T.stage_log || []).filter(x => x[0] === s).map(x => x[2]).filter(Boolean).join("; ");
+  const v = mon?.values || {};
+  if (s === "FRAME") return `${T.question} on ${(T.variables || []).join(", ")}${log ? " · " + log : ""}`;
+  if (s === "AUDIT_INPUTS") return `data up to ${String(T.data_cut || "").slice(11, 16)} sim · ${log || STAGE_TXT[s]}`;
+  if (s === "SELECT_CAPABILITIES") return `${used.length} of ${used.length + refused.length} methods fit; ${refused.length} set aside with reasons`;
+  if (s === "ACQUIRE") { const r = (T.requests || [])[0]; return r ? `${r.request} → ${r.observations} observations (${r.status})` : (log || STAGE_TXT[s]); }
+  if (s === "EVALUATE") return mon ? (mon.status === "REFUSED" ? `refused: ${mon.refusal}` :
+    `evidence ${(+v.log_wealth || 0).toFixed(2)} vs alarm line ${(+v.threshold || 0).toFixed(2)} → ${v.alarm ? "ALARM " + (v.direction || "") : "no alarm"}`) : (log || STAGE_TXT[s]);
+  if (s === "CHALLENGE") return T.challenges?.length ? `${T.challenges.length} rival explanations recorded: ${T.challenges[0]}` : (log || STAGE_TXT[s]);
+  if (s === "REPORT") return (T.revisions || []).map(r => `r${r.revision} ${r.provisional ? "draft" : "final"}`).join(" → ") + ` · ${T.outcome}`;
+  return log || STAGE_TXT[s];
+}
+let lastTask = null, animStart = 0, shopAt = 0, shopPid = null;
+const SHOP = q.get("shop") || "http://localhost:8080";
+function liveShop(L) {                     // live mode: the real shop, on the product a shopper just bought (max every 8 s)
+  const s = (L.sessions || []).slice().reverse().find(x => x.pid);
+  if (!s || s.pid === shopPid || performance.now() - shopAt < 8000) return;
+  shopPid = s.pid; shopAt = performance.now();
+  $("#shopimg").style.display = "none"; $("#shopbox").style.display = "block";
+  $("#shopframe").src = `${SHOP}/product/${s.pid}`;
+  $("#shopside").textContent = "live · the product a shopper just bought";
+  $("#shopfoot").textContent = `${s.product?.[0] || ""} · one of 200 real Olist products synced into the shop`;
+}
+
+function render(L, animate) {
+  const phaseCls = L.fixed ? "ok" : L.alarm ? "bad" : L.phase === "fault day" ? "neutral" : "neutral";
+  $("#phase").className = "pill " + phaseCls;
+  $("#phase").textContent = L.fixed ? "✓ fixed in the sandbox" : L.alarm ? "! checkout alarm" : L.phase;
+  $("#clock").innerHTML = fmtSim(L.sim);
+  // sessions
+  $("#sess").innerHTML = (L.sessions || []).slice(-9).reverse().map(s => {
+    const ok = s.outcome === "ok", lab = ok ? "ordered" : s.outcome === "payment_failed" ? "payment failed" : s.outcome;
+    return `<div class="r"><span class="t">${hm(s.sim)}</span><span class="p">${esc(s.product?.[0] || "")}${s.product?.[1] ? ` · $${s.product[1].toFixed(2)}` : ""}</span>
+      <span class="pill ${ok ? "ok" : "bad"}" style="font-size:13px;padding:2px 9px">${ok ? "✓" : "✕"} ${esc(lab)}</span></div>`; }).join("");
+  // chart
+  const B = (L.blocks || []).slice(-24), W = 1036, H = 236, x0 = 40, y0 = 14, y1 = H - 34, n = 24;
+  const mx = Math.max(10, ...B.map(b => b.checkout_attempts || 0)), bw = (W - x0 - 10) / n;
+  let svg = `<svg width="${W}" height="${H}">`;
+  for (const v of [0, .5, 1]) { const y = y1 - v * (y1 - y0); svg += `<line x1="${x0}" x2="${W - 10}" y1="${y}" y2="${y}" stroke="#262c35"/><text x="${x0 - 8}" y="${y + 5}" text-anchor="end" fill="#7f8996" font-size="13">${Math.round(v * mx)}</text>`; }
+  B.forEach((b, i) => {
+    const x = x0 + i * bw + 3, w = bw - 6, ok = (b.checkout_attempts || 0) - (b.checkout_errors || 0), er = b.checkout_errors || 0;
+    const hOk = ok / mx * (y1 - y0), hEr = er / mx * (y1 - y0);
+    if (ok) svg += `<rect x="${x}" y="${y1 - hOk}" width="${w}" height="${hOk}" fill="#3987e5" rx="2"/>`;
+    if (er) svg += `<rect x="${x}" y="${y1 - hOk - hEr - (ok ? 2 : 0)}" width="${w}" height="${hEr}" fill="#d95926" rx="2"/>`;
+    if (b.block === 0) svg += `<text x="${x}" y="${y1 + 22}" fill="#b1b9c4" font-size="13">${b.day.slice(5).replace("-", "/")}</text>`;
+    if (b.monitor?.values?.alarm && !B.slice(0, i).some(c => c.monitor?.values?.alarm)) svg += `<text x="${x + w / 2}" y="${y0 + 2}" text-anchor="middle" fill="#ff9a9a" font-size="14" font-weight="700">alarm</text>`;
+  });
+  svg += "</svg>";
+  $("#chart").innerHTML = svg;
+  $("#legend").innerHTML = `<span style="color:#3987e5">■</span> checkouts OK &nbsp; <span style="color:#d95926">■</span> checkouts failed`;
+  // console
+  $("#console").innerHTML = (L.console || []).slice(-9).map(l => `<div class="l"><span style="color:#7f8996">${hm(l.sim)}</span>  <span class="who w-${l.who}">${esc(l.who)}</span>${esc(l.text)}</div>`).join("");
+  $("#tasks").textContent = `${L.tasks || 0} core tasks · ${Object.values(L.ledger || {}).reduce((a, b) => a + b, 0)} ledger rows`;
+  // engine
+  const T = L.trace;
+  if (T) {
+    if (T.task_id !== lastTask) { lastTask = T.task_id; animStart = performance.now(); }
+    $("#tid").textContent = `${T.label} · ${T.wall_ms.toFixed(0)} ms`;
+    const req = (T.requests || [])[0], meth = T.methods || [], res = Object.entries(T.results || {});
+    const used = meth.filter(m => m.status === "SUPPORTED"), refused = meth.filter(m => m.status !== "SUPPORTED");
+    const short = m => m.method.replace(/_v\d+$/, "").replaceAll("_", " ");
+    const lastBlk = (L.blocks || []).at(-1);
+    const mon = (T.results || {}).savi_eprocess_v1;
+    const pol = (T.policy || []).at(-1);
+    const rows = [
+      ["Telemetry port", `redacted OTel spans → checkout and payment error rates`, lastBlk ? `${Math.round(lastBlk.telemetry_ms)} ms` : ""],
+      ["Evidence port", req ? `${req.request} · ${req.variables.join(", ")} · ${req.observations} obs` : "no request", req ? `${req.ms.toFixed(1)} ms` : ""],
+      ...STAGES.map(s => [s.replaceAll("_", " ").toLowerCase().replace(/^./, c => c.toUpperCase()), stageText(T, s, used, refused, mon), T.timings_ms[s] != null ? `${T.timings_ms[s].toFixed(1)} ms` : ""]),
+      ["Policy gate", pol ? `${pol.verdict}${pol.verdict === "DENY" ? ": no actuation port; proposal only" : ""}` : "—", ""],
+      ["Ledger", `+${Object.values(T.ledger_delta || {}).reduce((a, b) => a + b, 0)} rows: ${Object.entries(T.ledger_delta || {}).map(([k, v]) => `${k.replaceAll("_", " ")} +${v}`).join(" · ")}`, ""],
+    ];
+    const el = animate ? (performance.now() - animStart) / 1000 : 99, step = 1.3 / rows.length;
+    $("#pipe").innerHTML = rows.map((r, i) => `${i ? '<div class="arrow"></div>' : ""}<div class="stage ${el >= i * step ? "on" : ""} ${el >= i * step && el < (i + 1) * step + .25 ? "hot" : ""}">
+      <span class="n">${i + 1}</span><span class="nm">${esc(r[0])}</span><span class="d">${esc(r[1])}</span><span class="ms">${esc(r[2])}</span></div>`).join("");
+  }
+  // proof line: where the engine runs and how fresh this is
+  const E = L.engine || {}, age = L.wall ? (Date.now() - Date.parse(L.wall)) / 1000 : null;
+  const rt = L.trace?.round_trip_ms, link = E.url && E.session && L.trace ? `${E.url}/sessions/${E.session}/tasks/${L.trace.task_id}` : null;
+  $("#proof").innerHTML = (E.url ? `engine service pid ${E.pid} at ${esc(E.url.replace("http://", ""))} (version ${esc(E.version || "")}) · agent pid ${E.agent_pid} · ` +
+      `${rt != null ? `round trip ${rt.toFixed(0)} ms · ` : ""}` : `engine ${esc(E.version || "")} (pid ${E.pid ?? "?"}) · `) +
+    `ledger ${Object.values(L.ledger || {}).reduce((a, b) => a + b, 0)} rows · ` +
+    `${q.get("snap") ? "saved snapshot" : (age != null && age < 15 ? `<span style="color:#5fd35f">live</span>, updated ${age.toFixed(1)} s ago` : `last update ${age != null ? Math.round(age) + " s ago" : "—"}`)}` +
+    (link && !q.get("snap") ? ` · <a href="${link}" target="_blank" style="color:#7fb2f0">full trace ↗</a>` : "");
+  // action card
+  const P = L.proposal;
+  if (P) {
+    const p = P.proposal, x = p.expected || {};
+    $("#act").style.display = "block";
+    $("#act").innerHTML = `<div class="ttl">Proposed action <span class="side" style="color:#f3c55a;font-weight:700">SANDBOX · local shop flag</span></div>
+      <div style="font-size:22px;font-weight:650;margin-bottom:6px">Turn the payment fault flag off</div>
+      <div style="font-size:16px;color:var(--text2);margin-bottom:8px">${esc(P.diagnosis)}<br>Expected: <b style="color:var(--text)">+${Math.round(x.mean)}</b> orders today, range +${Math.round(x.lower)} to +${Math.round(x.upper)}</div>
+      <div class="row"><span class="ic" style="color:#7fb2f0;border-color:#284f80">→</span>Engine policy: <b>${esc(P.policy?.verdict)}</b>&nbsp;the engine itself cannot act</div>
+      <div class="row">${P.approval ? `<span class="ic ok">✓</span><b>Approved</b>&nbsp;by ${esc(P.approval.approver)} · ${hm(P.approval.approved_at)}` : `<span class="ic wait">◷</span>Waiting for a person to approve`}</div>
+      ${P.receipt ? `<div class="row"><span class="ic ok">✓</span><b>Executed in the sandbox</b>&nbsp;· flag ${esc(P.receipt.state_after.before)} → ${esc(P.receipt.state_after.after)}, read back ✓</div>` : ""}`;
+  } else $("#act").style.display = "none";
+}
+
+if (q.get("snap")) {                      // static render of a saved snapshot (stills)
+  fetch(q.get("snap")).then(r => r.json()).then(L => render(L, false));
+} else {
+  let L = null;
+  const poll = () => fetch("../outputs/uc2/live.json?" + Date.now()).then(r => r.json()).then(x => { L = x; }).catch(() => {});
+  setInterval(poll, 400); poll();
+  const loop = () => { if (L) { render(L, true); if (!q.has("noshop")) liveShop(L); } requestAnimationFrame(loop); }; loop();
+}
+</script>
+</body>
+</html>

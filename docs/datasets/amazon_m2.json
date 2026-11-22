@@ -1,0 +1,42 @@
+{
+ "fetch_status": "ok",
+ "origin": "AIcrowd official (manual download), byte-identical to Kaggle mirror marquis03/amazon-m2",
+ "fetched": "2026-11-21T18:20:35",
+ "files": {
+  "products_train.csv": {
+   "bytes": 588533540,
+   "sha256": "f4de2243372304af9820b6916210635c5f48e6d0b81012f0326906563f12f03b"
+  },
+  "sessions_train.csv": {
+   "bytes": 259228456,
+   "sha256": "83f9d5c72b7305243ceb1d06aaf96610a050e84d428ae55138e851e70e313954"
+  }
+ },
+ "bytes": 847761996,
+ "licence": "AIcrowd challenge terms (not reviewed)",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Session length, revisits",
+   "role": "primary",
+   "claim": "ordered item sequences per session",
+   "status": "PASS",
+   "evidence": "3,606,249 sessions, 6 locales; columns ['prev_items', 'next_item', 'locale']"
+  },
+  {
+   "row": "Funnel view -> cart -> buy, timing",
+   "role": "secondary",
+   "claim": "event types and timestamps",
+   "status": "FAIL",
+   "evidence": "no event types, no timestamps, no user ids -> cannot support funnel or timing; keep only for sequence length"
+  },
+  {
+   "row": "Products, categories, titles",
+   "role": "secondary",
+   "claim": "(not in design, bonus) product attributes",
+   "status": "PASS",
+   "evidence": "product columns ['id', 'locale', 'title', 'price', 'brand', 'color', 'size', 'model', 'material', 'author', 'desc']"
+  }
+ ],
+ "audited": "2026-11-21T18:22:04"
+}

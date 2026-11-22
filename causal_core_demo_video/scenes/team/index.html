@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marketplace Martha · Team</title>
+<style>
+  :root { --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --li:#0a66c2; }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; background:var(--bg); color:var(--text);
+         font:16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+         display:flex; flex-direction:column; align-items:center; justify-content:center; padding:48px 24px; }
+  header { text-align:center; margin-bottom:40px; }
+  .brand { display:inline-flex; align-items:center; gap:10px; font-weight:600; letter-spacing:.02em; }
+  .dot { width:10px; height:10px; border-radius:50%; background:var(--accent); }
+  h1 { margin:12px 0 6px; font-size:40px; letter-spacing:-.01em; }
+  .tagline { color:var(--muted); max-width:640px; margin:0 auto; }
+  .team { display:flex; flex-wrap:wrap; gap:28px; justify-content:center; }
+  .card { width:320px; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:28px;
+          text-align:center; }
+  .photo { width:132px; height:132px; border-radius:50%; margin:0 auto 18px; overflow:hidden; border:3px solid var(--line);
+           display:flex; align-items:center; justify-content:center; background:#21262d; font-size:44px; font-weight:600; color:var(--accent); }
+  .photo img { width:100%; height:100%; object-fit:cover; }
+  .name { font-size:22px; font-weight:600; margin:0; }
+  .role { color:var(--muted); margin:4px 0 20px; min-height:24px; }
+  .qr { background:#fff; border-radius:12px; padding:10px; width:168px; height:168px; margin:0 auto 12px; }
+  .qr img { width:100%; height:100%; image-rendering:pixelated; }
+  .connect { display:inline-block; color:#fff; background:var(--li); text-decoration:none; font-weight:600;
+             padding:8px 16px; border-radius:20px; font-size:14px; }
+  .connect:hover { filter:brightness(1.15); }
+  footer { margin-top:40px; color:var(--muted); font-size:14px; text-align:center; }
+  footer a { color:var(--accent); text-decoration:none; }
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand"><span class="dot"></span>Marketplace Martha</div>
+    <h1>Meet the team</h1>
+    <p class="tagline">Every marketplace needs a caretaker. Scan to connect on LinkedIn.</p>
+  </header>
+
+  <main class="team">
+    <!-- To add a photo: save it as photos/<slug>.jpg (square works best). Until then the card shows initials.
+         To set the job title: replace the text inside class="role". -->
+    <section class="card">
+      <div class="photo"><img src="photos/sneha-verma.jpg" alt="Sneha Verma" onerror="this.remove()"><span class="initials">SV</span></div>
+      <p class="name">Sneha Verma</p>
+      <p class="role">Job title</p>
+      <div class="qr"><img src="qr-sneha-verma.svg" alt="QR code: Sneha Verma on LinkedIn"></div>
+      <a class="connect" href="https://www.linkedin.com/in/msverma101/" target="_blank" rel="noopener">Connect on LinkedIn</a>
+    </section>
+
+    <section class="card">
+      <div class="photo"><img src="photos/stefan-dye.jpg" alt="Stefan Dye" onerror="this.remove()"><span class="initials">SD</span></div>
+      <p class="name">Stefan Dye</p>
+      <p class="role">Job title</p>
+      <div class="qr"><img src="qr-stefan-dye.svg" alt="QR code: Stefan Dye on LinkedIn"></div>
+      <a class="connect" href="https://www.linkedin.com/in/stefan-dye-782b962b/" target="_blank" rel="noopener">Connect on LinkedIn</a>
+    </section>
+  </main>
+
+  <footer>
+    <a href="../uc2_live.html">← Back to Martha's live dashboard</a> ·
+    <a href="https://github.com/msverma101/marketplace-recon" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+
+  <script>
+    // Show initials only when there is no photo yet.
+    document.querySelectorAll('.photo').forEach(function (p) {
+      var img = p.querySelector('img'), ini = p.querySelector('.initials');
+      function check() { ini.style.display = (p.querySelector('img') && img.complete && img.naturalWidth) ? 'none' : 'block'; }
+      if (img) { img.addEventListener('load', check); img.addEventListener('error', check); }
+      check();
+    });
+  </script>
+</body>
+</html>

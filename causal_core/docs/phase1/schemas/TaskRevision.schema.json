@@ -1,0 +1,200 @@
+{
+  "$defs": {
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_kind": {
+          "enum": [
+            "MATHEMATICAL_IDENTITY",
+            "DESCRIPTIVE",
+            "ASSOCIATION",
+            "CAUSAL_EFFECT_CONDITIONAL",
+            "STRUCTURAL_CAUSAL_HYPOTHESIS",
+            "MODEL_PREDICTION",
+            "INCONCLUSIVE",
+            "DQ_FAILURE",
+            "ACTION_RECOMMENDATION"
+          ],
+          "title": "Claim Kind",
+          "type": "string"
+        },
+        "finding_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "limitations": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "statement": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Statement",
+          "type": "string"
+        },
+        "support_refs": {
+          "default": [],
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "title": "Support Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "finding_id",
+        "claim_kind",
+        "statement"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "Pins": {
+      "additionalProperties": false,
+      "properties": {
+        "data_cut": {
+          "format": "date-time",
+          "title": "Data Cut",
+          "type": "string"
+        },
+        "evidence_watermark": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Watermark"
+        },
+        "graph_version": {
+          "minimum": 0,
+          "title": "Graph Version",
+          "type": "integer"
+        },
+        "method_versions": {
+          "default": {},
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$": {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "title": "Method Versions",
+          "type": "object"
+        }
+      },
+      "required": [
+        "graph_version",
+        "data_cut"
+      ],
+      "title": "Pins",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "evidence_gap_ids": {
+      "default": [],
+      "items": {
+        "maxLength": 200,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+        "type": "string"
+      },
+      "title": "Evidence Gap Ids",
+      "type": "array"
+    },
+    "findings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "idempotency_key": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "outcome": {
+      "enum": [
+        "READY",
+        "WAITING_FOR_EVIDENCE",
+        "PARTIAL_BUDGET",
+        "UNSUPPORTED",
+        "INCONCLUSIVE",
+        "FAILED_VALIDATION",
+        "STALE",
+        "COMPLETED"
+      ],
+      "title": "Outcome",
+      "type": "string"
+    },
+    "pins": {
+      "$ref": "#/$defs/Pins"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "supersedes_revision": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Supersedes Revision"
+    },
+    "task_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "task_id",
+    "revision",
+    "outcome",
+    "pins",
+    "idempotency_key"
+  ],
+  "title": "TaskRevision",
+  "type": "object"
+}

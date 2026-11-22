@@ -1,0 +1,56 @@
+{
+ "fetch_status": "ok",
+ "origin": "Cornell (Schnabel et al. 2016) coat.zip",
+ "fetched": "2026-11-21T18:20:47",
+ "files": {
+  "coat/README.txt": {
+   "bytes": 184,
+   "sha256": "cda6f0f12aa148f5391561ef95a5f2dd6f7e3838ec17e84fcb615bc11a7ffae0"
+  },
+  "coat/propensities.ascii": {
+   "bytes": 2175000,
+   "sha256": "a72e3142a413623c4a6b9d20c4f70fcc017e0db67cc3eb242116f69fb8fb9661"
+  },
+  "coat/test.ascii": {
+   "bytes": 174290,
+   "sha256": "de6714ab105a5e0be8166be7fd313901b29f9a09c3bea307901457d1d71847e6"
+  },
+  "coat/train.ascii": {
+   "bytes": 174290,
+   "sha256": "a87bd9e7eaf3b89f976df3f25d4aa5d5d871be8a00b58947df9e6e015559bd37"
+  },
+  "coat/user_item_features/item_features.ascii": {
+   "bytes": 20100,
+   "sha256": "edea8217ec5606779b4d3bf819f7591dc63bcd5194d619e8048c2322d07630b1"
+  },
+  "coat/user_item_features/item_features_map.txt": {
+   "bytes": 498,
+   "sha256": "2675dfaa38b89a9cbb1997f0cfcd46ed7e0e366dc515d12d95508d1f356e5d25"
+  },
+  "coat/user_item_features/user_features.ascii": {
+   "bytes": 8410,
+   "sha256": "d8f9531b601c54a7272602f8b21fa6cb4652cbf122e35d8615ea9645ebbf1b1f"
+  },
+  "coat/user_item_features/user_features_map.txt": {
+   "bytes": 211,
+   "sha256": "3b8c825ad4445d4a46a400629c5fb43c805ff5a7982b2e436b69e7262c8a013a"
+  },
+  "coat.zip": {
+   "bytes": 537499,
+   "sha256": "6073d0b515ed1f6e830e4fead66dc76ad7991a7553eaa58e228b234a9d19daed"
+  }
+ },
+ "bytes": 3090482,
+ "licence": "research use",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Who leaves reviews (MNAR)",
+   "role": "secondary",
+   "claim": "self-selected ratings + randomly assigned ratings",
+   "status": "PASS",
+   "evidence": "train (self-selected) (290, 300), 6,960 ratings; test (random) 4,640 ratings; mean rating train 2.61 vs random 2.23"
+  }
+ ],
+ "audited": "2026-11-21T18:22:06"
+}

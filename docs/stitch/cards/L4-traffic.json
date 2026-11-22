@@ -1,0 +1,86 @@
+{
+ "status": "supported (fitted on Olist; held-out stable)",
+ "estimate": {
+  "orders_per_day": {
+   "2017": 124.93351800554017,
+   "2018": 209.34496124031008
+  }
+ },
+ "heldout": [
+  {
+   "name": "orders per day 2017 vs 2018 (growth expected; tolerance wide)",
+   "halves": [
+    124.93351800554017,
+    209.34496124031008
+   ],
+   "diff": 0.6756508948305346,
+   "tol": 0.8,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2017-12-31",
+ "target": true,
+ "assumptions": [
+  "visit level is anchored: orders x visits per buyer (TC-RR1)"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L4-traffic",
+ "layer": "L4",
+ "data_type": "Traffic volume, calendar",
+ "method": "anchor (levels)",
+ "sources": [
+  "olist"
+ ],
+ "consumed_by": "sim.chain",
+ "heldout_plan": "daily order level: 2017 fit predicts 2018 within tolerance",
+ "seconds": 0.4,
+ "cache_key": "954d181f25307036",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ]
+ }
+}

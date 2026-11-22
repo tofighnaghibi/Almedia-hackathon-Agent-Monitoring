@@ -1,0 +1,568 @@
+{
+  "$defs": {
+    "DescriptiveDesign": {
+      "additionalProperties": false,
+      "properties": {
+        "design": {
+          "const": "descriptive",
+          "title": "Design",
+          "type": "string"
+        },
+        "outcomes": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Outcomes",
+          "type": "array"
+        },
+        "population": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Population",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "sampling": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Sampling",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "study_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Study Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "study_id",
+        "scope",
+        "provenance",
+        "population",
+        "outcomes",
+        "design",
+        "sampling"
+      ],
+      "title": "DescriptiveDesign",
+      "type": "object"
+    },
+    "EnvironmentScope": {
+      "additionalProperties": false,
+      "properties": {
+        "data_cut": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Cut"
+        },
+        "dataset_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dataset Version"
+        },
+        "environment_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Environment Id",
+          "type": "string"
+        },
+        "environment_kind": {
+          "enum": [
+            "production",
+            "staging",
+            "emulator",
+            "offline_replay",
+            "legacy_unscoped"
+          ],
+          "title": "Environment Kind",
+          "type": "string"
+        },
+        "generator_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generator Version"
+        }
+      },
+      "required": [
+        "environment_id",
+        "environment_kind"
+      ],
+      "title": "EnvironmentScope",
+      "type": "object"
+    },
+    "ObservationalDesign": {
+      "additionalProperties": false,
+      "properties": {
+        "adjustment_set": {
+          "default": [],
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "title": "Adjustment Set",
+          "type": "array"
+        },
+        "design": {
+          "const": "observational",
+          "title": "Design",
+          "type": "string"
+        },
+        "exposure": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Exposure",
+          "type": "string"
+        },
+        "instruments": {
+          "default": [],
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "title": "Instruments",
+          "type": "array"
+        },
+        "outcomes": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Outcomes",
+          "type": "array"
+        },
+        "population": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Population",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "study_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Study Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "study_id",
+        "scope",
+        "provenance",
+        "population",
+        "outcomes",
+        "design",
+        "exposure"
+      ],
+      "title": "ObservationalDesign",
+      "type": "object"
+    },
+    "QuasiExperimentalDesign": {
+      "additionalProperties": false,
+      "properties": {
+        "anticipation_window": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Anticipation Window",
+          "type": "integer"
+        },
+        "design": {
+          "const": "quasi_experimental",
+          "title": "Design",
+          "type": "string"
+        },
+        "intervention_period": {
+          "title": "Intervention Period",
+          "type": "integer"
+        },
+        "outcomes": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Outcomes",
+          "type": "array"
+        },
+        "population": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Population",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "strategy": {
+          "enum": [
+            "difference_in_differences",
+            "interrupted_time_series",
+            "regression_discontinuity",
+            "instrumental_variable",
+            "synthetic_control"
+          ],
+          "title": "Strategy",
+          "type": "string"
+        },
+        "study_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Study Id",
+          "type": "string"
+        },
+        "timing": {
+          "default": "single",
+          "enum": [
+            "single",
+            "staggered"
+          ],
+          "title": "Timing",
+          "type": "string"
+        },
+        "treated_group": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Treated Group",
+          "type": "string"
+        },
+        "unit": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "study_id",
+        "scope",
+        "provenance",
+        "population",
+        "outcomes",
+        "design",
+        "strategy",
+        "unit",
+        "treated_group",
+        "intervention_period"
+      ],
+      "title": "QuasiExperimentalDesign",
+      "type": "object"
+    },
+    "RandomizedDesign": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_unit": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Analysis Unit"
+        },
+        "assignment_unit": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Assignment Unit",
+          "type": "string"
+        },
+        "cluster_field": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cluster Field"
+        },
+        "compliance": {
+          "default": "unknown",
+          "enum": [
+            "full",
+            "one_sided",
+            "two_sided",
+            "unknown"
+          ],
+          "title": "Compliance",
+          "type": "string"
+        },
+        "design": {
+          "const": "randomized",
+          "title": "Design",
+          "type": "string"
+        },
+        "expected_allocation": {
+          "minProperties": 2,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$": {
+              "type": "number"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "title": "Expected Allocation",
+          "type": "object"
+        },
+        "interference": {
+          "default": "unknown",
+          "enum": [
+            "none_assumed",
+            "declared",
+            "unknown"
+          ],
+          "title": "Interference",
+          "type": "string"
+        },
+        "multiplicity_family": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Multiplicity Family"
+        },
+        "outcome_unit": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Outcome Unit",
+          "type": "string"
+        },
+        "outcomes": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Outcomes",
+          "type": "array"
+        },
+        "population": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Population",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "randomization": {
+          "enum": [
+            "simple",
+            "blocked",
+            "stratified",
+            "cluster"
+          ],
+          "title": "Randomization",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "study_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Study Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "study_id",
+        "scope",
+        "provenance",
+        "population",
+        "outcomes",
+        "design",
+        "randomization",
+        "assignment_unit",
+        "outcome_unit",
+        "expected_allocation"
+      ],
+      "title": "RandomizedDesign",
+      "type": "object"
+    },
+    "SourceAttestation": {
+      "additionalProperties": false,
+      "description": "Who vouches for a record. A string label is not trust; 'signed' needs a signature.",
+      "properties": {
+        "attested_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attested At"
+        },
+        "method": {
+          "enum": [
+            "adapter_declared",
+            "signed",
+            "none"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "signature": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Signature"
+        },
+        "source_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "method"
+      ],
+      "title": "SourceAttestation",
+      "type": "object"
+    }
+  },
+  "discriminator": {
+    "mapping": {
+      "descriptive": "#/$defs/DescriptiveDesign",
+      "observational": "#/$defs/ObservationalDesign",
+      "quasi_experimental": "#/$defs/QuasiExperimentalDesign",
+      "randomized": "#/$defs/RandomizedDesign"
+    },
+    "propertyName": "design"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/RandomizedDesign"
+    },
+    {
+      "$ref": "#/$defs/QuasiExperimentalDesign"
+    },
+    {
+      "$ref": "#/$defs/ObservationalDesign"
+    },
+    {
+      "$ref": "#/$defs/DescriptiveDesign"
+    }
+  ]
+}

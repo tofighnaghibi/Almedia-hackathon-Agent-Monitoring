@@ -1,0 +1,55 @@
+{
+ "fetch_status": "ok",
+ "reason": "kaggle competitions download m5-forecasting-accuracy:   https://www.kaggle.com/competitions/<competition>/rules",
+ "origin": "kaggle competition m5-forecasting-accuracy",
+ "fetched": "2026-11-21T19:12:54",
+ "files": {
+  "calendar.csv": {
+   "bytes": 103469,
+   "sha256": "d12b5914ef03e66649adf5dd9e996e6602251c22b7a6af8f1f7e3aa12f8860f5"
+  },
+  "sales_train_evaluation.csv": {
+   "bytes": 121736518,
+   "sha256": "4b4a47c44c38380d2a9168216fea8c9ff2f31b1ddb772f8a0995952a038b8aa0"
+  },
+  "sales_train_validation.csv": {
+   "bytes": 120007726,
+   "sha256": "f368e66ed1dbecb48b2cc8fc589bf68b3deddbbb36bf5c88b4d6d0a09b9b6724"
+  },
+  "sample_submission.csv": {
+   "bytes": 5228786,
+   "sha256": "eb7597afbec367475ef25dc6dbbc009b8faa47fa2107252c72a029e3cdf72343"
+  },
+  "sell_prices.csv": {
+   "bytes": 203395785,
+   "sha256": "9da3ad1f8b8ccacdbdc70612191dd375ec24a4ac6625c24b75b3bc60b0bed2ef"
+  }
+ },
+ "bytes": 450472284,
+ "licence": "competition rules",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Prices, promotions",
+   "role": "secondary",
+   "claim": "weekly prices with changes",
+   "status": "PASS",
+   "evidence": "weekly change probability 1.2%; no explicit promo flag (drops inferred)"
+  },
+  {
+   "row": "Seasonality, holidays, Black Friday",
+   "role": "secondary",
+   "claim": "calendar events + SNAP days",
+   "status": "PASS",
+   "evidence": "162 event days of 1969; calendar columns ['date', 'wm_yr_wk', 'weekday', 'wday', 'month', 'year', 'd', 'event_name_1', 'event_type_1', 'event_name_2', 'event_type_2', 'snap_CA', 'snap_TX', 'snap_WI']"
+  },
+  {
+   "row": "Inventory, stock-outs",
+   "role": "secondary",
+   "claim": "stock-outs",
+   "status": "PARTIAL",
+   "evidence": "30,490 item-store series; only zero-sales runs, no stock field (proxy)"
+  }
+ ],
+ "audited": "2026-11-21T19:13:03"
+}

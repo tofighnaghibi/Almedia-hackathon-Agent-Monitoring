@@ -1,0 +1,94 @@
+{
+ "status": "evidence only",
+ "estimate": {
+  "window": [
+   "2018-05-21",
+   "2018-06-01"
+  ],
+  "daily_orders_during_vs_before": 0.5465841357175607,
+  "late_share_during": 0.10341699425461143,
+  "late_share_before": 0.0753447695930037
+ },
+ "heldout": [
+  {
+   "name": "daily orders during vs 4 weeks before (expected drop > 20%)",
+   "halves": [
+    259.64285714285717,
+    141.91666666666666
+   ],
+   "diff": 0.45341586428243935,
+   "tol": 10.0,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2018-06-02",
+ "target": true,
+ "assumptions": [
+  "one event: an effect size, not a fitted law"
+ ],
+ "bridges": [],
+ "status_override": "evidence only",
+ "id": "L0-shock",
+ "layer": "L0",
+ "data_type": "External shocks (2018 strike)",
+ "method": "replay + fit",
+ "sources": [
+  "olist",
+  "public_record"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "order drop during the documented window vs the 4 weeks before",
+ "seconds": 0.3,
+ "cache_key": "488d9a6c3e1b34fe",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ],
+  "public_record/truckers_strike_2018.json": [
+   514,
+   1795289044
+  ]
+ }
+}

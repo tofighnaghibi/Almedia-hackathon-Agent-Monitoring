@@ -1,0 +1,62 @@
+{
+ "status": "partially supported (transferred; held-out stable)",
+ "estimate": {
+  "yelpchi": {
+   "fraud_share": 0.14529747138442792,
+   "degree_ratio_fraud_vs_genuine_halves": [
+    0.12143892927283724,
+    0.11341360371778622
+   ]
+  },
+  "amazon_fraud": {
+   "fraud_share": 0.06873744139316812,
+   "degree_ratio_fraud_vs_genuine_halves": [
+    1.7468691147222315,
+    1.7959695695728843
+   ]
+  }
+ },
+ "heldout": [
+  {
+   "name": "YelpChi fraud/genuine degree ratio, random halves",
+   "halves": [
+    0.12143892927283724,
+    0.11341360371778622
+   ],
+   "diff": 0.06608527926840077,
+   "tol": 0.2,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": null,
+ "target": false,
+ "assumptions": [
+  "no timestamps in either graph: campaign timing is an assumption",
+  "true labels stay privileged (L8)"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L6-fraud",
+ "layer": "L6",
+ "data_type": "Fake reviews, fraud rings",
+ "method": "transfer",
+ "sources": [
+  "yelpchi",
+  "amazon_fraud"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "spam-vs-genuine degree ratio: random halves of nodes",
+ "seconds": 1.2,
+ "cache_key": "90ca57c7f60a602a",
+ "inputs": {
+  "yelpchi/YelpChi.mat": [
+   207676376,
+   1795281650
+  ],
+  "amazon_fraud/Amazon.mat": [
+   222634416,
+   1795281655
+  ]
+ }
+}

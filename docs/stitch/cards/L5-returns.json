@@ -1,0 +1,92 @@
+{
+ "status": "partially supported (transferred; held-out stable)",
+ "estimate": {
+  "olist_canceled_or_unavailable_share": 0.012409368369183738,
+  "uci_return_line_share": [
+   0.0,
+   0.0
+  ]
+ },
+ "heldout": [
+  {
+   "name": "UCI return-line share 2010 vs 2011",
+   "halves": [
+    0.0,
+    0.0
+   ],
+   "diff": 0.0,
+   "tol": 0.3,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2011-12-09",
+ "target": false,
+ "assumptions": [
+  "Olist has no returns: return rate shape from a UK gift wholesaler (labelled transfer)"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L5-returns",
+ "layer": "L5",
+ "data_type": "Cancellations, returns",
+ "method": "fit + transfer",
+ "sources": [
+  "olist",
+  "uci"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "UCI return-line share: 2010 vs 2011",
+ "seconds": 7.6,
+ "cache_key": "c5ff491211fa54f3",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ],
+  "uci/online_retail_II.xlsx": [
+   45622278,
+   1795281673
+  ]
+ }
+}

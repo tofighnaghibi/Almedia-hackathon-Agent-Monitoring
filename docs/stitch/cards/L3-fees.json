@@ -1,0 +1,27 @@
+{
+ "status": "assumed",
+ "estimate": {
+  "commission_rate_range": [
+   0.1,
+   0.2
+  ]
+ },
+ "heldout": [],
+ "trained_through": null,
+ "target": false,
+ "assumptions": [
+  "A-10: no public Olist fee or payout data; range from general sources"
+ ],
+ "bridges": [],
+ "status_override": "assumed",
+ "id": "L3-fees",
+ "layer": "L3",
+ "data_type": "Fees, payouts",
+ "method": "assumed (A-10)",
+ "sources": [],
+ "consumed_by": null,
+ "heldout_plan": "none: assumption",
+ "seconds": 0.0,
+ "cache_key": "1d59f83e96cf347a",
+ "inputs": {}
+}

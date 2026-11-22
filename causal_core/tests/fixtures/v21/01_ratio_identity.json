@@ -1,0 +1,145 @@
+{
+  "fixture_schema": "phase0-reference/1",
+  "case_id": "01_ratio_identity",
+  "title": "Ratio identity",
+  "tests_what": "Formula identity verified within tolerance; drift quarantines; 0/0 excluded with a reason",
+  "refs": [
+    "v3.2 §3.3 step 6",
+    "§4.4 metric_identity_v1"
+  ],
+  "gates": [
+    "G09",
+    "G05"
+  ],
+  "source": "hand_derived",
+  "behavior": {
+    "status": "PRESERVED",
+    "v21": "tol 1e-4 identity check, quarantine on mismatch",
+    "v32": "same; zero denominators excluded explicitly",
+    "corrections": []
+  },
+  "input": {
+    "variable": {
+      "variable_id": "conversion_rate",
+      "kind": "metric",
+      "formula": "div(orders, sessions)",
+      "unit": "orders/session",
+      "time_grain": "1d",
+      "population": "all_web_sessions"
+    },
+    "tolerance": 0.0001,
+    "observations": [
+      {
+        "bucket": "2026-11-01",
+        "numerator": 50,
+        "denominator": 1000,
+        "reported": 0.05
+      },
+      {
+        "bucket": "2026-11-02",
+        "numerator": 66,
+        "denominator": 1200,
+        "reported": 0.055
+      },
+      {
+        "bucket": "2026-11-03",
+        "numerator": 36,
+        "denominator": 800,
+        "reported": 0.045
+      },
+      {
+        "bucket": "2026-11-04",
+        "numerator": 0,
+        "denominator": 0,
+        "reported": null
+      }
+    ],
+    "drifted_variant": [
+      {
+        "bucket": "2026-11-01",
+        "numerator": 50,
+        "denominator": 1000,
+        "reported": 0.05
+      },
+      {
+        "bucket": "2026-11-02",
+        "numerator": 66,
+        "denominator": 1200,
+        "reported": 0.055
+      },
+      {
+        "bucket": "2026-11-03",
+        "numerator": 36,
+        "denominator": 800,
+        "reported": 0.0475
+      },
+      {
+        "bucket": "2026-11-04",
+        "numerator": 0,
+        "denominator": 0,
+        "reported": null
+      }
+    ]
+  },
+  "data": null,
+  "expected": {
+    "main": {
+      "verdict": "VERIFIED_IDENTITY",
+      "edge_status": "ACTIVE",
+      "max_abs_residual": 0.0,
+      "rows_checked": 3,
+      "rows": [
+        {
+          "bucket": "2026-11-01",
+          "status": "OK",
+          "residual": 0.0
+        },
+        {
+          "bucket": "2026-11-02",
+          "status": "OK",
+          "residual": 0.0
+        },
+        {
+          "bucket": "2026-11-03",
+          "status": "OK",
+          "residual": 0.0
+        },
+        {
+          "bucket": "2026-11-04",
+          "status": "ZERO_DENOMINATOR",
+          "residual": null
+        }
+      ]
+    },
+    "drifted_variant": {
+      "verdict": "IDENTITY_MISMATCH",
+      "edge_status": "QUARANTINED",
+      "max_abs_residual": 0.0025,
+      "rows_checked": 3,
+      "rows": [
+        {
+          "bucket": "2026-11-01",
+          "status": "OK",
+          "residual": 0.0
+        },
+        {
+          "bucket": "2026-11-02",
+          "status": "OK",
+          "residual": 0.0
+        },
+        {
+          "bucket": "2026-11-03",
+          "status": "MISMATCH",
+          "residual": 0.0025
+        },
+        {
+          "bucket": "2026-11-04",
+          "status": "ZERO_DENOMINATOR",
+          "residual": null
+        }
+      ]
+    },
+    "claim_kind": "MATHEMATICAL_IDENTITY",
+    "causal": false
+  }
+}

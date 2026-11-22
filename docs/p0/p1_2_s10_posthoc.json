@@ -1,0 +1,177 @@
+[
+ {
+  "layer": true,
+  "scenario": "9a_checkout_failure",
+  "seed": 71,
+  "classification": "undetermined",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "funnel evidence mixed across flagged periods ([None]): abstaining"
+ },
+ {
+  "layer": true,
+  "scenario": "9a_checkout_failure",
+  "seed": 72,
+  "classification": "localised",
+  "stage": "checkouts_count -> orders_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'checkouts_count -> orders_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9a_checkout_failure",
+  "seed": 73,
+  "classification": "localised",
+  "stage": "checkouts_count -> orders_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'checkouts_count -> orders_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9a_checkout_failure",
+  "seed": 74,
+  "classification": "localised",
+  "stage": "checkouts_count -> orders_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'checkouts_count -> orders_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9a_checkout_failure",
+  "seed": 75,
+  "classification": "localised",
+  "stage": "checkouts_count -> orders_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'checkouts_count -> orders_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9b_demand_drop",
+  "seed": 71,
+  "classification": "localised",
+  "stage": "upstream of sessions_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'upstream of sessions_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9b_demand_drop",
+  "seed": 72,
+  "classification": "localised",
+  "stage": "upstream of sessions_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'upstream of sessions_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9b_demand_drop",
+  "seed": 73,
+  "classification": "localised",
+  "stage": "upstream of sessions_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'upstream of sessions_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "9b_demand_drop",
+  "seed": 74,
+  "classification": "undetermined",
+  "stage": null,
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": false,
+  "rationale": "funnel evidence mixed across flagged periods ([None]): abstaining"
+ },
+ {
+  "layer": true,
+  "scenario": "9b_demand_drop",
+  "seed": 75,
+  "classification": "localised",
+  "stage": "upstream of sessions_count",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "funnel sessions_count -> cart_adds_count -> checkouts_count -> orders_count: only 'upstream of sessions_count' moved in the flagged period(s)"
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 71,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 72,
+  "classification": "undetermined",
+  "stage": null,
+  "periods": [
+   "2018-01-01"
+  ],
+  "correct": false,
+  "rationale": "funnel evidence mixed across flagged periods ([None]): abstaining"
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 73,
+  "classification": "undetermined",
+  "stage": null,
+  "periods": [
+   "2018-01-01",
+   "2018-01-08"
+  ],
+  "correct": false,
+  "rationale": "funnel evidence mixed across flagged periods ([None, None]): abstaining"
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 74,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 75,
+  "classification": "no_change",
+  "stage": null,
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the threshold"
+ }
+]

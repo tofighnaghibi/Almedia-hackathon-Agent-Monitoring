@@ -1,0 +1,61 @@
+{
+ "intervention": "accepted",
+ "flag": {
+  "kind": "flag",
+  "flag": "paymentFailure",
+  "variant": "25%",
+  "w0": 1519171200000000,
+  "w1": 1519257600000000
+ },
+ "commands_by_day_outcome": [
+  {
+   "day": "2018-02-20",
+   "outcome": "ok",
+   "len": 247
+  },
+  {
+   "day": "2018-02-21",
+   "outcome": "ok",
+   "len": 186
+  },
+  {
+   "day": "2018-02-21",
+   "outcome": "payment_failed",
+   "len": 62
+  }
+ ],
+ "ledger_orders": {
+  "2018-02-19": 263,
+  "2018-02-20": 247,
+  "2018-02-21": 186,
+  "2018-02-22": 219
+ },
+ "telemetry_error_rates": {
+  "A:payment": 0.0,
+  "A:checkout": 0.0,
+  "B:payment": 0.25,
+  "B:checkout": 0.25
+ },
+ "telemetry_requests": {
+  "A:payment": 247.0,
+  "A:checkout": 247.0,
+  "B:payment": 248.0,
+  "B:checkout": 248.0
+ },
+ "wall_seconds": [
+  8.9,
+  8.0
+ ],
+ "leak_hits": 1,
+ "checks": {
+  "every ok command is a committed ledger order": true,
+  "no failed command is in the ledger": true,
+  "storefront order ids unique": true,
+  "duplicate injection: zero new checkouts": true,
+  "duplicate injection: identical results": true,
+  "telemetry: payment error rate rises in the fault day": true,
+  "telemetry: role SANDBOX_OBSERVED": true,
+  "leak scan (hidden faults): 0 hits": false
+ },
+ "all_pass": false
+}

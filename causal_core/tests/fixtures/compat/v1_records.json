@@ -1,0 +1,29 @@
+{
+  "_note": "Hand-written v1.x compatibility fixtures (plan §C deliverable 'compatibility fixtures'). Expected outcomes were written from v3.2 §2.4 by hand, not captured from the migrator.",
+  "cases": [
+    {"name": "v1.0 metric definition with nested formula",
+     "raw": "{\"schema_version\":\"1.0\",\"kind\":\"MetricDefinition\",\"metric_id\":\"m_derived\",\"unit\":\"1\",\"aggregation_kind\":\"ratio\",\"time_grain\":\"1d\",\"population\":\"all_users\",\"formula\":\"div(sub(m_a, add(m_b, m_c)), m_d)\"}",
+     "outcome": "MIGRATED", "expect": {"kind": "metric", "formula_root_op": "div", "time_window": "unknown", "population_coverage": "unknown"}},
+    {"name": "v1.0 metric definition with a disallowed operation",
+     "raw": "{\"schema_version\":\"1.0\",\"kind\":\"MetricDefinition\",\"metric_id\":\"m_pow\",\"formula\":\"pow(m_a, m_b)\"}",
+     "outcome": "QUARANTINED", "reason_contains": "not allowed"},
+    {"name": "v1.1 observation without event_time keeps observed_at absent",
+     "raw": "{\"schema_version\":\"1.1\",\"kind\":\"Observation\",\"metric_id\":\"m_conv\",\"stats\":{\"numerator\":10,\"denominator\":200,\"n\":200},\"revision_id\":3}",
+     "outcome": "MIGRATED", "expect": {"observed_at": null, "available_at_quality": "UNKNOWN", "revision": 3, "scope": "legacy_unscoped"}},
+    {"name": "v1.1 temporal lag edge keeps its lag bounds",
+     "raw": "{\"schema_version\":\"1.1\",\"kind\":\"GraphEdge\",\"edge_kind\":\"TEMPORAL_LAG\",\"source\":\"m_a\",\"target\":\"m_b\",\"min_lag_seconds\":3600,\"max_lag_seconds\":7200}",
+     "outcome": "MIGRATED", "expect": {"edge_kind": "TEMPORAL_LAG", "lag": [3600.0, 7200.0], "status": "ACTIVE"}},
+    {"name": "v1.2 certified edge that did carry an estimand still needs review",
+     "raw": "{\"schema_version\":\"1.2\",\"kind\":\"GraphEdge\",\"edge_kind\":\"CAUSALLY_IDENTIFIED\",\"source\":\"exp_9\",\"target\":\"m_conv\",\"identification_certificate_id\":\"cert_9\",\"estimand\":\"ATE 7d all users\"}",
+     "outcome": "MIGRATED_REVIEW_REQUIRED", "expect": {"status": "REVIEW_REQUIRED", "reasons": ["MISSING_ASSUMPTION_AUDIT", "MISSING_SCOPE"]}},
+    {"name": "v1.0 edge claiming a v1.1-only status without reasons (conflicting versions)",
+     "raw": "{\"schema_version\":\"1.0\",\"kind\":\"GraphEdge\",\"edge_kind\":\"HYPOTHESIZED_CAUSAL\",\"source\":\"m_a\",\"target\":\"m_b\",\"status\":\"QUARANTINED\"}",
+     "outcome": "QUARANTINED", "reason_contains": "needs at least one reason"},
+    {"name": "v1.2 experiment record is never trusted as a design",
+     "raw": "{\"schema_version\":\"1.2\",\"kind\":\"ExperimentRecord\",\"experiment_id\":\"exp_9\",\"randomization_unit\":\"user\",\"exposure_unit\":\"user\",\"srm_p_value\":0.5}",
+     "outcome": "QUARANTINED", "reason_contains": "UNATTESTED_DESIGN"},
+    {"name": "unknown legacy kind",
+     "raw": "{\"schema_version\":\"1.1\",\"kind\":\"IncidentRevision\",\"incident_id\":\"i1\"}",
+     "outcome": "QUARANTINED", "reason_contains": "UNSUPPORTED_LEGACY_KIND"}
+  ]
+}

@@ -1,0 +1,150 @@
+{
+ "status": "supported (fitted on Olist; held-out stable)",
+ "estimate": {
+  "category_share_2017_top": {
+   "cama_mesa_banho": 0.10268559295375905,
+   "moveis_decoracao": 0.08153114186851211,
+   "esporte_lazer": 0.08050880780119535,
+   "beleza_saude": 0.07211387228688267,
+   "informatica_acessorios": 0.06090751808744888,
+   "utilidades_domesticas": 0.05713274614658698,
+   "brinquedos": 0.05115602390688896,
+   "ferramentas_jardim": 0.04842324630386914,
+   "cool_stuff": 0.04551352626612142,
+   "relogios_presentes": 0.0448843976093111
+  },
+  "bridge_esci_products_with_category": 447879,
+  "bridge_categories": 34,
+  "bridge_top": [
+   [
+    "Home and Kitchen",
+    56155
+   ],
+   [
+    "Books",
+    37872
+   ],
+   [
+    "Clothing Shoes and Jewelry",
+    35527
+   ],
+   [
+    "Toys and Games",
+    32720
+   ],
+   [
+    "Electronics",
+    30220
+   ],
+   [
+    "Tools and Home Improvement",
+    26277
+   ],
+   [
+    "Health and Household",
+    24184
+   ],
+   [
+    "Beauty and Personal Care",
+    23893
+   ]
+  ]
+ },
+ "heldout": [
+  {
+   "name": "max category-share difference 2017 vs 2018",
+   "halves": [
+    0,
+    0.026927809760738122
+   ],
+   "diff": 0.026927809760738122,
+   "tol": 0.03,
+   "rel": false,
+   "pass": true
+  }
+ ],
+ "trained_through": "2017-12-31",
+ "target": true,
+ "assumptions": [
+  "titles are bridged from Amazon ESCI by mapped category: a labelled stand-in, not Olist's real titles"
+ ],
+ "bridges": [
+  "/home/sneha/data/mkt/stitch/cache/esci_us_categories.parquet"
+ ],
+ "status_override": null,
+ "id": "L1-products",
+ "layer": "L1",
+ "data_type": "Products, categories, titles",
+ "method": "fit + bridge",
+ "sources": [
+  "olist",
+  "esci",
+  "reviews2023"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "category shares: 2017 vs 2018; bridge coverage per mapped category",
+ "seconds": 38.1,
+ "cache_key": "75ce6bb929aad005",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ],
+  "esci/shopping_queries_dataset_examples.parquet": [
+   51286808,
+   1795281723
+  ],
+  "esci/shopping_queries_dataset_products.parquet": [
+   1108857465,
+   1795281863
+  ],
+  "esci/shopping_queries_dataset_sources.csv": [
+   1682802,
+   1795281863
+  ],
+  "reviews2023/asin2category.json": [
+   1246846569,
+   1795269949
+  ]
+ }
+}

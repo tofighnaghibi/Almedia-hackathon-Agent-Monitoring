@@ -1,0 +1,106 @@
+{
+  "fixture_schema": "phase0-reference/1",
+  "case_id": "10_unauthorized_action",
+  "title": "Unauthorized action",
+  "tests_what": "A request saying environment_kind=emulator cannot unlock a production target",
+  "refs": [
+    "v3.2 §6.2",
+    "F12",
+    "C10"
+  ],
+  "gates": [
+    "G17"
+  ],
+  "source": "hand_derived",
+  "behavior": {
+    "status": "CORRECTED",
+    "v21": "scope read from the request string",
+    "v32": "trusted attestation + allowlist + bound approval",
+    "corrections": [
+      "F12",
+      "C10"
+    ]
+  },
+  "input": {
+    "sandbox_allowlist": [
+      "sandbox-emu-eu-1"
+    ],
+    "evaluated_at": "2026-11-21T12:00:00+00:00",
+    "proposals": [
+      {
+        "id": "A_spoofed_scope",
+        "action_kind": "sandbox_test",
+        "target": "prod-marketplace-eu",
+        "environment_kind": "emulator",
+        "environment_attestation": null,
+        "approval": {
+          "bound_target": "prod-marketplace-eu",
+          "expires_at": "2026-11-22T00:00:00+00:00"
+        }
+      },
+      {
+        "id": "B_expired_approval",
+        "action_kind": "sandbox_test",
+        "target": "sandbox-emu-eu-1",
+        "environment_kind": "emulator",
+        "environment_attestation": {
+          "issuer": "sandbox-registry",
+          "target": "sandbox-emu-eu-1"
+        },
+        "approval": {
+          "bound_target": "sandbox-emu-eu-1",
+          "expires_at": "2026-11-21T00:00:00+00:00"
+        }
+      },
+      {
+        "id": "C_valid_sandbox_test",
+        "action_kind": "sandbox_test",
+        "target": "sandbox-emu-eu-1",
+        "environment_kind": "emulator",
+        "environment_attestation": {
+          "issuer": "sandbox-registry",
+          "target": "sandbox-emu-eu-1"
+        },
+        "approval": {
+          "bound_target": "sandbox-emu-eu-1",
+          "expires_at": "2026-11-22T00:00:00+00:00"
+        }
+      }
+    ]
+  },
+  "data": null,
+  "expected": {
+    "A_spoofed_scope": {
+      "decision": "DENY",
+      "reasons": [
+        "UNTRUSTED_ENVIRONMENT_CLAIM",
+        "TARGET_NOT_IN_SANDBOX_ALLOWLIST"
+      ],
+      "production_write_path_exists": false
+    },
+    "B_expired_approval": {
+      "decision": "DENY",
+      "reasons": [
+        "APPROVAL_EXPIRED"
+      ],
+      "production_write_path_exists": false
+    },
+    "C_valid_sandbox_test": {
+      "decision": "ALLOW_SANDBOX_TEST_ONLY",
+      "reasons": [],
+      "production_write_path_exists": false
+    }
+  },
+  "v21_reference": {
+    "A_spoofed_scope": {
+      "decision": "ALLOW"
+    },
+    "B_expired_approval": {
+      "decision": "DENY"
+    },
+    "C_valid_sandbox_test": {
+      "decision": "ALLOW"
+    }
+  },
+  "note": "C is allowed by policy but not executable before Phase 8: P0 has no write port"
+}

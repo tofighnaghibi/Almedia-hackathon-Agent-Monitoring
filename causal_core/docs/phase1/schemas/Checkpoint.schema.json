@@ -1,0 +1,113 @@
+{
+  "$defs": {
+    "Pins": {
+      "additionalProperties": false,
+      "properties": {
+        "data_cut": {
+          "format": "date-time",
+          "title": "Data Cut",
+          "type": "string"
+        },
+        "evidence_watermark": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Watermark"
+        },
+        "graph_version": {
+          "minimum": 0,
+          "title": "Graph Version",
+          "type": "integer"
+        },
+        "method_versions": {
+          "default": {},
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$": {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "title": "Method Versions",
+          "type": "object"
+        }
+      },
+      "required": [
+        "graph_version",
+        "data_cut"
+      ],
+      "title": "Pins",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "job_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Job Id",
+      "type": "string"
+    },
+    "payload_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Payload Hash",
+      "type": "string"
+    },
+    "pins": {
+      "$ref": "#/$defs/Pins"
+    },
+    "queries_spent": {
+      "minimum": 0,
+      "title": "Queries Spent",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sequence": {
+      "minimum": 0,
+      "title": "Sequence",
+      "type": "integer"
+    },
+    "stage": {
+      "enum": [
+        "FRAME",
+        "AUDIT_INPUTS",
+        "SELECT_CAPABILITIES",
+        "ACQUIRE",
+        "EVALUATE",
+        "CHALLENGE",
+        "REPORT"
+      ],
+      "title": "Stage",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "job_id",
+    "sequence",
+    "stage",
+    "pins",
+    "payload_hash",
+    "queries_spent"
+  ],
+  "title": "Checkpoint",
+  "type": "object"
+}

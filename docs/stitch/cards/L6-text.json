@@ -1,0 +1,89 @@
+{
+ "status": "supported (fitted on Olist; held-out stable)",
+ "estimate": {
+  "text_share_by_score_2017": {
+   "5": 0.37223620522749273,
+   "2": 0.6671214188267395,
+   "4": 0.31915851051861854,
+   "3": 0.42463958060288337,
+   "1": 0.7555951673598732
+  }
+ },
+ "heldout": [
+  {
+   "name": "max text-share difference by score 2017 vs 2018",
+   "halves": [
+    0,
+    0.026301985046933207
+   ],
+   "diff": 0.026301985046933207,
+   "tol": 0.1,
+   "rel": false,
+   "pass": true
+  }
+ ],
+ "trained_through": "2017-12-31",
+ "target": true,
+ "assumptions": [
+  "texts stay in ~/data (not in the repo); pooled by score x delivery outcome"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L6-text",
+ "layer": "L6",
+ "data_type": "Review text",
+ "method": "pool",
+ "sources": [
+  "olist"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "text share per score: 2017 vs 2018",
+ "seconds": 0.6,
+ "cache_key": "72f83b9889c40477",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ]
+ }
+}

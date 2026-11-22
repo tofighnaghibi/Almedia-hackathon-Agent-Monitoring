@@ -1,0 +1,58 @@
+{
+ "fetch_status": "ok",
+ "reason": "Which Tmall/Alibaba dataset is meant is not decided (plan item 0.3); Tianchi downloads need an account",
+ "origin": "Tianchi dataset 42 (IJCAI-15 Tmall repeat buyers), data_format1, manual download 'data_format1 .zip'",
+ "fetched": "2026-11-21T19:19:23",
+ "files": {
+  "data_format1/test_format1.csv": {
+   "bytes": 3277697,
+   "sha256": "570ce4734debd5e10017f1cb89dd6b2eda8dd75141e29effbb7a6f3c48ac49bc"
+  },
+  "data_format1/train_format1.csv": {
+   "bytes": 3530906,
+   "sha256": "b206b7ea7b90101383017273dad950106799f40ba15c05e2a3977e4d91752fac"
+  },
+  "data_format1/user_info_format1.csv": {
+   "bytes": 4546137,
+   "sha256": "6f2e496fe602b672c1013eca1334b671501ccd39ddde010517658317eecccde1"
+  },
+  "data_format1/user_log_format1.csv": {
+   "bytes": 1910208392,
+   "sha256": "a6bc8eabc40b61a562a5e45c91e9b822418d0d863576b28a9ccd549451e55a92"
+  }
+ },
+ "bytes": 1921563132,
+ "licence": "Tianchi research terms",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Funnel view -> cart -> buy, timing",
+   "role": "secondary",
+   "claim": "typed events with timestamps",
+   "status": "PARTIAL",
+   "evidence": "54,925,330 events; action types [('click', 48550713), ('add-to-cart', 76750), ('purchase', 3292144), ('favourite', 3005723)]; time_stamp is month-day only (0511..1112, 186 distinct days): step probabilities yes, minute-level timing NO; columns ['user_id', 'item_id', 'cat_id', 'seller_id', 'brand_id', 'time_stamp', 'action_type']"
+  },
+  {
+   "row": "Session length, revisits",
+   "role": "secondary",
+   "claim": "sessions or ordered events",
+   "status": "PARTIAL",
+   "evidence": "no session id and only day resolution: user-days can stand in for sessions; order within a day unknown"
+  },
+  {
+   "row": "Repeat purchases",
+   "role": "secondary",
+   "claim": "repeat-buyer labels",
+   "status": "PASS",
+   "evidence": "260,864 labelled new-buyer/seller pairs, 6.1% became repeat buyers (Double 11 2014 cohort); user info ['user_id', 'age_range', 'gender']"
+  },
+  {
+   "row": "Sellers, regions, size",
+   "role": "secondary",
+   "claim": "(bonus) seller ids on every event",
+   "status": "PASS",
+   "evidence": "424,170 users, 4,995 sellers, 1,090,390 items; 0.0% of items appear under >1 seller (no geography)"
+  }
+ ],
+ "audited": "2026-11-21T19:19:43"
+}

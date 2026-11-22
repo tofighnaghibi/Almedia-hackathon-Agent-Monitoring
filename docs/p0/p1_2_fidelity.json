@@ -1,0 +1,69 @@
+{
+ "F1 views/session buying": {
+  "sim": 6.4978271366489615,
+  "card": 6.247254668811639,
+  "rel_diff": 0.040109212945690094,
+  "pass": true
+ },
+ "F1 views/session non-buying": {
+  "sim": 1.4748370434062201,
+  "card": 1.4736336385143913,
+  "rel_diff": 0.0008166242004640858,
+  "pass": true
+ },
+ "F2 non-buying cart share": {
+  "sim": 0.018403643210691465,
+  "card": 0.0183085743325142,
+  "pass": true
+ },
+ "F3 first-view->buy lag q0.5": {
+  "sim": 2525.4615864999996,
+  "card": 2675.0,
+  "rel_diff": 0.05590221065420575,
+  "pass": true
+ },
+ "F3 first-view->buy lag q0.9": {
+  "sim": 169064.66928899998,
+  "card": 176258.80000000005,
+  "rel_diff": 0.04081572500777301,
+  "pass": true
+ },
+ "F4 relative CTR positions 2-10 inside card CI": {
+  "sim": [
+   1.0,
+   0.7611111734665245,
+   0.6380043773500197,
+   0.5529670576351086,
+   0.39452494528312476,
+   0.4914551882821707,
+   0.43344070935518264,
+   0.38800381615129914,
+   0.36281272798698017,
+   0.3299848476345474
+  ],
+  "inside": [
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "pass": true
+ },
+ "F5 mobile share per month (|diff| <= 0.01)": {
+  "diff": {
+   "2018-01": 0.0005202207230556866,
+   "2018-02": -6.85312686741768e-05
+  },
+  "pass": true
+ },
+ "F6 one buying session per order, starting before it": {
+  "pass": true,
+  "orders": 12426,
+  "buying_sessions": 12426
+ }
+}

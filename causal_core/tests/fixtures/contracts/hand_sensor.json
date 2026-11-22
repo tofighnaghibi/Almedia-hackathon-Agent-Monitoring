@@ -1,0 +1,59 @@
+{
+  "_note": "Hand-written for the Phase 1 audit (probe E). Shares no code with emulator/ or any schema builder. A pump vibration sensor and a valve actuation event stream: no metric, no experiment, no alert.",
+  "vibration_definition": {
+    "schema_version": "2.0",
+    "kind": "state",
+    "variable_id": "pump_7_vibration_mm_s",
+    "value_schema": {"type": "numeric", "dtype": "real", "minimum": 0, "maximum": 50},
+    "unit": "mm/s",
+    "sampling_cadence_s": 60,
+    "scope": {"environment_id": "plant-3", "environment_kind": "production"},
+    "provenance": {"source_id": "historian-osisoft", "method": "adapter_declared"}
+  },
+  "vibration_observation": {
+    "schema_version": "2.0",
+    "observation_id": "vib-2026-11-20-0600",
+    "variable_id": "pump_7_vibration_mm_s",
+    "payload": {"shape": "state_trajectory", "samples": [
+      {"t": "2026-11-20T06:00:00Z", "state": 2.41},
+      {"t": "2026-11-20T06:01:00Z", "state": 2.38},
+      {"t": "2026-11-20T06:02:00Z", "state": 3.95}
+    ]},
+    "source_id": "historian-osisoft",
+    "record_key": "pump_7:2026-11-20T06",
+    "revision": 1,
+    "lineage": {"source_id": "historian-osisoft", "origin_kind": "original", "lineage_root_id": "hist:pump_7:2026-11-20T06",
+                "content_hash": "3b8a1f6c2d0e4a5b9c7d8e1f0a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d"},
+    "scope": {"environment_id": "plant-3", "environment_kind": "production"},
+    "clocks": {"observed_at": {"quality": "KNOWN", "value": "2026-11-20T06:02:00Z"},
+               "available_at": {"quality": "ESTIMATED", "value": "2026-11-20T06:05:00Z"},
+               "source_timezone": "Europe/Berlin"}
+  },
+  "valve_definition": {
+    "schema_version": "2.0",
+    "kind": "event",
+    "variable_id": "valve_12_actuation",
+    "occurrence_time": "event_time",
+    "value_schema": {"type": "event", "fields": {"valve_id": "category", "commanded": "boolean", "travel_ms": "integer"},
+                     "identity_fields": ["valve_id"]},
+    "scope": {"environment_id": "plant-3", "environment_kind": "production"},
+    "provenance": {"source_id": "scada", "method": "adapter_declared"}
+  },
+  "valve_observation": {
+    "schema_version": "2.0",
+    "observation_id": "valve-batch-0601",
+    "variable_id": "valve_12_actuation",
+    "payload": {"shape": "event_batch", "events": [
+      {"event_id": "act-1", "occurred_at": {"quality": "KNOWN", "value": "2026-11-20T06:01:30Z"},
+       "attributes": {"valve_id": "v12", "commanded": true, "travel_ms": 840}},
+      {"event_id": "act-2", "occurred_at": {"quality": "UNKNOWN"},
+       "attributes": {"valve_id": "v12", "commanded": false, "travel_ms": null}}
+    ]},
+    "source_id": "scada",
+    "record_key": "v12:0601",
+    "revision": 1,
+    "lineage": {"source_id": "scada", "origin_kind": "original", "lineage_root_id": "scada:v12:0601",
+                "content_hash": "9f8e7d6c5b4a39281706f5e4d3c2b1a09f8e7d6c5b4a39281706f5e4d3c2b1a0"},
+    "scope": {"environment_id": "plant-3", "environment_kind": "production"}
+  }
+}

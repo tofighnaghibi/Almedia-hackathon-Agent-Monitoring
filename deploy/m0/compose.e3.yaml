@@ -1,0 +1,5 @@
+# E3 override: flags paymentFailure=25% and recommendationCacheFailure=on (copy of the 3.1.0 flag file).
+services:
+  flagd:
+    volumes: !override
+      - ${HOME}/marketplace-recon/deploy/m0/flagd-e3:/etc/flagd

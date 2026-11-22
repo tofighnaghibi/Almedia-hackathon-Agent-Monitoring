@@ -1,0 +1,750 @@
+{
+  "$defs": {
+    "AssessHypothesis": {
+      "additionalProperties": false,
+      "properties": {
+        "hypothesis": {
+          "$ref": "#/$defs/HypothesisTarget"
+        },
+        "question_kind": {
+          "const": "ASSESS_HYPOTHESIS",
+          "title": "Question Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "question_kind",
+        "hypothesis"
+      ],
+      "title": "AssessHypothesis",
+      "type": "object"
+    },
+    "AssessStudy": {
+      "additionalProperties": false,
+      "properties": {
+        "outcomes": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Outcomes",
+          "type": "array"
+        },
+        "question_kind": {
+          "const": "ASSESS_STUDY",
+          "title": "Question Kind",
+          "type": "string"
+        },
+        "study_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Study Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "question_kind",
+        "study_id",
+        "outcomes"
+      ],
+      "title": "AssessStudy",
+      "type": "object"
+    },
+    "CheckModel": {
+      "additionalProperties": false,
+      "properties": {
+        "assumption": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Assumption",
+          "type": "string"
+        },
+        "holdout_ref": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Holdout Ref",
+          "type": "string"
+        },
+        "question_kind": {
+          "const": "CHECK_MODEL",
+          "title": "Question Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "question_kind",
+        "assumption",
+        "holdout_ref"
+      ],
+      "title": "CheckModel",
+      "type": "object"
+    },
+    "CompareInterventions": {
+      "additionalProperties": false,
+      "properties": {
+        "candidates": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 2,
+          "title": "Candidates",
+          "type": "array"
+        },
+        "question_kind": {
+          "const": "COMPARE_INTERVENTIONS",
+          "title": "Question Kind",
+          "type": "string"
+        },
+        "risk_constraints": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "title": "Risk Constraints",
+          "type": "array"
+        },
+        "utility": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Utility",
+          "type": "string"
+        }
+      },
+      "required": [
+        "question_kind",
+        "candidates",
+        "utility"
+      ],
+      "title": "CompareInterventions",
+      "type": "object"
+    },
+    "DataCut": {
+      "additionalProperties": false,
+      "properties": {
+        "as_of": {
+          "format": "date-time",
+          "title": "As Of",
+          "type": "string"
+        },
+        "evidence_watermark": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Watermark"
+        }
+      },
+      "required": [
+        "as_of"
+      ],
+      "title": "DataCut",
+      "type": "object"
+    },
+    "DesignEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "competing_hypotheses": {
+          "items": {
+            "$ref": "#/$defs/HypothesisTarget"
+          },
+          "minItems": 2,
+          "title": "Competing Hypotheses",
+          "type": "array"
+        },
+        "question_kind": {
+          "const": "DESIGN_EVIDENCE",
+          "title": "Question Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "question_kind",
+        "competing_hypotheses"
+      ],
+      "title": "DesignEvidence",
+      "type": "object"
+    },
+    "DetectChange": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_policy": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Baseline Policy",
+          "type": "string"
+        },
+        "question_kind": {
+          "const": "DETECT_CHANGE",
+          "title": "Question Kind",
+          "type": "string"
+        },
+        "variables": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Variables",
+          "type": "array"
+        }
+      },
+      "required": [
+        "question_kind",
+        "variables",
+        "baseline_policy"
+      ],
+      "title": "DetectChange",
+      "type": "object"
+    },
+    "EnvironmentScope": {
+      "additionalProperties": false,
+      "properties": {
+        "data_cut": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Cut"
+        },
+        "dataset_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dataset Version"
+        },
+        "environment_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Environment Id",
+          "type": "string"
+        },
+        "environment_kind": {
+          "enum": [
+            "production",
+            "staging",
+            "emulator",
+            "offline_replay",
+            "legacy_unscoped"
+          ],
+          "title": "Environment Kind",
+          "type": "string"
+        },
+        "generator_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generator Version"
+        }
+      },
+      "required": [
+        "environment_id",
+        "environment_kind"
+      ],
+      "title": "EnvironmentScope",
+      "type": "object"
+    },
+    "EstimandSpec": {
+      "additionalProperties": false,
+      "description": "Exactly what effect is asked for. No 'lift' with an undefined treatment, time or population.\n\nBoth scopes are required (v3.2 \u00a72.1, I05; CP-004): where the evidence comes from and where the\neffect is claimed to hold. If they differ, transport must be argued explicitly (\u00a74.5 item 5).",
+      "properties": {
+        "contrast": {
+          "$ref": "#/$defs/InterventionContrast"
+        },
+        "functional": {
+          "enum": [
+            "ATE",
+            "ATT",
+            "ITT",
+            "CACE",
+            "risk_difference",
+            "mean_difference",
+            "dose_response",
+            "policy_value"
+          ],
+          "title": "Functional",
+          "type": "string"
+        },
+        "horizon": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Horizon",
+          "type": "string"
+        },
+        "outcome": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Outcome",
+          "type": "string"
+        },
+        "population": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Population",
+          "type": "string"
+        },
+        "source_scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "target_scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        }
+      },
+      "required": [
+        "outcome",
+        "contrast",
+        "population",
+        "horizon",
+        "functional",
+        "source_scope",
+        "target_scope"
+      ],
+      "title": "EstimandSpec",
+      "type": "object"
+    },
+    "EstimateEffect": {
+      "additionalProperties": false,
+      "properties": {
+        "estimand": {
+          "$ref": "#/$defs/EstimandSpec"
+        },
+        "question_kind": {
+          "const": "ESTIMATE_EFFECT",
+          "title": "Question Kind",
+          "type": "string"
+        },
+        "study_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Study Id"
+        }
+      },
+      "required": [
+        "question_kind",
+        "estimand"
+      ],
+      "title": "EstimateEffect",
+      "type": "object"
+    },
+    "EvaluateOutcome": {
+      "additionalProperties": false,
+      "properties": {
+        "observed_variable": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Observed Variable",
+          "type": "string"
+        },
+        "question_kind": {
+          "const": "EVALUATE_OUTCOME",
+          "title": "Question Kind",
+          "type": "string"
+        },
+        "receipt_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Receipt Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "question_kind",
+        "receipt_id",
+        "observed_variable"
+      ],
+      "title": "EvaluateOutcome",
+      "type": "object"
+    },
+    "ExecutionBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "max_buckets": {
+          "default": 168,
+          "exclusiveMinimum": 0,
+          "title": "Max Buckets",
+          "type": "integer"
+        },
+        "max_cost_units": {
+          "default": 0.0,
+          "minimum": 0,
+          "title": "Max Cost Units",
+          "type": "number"
+        },
+        "max_queries": {
+          "default": 6,
+          "minimum": 0,
+          "title": "Max Queries",
+          "type": "integer"
+        },
+        "max_rows": {
+          "default": 100000,
+          "exclusiveMinimum": 0,
+          "title": "Max Rows",
+          "type": "integer"
+        },
+        "max_wall_ms": {
+          "exclusiveMinimum": 0,
+          "title": "Max Wall Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "max_wall_ms"
+      ],
+      "title": "ExecutionBudget",
+      "type": "object"
+    },
+    "ExplainObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "context_window": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TimeWindow"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "observed_pattern": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Observed Pattern",
+          "type": "string"
+        },
+        "question_kind": {
+          "const": "EXPLAIN_OBSERVATION",
+          "title": "Question Kind",
+          "type": "string"
+        },
+        "variables": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Variables",
+          "type": "array"
+        }
+      },
+      "required": [
+        "question_kind",
+        "variables",
+        "observed_pattern"
+      ],
+      "title": "ExplainObservation",
+      "type": "object"
+    },
+    "HypothesisTarget": {
+      "additionalProperties": false,
+      "properties": {
+        "observable_implications": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Observable Implications",
+          "type": "array"
+        },
+        "source": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Source",
+          "type": "string"
+        },
+        "statement": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Statement",
+          "type": "string"
+        },
+        "target": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "statement",
+        "source",
+        "target",
+        "observable_implications"
+      ],
+      "title": "HypothesisTarget",
+      "type": "object"
+    },
+    "InterventionContrast": {
+      "additionalProperties": false,
+      "properties": {
+        "control": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Control",
+          "type": "string"
+        },
+        "treatment": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Treatment",
+          "type": "string"
+        }
+      },
+      "required": [
+        "treatment",
+        "control"
+      ],
+      "title": "InterventionContrast",
+      "type": "object"
+    },
+    "PredictOutcome": {
+      "additionalProperties": false,
+      "properties": {
+        "question_kind": {
+          "const": "PREDICT_OUTCOME",
+          "title": "Question Kind",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/PredictionTarget"
+        }
+      },
+      "required": [
+        "question_kind",
+        "target"
+      ],
+      "title": "PredictOutcome",
+      "type": "object"
+    },
+    "PredictionTarget": {
+      "additionalProperties": false,
+      "properties": {
+        "horizon": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Horizon",
+          "type": "string"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "variable_id",
+        "horizon"
+      ],
+      "title": "PredictionTarget",
+      "type": "object"
+    },
+    "TimeWindow": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "TimeWindow",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "budget": {
+      "$ref": "#/$defs/ExecutionBudget"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "data_cut": {
+      "$ref": "#/$defs/DataCut"
+    },
+    "incident_id": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Incident Id"
+    },
+    "priority": {
+      "maximum": 9,
+      "minimum": 0,
+      "title": "Priority",
+      "type": "integer"
+    },
+    "question": {
+      "discriminator": {
+        "mapping": {
+          "ASSESS_HYPOTHESIS": "#/$defs/AssessHypothesis",
+          "ASSESS_STUDY": "#/$defs/AssessStudy",
+          "CHECK_MODEL": "#/$defs/CheckModel",
+          "COMPARE_INTERVENTIONS": "#/$defs/CompareInterventions",
+          "DESIGN_EVIDENCE": "#/$defs/DesignEvidence",
+          "DETECT_CHANGE": "#/$defs/DetectChange",
+          "ESTIMATE_EFFECT": "#/$defs/EstimateEffect",
+          "EVALUATE_OUTCOME": "#/$defs/EvaluateOutcome",
+          "EXPLAIN_OBSERVATION": "#/$defs/ExplainObservation",
+          "PREDICT_OUTCOME": "#/$defs/PredictOutcome"
+        },
+        "propertyName": "question_kind"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DetectChange"
+        },
+        {
+          "$ref": "#/$defs/ExplainObservation"
+        },
+        {
+          "$ref": "#/$defs/AssessHypothesis"
+        },
+        {
+          "$ref": "#/$defs/EstimateEffect"
+        },
+        {
+          "$ref": "#/$defs/AssessStudy"
+        },
+        {
+          "$ref": "#/$defs/CompareInterventions"
+        },
+        {
+          "$ref": "#/$defs/DesignEvidence"
+        },
+        {
+          "$ref": "#/$defs/PredictOutcome"
+        },
+        {
+          "$ref": "#/$defs/EvaluateOutcome"
+        },
+        {
+          "$ref": "#/$defs/CheckModel"
+        }
+      ],
+      "title": "Question"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_scope": {
+      "$ref": "#/$defs/EnvironmentScope"
+    },
+    "task_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "trigger": {
+      "enum": [
+        "explicit_question",
+        "scheduled",
+        "monitor",
+        "study_completion"
+      ],
+      "title": "Trigger",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "task_id",
+    "question",
+    "trigger",
+    "source_scope",
+    "data_cut",
+    "priority",
+    "budget",
+    "created_at"
+  ],
+  "title": "ReasoningTask",
+  "type": "object"
+}

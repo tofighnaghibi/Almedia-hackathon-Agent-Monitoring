@@ -1,0 +1,721 @@
+{
+  "fixture_schema": "phase0-reference/1",
+  "case_id": "08_revised_bucket_eprocess",
+  "title": "Revised bucket + 50 replicas in an e-process",
+  "tests_what": "One contribution per bucket from the latest original revision; replicas add nothing",
+  "refs": [
+    "v3.2 §2.2",
+    "§5.4",
+    "C03",
+    "I11"
+  ],
+  "gates": [
+    "G07",
+    "G08"
+  ],
+  "source": "hand_derived",
+  "behavior": {
+    "status": "CORRECTED",
+    "v21": "root dedup; revision reconciliation unspecified",
+    "v32": "recompute path on revision; never double-consume",
+    "corrections": [
+      "C03"
+    ]
+  },
+  "input": {
+    "null": "z_t i.i.d. N(0,1)",
+    "bet": "fixed lambda (predictable)",
+    "lambda": 0.5,
+    "alpha": 0.05,
+    "records_in_arrival_order": [
+      {
+        "id": "b1r1",
+        "bucket": "b1",
+        "revision": 1,
+        "lineage_root": "root_b1",
+        "origin_kind": "original",
+        "z": 0.3
+      },
+      {
+        "id": "b2r1",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "original",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_00",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_01",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_02",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_03",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_04",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_05",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_06",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_07",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_08",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_09",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_10",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_11",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_12",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_13",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_14",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_15",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_16",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_17",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_18",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_19",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_20",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_21",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_22",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_23",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_24",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_25",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_26",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_27",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_28",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_29",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_30",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_31",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_32",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_33",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_34",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_35",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_36",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_37",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_38",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_39",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_40",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_41",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_42",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_43",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_44",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_45",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_46",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_47",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_48",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b2_replica_49",
+        "bucket": "b2",
+        "revision": 1,
+        "lineage_root": "root_b2",
+        "origin_kind": "synthetic_replica",
+        "z": 1.1
+      },
+      {
+        "id": "b3r1",
+        "bucket": "b3",
+        "revision": 1,
+        "lineage_root": "root_b3",
+        "origin_kind": "original",
+        "z": 5.0
+      },
+      {
+        "id": "b4r1",
+        "bucket": "b4",
+        "revision": 1,
+        "lineage_root": "root_b4",
+        "origin_kind": "original",
+        "z": 0.9
+      },
+      {
+        "id": "b3r2",
+        "bucket": "b3",
+        "revision": 2,
+        "lineage_root": "root_b3",
+        "origin_kind": "original",
+        "z": 0.4
+      }
+    ]
+  },
+  "data": null,
+  "expected": {
+    "log_wealth": 0.85,
+    "peak_log_wealth": 0.85,
+    "threshold": 2.995732273554,
+    "alarm": false,
+    "path": [
+      {
+        "bucket": "b1",
+        "used": "b1r1",
+        "log_wealth": 0.025
+      },
+      {
+        "bucket": "b2",
+        "used": "b2r1",
+        "log_wealth": 0.45
+      },
+      {
+        "bucket": "b3",
+        "used": "b3r2",
+        "log_wealth": 0.525
+      },
+      {
+        "bucket": "b4",
+        "used": "b4r1",
+        "log_wealth": 0.85
+      }
+    ],
+    "ignored": [
+      {
+        "id": "b2_replica_00",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_01",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_02",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_03",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_04",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_05",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_06",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_07",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_08",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_09",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_10",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_11",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_12",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_13",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_14",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_15",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_16",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_17",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_18",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_19",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_20",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_21",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_22",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_23",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_24",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_25",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_26",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_27",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_28",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_29",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_30",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_31",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_32",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_33",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_34",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_35",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_36",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_37",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_38",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_39",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_40",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_41",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_42",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_43",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_44",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_45",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_46",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_47",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_48",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b2_replica_49",
+        "reason": "SYNTHETIC_NO_INDEPENDENT_SUPPORT"
+      },
+      {
+        "id": "b3r1",
+        "reason": "SUPERSEDED_REVISION"
+      }
+    ],
+    "history_rule": "an alarm already published from b3r1 stays in history, superseded by a new revision; it is not erased"
+  },
+  "v21_reference": {
+    "rule": "consume each lineage root once; 'reconcile as a revision' unspecified",
+    "first_seen_root_implementation": {
+      "log_wealth": 3.15,
+      "peak_log_wealth": 3.15,
+      "alarm": true
+    }
+  },
+  "failure_mode_if_unguarded": {
+    "log_wealth": 24.475,
+    "alarm": true
+  }
+}

@@ -1,0 +1,108 @@
+{
+ "status": "partially supported (transferred; held-out stable)",
+ "estimate": {
+  "olist_review_presence": 0.9933041729720765,
+  "coat_self_selected_minus_random_mean": [
+   0.4021551724137935,
+   0.3630747126436784
+  ]
+ },
+ "heldout": [
+  {
+   "name": "Coat self-selection gap, random user halves",
+   "halves": [
+    0.4021551724137935,
+    0.3630747126436784
+   ],
+   "diff": 0.09717756341550582,
+   "tol": 0.3,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2017-12-31",
+ "target": false,
+ "assumptions": [
+  "Olist ~99% reviewed (survey-driven): the selection SHAPE comes from Coat (ratings, not purchases)"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L6-mnar",
+ "layer": "L6",
+ "data_type": "Who leaves reviews (MNAR)",
+ "method": "fit + transfer",
+ "sources": [
+  "olist",
+  "coat"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "Coat self-selection ratio: random halves of users",
+ "seconds": 0.4,
+ "cache_key": "5e313de7ac5b6f3e",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ],
+  "coat/coat/propensities.ascii": [
+   2175000,
+   1795281647
+  ],
+  "coat/coat/test.ascii": [
+   174290,
+   1795281647
+  ],
+  "coat/coat/train.ascii": [
+   174290,
+   1795281647
+  ],
+  "coat/coat/user_item_features/item_features.ascii": [
+   20100,
+   1795281647
+  ],
+  "coat/coat/user_item_features/user_features.ascii": [
+   8410,
+   1795281647
+  ]
+ }
+}

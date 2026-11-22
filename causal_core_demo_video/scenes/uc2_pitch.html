@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Marketplace watcher pitch</title>
+<meta name="viewport" content="width=1920">
+<script src="uc2_data.js"></script>
+<style>
+:root{--bg:#0e1115;--surface:#161a20;--surface2:#1d222a;--border:#2b323c;--text:#e9ecf0;--text2:#b1b9c4;--muted:#7f8996;
+  --blue:#3987e5;--orange:#d95926;--good:#0ca30c;--warn:#fab219;--crit:#d03b3b}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);color:var(--text);
+  font-family:-apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.scene{position:absolute;inset:0;opacity:0;padding:130px 120px}
+.label{font-size:18px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:var(--muted)}
+.h1{font-size:104px;font-weight:700;letter-spacing:-1px;line-height:1.1}
+.sub{font-size:40px;color:var(--text2);line-height:1.4}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 32px}
+.box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 26px;font-size:24px}
+.box b{display:block;font-size:30px;margin-bottom:8px}
+.box span{color:var(--text2);font-size:23px;line-height:1.35}
+.chipline{display:flex;gap:8px;flex-wrap:wrap}
+.st{font-size:21px;font-weight:650;border:1.5px solid #284f80;color:#7fb2f0;background:rgba(57,135,229,.10);border-radius:8px;padding:6px 10px}
+.big{font-size:84px;font-weight:700;letter-spacing:-1px}
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:18px;font-weight:650;border-radius:999px;padding:6px 14px;border:1.5px solid}
+.ok{color:#5fd35f;border-color:#1f6b1f;background:rgba(12,163,12,.10)}
+.wait{color:#f7c75a;border-color:#6b5520;background:rgba(250,178,25,.10)}
+.bad{color:#ff7b7b;border-color:#7a2626;background:rgba(208,59,59,.12)}
+#brand{position:absolute;left:48px;top:30px;font-size:22px;font-weight:600;display:flex;align-items:center;gap:12px;color:var(--text2)}
+#brand i{width:12px;height:12px;border-radius:50%;background:var(--blue);display:inline-block}
+#sb{position:absolute;right:48px;top:26px;font-size:16px;font-weight:650;color:#f3c55a;border:1.5px solid #6b5520;background:rgba(250,178,25,.08);border-radius:999px;padding:6px 15px}
+.srow{display:grid;grid-template-columns:38px 190px 1fr 1.1fr;gap:14px;align-items:center;padding:10px 12px;border:1px solid transparent;
+  border-radius:10px;font-size:19.5px;line-height:1.3;opacity:.38;transition:all .2s}
+.srow.hdr{opacity:1;font-size:15px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding-top:0}
+.srow.hdr b{font-size:16px;color:var(--muted)}
+.srow b{font-size:21px} .srow .so{color:var(--text2)} .srow .sh{color:#7fb2f0;font-weight:600}
+.srow .sn{width:30px;height:30px;border-radius:50%;border:1.5px solid #3e4652;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--muted)}
+.srow.on{opacity:1} .srow.now{border-color:#3987e5;background:rgba(57,135,229,.10)} .srow.on .sn{border-color:#3987e5;color:#7fb2f0}
+</style>
+</head>
+<body>
+<div id="brand"><i></i>Marketplace watcher · demo</div>
+<div id="sb">SANDBOX ONLY · no production writes</div>
+
+<div class="scene" id="s-open">
+  <div class="label" id="o0">Frank's telescope marketplace · the problem</div>
+  <div class="h1" id="o1" style="margin-top:22px">Orders drop at 3 a.m.<br>Why?</div>
+  <div style="display:flex;gap:28px;margin-top:80px" id="o2">
+    <div class="card" style="flex:1"><div class="pill wait">? data problem</div><div class="sub" style="font-size:32px;margin-top:20px">A pipeline lost events. Nothing is wrong with the business.</div></div>
+    <div class="card" style="flex:1"><div class="pill wait">? the market</div><div class="sub" style="font-size:32px;margin-top:20px">Fewer shoppers. Nothing is broken.</div></div>
+    <div class="card" style="flex:1"><div class="pill bad">! a broken system</div><div class="sub" style="font-size:32px;margin-top:20px">Checkout or payments fail. Every minute costs orders.</div></div>
+  </div>
+  <div class="sub" id="o3" style="margin-top:80px">Today a person digs through dashboards, logs and traces to find out.</div>
+  <div class="sub" id="o4" style="margin-top:14px"><b style="color:var(--text)">We built an engine that answers this on its own, and an agent that acts on the answer, safely.</b></div>
+</div>
+
+<div class="scene" id="s-sol" style="padding-top:110px">
+  <div class="label">How it works</div>
+  <div style="display:grid;grid-template-columns:300px 54px 1fr 54px 360px;align-items:center;margin-top:34px">
+    <div id="a1" style="display:flex;flex-direction:column;gap:20px">
+      <div style="font-size:17px;letter-spacing:2px;font-weight:700;color:var(--muted);text-transform:uppercase">Ports · read only</div>
+      <div class="box"><b>Service telemetry</b><span>OpenTelemetry spans from the shop's services</span></div>
+      <div class="box"><b>Order pipeline</b><span>orders, payments, deliveries</span></div>
+    </div>
+    <div id="a1x" style="font-size:40px;color:var(--muted);text-align:center">→</div>
+    <div id="a2" class="card" style="padding:22px 24px">
+      <div class="srow hdr"><span></span><b>The engine · seven stages</b><span class="so">options it has</span><span class="sh">in this scenario</span></div>
+      <div id="stages"></div>
+      <div id="a4" style="margin-top:14px;font-size:19px;color:var(--text2)">Every step is written to a ledger. The engine has no way to change anything.</div>
+    </div>
+    <div id="a3x" style="font-size:40px;color:var(--muted);text-align:center">→</div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div id="a3a" class="box"><b>The agent</b><span>turns the findings into a suggested fix, with a best guess of how much it helps, and a low and high estimate</span></div>
+      <div id="a3b" style="display:flex;flex-direction:column;gap:20px">
+        <div class="box" style="border-color:#1f6b1f"><b>A person approves</b><span>every action, one at a time</span></div>
+        <div class="box" style="border-color:#6b5520"><b>Sandbox</b><span>acts only where it is allowed (here: the shop's flags), then reads the change back</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="scene" id="s-close">
+  <div class="label">What happened</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:44px" id="c1"></div>
+  <div class="card" id="c2" style="margin-top:26px;font-size:28px;line-height:1.55;color:var(--text2)"></div>
+  <div id="c3" style="margin-top:50px;font-size:46px;font-weight:650;line-height:1.3">Next: connect it to our own telemetry, with the same guardrails.</div>
+</div>
+
+<script>
+const D = window.DATA || {};
+const $ = s => document.querySelector(s), clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = x => { x = clamp(x); return x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+function show(el, lt, t0, d = .6) { const p = ease((lt - t0) / d); el.style.opacity = p; el.style.transform = `translateY(${(1 - p) * 14}px)`; }
+const STAGES = [   // [name, options the engine has, what it did in this scenario]; times = when the narration reaches it
+  ["Frame", "has it changed? why? how big? what if we act?", "have checkout errors gone up?", 10.1],
+  ["Check inputs", "right source, on time, a baseline to compare with", "shop telemetry; a 1% error budget as the baseline", 18.3],
+  ["Pick methods", "14 methods available", "2 fit (data check, alarm test); 12 set aside, each with a reason", 25.8],
+  ["Fetch evidence", "through a read-only port", "checkouts per 3-hour block", 33.3],
+  ["Test", "run the chosen methods", "errors above budget? attempts below normal?", 35.8],
+  ["Challenge", "rival explanations, untestable assumptions", "could a logging change explain it?", 39.1],
+  ["Report", "publish, publish a draft, propose a test, or refuse to act", "report published; the request to act refused", 42.8]];
+$("#stages").innerHTML = STAGES.map(([n, o, h], i) => `<div class="srow" data-i="${i}"><span class="sn">${i + 1}</span><b>${n}</b><span class="so">${o}</span><span class="sh">${h}</span></div>`).join("");
+const fmt = x => Math.round(x).toLocaleString("en-US");
+if (D.close) {
+  const c = D.close;
+  $("#c1").innerHTML = [[c.detect, "from first failed payment to alarm (simulated time)"], [c.fix, "from alarm to fix, including the approval"],
+    ["0", "writes to production"], [fmt(c.tasks), `engine tasks, median ${c.median_ms} ms`]]
+    .map(([v, l]) => `<div class="card"><div class="big">${v}</div><div style="font-size:25px;color:var(--text2);margin-top:8px">${l}</div></div>`).join("");
+  $("#c2").innerHTML = `Demand was ruled out: <b style="color:var(--text)">${c.attempts} checkout attempts vs ${c.usual} usual</b>. Expected gain stated before acting: <b style="color:var(--text)">+${fmt(c.exp)} orders [${fmt(c.lo)}, ${fmt(c.hi)}]</b>. ` +
+    `Truth, revealed afterwards: 25% of payments were failing; <b style="color:var(--text)">${c.failed_before} failed before the fix, ${c.failed_after} after it</b>; ` +
+    `orders saved by the fix: <b style="color:var(--text)">about ${fmt(c.saved)}</b>${c.saved >= c.lo && c.saved <= c.hi ? ", inside the stated range" : ", outside the stated range"}.`;
+}
+const SC = [["s-open", 32], ["s-sol", 64], ["s-close", 14]];
+let acc = 0; const S = SC.map(([id, d]) => { const s = { el: $("#" + id), start: acc, dur: d }; acc += d; return s; });
+window.TOTAL = acc;
+window.SEGMENTS = Object.fromEntries(S.map(s => [s.el.id, [s.start, s.start + s.dur]]));
+window.render = t => {
+  for (const s of S) {
+    const lt = t - s.start, vis = lt >= -.5 && lt <= s.dur;
+    s.el.style.display = vis ? "block" : "none"; if (!vis) continue;
+    s.el.style.opacity = Math.min(clamp((lt + .5) / .5), clamp((s.dur - lt) / .5));
+    if (s.el.id === "s-open") { show($("#o0"), lt, .2); show($("#o1"), lt, 6.8); show($("#o2"), lt, 14); show($("#o3"), lt, 18.8); show($("#o4"), lt, 24.6); }
+    if (s.el.id === "s-sol") {
+      show($("#a1"), lt, .5); show($("#a1x"), lt, 5); show($("#a2"), lt, 7);
+      document.querySelectorAll("#stages .srow").forEach(e => {
+        const i = +e.dataset.i, t0 = STAGES[i][3], t1 = i + 1 < STAGES.length ? STAGES[i + 1][3] : 50;
+        e.classList.toggle("on", lt >= t0); e.classList.toggle("now", lt >= t0 && lt < t1);
+      });
+      show($("#a4"), lt, 46); show($("#a3x"), lt, 49.5); show($("#a3a"), lt, 50); show($("#a3b"), lt, 58.9);
+    }
+    if (s.el.id === "s-close") { show($("#c1"), lt, .3); show($("#c2"), lt, 3.5); show($("#c3"), lt, 8.6); }
+  }
+};
+const q = new URLSearchParams(location.search);
+if (!q.has("record")) { if (q.has("t")) render(+q.get("t")); else { const t0 = performance.now(); const L = () => { render(((performance.now() - t0) / 1000) % acc); requestAnimationFrame(L); }; L(); } }
+</script>
+</body>
+</html>

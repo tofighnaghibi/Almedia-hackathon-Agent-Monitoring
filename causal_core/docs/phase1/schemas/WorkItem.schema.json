@@ -1,0 +1,180 @@
+{
+  "$defs": {
+    "Pins": {
+      "additionalProperties": false,
+      "properties": {
+        "data_cut": {
+          "format": "date-time",
+          "title": "Data Cut",
+          "type": "string"
+        },
+        "evidence_watermark": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Watermark"
+        },
+        "graph_version": {
+          "minimum": 0,
+          "title": "Graph Version",
+          "type": "integer"
+        },
+        "method_versions": {
+          "default": {},
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$": {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "title": "Method Versions",
+          "type": "object"
+        }
+      },
+      "required": [
+        "graph_version",
+        "data_cut"
+      ],
+      "title": "Pins",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "attempt": {
+      "minimum": 0,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "deadline_at": {
+      "format": "date-time",
+      "title": "Deadline At",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "job_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Job Id",
+      "type": "string"
+    },
+    "lease_owner": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Lease Owner"
+    },
+    "lease_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Lease Until"
+    },
+    "pins": {
+      "$ref": "#/$defs/Pins"
+    },
+    "priority": {
+      "maximum": 9,
+      "minimum": 0,
+      "title": "Priority",
+      "type": "integer"
+    },
+    "remaining_query_budget": {
+      "minimum": 0,
+      "title": "Remaining Query Budget",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "stage": {
+      "enum": [
+        "T0",
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "title": "Stage",
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "QUEUED",
+        "LEASED",
+        "RUNNING",
+        "CHECKPOINTED",
+        "COMPLETED",
+        "FAILED",
+        "CANCELLED"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "task_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "task_revision": {
+      "minimum": 1,
+      "title": "Task Revision",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "job_id",
+    "task_id",
+    "task_revision",
+    "stage",
+    "state",
+    "priority",
+    "attempt",
+    "deadline_at",
+    "remaining_query_budget",
+    "pins",
+    "idempotency_key"
+  ],
+  "title": "WorkItem",
+  "type": "object"
+}

@@ -1,0 +1,92 @@
+{
+ "status": "supported (fitted on Olist; held-out stable)",
+ "estimate": {
+  "items_per_seller_q50_q90_q99_2017": [
+   6.0,
+   64.0,
+   322.02000000000044
+  ],
+  "2018": [
+   7.0,
+   57.0,
+   332.71999999999935
+  ]
+ },
+ "heldout": [
+  {
+   "name": "median items per seller 2017 vs 2018",
+   "halves": [
+    6.0,
+    7.0
+   ],
+   "diff": 0.16666666666666666,
+   "tol": 0.5,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2017-12-31",
+ "target": true,
+ "assumptions": [
+  "2018 is 8 months: per-seller counts are lower by construction (compare shape, not level)"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L1-sellers",
+ "layer": "L1",
+ "data_type": "Sellers, regions, size",
+ "method": "fit",
+ "sources": [
+  "olist"
+ ],
+ "consumed_by": "sim.chain",
+ "heldout_plan": "seller-size distribution: 2017 vs 2018",
+ "seconds": 0.7,
+ "cache_key": "d864ee84d7cc28a1",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ]
+ }
+}

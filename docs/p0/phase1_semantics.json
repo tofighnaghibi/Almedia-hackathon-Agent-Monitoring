@@ -1,0 +1,846 @@
+{
+ "fields": [
+  {
+   "table": "orders",
+   "name": "order_id",
+   "meaning": "order identifier",
+   "kind": "identifier",
+   "unit": "-",
+   "actor": "platform",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "orders",
+   "name": "customer_id",
+   "meaning": "customer key PER ORDER (not a person): each order gets its own customer_id",
+   "kind": "identifier",
+   "unit": "-",
+   "actor": "platform",
+   "source": "docs",
+   "note": "use customer_unique_id for the person; checked: 1 customer_id per order"
+  },
+  {
+   "table": "orders",
+   "name": "order_status",
+   "meaning": "lifecycle status at the data cut",
+   "kind": "category",
+   "unit": "-",
+   "actor": "platform",
+   "source": "docs",
+   "note": "values incl. delivered, shipped, canceled, unavailable, invoiced, processing, created, approved; 'unavailable' meaning inferred: no item could be fulfilled"
+  },
+  {
+   "table": "orders",
+   "name": "order_purchase_timestamp",
+   "meaning": "when the customer placed the order",
+   "kind": "event_time",
+   "unit": "local time",
+   "actor": "customer",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "orders",
+   "name": "order_approved_at",
+   "meaning": "when the payment was approved",
+   "kind": "event_time",
+   "unit": "local time",
+   "actor": "payment",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "orders",
+   "name": "order_delivered_carrier_date",
+   "meaning": "when the SELLER handed the order to the logistics partner",
+   "kind": "event_time",
+   "unit": "local time",
+   "actor": "seller",
+   "source": "docs",
+   "note": "not 'shipped by platform'; can precede approval (data quirk)"
+  },
+  {
+   "table": "orders",
+   "name": "order_delivered_customer_date",
+   "meaning": "when the carrier delivered to the customer",
+   "kind": "event_time",
+   "unit": "local time",
+   "actor": "carrier",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "orders",
+   "name": "order_estimated_delivery_date",
+   "meaning": "delivery date promised to the customer at purchase",
+   "kind": "date_only",
+   "unit": "date",
+   "actor": "platform",
+   "source": "docs",
+   "note": "date only (00:00:00); the promise, not an event"
+  },
+  {
+   "table": "order_items",
+   "name": "order_item_id",
+   "meaning": "sequence number of the item WITHIN the order (1..n)",
+   "kind": "identifier",
+   "unit": "-",
+   "actor": "platform",
+   "source": "docs",
+   "note": "there is no quantity column: quantity = number of rows per (order, product)"
+  },
+  {
+   "table": "order_items",
+   "name": "product_id",
+   "meaning": "product identifier",
+   "kind": "identifier",
+   "unit": "-",
+   "actor": "platform",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "order_items",
+   "name": "seller_id",
+   "meaning": "seller fulfilling THIS item (items of one order can have different sellers)",
+   "kind": "identifier",
+   "unit": "-",
+   "actor": "seller",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "order_items",
+   "name": "shipping_limit_date",
+   "meaning": "deadline for the seller to hand the item to the logistics partner",
+   "kind": "event_time",
+   "unit": "local time",
+   "actor": "platform",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "order_items",
+   "name": "price",
+   "meaning": "item price",
+   "kind": "measure",
+   "unit": "BRL",
+   "actor": "seller",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "order_items",
+   "name": "freight_value",
+   "meaning": "freight charged for the item (order freight split over items)",
+   "kind": "measure",
+   "unit": "BRL",
+   "actor": "platform",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "order_payments",
+   "name": "payment_sequential",
+   "meaning": "sequence when one order is paid with several methods",
+   "kind": "identifier",
+   "unit": "-",
+   "actor": "payment",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "order_payments",
+   "name": "payment_type",
+   "meaning": "method: credit_card, boleto, voucher, debit_card, not_defined",
+   "kind": "category",
+   "unit": "-",
+   "actor": "customer",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "order_payments",
+   "name": "payment_installments",
+   "meaning": "number of instalments chosen",
+   "kind": "measure",
+   "unit": "count",
+   "actor": "customer",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "order_payments",
+   "name": "payment_value",
+   "meaning": "amount paid with this method",
+   "kind": "measure",
+   "unit": "BRL",
+   "actor": "payment",
+   "source": "docs",
+   "note": "a PAYMENT record; Olist has no seller settlement/payout data"
+  },
+  {
+   "table": "order_reviews",
+   "name": "review_id",
+   "meaning": "review (survey) identifier",
+   "kind": "identifier",
+   "unit": "-",
+   "actor": "platform",
+   "source": "docs",
+   "note": "NOT unique: some review_ids cover several orders"
+  },
+  {
+   "table": "order_reviews",
+   "name": "review_score",
+   "meaning": "1-5 score the CUSTOMER gave in the satisfaction survey",
+   "kind": "label",
+   "unit": "1-5",
+   "actor": "customer",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "order_reviews",
+   "name": "review_comment_title",
+   "meaning": "optional survey comment title",
+   "kind": "text",
+   "unit": "pt-BR",
+   "actor": "customer",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "order_reviews",
+   "name": "review_comment_message",
+   "meaning": "optional survey comment",
+   "kind": "text",
+   "unit": "pt-BR",
+   "actor": "customer",
+   "source": "docs",
+   "note": "store/partner names replaced by Game of Thrones house names (anonymisation)"
+  },
+  {
+   "table": "order_reviews",
+   "name": "review_creation_date",
+   "meaning": "date Olist SENT the satisfaction survey (at delivery or at the estimated date)",
+   "kind": "date_only",
+   "unit": "date",
+   "actor": "platform",
+   "source": "docs",
+   "note": "NOT when the customer reviewed"
+  },
+  {
+   "table": "order_reviews",
+   "name": "review_answer_timestamp",
+   "meaning": "when the CUSTOMER answered the survey",
+   "kind": "event_time",
+   "unit": "local time",
+   "actor": "customer",
+   "source": "docs",
+   "note": "NOT a seller reply (corrected 21 Nov); this is when the score becomes known"
+  },
+  {
+   "table": "customers",
+   "name": "customer_unique_id",
+   "meaning": "the person (stable across orders)",
+   "kind": "identifier",
+   "unit": "-",
+   "actor": "customer",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "customers",
+   "name": "customer_zip_code_prefix",
+   "meaning": "first 5 digits of the customer's ZIP, as quoted text with leading zeros",
+   "kind": "location",
+   "unit": "zip5",
+   "actor": "customer",
+   "source": "measured",
+   "note": ""
+  },
+  {
+   "table": "customers",
+   "name": "customer_city",
+   "meaning": "customer city",
+   "kind": "location",
+   "unit": "-",
+   "actor": "customer",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "customers",
+   "name": "customer_state",
+   "meaning": "customer state (UF)",
+   "kind": "location",
+   "unit": "-",
+   "actor": "customer",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "sellers",
+   "name": "seller_id",
+   "meaning": "seller identifier",
+   "kind": "identifier",
+   "unit": "-",
+   "actor": "seller",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "sellers",
+   "name": "seller_zip_code_prefix",
+   "meaning": "first 5 digits of the seller's ZIP",
+   "kind": "location",
+   "unit": "zip5",
+   "actor": "seller",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "sellers",
+   "name": "seller_city",
+   "meaning": "seller city",
+   "kind": "location",
+   "unit": "-",
+   "actor": "seller",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "sellers",
+   "name": "seller_state",
+   "meaning": "seller state (UF)",
+   "kind": "location",
+   "unit": "-",
+   "actor": "seller",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "products",
+   "name": "product_category_name",
+   "meaning": "category name in Portuguese",
+   "kind": "category",
+   "unit": "pt-BR",
+   "actor": "seller",
+   "source": "docs",
+   "note": "English via the translation table"
+  },
+  {
+   "table": "products",
+   "name": "product_name_lenght",
+   "meaning": "NUMBER OF CHARACTERS in the product name (the name itself is not released)",
+   "kind": "measure",
+   "unit": "characters",
+   "actor": "seller",
+   "source": "docs",
+   "note": "spelling 'lenght' is in the source"
+  },
+  {
+   "table": "products",
+   "name": "product_description_lenght",
+   "meaning": "number of characters in the description",
+   "kind": "measure",
+   "unit": "characters",
+   "actor": "seller",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "products",
+   "name": "product_photos_qty",
+   "meaning": "number of published photos",
+   "kind": "measure",
+   "unit": "count",
+   "actor": "seller",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "products",
+   "name": "product_weight_g",
+   "meaning": "weight",
+   "kind": "measure",
+   "unit": "g",
+   "actor": "seller",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "products",
+   "name": "product_length_cm",
+   "meaning": "length",
+   "kind": "measure",
+   "unit": "cm",
+   "actor": "seller",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "products",
+   "name": "product_height_cm",
+   "meaning": "height",
+   "kind": "measure",
+   "unit": "cm",
+   "actor": "seller",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "products",
+   "name": "product_width_cm",
+   "meaning": "width",
+   "kind": "measure",
+   "unit": "cm",
+   "actor": "seller",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "geolocation",
+   "name": "geolocation_zip_code_prefix",
+   "meaning": "ZIP prefix",
+   "kind": "location",
+   "unit": "zip5",
+   "actor": "platform",
+   "source": "docs",
+   "note": "NOT a key: many lat/lng rows per prefix"
+  },
+  {
+   "table": "geolocation",
+   "name": "geolocation_lat",
+   "meaning": "latitude of a point in the prefix",
+   "kind": "location",
+   "unit": "degrees",
+   "actor": "platform",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "geolocation",
+   "name": "geolocation_lng",
+   "meaning": "longitude of a point in the prefix",
+   "kind": "location",
+   "unit": "degrees",
+   "actor": "platform",
+   "source": "docs",
+   "note": ""
+  },
+  {
+   "table": "*",
+   "name": "(all timestamps)",
+   "meaning": "local time, naive (no timezone)",
+   "kind": "event_time",
+   "unit": "local time",
+   "actor": "platform",
+   "source": "inferred",
+   "note": "assumed America/Sao_Paulo; Brazil spans several zones and had DST in 2016-2018: hour-level analyses carry this uncertainty"
+  }
+ ],
+ "checks": [
+  {
+   "gate": "S2",
+   "id": "count.orders",
+   "fields": "orders",
+   "expectation": "99,441 rows (measured 21 Nov)",
+   "measured": "99,441",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "count.order_items",
+   "fields": "order_items",
+   "expectation": "112,650 rows (measured 21 Nov)",
+   "measured": "112,650",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "count.order_payments",
+   "fields": "order_payments",
+   "expectation": "103,886 rows (measured 21 Nov)",
+   "measured": "103,886",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "count.order_reviews",
+   "fields": "order_reviews",
+   "expectation": "99,224 rows (measured 21 Nov)",
+   "measured": "99,224",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "count.customers",
+   "fields": "customers",
+   "expectation": "99,441 rows (measured 21 Nov)",
+   "measured": "99,441",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "count.sellers",
+   "fields": "sellers",
+   "expectation": "3,095 rows (measured 21 Nov)",
+   "measured": "3,095",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "count.products",
+   "fields": "products",
+   "expectation": "32,951 rows (measured 21 Nov)",
+   "measured": "32,951",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "pk.orders",
+   "fields": "orders.order_id",
+   "expectation": "unique",
+   "measured": "0 duplicates",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "pk.customers",
+   "fields": "customers.customer_id",
+   "expectation": "unique",
+   "measured": "0 duplicates",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "pk.sellers",
+   "fields": "sellers.seller_id",
+   "expectation": "unique",
+   "measured": "0 duplicates",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "pk.products",
+   "fields": "products.product_id",
+   "expectation": "unique",
+   "measured": "0 duplicates",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "pk.order_items",
+   "fields": "order_items.(order_id, order_item_id)",
+   "expectation": "unique",
+   "measured": "0 duplicates",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "pk.order_payments",
+   "fields": "order_payments.(order_id, payment_sequential)",
+   "expectation": "unique",
+   "measured": "0 duplicates",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "pk.order_reviews",
+   "fields": "order_reviews.review_id",
+   "expectation": "review_id unique",
+   "measured": "789 review_ids cover >1 order; 547 orders have >1 review; 0 exact duplicate pairs",
+   "status": "EXCEPTION",
+   "action": "key = (review_id, order_id); keep the latest answer per order for 'the' score; flag multi-review orders"
+  },
+  {
+   "gate": "S2",
+   "id": "fk.order_items->orders",
+   "fields": "order_items.order_id",
+   "expectation": "every row has a parent",
+   "measured": "0 orphans",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "fk.order_payments->orders",
+   "fields": "order_payments.order_id",
+   "expectation": "every row has a parent",
+   "measured": "0 orphans",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "fk.order_reviews->orders",
+   "fields": "order_reviews.order_id",
+   "expectation": "every row has a parent",
+   "measured": "0 orphans",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "fk.orders->customers",
+   "fields": "orders.customer_id",
+   "expectation": "every row has a parent",
+   "measured": "0 orphans",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "fk.order_items->sellers",
+   "fields": "order_items.seller_id",
+   "expectation": "every row has a parent",
+   "measured": "0 orphans",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "fk.order_items->products",
+   "fields": "order_items.product_id",
+   "expectation": "every row has a parent",
+   "measured": "0 orphans",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "mult.orders->items",
+   "fields": "orders 1..n items",
+   "expectation": "every order has >=1 item",
+   "measured": "775 orders without items: [('unavailable', 603), ('canceled', 164), ('created', 5), ('invoiced', 2), ('shipped', 1)]",
+   "status": "EXCEPTION",
+   "action": "legitimate: unavailable/canceled orders carry no items; never impute items"
+  },
+  {
+   "gate": "S2",
+   "id": "mult.orders->payments",
+   "fields": "orders 1..n payments",
+   "expectation": "every order has >=1 payment",
+   "measured": "1 without payment",
+   "status": "EXCEPTION",
+   "action": "keep; mark payment unknown"
+  },
+  {
+   "gate": "S2",
+   "id": "mult.customer_id",
+   "fields": "orders.customer_id",
+   "expectation": "exactly one order per customer_id (doc: per-order key)",
+   "measured": "max orders per customer_id = 1",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S2",
+   "id": "geo.not_a_key",
+   "fields": "geolocation.zip_prefix",
+   "expectation": "many points per prefix (not a join key)",
+   "measured": "1,000,163 rows for 19,015 prefixes",
+   "status": "PASS",
+   "action": "join via aggregated prefix centroid only; never row-join (would multiply rows)"
+  },
+  {
+   "gate": "S2",
+   "id": "items.sequence",
+   "fields": "order_items.order_item_id",
+   "expectation": "1..n without gaps per order",
+   "measured": "0 orders with gaps",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S1",
+   "id": "grain.estimated_delivery",
+   "fields": "order_estimated_delivery_date",
+   "expectation": "date only",
+   "measured": "100.0% at 00:00:00",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S1",
+   "id": "grain.review_creation",
+   "fields": "review_creation_date",
+   "expectation": "date only (survey-sent date)",
+   "measured": "99.9% at 00:00:00",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S1",
+   "id": "grain.purchase",
+   "fields": "order_purchase_timestamp",
+   "expectation": "full timestamp",
+   "measured": "0.00% at exactly midnight",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S1",
+   "id": "order.purchase<=approved",
+   "fields": "purchase, approved",
+   "expectation": "payment approved after purchase",
+   "measured": "0 violations",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S1",
+   "id": "order.approved<=carrier",
+   "fields": "approved, delivered_carrier",
+   "expectation": "handover after approval",
+   "measured": "1,359 handovers before approval",
+   "status": "EXCEPTION",
+   "action": "keep, flag; event order not guaranteed: replay must not assume approval precedes handover"
+  },
+  {
+   "gate": "S1",
+   "id": "order.carrier<=delivered",
+   "fields": "delivered_carrier, delivered_customer",
+   "expectation": "delivery after handover",
+   "measured": "23 deliveries before handover",
+   "status": "EXCEPTION",
+   "action": "keep, flag as timestamp error"
+  },
+  {
+   "gate": "S1",
+   "id": "order.promise>=purchase",
+   "fields": "estimated_delivery",
+   "expectation": "promise not before purchase",
+   "measured": "0 violations",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S1",
+   "id": "status.delivered<=>date",
+   "fields": "order_status, delivered_customer_date",
+   "expectation": "status 'delivered' iff a delivery date",
+   "measured": "8 delivered without date; 6 with date but other status (6 canceled after delivery)",
+   "status": "EXCEPTION",
+   "action": "status is a snapshot at the data cut; trust timestamps for events, status for final state"
+  },
+  {
+   "gate": "S1",
+   "id": "status.cancel_time",
+   "fields": "order_status=canceled/unavailable",
+   "expectation": "a time for cancellation",
+   "measured": "no cancellation timestamp exists in any table",
+   "status": "EXCEPTION",
+   "action": "cancellation is a STATE with unknown time; never stamp it with the purchase time (adapter fixed)"
+  },
+  {
+   "gate": "S1",
+   "id": "items.shipping_limit",
+   "fields": "shipping_limit_date vs delivered_carrier",
+   "expectation": "seller deadline before most handovers",
+   "measured": "9.4% of items handed over after the deadline",
+   "status": "PASS",
+   "action": "seller lateness signal (real)"
+  },
+  {
+   "gate": "S1",
+   "id": "review.answer>=sent",
+   "fields": "review_answer_timestamp, review_creation_date",
+   "expectation": "customer answers after the survey is sent",
+   "measured": "100.00% of 96,359",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S1",
+   "id": "review.sent_at_delivery_or_estimate",
+   "fields": "review_creation_date",
+   "expectation": "survey sent ~ at delivery or at the estimated date (Olist docs)",
+   "measured": "93.2% within \u00b11 day of delivery or estimate; 5.3% sent before delivery",
+   "status": "PASS",
+   "action": "confirms docs: creation = survey sent; review event time = answer time"
+  },
+  {
+   "gate": "S1",
+   "id": "review.anonymisation",
+   "fields": "review_comment_message",
+   "expectation": "store names replaced by Game of Thrones houses (docs)",
+   "measured": "1950 comments mention a GoT house",
+   "status": "PASS",
+   "action": "treat house names as a placeholder token, not real entities"
+  },
+  {
+   "gate": "S1",
+   "id": "money.signs",
+   "fields": "price, freight_value, payment_value",
+   "expectation": "price > 0, freight >= 0, payment >= 0 (BRL)",
+   "measured": "0 violations",
+   "status": "PASS",
+   "action": ""
+  },
+  {
+   "gate": "S1",
+   "id": "money.reconcile",
+   "fields": "items vs payments",
+   "expectation": "payments = price + freight per order (BRL)",
+   "measured": "99.75% within 1 BRL",
+   "status": "PASS",
+   "action": "residual = instalment interest / vouchers; no settlement data exists, so no 'settled' event"
+  },
+  {
+   "gate": "S1",
+   "id": "payments.installments",
+   "fields": "payment_installments",
+   "expectation": ">= 1; > 1 only for credit cards",
+   "measured": "[('boleto', 1, 1), ('credit_card', 0, 24), ('debit_card', 1, 1), ('not_defined', 1, 1), ('voucher', 1, 1)]; 2 rows with 0",
+   "status": "EXCEPTION",
+   "action": "0 instalments = data error; treat as 1"
+  },
+  {
+   "gate": "S1",
+   "id": "products.name_is_length",
+   "fields": "product_name_lenght",
+   "expectation": "a NUMBER of characters, not a name",
+   "measured": "type BIGINT, max 76",
+   "status": "PASS",
+   "action": "titles must come from the ESCI bridge (labelled)"
+  },
+  {
+   "gate": "S1",
+   "id": "zip.prefix5",
+   "fields": "customer/seller/geolocation zip prefix",
+   "expectation": "5-character text with leading zeros kept",
+   "measured": "type VARCHAR, length 5..5 (geolocation min 5)",
+   "status": "PASS",
+   "action": "always read as text; never cast to integer (would drop leading zeros, e.g. '09790')"
+  },
+  {
+   "gate": "S1",
+   "id": "category.translation",
+   "fields": "product_category_name",
+   "expectation": "every category has an English name",
+   "measured": "99.96%; missing: ['pc_gamer', 'portateis_cozinha_e_preparadores_de_alimentos']",
+   "status": "EXCEPTION",
+   "action": "keep Portuguese name for the untranslated ones"
+  }
+ ],
+ "gates": {
+  "S1": "PASS",
+  "S2": "PASS"
+ }
+}

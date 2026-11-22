@@ -1,0 +1,867 @@
+{
+ "cards": {
+  "L3-fees": {
+   "id": "L3-fees",
+   "layer": "L3",
+   "data_type": "Fees, payouts",
+   "sources": [],
+   "status": "assumed",
+   "heldout": [],
+   "consumed_by": null,
+   "seconds": 0.0,
+   "cache_key": "1d59f83e96cf347a"
+  },
+  "L0-macro": {
+   "id": "L0-macro",
+   "layer": "L0",
+   "data_type": "Macro: inflation, FX, interest",
+   "sources": [
+    "bcb"
+   ],
+   "status": "joined",
+   "heldout": [],
+   "consumed_by": null,
+   "seconds": 0.1,
+   "cache_key": "c0db6d54b1c262e3"
+  },
+  "L0-shock": {
+   "id": "L0-shock",
+   "layer": "L0",
+   "data_type": "External shocks (2018 strike)",
+   "sources": [
+    "olist",
+    "public_record"
+   ],
+   "status": "evidence only",
+   "heldout": [
+    {
+     "name": "daily orders during vs 4 weeks before (expected drop > 20%)",
+     "halves": [
+      259.64285714285717,
+      141.91666666666666
+     ],
+     "diff": 0.45341586428243935,
+     "tol": 10.0,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 0.3,
+   "cache_key": "488d9a6c3e1b34fe"
+  },
+  "L4-recs": {
+   "id": "L4-recs",
+   "layer": "L4",
+   "data_type": "Recommendation policy, propensities",
+   "sources": [
+    "open_bandit"
+   ],
+   "status": "partially supported (transferred; held-out stable)",
+   "heldout": [
+    {
+     "name": "random-policy CTR, first vs second half of days",
+     "halves": [
+      0.0034373212760291224,
+      0.003501347567683988
+     ],
+     "diff": 0.018626798752088246,
+     "tol": 0.2,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 21.6,
+   "cache_key": "83ae404d78404d88"
+  },
+  "L2-offers": {
+   "id": "L2-offers",
+   "layer": "L2",
+   "data_type": "Multi-seller offers",
+   "sources": [
+    "olist",
+    "expedia"
+   ],
+   "status": "partially supported (fitted on Olist; drifts between halves)",
+   "heldout": [
+    {
+     "name": "simultaneous-seller share 2017 vs 2018",
+     "halves": [
+      0.0007951087105530118,
+      0.004462398421720137
+     ],
+     "diff": 4.612312332255123,
+     "tol": 0.5,
+     "rel": true,
+     "pass": false
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 11.3,
+   "cache_key": "1a8483be89bfad84"
+  },
+  "L1-products": {
+   "id": "L1-products",
+   "layer": "L1",
+   "data_type": "Products, categories, titles",
+   "sources": [
+    "olist",
+    "esci",
+    "reviews2023"
+   ],
+   "status": "supported (fitted on Olist; held-out stable)",
+   "heldout": [
+    {
+     "name": "max category-share difference 2017 vs 2018",
+     "halves": [
+      0,
+      0.026927809760738122
+     ],
+     "diff": 0.026927809760738122,
+     "tol": 0.03,
+     "rel": false,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 38.1,
+   "cache_key": "75ce6bb929aad005"
+  },
+  "L2-search": {
+   "id": "L2-search",
+   "layer": "L2",
+   "data_type": "Search queries, relevance",
+   "sources": [
+    "esci",
+    "reviews2023"
+   ],
+   "status": "partially supported (transferred; held-out stable)",
+   "heldout": [
+    {
+     "name": "Exact-label share, even vs odd query ids",
+     "halves": [
+      0.6855981183017608,
+      0.6862297920209517
+     ],
+     "diff": 0.000921346926615837,
+     "tol": 0.05,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 41.2,
+   "cache_key": "5333f96d36c6d267"
+  },
+  "L4-exposure": {
+   "id": "L4-exposure",
+   "layer": "L4",
+   "data_type": "Exposure, position, clicks",
+   "sources": [
+    "expedia"
+   ],
+   "status": "partially supported (transferred shape; held-out stable)",
+   "heldout": [
+    {
+     "name": "H4 rel CTR positions 2-10, odd vs even dates (CIs overlap)",
+     "even": [
+      1.0,
+      0.7491647607911399,
+      0.6359574330955523,
+      0.5386101217009713,
+      0.4541321675848864,
+      0.4796670395342333,
+      0.43238130970348604,
+      0.39003399297030766,
+      0.35712329329561854,
+      0.3236517865908261
+     ],
+     "odd": [
+      1.0,
+      0.7729962617589848,
+      0.6413887799773494,
+      0.5632257185026837,
+      0.33311333290728906,
+      0.5053277435222951,
+      0.43118734353052807,
+      0.38194823675322837,
+      0.36934894354796743,
+      0.33673180074687237
+     ],
+     "overlap": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+     ],
+     "pass": true
+    }
+   ],
+   "consumed_by": "sim.sessions",
+   "seconds": 21.9,
+   "cache_key": "6764bfe705202fe7"
+  },
+  "L2-stock": {
+   "id": "L2-stock",
+   "layer": "L2",
+   "data_type": "Inventory, stock-outs",
+   "sources": [
+    "retailrocket"
+   ],
+   "status": "partially supported (transferred; held-out stable)",
+   "heldout": [
+    {
+     "name": "stock-out snapshot share, first vs second half",
+     "halves": [
+      0.6433321477457669,
+      0.5212802573720515
+     ],
+     "diff": 0.18971831393998365,
+     "tol": 0.2,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 3.4,
+   "cache_key": "8e3977feb707d1d1"
+  },
+  "L7-experiments": {
+   "id": "L7-experiments",
+   "layer": "L7",
+   "data_type": "Experiments, assignments",
+   "sources": [
+    "open_bandit",
+    "criteo"
+   ],
+   "status": "partially supported (transferred; held-out stable)",
+   "heldout": [
+    {
+     "name": "Criteo treated share vs design 0.85",
+     "halves": [
+      0.85,
+      0.8500001287591226
+     ],
+     "diff": 1.2875912258625277e-07,
+     "tol": 0.01,
+     "rel": false,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 17.6,
+   "cache_key": "3999eaf0b30c6930"
+  },
+  "L1-devices": {
+   "id": "L1-devices",
+   "layer": "L1",
+   "data_type": "Devices, channels",
+   "sources": [
+    "statcounter",
+    "ga"
+   ],
+   "status": "unsupported transfer (held-out unstable; sensitivity = both halves)",
+   "heldout": [
+    {
+     "name": "H5 mobile:desktop conversion ratio, halves (rel diff <= 30%)",
+     "halves": {
+      "first": 0.33490286418702964,
+      "second": 0.2061725672841016
+     },
+     "rel_diff": 0.384380997204722,
+     "pass": false
+    }
+   ],
+   "consumed_by": "sim.sessions",
+   "seconds": 11.4,
+   "cache_key": "5dbc2de847f5cba0"
+  },
+  "L9-logging": {
+   "id": "L9-logging",
+   "layer": "L9",
+   "data_type": "Logging gaps, delays, late data",
+   "sources": [
+    "retailrocket",
+    "olist"
+   ],
+   "status": "evidence only",
+   "heldout": [
+    {
+     "name": "purchases-without-view share, first vs second half",
+     "halves": [
+      0.09819243080399172,
+      0.13941947565543072
+     ],
+     "diff": 0.41985970317544113,
+     "tol": 0.25,
+     "rel": true,
+     "pass": false
+    }
+   ],
+   "consumed_by": "sim.observe_chain (delays assumed)",
+   "seconds": 4.7,
+   "cache_key": "4be03a2b925e79fc"
+  },
+  "L4-sessions": {
+   "id": "L4-sessions",
+   "layer": "L4",
+   "data_type": "Session length, revisits",
+   "sources": [
+    "taobao",
+    "retailrocket"
+   ],
+   "status": "unsupported transfer (held-out unstable; sensitivity = both halves)",
+   "heldout": [
+    {
+     "name": "H3 median first-view->buy lag, halves (rel diff <= 25%)",
+     "halves": {
+      "first": 2014.0,
+      "second": 3613.0
+     },
+     "rel_diff": 0.7939424031777557,
+     "pass": false
+    }
+   ],
+   "consumed_by": "sim.sessions",
+   "seconds": 66.4,
+   "cache_key": "2e0933f013aebec9"
+  },
+  "L5-returns": {
+   "id": "L5-returns",
+   "layer": "L5",
+   "data_type": "Cancellations, returns",
+   "sources": [
+    "olist",
+    "uci"
+   ],
+   "status": "partially supported (transferred; held-out stable)",
+   "heldout": [
+    {
+     "name": "UCI return-line share 2010 vs 2011",
+     "halves": [
+      0.0,
+      0.0
+     ],
+     "diff": 0.0,
+     "tol": 0.3,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 7.6,
+   "cache_key": "c5ff491211fa54f3"
+  },
+  "L2-prices": {
+   "id": "L2-prices",
+   "layer": "L2",
+   "data_type": "Prices, promotions",
+   "sources": [
+    "olist",
+    "m5"
+   ],
+   "status": "partially supported (transferred; held-out stable)",
+   "heldout": [
+    {
+     "name": "M5 weekly price-change probability, first vs second half",
+     "halves": [
+      0.013748816346712852,
+      0.009700787143817764
+     ],
+     "diff": 0.294427469304506,
+     "tol": 0.3,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 5.6,
+   "cache_key": "8a385d4404bc9dd8"
+  },
+  "L6-fraud": {
+   "id": "L6-fraud",
+   "layer": "L6",
+   "data_type": "Fake reviews, fraud rings",
+   "sources": [
+    "yelpchi",
+    "amazon_fraud"
+   ],
+   "status": "partially supported (transferred; held-out stable)",
+   "heldout": [
+    {
+     "name": "YelpChi fraud/genuine degree ratio, random halves",
+     "halves": [
+      0.12143892927283724,
+      0.11341360371778622
+     ],
+     "diff": 0.06608527926840077,
+     "tol": 0.2,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 1.2,
+   "cache_key": "90ca57c7f60a602a"
+  },
+  "L4-repeat": {
+   "id": "L4-repeat",
+   "layer": "L4",
+   "data_type": "Repeat purchases",
+   "sources": [
+    "olist",
+    "instacart"
+   ],
+   "status": "partially supported (transferred; held-out stable)",
+   "heldout": [
+    {
+     "name": "Instacart median inter-order gap, even vs odd users",
+     "halves": [
+      7.0,
+      7.0
+     ],
+     "diff": 0.0,
+     "tol": 0.15,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 2.4,
+   "cache_key": "9013cb3c85cf19b8"
+  },
+  "L0-seasonality": {
+   "id": "L0-seasonality",
+   "layer": "L0",
+   "data_type": "Seasonality, holidays, Black Friday",
+   "sources": [
+    "olist",
+    "holidays"
+   ],
+   "status": "partially supported (fitted on Olist; drifts between halves)",
+   "heldout": [
+    {
+     "name": "holiday/normal-day order ratio 2017 vs 2018",
+     "halves": [
+      0.8971853261123302,
+      0.7738988348962774
+     ],
+     "diff": 0.137414743228443,
+     "tol": 0.25,
+     "rel": true,
+     "pass": true
+    },
+    {
+     "name": "max weekday-share difference 2017 vs 2018",
+     "halves": [
+      0,
+      0.020756954246178322
+     ],
+     "diff": 0.020756954246178322,
+     "tol": 0.02,
+     "rel": false,
+     "pass": false
+    }
+   ],
+   "consumed_by": "sim.chain (weekday + hour shape only)",
+   "seconds": 0.8,
+   "cache_key": "676e831377db7ed1"
+  },
+  "L1-buyers": {
+   "id": "L1-buyers",
+   "layer": "L1",
+   "data_type": "Buyers, regions",
+   "sources": [
+    "olist"
+   ],
+   "status": "partially supported (fitted on Olist; drifts between halves)",
+   "heldout": [
+    {
+     "name": "max region-share difference 2017 vs 2018",
+     "halves": [
+      0,
+      0.04818268258860903
+     ],
+     "diff": 0.04818268258860903,
+     "tol": 0.03,
+     "rel": false,
+     "pass": false
+    }
+   ],
+   "consumed_by": "sim.chain",
+   "seconds": 0.6,
+   "cache_key": "3381012b30a511c3"
+  },
+  "L3-handling": {
+   "id": "L3-handling",
+   "layer": "L3",
+   "data_type": "Handling time, reliability",
+   "sources": [
+    "olist"
+   ],
+   "status": "supported (fitted on Olist; held-out stable)",
+   "heldout": [
+    {
+     "name": "median approval-to-carrier hours 2017 vs 2018",
+     "halves": [
+      48.735277777777775,
+      40.03055555555556
+     ],
+     "diff": 0.17861234446869984,
+     "tol": 0.25,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": "sim.chain",
+   "seconds": 0.4,
+   "cache_key": "b7fd773950f306ca"
+  },
+  "L3-entry": {
+   "id": "L3-entry",
+   "layer": "L3",
+   "data_type": "Seller entry, ramp-up",
+   "sources": [
+    "olist_funnel",
+    "olist"
+   ],
+   "status": "supported (fitted on Olist; held-out stable)",
+   "heldout": [
+    {
+     "name": "deal-to-first-sale median days, first vs second half of deals",
+     "halves": [
+      52.5,
+      39.0
+     ],
+     "diff": 0.2571428571428571,
+     "tol": 0.5,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 0.4,
+   "cache_key": "5c7aeb0596f48868"
+  },
+  "L1-sellers": {
+   "id": "L1-sellers",
+   "layer": "L1",
+   "data_type": "Sellers, regions, size",
+   "sources": [
+    "olist"
+   ],
+   "status": "supported (fitted on Olist; held-out stable)",
+   "heldout": [
+    {
+     "name": "median items per seller 2017 vs 2018",
+     "halves": [
+      6.0,
+      7.0
+     ],
+     "diff": 0.16666666666666666,
+     "tol": 0.5,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": "sim.chain",
+   "seconds": 0.7,
+   "cache_key": "d864ee84d7cc28a1"
+  },
+  "L4-traffic": {
+   "id": "L4-traffic",
+   "layer": "L4",
+   "data_type": "Traffic volume, calendar",
+   "sources": [
+    "olist"
+   ],
+   "status": "supported (fitted on Olist; held-out stable)",
+   "heldout": [
+    {
+     "name": "orders per day 2017 vs 2018 (growth expected; tolerance wide)",
+     "halves": [
+      124.93351800554017,
+      209.34496124031008
+     ],
+     "diff": 0.6756508948305346,
+     "tol": 0.8,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": "sim.chain",
+   "seconds": 0.4,
+   "cache_key": "954d181f25307036"
+  },
+  "L3-exit": {
+   "id": "L3-exit",
+   "layer": "L3",
+   "data_type": "Seller exit",
+   "sources": [
+    "olist"
+   ],
+   "status": "supported (fitted on Olist; held-out stable)",
+   "heldout": [
+    {
+     "name": "180-day inactivity share, 2017H1 vs 2017H2 entry cohorts",
+     "halves": [
+      0.48148148148148145,
+      0.5495608531994981
+     ],
+     "diff": 0.14139561818357305,
+     "tol": 0.3,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 0.7,
+   "cache_key": "71cb41a757305d56"
+  },
+  "L5-orders": {
+   "id": "L5-orders",
+   "layer": "L5",
+   "data_type": "Orders, items, payments",
+   "sources": [
+    "olist"
+   ],
+   "status": "supported (fitted on Olist; held-out stable)",
+   "heldout": [
+    {
+     "name": "items per order 2017 vs 2018",
+     "halves": [
+      1.1409856658964983,
+      1.1420920502092051
+     ],
+     "diff": 0.0009696741561056418,
+     "tol": 0.1,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": "sim.chain (orders, payments)",
+   "seconds": 0.6,
+   "cache_key": "0adeef6a99f7ade7"
+  },
+  "L5-delivery": {
+   "id": "L5-delivery",
+   "layer": "L5",
+   "data_type": "Delivery promise, delays",
+   "sources": [
+    "olist"
+   ],
+   "status": "supported (fitted on Olist; held-out stable)",
+   "heldout": [
+    {
+     "name": "late share 2017 vs 2018 (2018 includes the strike)",
+     "halves": [
+      0.06627060882380031,
+      0.09366652141788076
+     ],
+     "diff": 0.41339461158294843,
+     "tol": 0.6,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": "sim.chain",
+   "seconds": 0.3,
+   "cache_key": "23f3e7bc426d4de8"
+  },
+  "L6-score": {
+   "id": "L6-score",
+   "layer": "L6",
+   "data_type": "Review score given delivery",
+   "sources": [
+    "olist"
+   ],
+   "status": "supported (fitted on Olist; held-out stable)",
+   "heldout": [
+    {
+     "name": "score gap 2017 vs 2018",
+     "halves": [
+      1.736966261610319,
+      1.7245113653145108
+     ],
+     "diff": 0.00717048832270434,
+     "tol": 0.25,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": "sim.chain",
+   "seconds": 0.6,
+   "cache_key": "855f9f8cf964e4d1"
+  },
+  "L6-text": {
+   "id": "L6-text",
+   "layer": "L6",
+   "data_type": "Review text",
+   "sources": [
+    "olist"
+   ],
+   "status": "supported (fitted on Olist; held-out stable)",
+   "heldout": [
+    {
+     "name": "max text-share difference by score 2017 vs 2018",
+     "halves": [
+      0,
+      0.026301985046933207
+     ],
+     "diff": 0.026301985046933207,
+     "tol": 0.1,
+     "rel": false,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 0.6,
+   "cache_key": "72f83b9889c40477"
+  },
+  "L6-timing": {
+   "id": "L6-timing",
+   "layer": "L6",
+   "data_type": "Review timing (survey sent, answered)",
+   "sources": [
+    "olist"
+   ],
+   "status": "supported (fitted on Olist; held-out stable)",
+   "heldout": [
+    {
+     "name": "answer-lag median 2017 vs 2018",
+     "halves": [
+      39.90138888888889,
+      40.36944444444444
+     ],
+     "diff": 0.011730307354937417,
+     "tol": 0.3,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": "sim.chain",
+   "seconds": 0.5,
+   "cache_key": "9633ddd6d13bb37c"
+  },
+  "L7-telemetry": {
+   "id": "L7-telemetry",
+   "layer": "L7",
+   "data_type": "Service telemetry, faults",
+   "sources": [
+    "astronomy_shop",
+    "nab_loghub"
+   ],
+   "status": "partially supported (live + shape)",
+   "heldout": [
+    {
+     "name": "NAB anomaly windows per series, real vs artificial",
+     "halves": [
+      2.3404255319148937,
+      0.5454545454545454
+     ],
+     "diff": 0.7669421487603306,
+     "tol": 1.0,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": "adapters.astronomy (live)",
+   "seconds": 0.0,
+   "cache_key": "17607373730f2e87"
+  },
+  "L6-mnar": {
+   "id": "L6-mnar",
+   "layer": "L6",
+   "data_type": "Who leaves reviews (MNAR)",
+   "sources": [
+    "olist",
+    "coat"
+   ],
+   "status": "partially supported (transferred; held-out stable)",
+   "heldout": [
+    {
+     "name": "Coat self-selection gap, random user halves",
+     "halves": [
+      0.4021551724137935,
+      0.3630747126436784
+     ],
+     "diff": 0.09717756341550582,
+     "tol": 0.3,
+     "rel": true,
+     "pass": true
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 0.4,
+   "cache_key": "5e313de7ac5b6f3e"
+  },
+  "L4-ads": {
+   "id": "L4-ads",
+   "layer": "L4",
+   "data_type": "Ads, sponsored lift",
+   "sources": [
+    "criteo",
+    "hillstrom"
+   ],
+   "status": "unsupported transfer (held-out unstable; sensitivity = both halves)",
+   "heldout": [
+    {
+     "name": "Criteo visit uplift, random halves",
+     "halves": [
+      0.008481539704761114,
+      0.013622833209190499
+     ],
+     "diff": 0.6061745488903765,
+     "tol": 0.2,
+     "rel": true,
+     "pass": false
+    }
+   ],
+   "consumed_by": null,
+   "seconds": 42.3,
+   "cache_key": "a1631752bdd239e7"
+  },
+  "L4-funnel": {
+   "id": "L4-funnel",
+   "layer": "L4",
+   "data_type": "Funnel view \u2192 cart \u2192 buy, timing",
+   "sources": [
+    "retailrocket",
+    "taobao"
+   ],
+   "status": "partially supported (transferred shape; held-out stable)",
+   "heldout": [
+    {
+     "name": "H1 views/session non-buying (rel diff <= 10%)",
+     "halves": {
+      "first": 1.5161464284814663,
+      "second": 1.4311507146485796
+     },
+     "rel_diff": 0.056060359498400346,
+     "pass": true
+    },
+    {
+     "name": "H2 non-buying cart share (abs diff <= 0.02)",
+     "halves": {
+      "first": 0.018547439722824605,
+      "second": 0.01806987675000801
+     },
+     "abs_diff": 0.00047756297281659546,
+     "pass": true
+    }
+   ],
+   "consumed_by": "sim.sessions",
+   "seconds": 22.9,
+   "cache_key": "a62cc3e22b26753f"
+  }
+ },
+ "run_at": "2026-11-22T10:35:18+00:00",
+ "wall_seconds": 3.4,
+ "workers": 4
+}

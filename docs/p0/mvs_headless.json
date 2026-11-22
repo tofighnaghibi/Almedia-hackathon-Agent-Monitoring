@@ -1,0 +1,121 @@
+[
+ {
+  "seed": 7,
+  "scenario_hidden": "8a",
+  "intervention_status": "accepted",
+  "rev1_outcome": "WAITING_FOR_EVIDENCE",
+  "rev1_gaps": [
+   [
+    "independent_measurement:orders_count"
+   ]
+  ],
+  "granted": [
+   "payments_count"
+  ],
+  "rev2_outcome": "COMPLETED",
+  "verdict_target_week": "DQ_FAILURE",
+  "expected": "DQ_FAILURE",
+  "correct": true,
+  "abstained": false,
+  "requested_discriminating_measurement": true,
+  "ledger_hash": "af86286b7f423ee8578ccd09ca0e287da7500a94de7492f7f29b04ef29b9339e",
+  "rev2_findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12, 2018-03-05 (robust z -5.1, -11.6)"
+   ],
+   [
+    "DQ_FAILURE",
+    "2018-02-12: orders_count changed but payments_count, its partner in identity order_payment_ratio, did not: measurement suspected"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-03-05: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "identical_ledgers": true,
+  "identical_outputs": true
+ },
+ {
+  "seed": 8,
+  "scenario_hidden": "8a",
+  "intervention_status": "accepted",
+  "rev1_outcome": "WAITING_FOR_EVIDENCE",
+  "rev1_gaps": [
+   [
+    "independent_measurement:orders_count"
+   ]
+  ],
+  "granted": [
+   "payments_count"
+  ],
+  "rev2_outcome": "COMPLETED",
+  "verdict_target_week": "DQ_FAILURE",
+  "expected": "DQ_FAILURE",
+  "correct": true,
+  "abstained": false,
+  "requested_discriminating_measurement": true,
+  "ledger_hash": "30758e72e8aaa95cb5f5f7bc03bbcdb128eb9ac033c7450a5a3016f1a0095aa2",
+  "rev2_findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12, 2018-02-26, 2018-03-05 (robust z -9.8, +6.4, -21.2)"
+   ],
+   [
+    "DQ_FAILURE",
+    "2018-02-12: orders_count changed but payments_count, its partner in identity order_payment_ratio, did not: measurement suspected"
+   ],
+   [
+    "DQ_FAILURE",
+    "2018-02-26: orders_count changed but payments_count, its partner in identity order_payment_ratio, did not: measurement suspected"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-03-05: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "identical_ledgers": true,
+  "identical_outputs": true
+ },
+ {
+  "seed": 9,
+  "scenario_hidden": "8a",
+  "intervention_status": "accepted",
+  "rev1_outcome": "WAITING_FOR_EVIDENCE",
+  "rev1_gaps": [
+   [
+    "independent_measurement:orders_count"
+   ]
+  ],
+  "granted": [
+   "payments_count"
+  ],
+  "rev2_outcome": "COMPLETED",
+  "verdict_target_week": "DQ_FAILURE",
+  "expected": "DQ_FAILURE",
+  "correct": true,
+  "abstained": false,
+  "requested_discriminating_measurement": true,
+  "ledger_hash": "51622f799487c8f870634f4a017d5e24b9ea65dd03c377f4596c35fd6fa7a621",
+  "rev2_findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12, 2018-02-26, 2018-03-05 (robust z -5.6, +4.3, -14.2)"
+   ],
+   [
+    "DQ_FAILURE",
+    "2018-02-12: orders_count changed but payments_count, its partner in identity order_payment_ratio, did not: measurement suspected"
+   ],
+   [
+    "DQ_FAILURE",
+    "2018-02-26: orders_count changed but payments_count, its partner in identity order_payment_ratio, did not: measurement suspected"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-03-05: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "identical_ledgers": true,
+  "identical_outputs": true
+ }
+]

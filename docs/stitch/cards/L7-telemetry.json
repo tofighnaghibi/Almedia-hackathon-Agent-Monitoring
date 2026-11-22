@@ -1,0 +1,421 @@
+{
+ "status": "partially supported (live + shape)",
+ "estimate": {
+  "nab_windows_per_series_real_vs_artificial": [
+   2.3404255319148937,
+   0.5454545454545454
+  ],
+  "series": 58,
+  "astronomy_checkouts_per_s": 47.583333333333336
+ },
+ "heldout": [
+  {
+   "name": "NAB anomaly windows per series, real vs artificial",
+   "halves": [
+    2.3404255319148937,
+    0.5454545454545454
+   ],
+   "diff": 0.7669421487603306,
+   "tol": 1.0,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": null,
+ "target": false,
+ "assumptions": [
+  "live telemetry comes from the real shop (M5); NAB only shapes synthetic fallbacks"
+ ],
+ "bridges": [],
+ "status_override": "partially supported (live + shape)",
+ "id": "L7-telemetry",
+ "layer": "L7",
+ "data_type": "Service telemetry, faults",
+ "method": "live + shape",
+ "sources": [
+  "astronomy_shop",
+  "nab_loghub"
+ ],
+ "consumed_by": "adapters.astronomy (live)",
+ "heldout_plan": "NAB anomaly-window length: real vs artificial series",
+ "seconds": 0.0,
+ "cache_key": "17607373730f2e87",
+ "inputs": {
+  "nab_loghub/NAB/.dockerignore": [
+   6,
+   1795281675
+  ],
+  "nab_loghub/NAB/.gitignore": [
+   222,
+   1795281675
+  ],
+  "nab_loghub/NAB/.travis.yml": [
+   593,
+   1795281675
+  ],
+  "nab_loghub/NAB/.zenodo.json": [
+   1749,
+   1795281675
+  ],
+  "nab_loghub/NAB/Dockerfile.py27": [
+   976,
+   1795281675
+  ],
+  "nab_loghub/NAB/build.gradle": [
+   1158,
+   1795281675
+  ],
+  "nab_loghub/NAB/data/artificialNoAnomaly/art_daily_no_noise.csv": [
+   116776,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/artificialNoAnomaly/art_daily_perfect_square_wave.csv": [
+   100816,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/artificialNoAnomaly/art_daily_small_noise.csv": [
+   140187,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/artificialNoAnomaly/art_flatline.csv": [
+   100816,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/artificialNoAnomaly/art_noisy.csv": [
+   140916,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/artificialWithAnomaly/art_daily_flatmiddle.csv": [
+   140292,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/artificialWithAnomaly/art_daily_jumpsdown.csv": [
+   140814,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/artificialWithAnomaly/art_daily_jumpsup.csv": [
+   140548,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/artificialWithAnomaly/art_daily_nojump.csv": [
+   140478,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/artificialWithAnomaly/art_increase_spike_density.csv": [
+   96869,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/artificialWithAnomaly/art_load_balancer_spikes.csv": [
+   101603,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv": [
+   105367,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv": [
+   116041,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv": [
+   119229,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/ec2_cpu_utilization_77c1ca.csv": [
+   106007,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/ec2_cpu_utilization_825cc2.csv": [
+   113675,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/ec2_cpu_utilization_ac20cd.csv": [
+   116980,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/ec2_cpu_utilization_c6585a.csv": [
+   104962,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv": [
+   115788,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv": [
+   116626,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv": [
+   101626,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/ec2_network_in_257a54.csv": [
+   117236,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/ec2_network_in_5abac7.csv": [
+   120827,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/elb_request_count_8c0756.csv": [
+   101052,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/grok_asg_anomaly.csv": [
+   131065,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/iio_us-east-1_i-a2eb1cd9_NetworkIn.csv": [
+   37339,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/rds_cpu_utilization_cc0c53.csv": [
+   117806,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv": [
+   113599,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAdExchange/exchange-2_cpc_results.csv": [
+   58887,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAdExchange/exchange-2_cpm_results.csv": [
+   58313,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAdExchange/exchange-3_cpc_results.csv": [
+   55474,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAdExchange/exchange-3_cpm_results.csv": [
+   54949,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAdExchange/exchange-4_cpc_results.csv": [
+   60212,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realAdExchange/exchange-4_cpm_results.csv": [
+   58931,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realKnownCause/ambient_temperature_system_failure.csv": [
+   233321,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realKnownCause/cpu_utilization_asg_misconfiguration.csv": [
+   539274,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realKnownCause/ec2_request_latency_system_failure.csv": [
+   123428,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realKnownCause/machine_temperature_system_failure.csv": [
+   732223,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realKnownCause/nyc_taxi.csv": [
+   265771,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realKnownCause/rogue_agent_key_hold.csv": [
+   55527,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realKnownCause/rogue_agent_key_updown.csv": [
+   138333,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTraffic/TravelTime_387.csv": [
+   59846,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTraffic/TravelTime_451.csv": [
+   51918,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTraffic/occupancy_6005.csv": [
+   59122,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTraffic/occupancy_t4013.csv": [
+   62609,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTraffic/speed_6005.csv": [
+   57538,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTraffic/speed_7578.csv": [
+   25928,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTraffic/speed_t4013.csv": [
+   57400,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTweets/Twitter_volume_AAPL.csv": [
+   368111,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTweets/Twitter_volume_AMZN.csv": [
+   364666,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTweets/Twitter_volume_CRM.csv": [
+   350820,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTweets/Twitter_volume_CVS.csv": [
+   348802,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTweets/Twitter_volume_FB.csv": [
+   359760,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTweets/Twitter_volume_GOOG.csv": [
+   361270,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTweets/Twitter_volume_IBM.csv": [
+   351268,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTweets/Twitter_volume_KO.csv": [
+   355283,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTweets/Twitter_volume_PFE.csv": [
+   348926,
+   1795281677
+  ],
+  "nab_loghub/NAB/data/realTweets/Twitter_volume_UPS.csv": [
+   350182,
+   1795281677
+  ],
+  "nab_loghub/NAB/environment.yml": [
+   285,
+   1795281675
+  ],
+  "nab_loghub/NAB/juliacalldeps.json": [
+   256,
+   1795281675
+  ],
+  "nab_loghub/NAB/labels/combined_labels.json": [
+   7015,
+   1795281677
+  ],
+  "nab_loghub/NAB/labels/combined_windows.json": [
+   15359,
+   1795281677
+  ],
+  "nab_loghub/NAB/labels/combined_windows_tiny.json": [
+   828,
+   1795281677
+  ],
+  "nab_loghub/NAB/labels/raw/AL_labels_v0.8.json": [
+   2388,
+   1795281677
+  ],
+  "nab_loghub/NAB/labels/raw/AL_labels_v1.0.json": [
+   3584,
+   1795281677
+  ],
+  "nab_loghub/NAB/labels/raw/CB_labels_v0.8.json": [
+   2192,
+   1795281677
+  ],
+  "nab_loghub/NAB/labels/raw/CB_labels_v1.0.json": [
+   3581,
+   1795281677
+  ],
+  "nab_loghub/NAB/labels/raw/SA_labels_v0.8.json": [
+   2271,
+   1795281677
+  ],
+  "nab_loghub/NAB/labels/raw/SA_labels_v1.0.json": [
+   3544,
+   1795281677
+  ],
+  "nab_loghub/NAB/labels/raw/known_labels_v1.0.json": [
+   2196,
+   1795281677
+  ],
+  "nab_loghub/NAB/run.py": [
+   6940,
+   1795281675
+  ],
+  "nab_loghub/NAB/setup.py": [
+   1813,
+   1795281675
+  ],
+  "nab_loghub/loghub/.gitignore": [
+   741,
+   1795281679
+  ],
+  "nab_loghub/loghub/Apache/Apache_2k.log": [
+   171239,
+   1795281679
+  ],
+  "nab_loghub/loghub/Apache/Apache_2k.log_structured.csv": [
+   258805,
+   1795281679
+  ],
+  "nab_loghub/loghub/Apache/Apache_2k.log_templates.csv": [
+   287,
+   1795281679
+  ],
+  "nab_loghub/loghub/CITATION": [
+   1007,
+   1795281679
+  ],
+  "nab_loghub/loghub/HDFS/HDFS_2k.log": [
+   287848,
+   1795281679
+  ],
+  "nab_loghub/loghub/HDFS/HDFS_2k.log_structured.csv": [
+   414635,
+   1795281679
+  ],
+  "nab_loghub/loghub/HDFS/HDFS_2k.log_templates.csv": [
+   837,
+   1795281679
+  ],
+  "nab_loghub/loghub/HDFS/HDFS_templates.csv": [
+   1646,
+   1795281679
+  ],
+  "nab_loghub/loghub/LICENSE": [
+   553,
+   1795281679
+  ],
+  "nab_loghub/loghub/Linux/Linux_2k.log": [
+   216485,
+   1795281679
+  ],
+  "nab_loghub/loghub/Linux/Linux_2k.log_structured.csv": [
+   327804,
+   1795281679
+  ],
+  "nab_loghub/loghub/Linux/Linux_2k.log_templates.csv": [
+   5469,
+   1795281679
+  ],
+  "nab_loghub/loghub/OpenStack/OpenStack_2k.log": [
+   595119,
+   1795281679
+  ],
+  "nab_loghub/loghub/OpenStack/OpenStack_2k.log_structured.csv": [
+   719703,
+   1795281679
+  ],
+  "nab_loghub/loghub/OpenStack/OpenStack_2k.log_templates.csv": [
+   2718,
+   1795281679
+  ]
+ }
+}

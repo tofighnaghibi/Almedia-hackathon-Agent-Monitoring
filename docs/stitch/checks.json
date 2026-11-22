@@ -1,0 +1,54 @@
+[
+ {
+  "gate": "S5 chain realism vs held-out 2018",
+  "pass": true,
+  "rows": [
+   "L0-seasonality",
+   "L1-buyers",
+   "L1-sellers",
+   "L3-handling",
+   "L4-traffic",
+   "L5-orders",
+   "L5-delivery",
+   "L6-score",
+   "L6-timing"
+  ],
+  "seconds": 5.1,
+  "tail": [
+   "       real [0.628, 0.072]",
+   "       sim  [0.665, 0.063]",
+   "S5: FAIL (9/10)  -> docs/p0/phase3_fidelity_attemptstitch-check.json",
+   "accepted: F2 weekday exception (STRATEGY_CHANGES #6)"
+  ]
+ },
+ {
+  "gate": "F1-F6 session fidelity",
+  "pass": true,
+  "rows": [
+   "L1-devices",
+   "L4-sessions",
+   "L4-funnel",
+   "L4-exposure"
+  ],
+  "seconds": 19.5,
+  "tail": [
+   "PASS F5 mobile share per month (|diff| <= 0.01) {}",
+   "PASS F6 one buying session per order, starting before it {'orders': 12426, 'buying_sessions': 12426}",
+   "8/8 pass"
+  ]
+ },
+ {
+  "gate": "S7/S3 invariance + contract conformance tests",
+  "pass": true,
+  "rows": [
+   "L1-devices",
+   "L4-sessions",
+   "L4-funnel",
+   "L4-exposure"
+  ],
+  "seconds": 43.2,
+  "tail": [
+   ".................................                                        [100%]"
+  ]
+ }
+]

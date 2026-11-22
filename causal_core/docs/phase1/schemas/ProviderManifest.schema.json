@@ -1,0 +1,168 @@
+{
+  "$defs": {
+    "EnvironmentScope": {
+      "additionalProperties": false,
+      "properties": {
+        "data_cut": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Cut"
+        },
+        "dataset_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dataset Version"
+        },
+        "environment_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Environment Id",
+          "type": "string"
+        },
+        "environment_kind": {
+          "enum": [
+            "production",
+            "staging",
+            "emulator",
+            "offline_replay",
+            "legacy_unscoped"
+          ],
+          "title": "Environment Kind",
+          "type": "string"
+        },
+        "generator_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generator Version"
+        }
+      },
+      "required": [
+        "environment_id",
+        "environment_kind"
+      ],
+      "title": "EnvironmentScope",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "cost_units_per_request": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cost Units Per Request"
+    },
+    "expected_latency_ms": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Expected Latency Ms"
+    },
+    "manifest_version": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Manifest Version",
+      "type": "string"
+    },
+    "max_rows": {
+      "exclusiveMinimum": 0,
+      "title": "Max Rows",
+      "type": "integer"
+    },
+    "provider_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Provider Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scopes": {
+      "items": {
+        "$ref": "#/$defs/EnvironmentScope"
+      },
+      "minItems": 1,
+      "title": "Scopes",
+      "type": "array"
+    },
+    "supported_requests": {
+      "items": {
+        "enum": [
+          "get_series",
+          "get_aggregate",
+          "get_strata",
+          "get_panel",
+          "get_event_batch",
+          "get_assignment_outcomes",
+          "get_intervention_history",
+          "get_measurement",
+          "get_source_metadata"
+        ],
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Supported Requests",
+      "type": "array"
+    },
+    "supports_covariance": {
+      "default": false,
+      "title": "Supports Covariance",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_version",
+    "provider_id",
+    "manifest_version",
+    "supported_requests",
+    "max_rows",
+    "scopes"
+  ],
+  "title": "ProviderManifest",
+  "type": "object"
+}

@@ -1,0 +1,217 @@
+{
+  "schema_version": "2.0",
+  "task_id": "ask-ate",
+  "revision": 2,
+  "provisional": false,
+  "trigger": "explicit_question",
+  "question_kind": "ESTIMATE_EFFECT",
+  "outcome": "COMPLETED",
+  "policy": {
+    "verdict": "PUBLISH_REPORT",
+    "reasons": [
+      "read-only report"
+    ]
+  },
+  "findings": [
+    {
+      "finding_id": "f:947783edebcd",
+      "claim_kind": "INCONCLUSIVE",
+      "statement": "abstain: UNIDENTIFIED: ATE of actual exposure is not identified by random assignment alone (C01)",
+      "support_refs": [
+        "ia:5a960c0a0136050e"
+      ],
+      "limitations": []
+    }
+  ],
+  "effect_claims": [],
+  "identification": [
+    {
+      "assessment_id": "ia:5a960c0a0136050e",
+      "status": "UNIDENTIFIED",
+      "untestable": [
+        "no interference between units (SUTVA): declared by the design, not tested by these data"
+      ]
+    }
+  ],
+  "method_trace": [
+    {
+      "method": "dq_observation_v1",
+      "applicability": "SUPPORTED",
+      "reasons": []
+    },
+    {
+      "method": "metric_identity_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "QUESTION_KIND: ESTIMATE_EFFECT not in ['EXPLAIN_OBSERVATION', 'DETECT_CHANGE']",
+        "MISSING_METADATA: ['formula']"
+      ]
+    },
+    {
+      "method": "seasonal_screen_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "QUESTION_KIND: ESTIMATE_EFFECT not in ['DETECT_CHANGE']",
+        "INPUT_SHAPE: needs one of ['time_series'], got ['assignment_outcomes', 'aggregate_stats']",
+        "MISSING_METADATA: ['season_period']"
+      ]
+    },
+    {
+      "method": "savi_eprocess_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "QUESTION_KIND: ESTIMATE_EFFECT not in ['DETECT_CHANGE']",
+        "MISSING_METADATA: ['null_spec', 'dependence']"
+      ]
+    },
+    {
+      "method": "kitagawa_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "QUESTION_KIND: ESTIMATE_EFFECT not in ['EXPLAIN_OBSERVATION', 'DETECT_CHANGE']",
+        "MISSING_METADATA: ['strata', 'ratio_metric']"
+      ]
+    },
+    {
+      "method": "rcd_lite_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "QUESTION_KIND: ESTIMATE_EFFECT not in ['EXPLAIN_OBSERVATION', 'ASSESS_HYPOTHESIS']",
+        "INPUT_SHAPE: needs one of ['panel', 'time_series'], got ['assignment_outcomes', 'aggregate_stats']",
+        "MISSING_METADATA: ['parents', 'regimes']"
+      ]
+    },
+    {
+      "method": "association_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "INPUT_SHAPE: needs one of ['panel', 'time_series', 'scalar'], got ['assignment_outcomes', 'aggregate_stats']",
+        "MISSING_METADATA: ['pairing', 'dependence']"
+      ]
+    },
+    {
+      "method": "randomized_effect_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "ESTIMAND_FAMILY: ATE not in ['ITT', 'risk_difference', 'mean_difference', 'CACE']"
+      ]
+    },
+    {
+      "method": "multiplicity_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "INPUT_SHAPE: needs one of ['effect_results'], got ['assignment_outcomes', 'aggregate_stats']",
+        "MISSING_METADATA: ['family']"
+      ]
+    },
+    {
+      "method": "did_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "INPUT_SHAPE: needs one of ['panel'], got ['assignment_outcomes', 'aggregate_stats']",
+        "MISSING_METADATA: ['group_map']",
+        "ESTIMAND_FAMILY: ATE not in ['ATT']",
+        "SOURCE_REGIME: randomized not in ['quasi_experimental']"
+      ]
+    },
+    {
+      "method": "identifiability_audit_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "INPUT_SHAPE: needs one of ['method_result'], got ['assignment_outcomes', 'aggregate_stats']",
+        "MISSING_METADATA: ['estimand']"
+      ]
+    },
+    {
+      "method": "voi_heuristic_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "INPUT_SHAPE: needs one of ['query_options'], got ['assignment_outcomes', 'aggregate_stats']",
+        "MISSING_METADATA: ['hypotheses']"
+      ]
+    },
+    {
+      "method": "baseline_shift_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "QUESTION_KIND: ESTIMATE_EFFECT not in ['DETECT_CHANGE']",
+        "INPUT_SHAPE: needs one of ['time_series', 'state_trajectory'], got ['assignment_outcomes', 'aggregate_stats']",
+        "MISSING_METADATA: ['learned_baseline']"
+      ]
+    },
+    {
+      "method": "counterfactual_rollout_v1",
+      "applicability": "UNSUPPORTED",
+      "reasons": [
+        "QUESTION_KIND: ESTIMATE_EFFECT not in ['PREDICT_OUTCOME', 'COMPARE_INTERVENTIONS']",
+        "INPUT_SHAPE: needs one of ['time_series'], got ['assignment_outcomes', 'aggregate_stats']",
+        "MISSING_METADATA: ['validated_mechanisms']"
+      ]
+    }
+  ],
+  "stage_trace": [
+    {
+      "stage": "FRAME",
+      "verdict": "PASS",
+      "note": "ESTIMATE_EFFECT: target pinned (data cut 2026-11-22T06:00:00+00:00, graph v0)"
+    },
+    {
+      "stage": "AUDIT_INPUTS",
+      "verdict": "PASS",
+      "note": "design randomized (simple), attested by emu-product"
+    },
+    {
+      "stage": "SELECT_CAPABILITIES",
+      "verdict": "PASS",
+      "note": "applicable: dq_observation_v1; refused 13 other methods with reasons"
+    },
+    {
+      "stage": "ACQUIRE",
+      "verdict": "PLAN",
+      "note": "1 typed request(s): get_assignment_outcomes"
+    },
+    {
+      "stage": "ACQUIRE",
+      "verdict": "PASS",
+      "note": "1 observation(s) received"
+    },
+    {
+      "stage": "EVALUATE",
+      "verdict": "PASS",
+      "note": "randomized_effect_v1: ITT +0.0305 (SE 0.0107)"
+    },
+    {
+      "stage": "EVALUATE",
+      "verdict": "AUDIT",
+      "note": "identification: UNIDENTIFIED"
+    },
+    {
+      "stage": "CHALLENGE",
+      "verdict": "PASS",
+      "note": "3 rival explanation(s)/assumption(s) recorded"
+    },
+    {
+      "stage": "REPORT",
+      "verdict": "DONE",
+      "note": "outcome COMPLETED; 1 finding(s); 0 gap(s)"
+    }
+  ],
+  "rivals_and_assumptions": [
+    "untestable (randomized_effect_v1): no interference between units (SUTVA): declared by the design, not tested by these data",
+    "limitation (randomized_effect_v1): NONCOMPLIANCE: the ITT is identified; the effect of actual exposure is NOT (C01)",
+    "external validity: the effect holds for the study's population, window and scope only"
+  ],
+  "evidence_gaps": [],
+  "failures": [],
+  "evidence_ids": [
+    "trial_start_7d:study-checkout-01"
+  ],
+  "pins": {
+    "graph_version": 0,
+    "data_cut": "2026-11-22T06:00:00+00:00",
+    "method_versions": {
+      "randomized_effect_v1": "3"
+    }
+  },
+  "abstained": true
+}

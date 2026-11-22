@@ -1,0 +1,32 @@
+{
+ "fetch_status": "ok",
+ "origin": "api.bcb.gov.br SGS series 433, 432, 1 (2016-2018)",
+ "fetched": "2026-11-21T18:20:38",
+ "files": {
+  "ipca_monthly_pct.json": {
+   "bytes": 1336,
+   "sha256": "876fd4b0f6b84257490b2a2d322e9bf042cde14cffa76fe0a8140cc155dd3f81"
+  },
+  "selic_target_pct.json": {
+   "bytes": 41126,
+   "sha256": "312c211a4b7cd550c2caee66de938433f90236af98aca9aa44286836e704fb5f"
+  },
+  "usd_brl.json": {
+   "bytes": 29251,
+   "sha256": "833e7e8b3ea63611e8c5b4e8e53615562df209f75b06b75de651e82fe91c9304"
+  }
+ },
+ "bytes": 71713,
+ "licence": "public data (terms of use of BCB)",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Macro: inflation, FX, interest",
+   "role": "primary",
+   "claim": "daily/monthly macro series 2016-2018",
+   "status": "PASS",
+   "evidence": "ipca_monthly_pct: 36 obs 01/01/2016..01/12/2018 range -0.23..1.27; selic_target_pct: 1096 obs 01/01/2016..31/12/2018 range 6.50..14.25; usd_brl: 750 obs 04/01/2016..31/12/2018 range 3.05..4.19 | expected: Selic should fall ~14 -> ~6.5; IPCA monthly within -0.5..1.5; USD/BRL ~3-4.2"
+  }
+ ],
+ "audited": "2026-11-21T18:22:04"
+}

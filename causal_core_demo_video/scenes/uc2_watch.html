@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Marketplace watcher, live</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{--bg:#0e1115;--surface:#161a20;--border:#2b323c;--text:#e9ecf0;--text2:#b1b9c4;--muted:#7f8996;--blue:#3987e5}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,"Helvetica Neue",Arial,sans-serif}
+#wrap{display:flex;height:100vh;gap:8px;padding:8px}
+.pane{display:flex;flex-direction:column;min-width:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface)}
+.bar{display:flex;align-items:center;gap:8px;padding:6px 10px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);flex:none}
+.bar b{color:var(--text);font-size:13.5px;margin-right:6px}
+.bar button{font:inherit;font-size:12.5px;color:var(--text2);background:#1d222a;border:1px solid var(--border);border-radius:6px;padding:3px 9px;cursor:pointer}
+.bar button.on{color:var(--text);border-color:var(--blue);background:rgba(57,135,229,.15)}
+.bar a{color:#7fb2f0;font-size:12.5px;margin-left:auto;text-decoration:none}
+#left{flex:1.15}
+#right{flex:1}
+#fit{flex:1;position:relative;overflow:hidden;background:var(--bg)}
+#dash{position:absolute;left:0;top:0;width:1920px;height:1080px;border:0;transform-origin:0 0}
+#side{flex:1;border:0;width:100%;background:#fff}
+#drag{width:6px;cursor:col-resize;flex:none;border-radius:3px;background:#1d222a}
+#drag:hover{background:var(--blue)}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="pane" id="left">
+    <div class="bar"><b>The agent</b> (one process) asks <b>the engine service</b> (another process) over HTTP
+      <a href="uc2_live.html" target="_blank">open full size ↗</a></div>
+    <div id="fit"><iframe id="dash" src="uc2_live.html"></iframe></div>
+  </div>
+  <div id="drag" title="drag to resize"></div>
+  <div class="pane" id="right">
+    <div class="bar"><b>Inside the shop</b>
+      <button data-v="search" class="on">Traces: payment</button>
+      <button data-v="errors">Failed requests</button>
+      <button data-v="monitor">Monitor (rates)</button>
+      <button data-v="shop">The shop</button>
+      <button data-v="engine">Engine service</button>
+      <a id="ext" href="#" target="_blank">open ↗</a></div>
+    <iframe id="side"></iframe>
+  </div>
+</div>
+<script>
+// Left: the agent dashboard (a fixed 1920×1080 layout, scaled to fit). Right: the real shop's observability (Jaeger,
+// fed by the shop's own telemetry; Monitor needs Prometheus: scripts/uc2_shop.sh up --traces) or the shop itself.
+const SHOP = new URLSearchParams(location.search).get("shop") || "http://localhost:8080";
+const ENGINE = new URLSearchParams(location.search).get("engine") || "http://127.0.0.1:8770";
+const dash = document.getElementById("dash"), fit = document.getElementById("fit"), side = document.getElementById("side");
+function scale() { const s = Math.min(fit.clientWidth / 1920, fit.clientHeight / 1080); dash.style.transform = `scale(${s})`; }
+new ResizeObserver(scale).observe(fit); scale();
+function url(v) {
+  const now = Date.now() * 1000, start = now - 3600e6, end = now + 3600e6;     // Jaeger needs a time window (µs)
+  const win = `lookback=custom&start=${start}&end=${end}&limit=50`;
+  return { search: `${SHOP}/jaeger/ui/search?service=payment&${win}`,
+           errors: `${SHOP}/jaeger/ui/search?service=checkout&${win}&tags=${encodeURIComponent('{"error":"true"}')}`,
+           monitor: `${SHOP}/jaeger/ui/monitor?service=checkout`, shop: `${SHOP}/`, engine: ENGINE + "/" }[v];
+}
+function show(v) {
+  document.querySelectorAll(".bar button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
+  side.src = url(v); document.getElementById("ext").href = url(v);
+}
+document.querySelectorAll(".bar button").forEach(b => b.onclick = () => show(b.dataset.v));
+show("search");
+// drag the divider
+const left = document.getElementById("left"), right = document.getElementById("right");
+document.getElementById("drag").onmousedown = e => {
+  e.preventDefault(); const W = document.getElementById("wrap").clientWidth;
+  dash.style.pointerEvents = side.style.pointerEvents = "none";
+  const mv = ev => { const f = Math.min(.8, Math.max(.2, ev.clientX / W)); left.style.flex = f; right.style.flex = 1 - f; };
+  const up = () => { removeEventListener("mousemove", mv); removeEventListener("mouseup", up); dash.style.pointerEvents = side.style.pointerEvents = ""; };
+  addEventListener("mousemove", mv); addEventListener("mouseup", up);
+};
+</script>
+</body>
+</html>

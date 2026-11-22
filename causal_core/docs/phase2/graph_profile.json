@@ -1,0 +1,49 @@
+{
+  "measured_at": "2026-11-21T21:28:58+00:00",
+  "machine": {
+    "os": "macOS-27.2.1-arm64-arm-64bit",
+    "cpu": "Apple M1 Pro",
+    "python": "3.11.12"
+  },
+  "caveat": "Single-process CPython on this machine and this synthetic shape; not a latency guarantee (F08).",
+  "shape": {
+    "nodes": 5000,
+    "edges": 20000,
+    "versions": 10,
+    "revised_per_version": 1000
+  },
+  "pin_ns": {
+    "p50": 750.0,
+    "p99": 875,
+    "samples": 20000
+  },
+  "bounded_traversal_ms": {
+    "bound": "3 hops / 100 nodes / 400 edges / 50 ms",
+    "samples": 1000,
+    "p50": 0.127,
+    "p95": 0.156,
+    "p99": 0.192,
+    "max": 0.355,
+    "stop_reasons": {
+      "MAX_NODES": 997,
+      "MAX_HOPS": 3
+    },
+    "median_nodes_reached": 100.0
+  },
+  "relationship_lookup_us": {
+    "p50": 5.29,
+    "p99": 10.12,
+    "samples": 20000
+  },
+  "memory_tracemalloc": {
+    "after_v1_mib": 73.8,
+    "after_v5_mib": 85.7,
+    "after_v10_mib": 100.4
+  },
+  "sqlite_graph_log": {
+    "commit_all_versions_s": 0.38,
+    "rebuild_s": 0.56,
+    "rebuild_digest_equal": true,
+    "db_mib": 23.3
+  }
+}

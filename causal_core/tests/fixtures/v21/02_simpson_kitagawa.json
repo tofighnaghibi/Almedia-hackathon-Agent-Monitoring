@@ -1,0 +1,119 @@
+{
+  "fixture_schema": "phase0-reference/1",
+  "case_id": "02_simpson_kitagawa",
+  "title": "Simpson reversal / Kitagawa",
+  "tests_what": "Both segments improve while the total falls; mix vs rate split; incomplete partition flagged",
+  "refs": [
+    "v3.2 §4.4 kitagawa_v1"
+  ],
+  "gates": [
+    "G09"
+  ],
+  "source": "hand_derived",
+  "behavior": {
+    "status": "PRESERVED",
+    "v21": "Kitagawa + top-K/OTHER conservation; not proof of no harm",
+    "v32": "same; incomplete partition reported as bounded truncation",
+    "corrections": []
+  },
+  "input": {
+    "metric": "conversion_rate = orders / sessions",
+    "segments": [
+      {
+        "segment": "mobile",
+        "den0": 2000,
+        "num0": 40,
+        "den1": 8000,
+        "num1": 200
+      },
+      {
+        "segment": "desktop",
+        "den0": 8000,
+        "num0": 480,
+        "den1": 2000,
+        "num1": 130
+      }
+    ],
+    "variant_missing_segment": {
+      "declared_totals": {
+        "den0": 11000,
+        "den1": 11000
+      },
+      "note": "1,000 sessions per period from a segment the source did not report"
+    }
+  },
+  "data": null,
+  "expected": {
+    "main": {
+      "verdict": "DECOMPOSED",
+      "claim_kind": "MATHEMATICAL_IDENTITY",
+      "aggregate_rate_0": 0.052,
+      "aggregate_rate_1": 0.033,
+      "total_change": -0.019,
+      "rate_component": 0.005,
+      "mix_component": -0.024,
+      "identity_residual": 0.0,
+      "segments": [
+        {
+          "segment": "mobile",
+          "rate_0": 0.02,
+          "rate_1": 0.025,
+          "weight_0": 0.2,
+          "weight_1": 0.8,
+          "rate_contribution": 0.0025,
+          "mix_contribution": 0.0135
+        },
+        {
+          "segment": "desktop",
+          "rate_0": 0.06,
+          "rate_1": 0.065,
+          "weight_0": 0.8,
+          "weight_1": 0.2,
+          "rate_contribution": 0.0025,
+          "mix_contribution": -0.0375
+        }
+      ],
+      "every_segment_rate_rose": true,
+      "partition": "COMPLETE"
+    },
+    "variant_missing_segment": {
+      "verdict": "DECOMPOSED_COVERED_SUBSET_ONLY",
+      "claim_kind": "MATHEMATICAL_IDENTITY",
+      "aggregate_rate_0": 0.052,
+      "aggregate_rate_1": 0.033,
+      "total_change": -0.019,
+      "rate_component": 0.005,
+      "mix_component": -0.024,
+      "identity_residual": 0.0,
+      "segments": [
+        {
+          "segment": "mobile",
+          "rate_0": 0.02,
+          "rate_1": 0.025,
+          "weight_0": 0.2,
+          "weight_1": 0.8,
+          "rate_contribution": 0.0025,
+          "mix_contribution": 0.0135
+        },
+        {
+          "segment": "desktop",
+          "rate_0": 0.06,
+          "rate_1": 0.065,
+          "weight_0": 0.8,
+          "weight_1": 0.2,
+          "rate_contribution": 0.0025,
+          "mix_contribution": -0.0375
+        }
+      ],
+      "every_segment_rate_rose": true,
+      "partition": "INCOMPLETE_PARTITION",
+      "coverage_0": 0.909090909091,
+      "coverage_1": 0.909090909091,
+      "uncovered_share_max": 0.090909090909
+    },
+    "claim_limits": [
+      "mix contribution is arithmetic, not evidence the change is harmless",
+      "aggregate impact stays visible; suppression needs an explicit policy"
+    ]
+  }
+}
