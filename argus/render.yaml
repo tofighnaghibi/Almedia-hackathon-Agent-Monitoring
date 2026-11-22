@@ -1,0 +1,18 @@
+# Render Blueprint: one free web service built from the root Dockerfile.
+# Render injects $PORT; the container's uvicorn listens on ${PORT:-7860}.
+services:
+  - type: web
+    name: argus
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: LLM_BASE_URL
+        value: https://api.tokenfactory.us-north1.nebius.com/v1/
+      - key: LLM_MODEL
+        value: deepseek-ai/DeepSeek-V4.1-Flash-1017
+      - key: LLM_API_KEY
+        sync: false   # secret: entered in the Render dashboard, never committed
