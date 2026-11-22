@@ -12,7 +12,8 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 CORE="${UC2_CORE:-$(cd "$HERE/../causal_core" && pwd)}"
-if [ -n "${UC2_MKT:-}" ]; then MKT="$UC2_MKT"; elif [ -d "$HERE/../../marketplace-recon" ]; then MKT="$(cd "$HERE/../../marketplace-recon" && pwd)"; else MKT="$(cd "$HERE/../marketplace-recon" && pwd)"; fi
+if [ -n "${UC2_MKT:-}" ]; then MKT="$UC2_MKT"
+elif [ -d "$HERE/../mkt" ]; then MKT="$(cd "$HERE/.." && pwd)"; elif [ -d "$HERE/../../marketplace-recon" ]; then MKT="$(cd "$HERE/../../marketplace-recon" && pwd)"; else MKT="$(cd "$HERE/../marketplace-recon" && pwd)"; fi
 DEST_PARENT="${1:-$HERE/dist}"
 B="$DEST_PARENT/uc2_bundle"
 rm -rf "$B" "$DEST_PARENT/uc2_bundle.zip"

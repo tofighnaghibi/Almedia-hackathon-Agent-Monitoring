@@ -2,8 +2,8 @@
 
 **What it does.** It watches our numbers all the time and works out what kind of problem it sees: bad data, a real
 change, or something broken. Then it suggests a fix, with a best guess of how much it will help and a low and high estimate. A person
-approves; only then does it act, and only in a sandbox. Shown on our experiments (Statsig) and on an online shop (the
-OpenTelemetry Astronomy Shop, with shoppers simulated from real marketplace orders).
+approves; only then does it act, and only in a sandbox. Shown on an online shop (the OpenTelemetry Astronomy Shop,
+with shoppers simulated from real marketplace orders).
 
 **How it works.**
 1. **It only reads.** The engine gets data through read-only connections and has no way to change anything.
@@ -19,17 +19,18 @@ OpenTelemetry Astronomy Shop, with shoppers simulated from real marketplace orde
 7. **The agent proposes, a person decides.** A rule in the engine blocks changes to production. Approved actions run
    in a sandbox that accepts only the approved change, then reads it back to confirm it happened.
 
-**Why it works.** It never trusts a single number. It re-derives results itself: it matches Statsig to 13 decimal
-places. It checks data and group sizes before reporting any effect. It also tells apart problems that look the same on
+**Why it works.** It never trusts a single number. It re-derives results itself from the raw evidence, and it checks
+data completeness and group sizes before reporting any effect. It also tells apart problems that look the same on
 a dashboard. In the shop demo, checkout attempts were normal while payments failed. That pointed to a broken payment
 path, not a quieter market. It expected +43 orders from the fix (range 29 to 62); the answer key says about 46.
 
 **How it could be improved.**
 - **Faster alarms when traffic is low.** At night the shop sees only a handful of checkouts per 3-hour block, so the
   alarm came 9 simulated hours after the first failure. Checking per minute, or setting the alarm by traffic, would help.
-- **Re-estimate after the alarm.** An estimate made the moment an alarm fires runs high, because alarms fire when the
-  sample looks worst. In 1 of 5 test runs the range missed (55 to 123 expected, about 53 saved). Re-estimating one
-  block later fixes this.
+- **Better-calibrated ranges.** In 2 of 8 test runs the stated range missed the true gain: once too high (an estimate
+  made right at an early alarm runs high, because alarms fire when the sample looks worst), once too low (the range
+  ignores how many shoppers will still come that day). Re-estimating one block later and adding that uncertainty
+  would fix both.
 - **A completeness check per data source.** Payment telemetry arrived in delayed batches.
 - **Sharper what-if predictions.** In an internal test, a pre-trained table model cut the error from about 91 to 9 on
   a world with a bend and an interaction.
@@ -59,3 +60,4 @@ Sensitivity of Online Controlled Experiments by Utilizing Pre-Experiment Data," 
 "Estimating means of bounded random variables by betting," *JRSS-B*. · Pearl (2009), *Causality*. · Hadad et al.
 (2021), "Confidence intervals for policy evaluation in adaptive experiments," *PNAS*. · OpenTelemetry Demo,
 opentelemetry.io/docs/demo. · Olist Brazilian E-Commerce Public Dataset, Kaggle (CC BY-NC-SA 4.0).
+

@@ -12,7 +12,7 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$HERE"
-PY="${PY:-$HOME/.venvs/mkt-emulator/bin/python}"
+PY="${PY:-$( [ -x "$HERE/../.venv/bin/python" ] && echo "$HERE/../.venv/bin/python" || echo "$HOME/.venvs/mkt-emulator/bin/python" )}"
 PORT="${PORT:-8765}"
 ARGS=(--paced-days "${PACED_DAYS:-2018-02-15,2018-02-16}" --pace "${PACE:-1}" --event-pause "${EVENT_PAUSE:-7}")
 [ "${1:-}" = "--fast" ] && ARGS=()

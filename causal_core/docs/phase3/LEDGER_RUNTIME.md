@@ -1,7 +1,7 @@
 # Phase 3 — Single-Writer Ledger, Durable Jobs, Budgets, Outbox, E-Process State
 
 **Status:** built on `autonomous/v32-run-20261121`. **Provisional**: roadmap checkpoint B (Phases 2+3)
-is reviewed in `docs/autonomous_run/CHECKPOINT_B.md`. Decisions: CP-011 … CP-016.
+is reviewed in the internal build log (not included). Decisions: CP-011 … CP-016.
 
 **Run:**
 - Demo (real `kill -9` at 7 boundaries): `python3 -m scripts.phase3_demo`

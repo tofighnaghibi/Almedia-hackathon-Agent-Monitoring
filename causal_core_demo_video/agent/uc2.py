@@ -29,8 +29,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parents[1]
 CORE = Path(os.environ.get("UC2_CORE") or HERE.parent / "causal_core")            # the causal core (read-only use)
-MKT = Path(os.environ.get("UC2_MKT") or next((p for p in (HERE.parent.parent / "marketplace-recon", HERE.parent / "marketplace-recon")
-                                              if p.exists()), HERE.parent / "marketplace-recon"))   # the marketplace emulator
+MKT = Path(os.environ.get("UC2_MKT") or next((p for p in (HERE.parent, HERE.parent.parent / "marketplace-recon", HERE.parent / "marketplace-recon")
+                                              if (p / "mkt").is_dir()), HERE.parent))   # the marketplace emulator (has mkt/)
 sys.path[:0] = [str(CORE), str(MKT)]
 
 import numpy as np  # noqa: E402

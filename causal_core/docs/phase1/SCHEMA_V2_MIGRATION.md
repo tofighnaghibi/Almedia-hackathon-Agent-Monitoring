@@ -161,7 +161,7 @@ Old readers reject the new shape (closed union), which is the intended fail-clos
 ## 10. Changes after checkpoint A (autonomous run, provisional)
 
 Made on `autonomous/v32-run-20261121` after the user approved checkpoint A on `38a5081`. Each change
-is **provisional** until reviewed. Rationale: `docs/autonomous_run/DECISION_LOG.md`; evidence:
+is **provisional** until reviewed. Rationale: the internal build log (not included); evidence:
 `docs/audits/phase1/`.
 
 | Change | Kind | Ref |

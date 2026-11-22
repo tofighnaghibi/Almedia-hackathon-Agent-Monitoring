@@ -1,7 +1,7 @@
 """Demo-only action layer: proposals, human approvals, sandbox execution, receipts.
 
-Nothing here can reach production. The only executors are in-memory sandboxes owned by this folder: a mock Statsig
-project and the marketplace simulator. The core's policy gate still DENIES every requested action (I15); this layer
+Nothing here can reach production. The only executor is a sandbox owned by this folder: the local shop's feature-flag
+file. The core's policy gate still DENIES every requested action (I15); this layer
 is the human-approved path the video shows, and it refuses to run anything that is not approved, bound to this
 exact action and scope, unexpired, and aimed at a sandbox target.
 """
@@ -98,30 +98,6 @@ class Sandbox:
 
     def apply(self, p: ActionProposal, now: datetime) -> dict:      # pragma: no cover - overridden
         raise NotImplementedError
-
-
-class MockStatsigProject(Sandbox):
-    """An in-memory stand-in for a Statsig project: experiment status, rollout split, annotations, tickets."""
-    name = "mock-statsig-project"
-
-    def __init__(self, experiments: dict[str, dict]):
-        super().__init__()
-        self.state = copy.deepcopy(experiments)    # id -> {"status", "rollout": {group: pct}, "annotations": [], "decision_frozen"}
-        self.tickets: list[dict] = []
-
-    def apply(self, p, now):
-        e = self.state[p.target]
-        if p.kind == "annotate_freeze":
-            e["annotations"].append({"at": now.isoformat(), "text": p.params["note"]})
-            e["decision_frozen"] = True
-            self.tickets.append({"at": now.isoformat(), "title": p.params["ticket"], "experiment": p.target})
-        elif p.kind == "set_rollout":
-            e["rollout"] = dict(p.params["rollout"])
-            e["status"] = p.params.get("status", e["status"])
-            e["annotations"].append({"at": now.isoformat(), "text": p.params.get("note", "rollout changed")})
-        else:
-            raise ValueError(f"unsupported action kind {p.kind}")
-        return {"experiment": p.target, **copy.deepcopy(e)}
 
 
 class LocalShopFlags(Sandbox):

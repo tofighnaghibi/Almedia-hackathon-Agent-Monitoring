@@ -5,7 +5,7 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$HERE"
-PY="${PY:-$HOME/.venvs/mkt-emulator/bin/python}"
+PY="${PY:-$( [ -x "$HERE/../.venv/bin/python" ] && echo "$HERE/../.venv/bin/python" || echo "$HOME/.venvs/mkt-emulator/bin/python" )}"
 PORT="${UC2_ENGINE_PORT:-8770}"
 RUNDIR="$HOME/data/mkt/engine-service"; mkdir -p "$RUNDIR"
 PIDF="$RUNDIR/service.pid"; LOG="$RUNDIR/service.log"

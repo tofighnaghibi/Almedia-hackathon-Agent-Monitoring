@@ -38,9 +38,9 @@ The diagram is editable: [`docs/martha-architecture.excalidraw`](docs/martha-arc
 
 ### Installation
 ```bash
-git clone https://github.com/msverma101/marketplace-recon && cd marketplace-recon
+git clone https://github.com/dascoder/Almedia-hackathon-Agent-Monitoring-RunNRave && cd Almedia-hackathon-Agent-Monitoring-RunNRave
 python3 -m venv .venv
-.venv/bin/python -m pip install duckdb polars "pydantic>=2.7" numpy scipy pyarrow fastexcel
+.venv/bin/python -m pip install duckdb polars "pydantic>=2.7" numpy scipy pyarrow fastexcel pytest
 echo "$PWD/causal_core" > "$(.venv/bin/python -c 'import site;print(site.getsitepackages()[0])')/causal_core_local.pth"
 mkdir -p ~/data/mkt/stitch && unzip -q share/stitch_samples.zip -d ~/data/mkt/stitch/
 ```
@@ -62,17 +62,21 @@ The processed Olist tables (`artifacts/`) ship with the repo, so nothing else ne
 | Generate contract samples for all 106 variables | `.venv/bin/python -I scripts/stitch_samples.py` |
 
 ### Watch Martha live (real shop + agent dashboard)
+After the installation above, with Docker running:
 ```bash
 cd causal_core_demo_video
-scripts/uc2_shop.sh up --traces      # start the Astronomy Shop (with Jaeger traces)
-scripts/uc2_watch.sh                 # run the payment-fault scenario (~8 min; --fast ≈ 6 min)
-scripts/uc2_shop.sh down             # stop the shop
+scripts/uc2_setup.sh                 # once: fetches the shop (OpenTelemetry demo, pinned) and prepares data folders
+scripts/uc2_shop.sh up --traces      # start the Astronomy Shop with Jaeger + Prometheus (first time pulls ~3-5 GB)
+scripts/uc2_watch.sh                 # run the payment-fault scenario (~8 min; --fast ≈ 6 min) and open the live view
+scripts/uc2_shop.sh down             # stop the shop; scripts/uc2_engine.sh stop stops the engine service
 ```
-- Martha's dashboard: http://127.0.0.1:8765/scenes/uc2_live.html
+The scripts use the repo's `.venv` automatically. `uc2_watch.sh` opens one page, side by side: Martha's dashboard on the
+left; the shop's traces, failed requests, Monitor rates, the shop itself or the engine service on the right.
+- Side-by-side view: http://127.0.0.1:8765/scenes/uc2_watch.html · Martha's dashboard alone: http://127.0.0.1:8765/scenes/uc2_live.html
 - The causal engine runs as a local service (`scripts/uc2_engine.sh start | stop | status | logs`); status page: http://127.0.0.1:8770/
 - The shop: http://localhost:8080 · traces: http://localhost:8080/jaeger/ui/
 
-On Linux, run `PY=$PWD/../.venv/bin/python NO_OPEN=1 scripts/uc2_watch.sh` and open the URLs yourself.
+On Linux, run `NO_OPEN=1 scripts/uc2_watch.sh` and open the URLs yourself. More detail: [`causal_core_demo_video/README.md`](causal_core_demo_video/README.md).
 
 ## Results
 

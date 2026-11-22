@@ -291,8 +291,8 @@ def evaluate_randomized_summary(design: RandomizedDesign, arms: dict[str, ArmSum
     if assignment_counts and treatment_arm in assignment_counts and control_arm in assignment_counts:
         counts, source = {a: int(assignment_counts[a]) for a in (treatment_arm, control_arm)}, assignment_count_source or "declared"
     else:
-        # CP-032 fix: a metric's own units can be a filtered subset (in 348 of 407 cached Statsig experiments the unit
-        # counts differ across metrics), so SRM on them is not an assignment check; said, not hidden.
+        # CP-032 fix: a metric's own units can be a filtered subset (unit counts often differ across metrics), so SRM
+        # on them is not an assignment check; said, not hidden.
         counts, source = {treatment_arm: t.n, control_arm: c.n}, "this metric's units"
         limitations.append("SRM_ON_METRIC_UNITS: no assignment counts supplied; SRM used this metric's units, which may "
                            "be a filtered subset of the assigned population")

@@ -11,7 +11,7 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$HERE"
-PY="${PY:-$HOME/.venvs/mkt-emulator/bin/python}"
+PY="${PY:-$( [ -x "$HERE/../.venv/bin/python" ] && echo "$HERE/../.venv/bin/python" || echo "$HOME/.venvs/mkt-emulator/bin/python" )}"
 PORT="${PORT:-8765}"
 PACED_DAYS="${PACED_DAYS:-2018-02-15,2018-02-16}"; PACE="${PACE:-1}"; EVENT_PAUSE="${EVENT_PAUSE:-7}"
 OPEN=0; MIC=""

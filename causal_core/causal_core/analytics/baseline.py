@@ -1,6 +1,6 @@
 """Learned, frozen baseline for change monitoring: a CURE/CUPED-style regression (user decision 2026-11-22; CP-030).
 
-Statsig's CURE (CUPED + extra covariates) predicts each unit's outcome from pre-period data and analyses the
+CUPED-style adjustment (with extra covariates) predicts each unit's outcome from pre-period data and analyses the
 residual. The monitoring analogue: learn "normal" for a series as a regression on covariates over an OLDER, closed
 training window, freeze it, and test whether the new points depart from it.
 

@@ -7,6 +7,7 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 if [ -n "${UC2_MKT:-}" ]; then MKT="$UC2_MKT"
+elif [ -d "$HERE/../mkt" ]; then MKT="$(cd "$HERE/.." && pwd)"
 elif [ -d "$HERE/../../marketplace-recon" ]; then MKT="$(cd "$HERE/../../marketplace-recon" && pwd)"
 else MKT="$(cd "$HERE/../marketplace-recon" && pwd)"; fi
 DEMO="$HOME/.cache/otel-demo-3.1.0"

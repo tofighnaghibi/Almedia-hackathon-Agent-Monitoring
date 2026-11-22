@@ -1,7 +1,7 @@
 # Phase 1 Audit — Design Decisions (ADR form)
 
 "Authorized" = covered by the user's checkpoint A approval on `38a5081`. "Provisional" = made during
-the unattended run (see `docs/autonomous_run/DECISION_LOG.md`).
+the unattended run (see the internal build log (not included)).
 
 | ID | Decision | Requirement | Alternatives considered | Why this is more correct | Cost | Falsifiable test | Authorization |
 |---|---|---|---|---|---|---|---|

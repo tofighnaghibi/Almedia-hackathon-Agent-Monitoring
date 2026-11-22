@@ -2,7 +2,7 @@
 
 **Status:** built on `autonomous/v32-run-20261121`. Roadmap checkpoint B covers Phases 2+3, so Phase 2
 is **provisional** and has no checkpoint of its own. Decisions: CP-006 … CP-010 in
-`docs/autonomous_run/DECISION_LOG.md`.
+the internal build log (not included).
 
 **Run:**
 - Demo: `python3 -m scripts.phase2_demo`

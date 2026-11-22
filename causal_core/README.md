@@ -8,7 +8,7 @@ Roadmap with one demo per phase: [`docs/ROADMAP.md`](docs/ROADMAP.md).
 |---|---|---|---|
 | 0 Frozen baseline | approved 2026-11-21 ([inventory](docs/phase0/migration_inventory.md) §7) | `causal-core-phase-0` | `python3 -m scripts.phase0_demo` |
 | 1 Canonical schema v2.0 | approved 2026-11-21, checkpoint A ([migration doc](docs/phase1/SCHEMA_V2_MIGRATION.md) §8) | `causal-core-phase-1` | `python3 -m scripts.phase1_demo` |
-| 1 audit + 2 Typed graph & admission | **provisional** (autonomous run; see `docs/autonomous_run/RETURN_BRIEFING.md`) | `autonomous/v32-run-20261121` | `python3 -m scripts.phase2_demo` |
+| 1 audit + 2 Typed graph & admission | **provisional** (autonomous run; see the internal build log (not included)) | `autonomous/v32-run-20261121` | `python3 -m scripts.phase2_demo` |
 | 3 Ledger, jobs, outbox | **provisional** (checkpoint B pending) | `autonomous/v32-run-20261121` | `python3 -m scripts.phase3_demo` |
 | 4 Capability registry, methods, identification | **provisional** (checkpoint C pending; run ceiling) | `autonomous/v32-run-20261121` | `python3 -m scripts.phase4_demo` |
 

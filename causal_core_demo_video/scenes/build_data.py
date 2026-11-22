@@ -1,6 +1,6 @@
 """Pack a run's outputs into scenes/<uc>_data.js (window.DATA = {...}) so file:// scenes can read them without fetch.
 
-    python3 scenes/build_data.py uc1
+    python3 scenes/build_data.py uc2
 """
 from __future__ import annotations
 
@@ -10,28 +10,6 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE.parent / "outputs"
-
-
-def uc1() -> dict:
-    d = OUT / "uc1"
-    j = lambda name: json.loads((d / name).read_text())
-    events = [json.loads(l) for l in (d / "events.jsonl").read_text().splitlines() if l.strip()]
-    actions = j("actions.json")
-    return {
-        "backdrop": j("crosscheck.json"),
-        "simulated": {"EXP-10": "Onboarding (iOS)", "EXP-11": "Paywall copy B", "EXP-12": "Lesson screen (web)"},
-        "events": [e for e in events if e["kind"] not in ("wake", "check")],
-        "wakeups": sum(e["kind"] == "wake" for e in events),
-        "actions": [a for a in actions if "proposal" in a],
-        "refused": next(a["refused_example"] for a in actions if "refused_example" in a),
-        "srm": j("srm_EXP-10.json"),
-        "monitor": j("monitor_EXP-11.json"),
-        "spread": j("alarm_day_spread_EXP-11.json"),
-        "dq": j("dq_EXP-12.json"),
-        "ship": j("ship_request.json") | {"report": None},
-        "truth": j("truth.json"),
-        "timings": j("timings.json"),
-    }
 
 
 def uc2() -> dict:
@@ -60,7 +38,7 @@ def uc2() -> dict:
 
 
 if __name__ == "__main__":
-    uc = sys.argv[1] if len(sys.argv) > 1 else "uc1"
-    data = {"uc1": uc1, "uc2": uc2}[uc]()
+    uc = sys.argv[1] if len(sys.argv) > 1 else "uc2"
+    data = {"uc2": uc2}[uc]()
     (HERE / f"{uc}_data.js").write_text("window.DATA = " + json.dumps(data, separators=(",", ":")) + ";\n")
     print(f"wrote scenes/{uc}_data.js ({(HERE / f'{uc}_data.js').stat().st_size:,} bytes)")
