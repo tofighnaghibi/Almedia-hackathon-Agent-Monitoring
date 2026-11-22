@@ -1,0 +1,95 @@
+{
+ "status": "partially supported (fitted on Olist; drifts between halves)",
+ "estimate": {
+  "olist_product_weeks_with_2plus_sellers": [
+   0.0007951087105530118,
+   0.004462398421720137
+  ],
+  "expedia_results_per_list_mean_median": [
+   24.834553668015545,
+   29.0
+  ]
+ },
+ "heldout": [
+  {
+   "name": "simultaneous-seller share 2017 vs 2018",
+   "halves": [
+    0.0007951087105530118,
+    0.004462398421720137
+   ],
+   "diff": 4.612312332255123,
+   "tol": 0.5,
+   "rel": true,
+   "pass": false
+  }
+ ],
+ "trained_through": "2017-12-31",
+ "target": true,
+ "assumptions": [
+  "displayed offers per product and their ranking are synthetic (Olist shows sales, not listings)"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L2-offers",
+ "layer": "L2",
+ "data_type": "Multi-seller offers",
+ "method": "fit + assumed",
+ "sources": [
+  "olist",
+  "expedia"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "simultaneous-seller share: 2017 vs 2018",
+ "seconds": 11.3,
+ "cache_key": "1a8483be89bfad84",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ],
+  "expedia/train.csv": [
+   2358114793,
+   1377645964
+  ]
+ }
+}

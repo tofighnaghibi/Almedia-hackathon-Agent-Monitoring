@@ -1,0 +1,91 @@
+{
+ "status": "supported (fitted on Olist; held-out stable)",
+ "estimate": {
+  "items_per_order": {
+   "2017": 1.1409856658964983,
+   "2018": 1.1420920502092051
+  },
+  "payment_type_share": {
+   "credit_card": 0.7392237645110987,
+   "boleto": 0.19043952024334365,
+   "voucher": 0.05558978110621258,
+   "debit_card": 0.014718056330978188,
+   "not_defined": 2.8877808366863676e-05
+  }
+ },
+ "heldout": [
+  {
+   "name": "items per order 2017 vs 2018",
+   "halves": [
+    1.1409856658964983,
+    1.1420920502092051
+   ],
+   "diff": 0.0009696741561056418,
+   "tol": 0.1,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2017-12-31",
+ "target": true,
+ "assumptions": [],
+ "bridges": [],
+ "status_override": null,
+ "id": "L5-orders",
+ "layer": "L5",
+ "data_type": "Orders, items, payments",
+ "method": "replay + fit",
+ "sources": [
+  "olist"
+ ],
+ "consumed_by": "sim.chain (orders, payments)",
+ "heldout_plan": "items per order and payment-type mix: 2017 vs 2018",
+ "seconds": 0.6,
+ "cache_key": "0adeef6a99f7ade7",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ]
+ }
+}

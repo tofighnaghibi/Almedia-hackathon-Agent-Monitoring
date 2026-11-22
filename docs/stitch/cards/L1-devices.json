@@ -1,0 +1,238 @@
+{
+ "status": "unsupported transfer (held-out unstable; sensitivity = both halves)",
+ "estimate": {
+  "statcounter": {
+   "monthly_share": {
+    "2016-01": {
+     "desktop": 0.6914691469146915,
+     "mobile": 0.28662866286628663,
+     "tablet": 0.0219021902190219
+    },
+    "2016-02": {
+     "desktop": 0.7247,
+     "mobile": 0.2532,
+     "tablet": 0.022099999999999998
+    },
+    "2016-03": {
+     "desktop": 0.7342,
+     "mobile": 0.2437,
+     "tablet": 0.022099999999999998
+    },
+    "2016-04": {
+     "desktop": 0.7215,
+     "mobile": 0.25579999999999997,
+     "tablet": 0.0227
+    },
+    "2016-05": {
+     "desktop": 0.6977,
+     "mobile": 0.2813,
+     "tablet": 0.021
+    },
+    "2016-06": {
+     "desktop": 0.7456254374562543,
+     "mobile": 0.23417658234176583,
+     "tablet": 0.0201979802019798
+    },
+    "2016-07": {
+     "desktop": 0.7365,
+     "mobile": 0.2429,
+     "tablet": 0.0206
+    },
+    "2016-08": {
+     "desktop": 0.7266,
+     "mobile": 0.25510000000000005,
+     "tablet": 0.018300000000000004
+    },
+    "2016-09": {
+     "desktop": 0.7088,
+     "mobile": 0.2735,
+     "tablet": 0.0177
+    },
+    "2016-10": {
+     "desktop": 0.6867,
+     "mobile": 0.2963,
+     "tablet": 0.017
+    },
+    "2016-11": {
+     "desktop": 0.6804,
+     "mobile": 0.30239999999999995,
+     "tablet": 0.017199999999999997
+    },
+    "2016-12": {
+     "desktop": 0.6777,
+     "mobile": 0.3042,
+     "tablet": 0.0181
+    },
+    "2017-01": {
+     "desktop": 0.6619338066193381,
+     "mobile": 0.32026797320267975,
+     "tablet": 0.017798220177982202
+    },
+    "2017-02": {
+     "desktop": 0.6754675467546755,
+     "mobile": 0.30723072307230714,
+     "tablet": 0.0173017301730173
+    },
+    "2017-03": {
+     "desktop": 0.6761,
+     "mobile": 0.3071,
+     "tablet": 0.0168
+    },
+    "2017-04": {
+     "desktop": 0.6736,
+     "mobile": 0.309,
+     "tablet": 0.0174
+    },
+    "2017-05": {
+     "desktop": 0.6943,
+     "mobile": 0.2897,
+     "tablet": 0.016
+    },
+    "2017-06": {
+     "desktop": 0.6889,
+     "mobile": 0.2954,
+     "tablet": 0.015700000000000002
+    },
+    "2017-07": {
+     "desktop": 0.6628662866286629,
+     "mobile": 0.32193219321932187,
+     "tablet": 0.015201520152015202
+    },
+    "2017-08": {
+     "desktop": 0.6787678767876788,
+     "mobile": 0.30763076307630766,
+     "tablet": 0.013601360136013601
+    },
+    "2017-09": {
+     "desktop": 0.6633,
+     "mobile": 0.3233,
+     "tablet": 0.0134
+    },
+    "2017-10": {
+     "desktop": 0.6713,
+     "mobile": 0.3147,
+     "tablet": 0.013999999999999999
+    },
+    "2017-11": {
+     "desktop": 0.6832,
+     "mobile": 0.30340000000000006,
+     "tablet": 0.013400000000000002
+    },
+    "2017-12": {
+     "desktop": 0.6666333366663334,
+     "mobile": 0.3200679932006799,
+     "tablet": 0.013298670132986702
+    },
+    "2018-01": {
+     "desktop": 0.6565000000000001,
+     "mobile": 0.33,
+     "tablet": 0.013500000000000002
+    },
+    "2018-02": {
+     "desktop": 0.6677000000000001,
+     "mobile": 0.31930000000000003,
+     "tablet": 0.013000000000000003
+    },
+    "2018-03": {
+     "desktop": 0.6812681268126813,
+     "mobile": 0.3049304930493049,
+     "tablet": 0.0138013801380138
+    },
+    "2018-04": {
+     "desktop": 0.7027,
+     "mobile": 0.2844,
+     "tablet": 0.0129
+    },
+    "2018-05": {
+     "desktop": 0.7133,
+     "mobile": 0.27580000000000005,
+     "tablet": 0.010900000000000002
+    },
+    "2018-06": {
+     "desktop": 0.7034,
+     "mobile": 0.2857,
+     "tablet": 0.0109
+    },
+    "2018-07": {
+     "desktop": 0.7167,
+     "mobile": 0.2711,
+     "tablet": 0.012199999999999999
+    },
+    "2018-08": {
+     "desktop": 0.7175282471752825,
+     "mobile": 0.2716728327167283,
+     "tablet": 0.010798920107989201
+    },
+    "2018-09": {
+     "desktop": 0.7081999999999999,
+     "mobile": 0.281,
+     "tablet": 0.0108
+    },
+    "2018-10": {
+     "desktop": 0.7245,
+     "mobile": 0.2658,
+     "tablet": 0.0097
+    },
+    "2018-11": {
+     "desktop": 0.7645000000000001,
+     "mobile": 0.2274,
+     "tablet": 0.008100000000000001
+    },
+    "2018-12": {
+     "desktop": 0.7518,
+     "mobile": 0.23989999999999997,
+     "tablet": 0.0083
+    }
+   }
+  },
+  "ga": {
+   "conversion": {
+    "desktop": 0.015794329090911826,
+    "mobile": 0.004081925979159181,
+    "tablet": 0.005517422575454038
+   },
+   "ratio_mobile_desktop": 0.25844250526019186,
+   "ratio_tablet_desktop": 0.34932934116389935
+  }
+ },
+ "heldout": [
+  {
+   "name": "H5 mobile:desktop conversion ratio, halves (rel diff <= 30%)",
+   "halves": {
+    "first": 0.33490286418702964,
+    "second": 0.2061725672841016
+   },
+   "rel_diff": 0.384380997204722,
+   "pass": false
+  }
+ ],
+ "trained_through": "20170801",
+ "target": false,
+ "assumptions": [
+  "the ratio carries over, the level does not"
+ ],
+ "bridges": [],
+ "status_override": "unsupported transfer (held-out unstable; sensitivity = both halves)",
+ "id": "L1-devices",
+ "layer": "L1",
+ "data_type": "Devices, channels",
+ "method": "prior + transfer",
+ "sources": [
+  "statcounter",
+  "ga"
+ ],
+ "consumed_by": "sim.sessions",
+ "heldout_plan": "GA mobile:desktop conversion ratio, chronological halves",
+ "seconds": 11.4,
+ "cache_key": "5dbc2de847f5cba0",
+ "inputs": {
+  "statcounter/brazil_device_share_2016_2018.csv": [
+   924,
+   1795290866
+  ],
+  "ga/train.csv": [
+   1503430926,
+   1795290924
+  ]
+ }
+}

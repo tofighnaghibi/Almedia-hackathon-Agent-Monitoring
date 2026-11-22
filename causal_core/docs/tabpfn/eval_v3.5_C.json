@@ -1,0 +1,80 @@
+{
+  "tabpfn": "model v3.5 on cpu",
+  "worlds": 25,
+  "bootstrap_refits": 20,
+  "C_interaction_kink_category": {
+    "normal days": {
+      "worlds": 25,
+      "truth": 120.0,
+      "scores": {
+        "straight_line": {
+          "mean_abs_error": 92.54405991739127,
+          "se": 1.4773436811427465,
+          "interval_covers_truth_at_90": 0.0,
+          "median_interval_width": 20.93053461889241
+        },
+        "core_shape_set": {
+          "mean_abs_error": 90.72470033104707,
+          "se": 1.7829821563202586,
+          "interval_covers_truth_at_90": 0.0,
+          "median_interval_width": 26.821570346421623
+        },
+        "tabpfn": {
+          "mean_abs_error": 8.99182145436357,
+          "se": 1.1452985331736754,
+          "interval_covers_truth_at_90": 0.72,
+          "median_interval_width": 25.486141591476738
+        },
+        "paired straight_line - tabpfn": {
+          "mean_diff": 83.55223846302768,
+          "se": 1.8837274506138129
+        },
+        "paired core_shape_set - straight_line": {
+          "mean_diff": -1.8193595863441874,
+          "se": 0.9504051289327409
+        },
+        "paired core_shape_set - tabpfn": {
+          "mean_diff": 81.7328788766835,
+          "se": 2.041610856114301
+        }
+      }
+    },
+    "promo days": {
+      "worlds": 25,
+      "truth": 240.0,
+      "scores": {
+        "straight_line": {
+          "mean_abs_error": 27.45594008260874,
+          "se": 1.4773436811427467,
+          "interval_covers_truth_at_90": 0.0,
+          "median_interval_width": 20.93053461889241
+        },
+        "core_shape_set": {
+          "mean_abs_error": 29.27529966895293,
+          "se": 1.7829821563202586,
+          "interval_covers_truth_at_90": 0.04,
+          "median_interval_width": 26.821570346421623
+        },
+        "tabpfn": {
+          "mean_abs_error": 14.92219278046613,
+          "se": 2.0653971053441627,
+          "interval_covers_truth_at_90": 0.76,
+          "median_interval_width": 36.35544668769228
+        },
+        "paired straight_line - tabpfn": {
+          "mean_diff": 12.53374730214261,
+          "se": 2.5270703445537728
+        },
+        "paired core_shape_set - straight_line": {
+          "mean_diff": 1.8193595863441874,
+          "se": 0.9504051289327409
+        },
+        "paired core_shape_set - tabpfn": {
+          "mean_diff": 14.3531068884868,
+          "se": 2.606423915751814
+        }
+      }
+    }
+  },
+  "seconds": 2013.0
+}

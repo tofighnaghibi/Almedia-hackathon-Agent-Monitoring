@@ -1,0 +1,42 @@
+{
+ "fetch_status": "ok",
+ "origin": "UCI ML repository #502",
+ "fetched": "2026-11-21T18:21:13",
+ "files": {
+  "online_retail_II.xlsx": {
+   "bytes": 45622278,
+   "sha256": "bcbe73b35f5b7babf197fb0cb983a11f5d9ff929078d4aa53d171b1f2df2e980"
+  },
+  "online_retail_ii.zip": {
+   "bytes": 45622418,
+   "sha256": "572e36277c2390fbfde10664750731e0a86f55e33470d91919085f0408e67bfb"
+  }
+ },
+ "bytes": 91244696,
+ "licence": "CC BY 4.0",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Cancellations, returns",
+   "role": "secondary",
+   "claim": "cancelled / returned lines",
+   "status": "PASS",
+   "evidence": "1,067,371 lines; 0.0% cancellation lines ('C' invoices)"
+  },
+  {
+   "row": "Orders, items, payments",
+   "role": "secondary",
+   "claim": "invoice lines with quantity and price",
+   "status": "PASS",
+   "evidence": "columns ['Invoice', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'Price', 'Customer ID', 'Country']; dates 2009-12-01 07:45:00..2011-12-09 12:50:00"
+  },
+  {
+   "row": "Repeat purchases",
+   "role": "secondary",
+   "claim": "customers with several invoices",
+   "status": "PASS",
+   "evidence": "75.3% of 5,942 customers buy more than once"
+  }
+ ],
+ "audited": "2026-11-21T18:22:13"
+}

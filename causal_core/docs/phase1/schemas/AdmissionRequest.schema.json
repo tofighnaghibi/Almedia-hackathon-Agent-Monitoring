@@ -1,0 +1,2120 @@
+{
+  "$defs": {
+    "CategoricalValueSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "categories": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Categories",
+          "type": "array"
+        },
+        "exhaustive": {
+          "default": false,
+          "title": "Exhaustive",
+          "type": "boolean"
+        },
+        "missing_code": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Code"
+        },
+        "ordered": {
+          "default": false,
+          "title": "Ordered",
+          "type": "boolean"
+        },
+        "other_code": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Other Code"
+        },
+        "type": {
+          "const": "categorical",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "categories"
+      ],
+      "title": "CategoricalValueSchema",
+      "type": "object"
+    },
+    "CategoricalVariableDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "entity_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entity Ref"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Extensions",
+          "type": "object"
+        },
+        "kind": {
+          "const": "categorical",
+          "title": "Kind",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "value_schema": {
+          "$ref": "#/$defs/CategoricalValueSchema"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "variable_id",
+        "scope",
+        "provenance",
+        "kind",
+        "value_schema"
+      ],
+      "title": "CategoricalVariableDefinition",
+      "type": "object"
+    },
+    "DimensionSpec": {
+      "additionalProperties": false,
+      "description": "A partition key. Completeness is declared, never assumed; OTHER exists only if declared.",
+      "properties": {
+        "cardinality_hint": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cardinality Hint"
+        },
+        "dimension_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Dimension Id",
+          "type": "string"
+        },
+        "entity_type_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entity Type Id"
+        },
+        "missing_code": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Code"
+        },
+        "other_code": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Other Code"
+        },
+        "partition_policy": {
+          "enum": [
+            "exhaustive_declared",
+            "top_k_plus_other",
+            "open_unknown"
+          ],
+          "title": "Partition Policy",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "top_k": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Top K"
+        },
+        "values": {
+          "anyOf": [
+            {
+              "items": {
+                "minLength": 1,
+                "pattern": "\\S",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Values"
+        }
+      },
+      "required": [
+        "schema_version",
+        "dimension_id",
+        "scope",
+        "provenance",
+        "partition_policy"
+      ],
+      "title": "DimensionSpec",
+      "type": "object"
+    },
+    "EffectClaim": {
+      "additionalProperties": false,
+      "description": "A scoped, conditional effect on a declared estimand. Never a structural edge by itself (I06).",
+      "properties": {
+        "assessment_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "assessment_status": {
+          "enum": [
+            "CONDITIONAL_IDENTIFICATION",
+            "PARTIAL_IDENTIFICATION",
+            "ASSOCIATION_ONLY",
+            "UNIDENTIFIED",
+            "INVALID_DESIGN",
+            "INSUFFICIENT_EVIDENCE"
+          ],
+          "title": "Assessment Status",
+          "type": "string"
+        },
+        "claim_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "dependence_model": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Dependence Model",
+          "type": "string"
+        },
+        "estimand": {
+          "$ref": "#/$defs/EstimandSpec"
+        },
+        "estimate": {
+          "title": "Estimate",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "method": {
+          "$ref": "#/$defs/MethodProvenance"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "uncertainty": {
+          "$ref": "#/$defs/Uncertainty"
+        }
+      },
+      "required": [
+        "schema_version",
+        "claim_id",
+        "estimand",
+        "assessment_id",
+        "assessment_status",
+        "estimate",
+        "uncertainty",
+        "dependence_model",
+        "scope",
+        "evidence_ids",
+        "method"
+      ],
+      "title": "EffectClaim",
+      "type": "object"
+    },
+    "EffectClaimAttachment": {
+      "additionalProperties": false,
+      "description": "An EffectClaim attached to the two nodes it concerns. It is an artifact, never an edge.",
+      "properties": {
+        "claim": {
+          "$ref": "#/$defs/EffectClaim"
+        },
+        "outcome_node": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Outcome Node",
+          "type": "string"
+        },
+        "treatment_node": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Treatment Node",
+          "type": "string"
+        }
+      },
+      "required": [
+        "claim",
+        "treatment_node",
+        "outcome_node"
+      ],
+      "title": "EffectClaimAttachment",
+      "type": "object"
+    },
+    "EntitySpec": {
+      "additionalProperties": false,
+      "description": "An opaque entity type. A parent link below confidence 1 is never exact equality.",
+      "properties": {
+        "description": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "entity_type_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Entity Type Id",
+          "type": "string"
+        },
+        "key_fields": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Key Fields",
+          "type": "array"
+        },
+        "parent_entity_type_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Entity Type Id"
+        },
+        "parent_match_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Match Confidence"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        }
+      },
+      "required": [
+        "schema_version",
+        "entity_type_id",
+        "key_fields",
+        "scope",
+        "provenance"
+      ],
+      "title": "EntitySpec",
+      "type": "object"
+    },
+    "EnvironmentScope": {
+      "additionalProperties": false,
+      "properties": {
+        "data_cut": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Cut"
+        },
+        "dataset_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dataset Version"
+        },
+        "environment_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Environment Id",
+          "type": "string"
+        },
+        "environment_kind": {
+          "enum": [
+            "production",
+            "staging",
+            "emulator",
+            "offline_replay",
+            "legacy_unscoped"
+          ],
+          "title": "Environment Kind",
+          "type": "string"
+        },
+        "generator_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generator Version"
+        }
+      },
+      "required": [
+        "environment_id",
+        "environment_kind"
+      ],
+      "title": "EnvironmentScope",
+      "type": "object"
+    },
+    "EstimandSpec": {
+      "additionalProperties": false,
+      "description": "Exactly what effect is asked for. No 'lift' with an undefined treatment, time or population.\n\nBoth scopes are required (v3.2 \u00a72.1, I05; CP-004): where the evidence comes from and where the\neffect is claimed to hold. If they differ, transport must be argued explicitly (\u00a74.5 item 5).",
+      "properties": {
+        "contrast": {
+          "$ref": "#/$defs/InterventionContrast"
+        },
+        "functional": {
+          "enum": [
+            "ATE",
+            "ATT",
+            "ITT",
+            "CACE",
+            "risk_difference",
+            "mean_difference",
+            "dose_response",
+            "policy_value"
+          ],
+          "title": "Functional",
+          "type": "string"
+        },
+        "horizon": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Horizon",
+          "type": "string"
+        },
+        "outcome": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Outcome",
+          "type": "string"
+        },
+        "population": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Population",
+          "type": "string"
+        },
+        "source_scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "target_scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        }
+      },
+      "required": [
+        "outcome",
+        "contrast",
+        "population",
+        "horizon",
+        "functional",
+        "source_scope",
+        "target_scope"
+      ],
+      "title": "EstimandSpec",
+      "type": "object"
+    },
+    "EventPayloadSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "fields": {
+          "minProperties": 1,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$": {
+              "enum": [
+                "real",
+                "integer",
+                "boolean",
+                "text",
+                "category"
+              ],
+              "type": "string"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "title": "Fields",
+          "type": "object"
+        },
+        "identity_fields": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Identity Fields",
+          "type": "array"
+        },
+        "type": {
+          "const": "event",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "fields",
+        "identity_fields"
+      ],
+      "title": "EventPayloadSchema",
+      "type": "object"
+    },
+    "EventVariableDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "entity_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entity Ref"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Extensions",
+          "type": "object"
+        },
+        "kind": {
+          "const": "event",
+          "title": "Kind",
+          "type": "string"
+        },
+        "occurrence_time": {
+          "default": "unknown",
+          "enum": [
+            "event_time",
+            "ingest_time_only",
+            "unknown"
+          ],
+          "title": "Occurrence Time",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "value_schema": {
+          "$ref": "#/$defs/EventPayloadSchema"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "variable_id",
+        "scope",
+        "provenance",
+        "kind",
+        "value_schema"
+      ],
+      "title": "EventVariableDefinition",
+      "type": "object"
+    },
+    "FormulaBinOp": {
+      "additionalProperties": false,
+      "properties": {
+        "left": {
+          "discriminator": {
+            "mapping": {
+              "binop": "#/$defs/FormulaBinOp",
+              "const": "#/$defs/FormulaConst",
+              "ref": "#/$defs/FormulaRef"
+            },
+            "propertyName": "node"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FormulaRef"
+            },
+            {
+              "$ref": "#/$defs/FormulaConst"
+            },
+            {
+              "$ref": "#/$defs/FormulaBinOp"
+            }
+          ],
+          "title": "Left"
+        },
+        "node": {
+          "const": "binop",
+          "title": "Node",
+          "type": "string"
+        },
+        "op": {
+          "enum": [
+            "add",
+            "sub",
+            "mul",
+            "div"
+          ],
+          "title": "Op",
+          "type": "string"
+        },
+        "right": {
+          "discriminator": {
+            "mapping": {
+              "binop": "#/$defs/FormulaBinOp",
+              "const": "#/$defs/FormulaConst",
+              "ref": "#/$defs/FormulaRef"
+            },
+            "propertyName": "node"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FormulaRef"
+            },
+            {
+              "$ref": "#/$defs/FormulaConst"
+            },
+            {
+              "$ref": "#/$defs/FormulaBinOp"
+            }
+          ],
+          "title": "Right"
+        }
+      },
+      "required": [
+        "node",
+        "op",
+        "left",
+        "right"
+      ],
+      "title": "FormulaBinOp",
+      "type": "object"
+    },
+    "FormulaConst": {
+      "additionalProperties": false,
+      "properties": {
+        "node": {
+          "const": "const",
+          "title": "Node",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "node",
+        "value"
+      ],
+      "title": "FormulaConst",
+      "type": "object"
+    },
+    "FormulaRef": {
+      "additionalProperties": false,
+      "properties": {
+        "node": {
+          "const": "ref",
+          "title": "Node",
+          "type": "string"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node",
+        "variable_id"
+      ],
+      "title": "FormulaRef",
+      "type": "object"
+    },
+    "GraphEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "edge_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "entity_match_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entity Match Confidence"
+        },
+        "identification_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Identification Ref"
+        },
+        "kind": {
+          "enum": [
+            "EXACT_ARITHMETIC",
+            "AGGREGATION_COMPOSITION",
+            "DIMENSIONAL_DECOMPOSITION",
+            "ENTITY_RELATIONSHIP",
+            "TEMPORAL_WINDOW",
+            "TEMPORAL_LAG",
+            "TEMPORAL_FEEDBACK",
+            "OBSERVATION_EFFECT",
+            "OBSERVATIONAL_ASSOCIATION",
+            "CAUSAL_HYPOTHESIS",
+            "CAUSALLY_IDENTIFIED",
+            "LATENT_CONFOUNDING",
+            "UNKNOWN_RELATIONSHIP"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "lag": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LagBounds"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "layer": {
+          "default": "DOMAIN",
+          "enum": [
+            "DOMAIN",
+            "OBSERVATION"
+          ],
+          "title": "Layer",
+          "type": "string"
+        },
+        "lineage": {
+          "$ref": "#/$defs/ProvenanceLineage"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "source": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Source",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ACTIVE",
+            "QUARANTINED",
+            "SUPERSEDED",
+            "REFUTED",
+            "REVIEW_REQUIRED"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "status_reasons": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "title": "Status Reasons",
+          "type": "array"
+        },
+        "target": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Target",
+          "type": "string"
+        },
+        "validity": {
+          "$ref": "#/$defs/Validity",
+          "default": {
+            "valid_from": null,
+            "valid_to": null
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "edge_id",
+        "kind",
+        "source",
+        "target",
+        "status",
+        "lineage",
+        "scope"
+      ],
+      "title": "GraphEdge",
+      "type": "object"
+    },
+    "GraphNode": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "VARIABLE",
+            "ENTITY",
+            "INTERVENTION",
+            "STUDY",
+            "OBSERVATION_MECHANISM",
+            "LATENT",
+            "EFFECT_CLAIM"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "layer": {
+          "default": "DOMAIN",
+          "enum": [
+            "DOMAIN",
+            "OBSERVATION"
+          ],
+          "title": "Layer",
+          "type": "string"
+        },
+        "node_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "variable_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Variable Id"
+        }
+      },
+      "required": [
+        "schema_version",
+        "node_id",
+        "kind"
+      ],
+      "title": "GraphNode",
+      "type": "object"
+    },
+    "InterventionContrast": {
+      "additionalProperties": false,
+      "properties": {
+        "control": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Control",
+          "type": "string"
+        },
+        "treatment": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Treatment",
+          "type": "string"
+        }
+      },
+      "required": [
+        "treatment",
+        "control"
+      ],
+      "title": "InterventionContrast",
+      "type": "object"
+    },
+    "LagBounds": {
+      "additionalProperties": false,
+      "properties": {
+        "max_s": {
+          "minimum": 0,
+          "title": "Max S",
+          "type": "number"
+        },
+        "min_s": {
+          "minimum": 0,
+          "title": "Min S",
+          "type": "number"
+        }
+      },
+      "required": [
+        "min_s",
+        "max_s"
+      ],
+      "title": "LagBounds",
+      "type": "object"
+    },
+    "MethodProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "method_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Method Id",
+          "type": "string"
+        },
+        "method_version": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Method Version",
+          "type": "string"
+        },
+        "parameters_hash": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parameters Hash"
+        },
+        "seed": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Seed"
+        }
+      },
+      "required": [
+        "method_id",
+        "method_version"
+      ],
+      "title": "MethodProvenance",
+      "type": "object"
+    },
+    "MetricDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregation_kind": {
+          "anyOf": [
+            {
+              "enum": [
+                "sum",
+                "count",
+                "mean",
+                "ratio",
+                "quantile",
+                "min",
+                "max"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Aggregation Kind"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "entity_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entity Ref"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Extensions",
+          "type": "object"
+        },
+        "formula_ast": {
+          "anyOf": [
+            {
+              "discriminator": {
+                "mapping": {
+                  "binop": "#/$defs/FormulaBinOp",
+                  "const": "#/$defs/FormulaConst",
+                  "ref": "#/$defs/FormulaRef"
+                },
+                "propertyName": "node"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/FormulaRef"
+                },
+                {
+                  "$ref": "#/$defs/FormulaConst"
+                },
+                {
+                  "$ref": "#/$defs/FormulaBinOp"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Formula Ast"
+        },
+        "identity_tolerance": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Identity Tolerance"
+        },
+        "kind": {
+          "const": "metric",
+          "title": "Kind",
+          "type": "string"
+        },
+        "population_coverage": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PopulationCoverage"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "time_semantics": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MetricTimeSemantics"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value_schema": {
+          "$ref": "#/$defs/NumericValueSchema"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "variable_id",
+        "scope",
+        "provenance",
+        "kind",
+        "value_schema"
+      ],
+      "title": "MetricDefinition",
+      "type": "object"
+    },
+    "MetricTimeSemantics": {
+      "additionalProperties": false,
+      "properties": {
+        "grain": {
+          "pattern": "^[1-9][0-9]*(m|h|d|w)$",
+          "title": "Grain",
+          "type": "string"
+        },
+        "timezone": {
+          "default": "UTC",
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Timezone",
+          "type": "string"
+        },
+        "window": {
+          "default": "unknown",
+          "enum": [
+            "tumbling",
+            "rolling",
+            "cumulative",
+            "unknown"
+          ],
+          "title": "Window",
+          "type": "string"
+        }
+      },
+      "required": [
+        "grain"
+      ],
+      "title": "MetricTimeSemantics",
+      "type": "object"
+    },
+    "NumericValueSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "dtype": {
+          "enum": [
+            "real",
+            "integer",
+            "count",
+            "proportion"
+          ],
+          "title": "Dtype",
+          "type": "string"
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum"
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum"
+        },
+        "type": {
+          "const": "numeric",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "dtype"
+      ],
+      "title": "NumericValueSchema",
+      "type": "object"
+    },
+    "PopulationCoverage": {
+      "additionalProperties": false,
+      "properties": {
+        "coverage": {
+          "default": "unknown",
+          "enum": [
+            "full",
+            "subset",
+            "unknown"
+          ],
+          "title": "Coverage",
+          "type": "string"
+        },
+        "parent_population_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Population Id"
+        },
+        "population_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Population Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "population_id"
+      ],
+      "title": "PopulationCoverage",
+      "type": "object"
+    },
+    "ProvenanceLineage": {
+      "additionalProperties": false,
+      "description": "Ancestry, not independence: distinct roots do not imply independent evidence (I10).",
+      "properties": {
+        "content_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "generator_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generator Version"
+        },
+        "lineage_root_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Lineage Root Id",
+          "type": "string"
+        },
+        "origin_kind": {
+          "enum": [
+            "original",
+            "synthetic_generated",
+            "synthetic_replica",
+            "model_prediction",
+            "external_study",
+            "legacy_unknown"
+          ],
+          "title": "Origin Kind",
+          "type": "string"
+        },
+        "parent_evidence_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "title": "Parent Evidence Ids",
+          "type": "array"
+        },
+        "source_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "transformation_hash": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Transformation Hash"
+        }
+      },
+      "required": [
+        "source_id",
+        "origin_kind",
+        "lineage_root_id",
+        "content_hash"
+      ],
+      "title": "ProvenanceLineage",
+      "type": "object"
+    },
+    "SourceAttestation": {
+      "additionalProperties": false,
+      "description": "Who vouches for a record. A string label is not trust; 'signed' needs a signature.",
+      "properties": {
+        "attested_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attested At"
+        },
+        "method": {
+          "enum": [
+            "adapter_declared",
+            "signed",
+            "none"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "signature": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Signature"
+        },
+        "source_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "method"
+      ],
+      "title": "SourceAttestation",
+      "type": "object"
+    },
+    "StateVariableDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "entity_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entity Ref"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Extensions",
+          "type": "object"
+        },
+        "irregular_sampling": {
+          "default": false,
+          "title": "Irregular Sampling",
+          "type": "boolean"
+        },
+        "kind": {
+          "const": "state",
+          "title": "Kind",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "sampling_cadence_s": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sampling Cadence S"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value_schema": {
+          "discriminator": {
+            "mapping": {
+              "categorical": "#/$defs/CategoricalValueSchema",
+              "numeric": "#/$defs/NumericValueSchema"
+            },
+            "propertyName": "type"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/NumericValueSchema"
+            },
+            {
+              "$ref": "#/$defs/CategoricalValueSchema"
+            }
+          ],
+          "title": "Value Schema"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "variable_id",
+        "scope",
+        "provenance",
+        "kind",
+        "value_schema"
+      ],
+      "title": "StateVariableDefinition",
+      "type": "object"
+    },
+    "StructuralCertificate": {
+      "additionalProperties": false,
+      "description": "What a certificate identifies, and between which two graph nodes, exactly.\n\nA CAUSALLY_IDENTIFIED edge may cite a certificate only if the certificate's (source, target)\nequals the edge's and it identifies a direct effect or mechanism link. A total-effect\ncertificate (e.g. randomized assignment -> outcome, ITT) supports an EffectClaim, never an\nedge (C01, F05, I06).",
+      "properties": {
+        "assessment_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "assessment_status": {
+          "enum": [
+            "CONDITIONAL_IDENTIFICATION",
+            "PARTIAL_IDENTIFICATION"
+          ],
+          "title": "Assessment Status",
+          "type": "string"
+        },
+        "assumptions": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "basis": {
+          "enum": [
+            "randomized_assignment",
+            "instrumental_variable",
+            "quasi_experimental",
+            "structural_assumption"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "certificate_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Certificate Id",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "identifies": {
+          "enum": [
+            "total_effect_of_source",
+            "direct_effect",
+            "mechanism_link"
+          ],
+          "title": "Identifies",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "source_node": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Source Node",
+          "type": "string"
+        },
+        "target_node": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Target Node",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "certificate_id",
+        "source_node",
+        "target_node",
+        "basis",
+        "identifies",
+        "assessment_id",
+        "assessment_status",
+        "scope",
+        "evidence_ids",
+        "assumptions"
+      ],
+      "title": "StructuralCertificate",
+      "type": "object"
+    },
+    "Uncertainty": {
+      "additionalProperties": false,
+      "properties": {
+        "interval": {
+          "anyOf": [
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Interval"
+        },
+        "level": {
+          "default": 0.95,
+          "exclusiveMaximum": 1,
+          "exclusiveMinimum": 0,
+          "title": "Level",
+          "type": "number"
+        },
+        "se": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Se"
+        }
+      },
+      "title": "Uncertainty",
+      "type": "object"
+    },
+    "Validity": {
+      "additionalProperties": false,
+      "properties": {
+        "valid_from": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid From"
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid To"
+        }
+      },
+      "title": "Validity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "attestation": {
+      "$ref": "#/$defs/SourceAttestation"
+    },
+    "certificates": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/StructuralCertificate"
+      },
+      "title": "Certificates",
+      "type": "array"
+    },
+    "data_cut": {
+      "format": "date-time",
+      "title": "Data Cut",
+      "type": "string"
+    },
+    "definition": {
+      "anyOf": [
+        {
+          "discriminator": {
+            "mapping": {
+              "categorical": "#/$defs/CategoricalVariableDefinition",
+              "event": "#/$defs/EventVariableDefinition",
+              "metric": "#/$defs/MetricDefinition",
+              "state": "#/$defs/StateVariableDefinition"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/MetricDefinition"
+            },
+            {
+              "$ref": "#/$defs/StateVariableDefinition"
+            },
+            {
+              "$ref": "#/$defs/EventVariableDefinition"
+            },
+            {
+              "$ref": "#/$defs/CategoricalVariableDefinition"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Definition"
+    },
+    "dimension_specs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/DimensionSpec"
+      },
+      "title": "Dimension Specs",
+      "type": "array"
+    },
+    "edges": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/GraphEdge"
+      },
+      "maxItems": 200,
+      "title": "Edges",
+      "type": "array"
+    },
+    "effect_claims": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/EffectClaimAttachment"
+      },
+      "title": "Effect Claims",
+      "type": "array"
+    },
+    "effective_from": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Effective From"
+    },
+    "entity_specs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/EntitySpec"
+      },
+      "title": "Entity Specs",
+      "type": "array"
+    },
+    "nodes": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/GraphNode"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "record_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Record Id",
+      "type": "string"
+    },
+    "request_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/EnvironmentScope"
+    },
+    "source_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Source Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "request_id",
+    "source_id",
+    "record_id",
+    "attestation",
+    "scope",
+    "data_cut"
+  ],
+  "title": "AdmissionRequest",
+  "type": "object"
+}

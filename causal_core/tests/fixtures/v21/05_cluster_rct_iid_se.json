@@ -1,0 +1,89 @@
+{
+  "fixture_schema": "phase0-reference/1",
+  "case_id": "05_cluster_rct_iid_se",
+  "title": "Cluster RCT with individual outcomes",
+  "tests_what": "Naive IID SE refused; analysis at the randomization unit or explicit UNSUPPORTED",
+  "refs": [
+    "v3.2 §4.4 randomized_effect_v1",
+    "§7.3",
+    "F04"
+  ],
+  "gates": [
+    "G12"
+  ],
+  "source": "emulator:cluster_randomized_trial seed=20261105",
+  "behavior": {
+    "status": "CORRECTED",
+    "v21": "unit mismatch -> study invalid",
+    "v32": "cluster-level inference or UNSUPPORTED_CLUSTER_INFERENCE",
+    "corrections": [
+      "F04"
+    ]
+  },
+  "input": {
+    "question_kind": "ASSESS_STUDY",
+    "study_design": {
+      "design": "randomized",
+      "assignment_unit": "cluster",
+      "outcome_unit": "individual",
+      "analysis_unit_requested_by_source": "individual"
+    },
+    "estimand": {
+      "outcome": "y",
+      "contrast": "cluster assigned treatment vs control",
+      "functional": "ITT mean difference"
+    }
+  },
+  "data": {
+    "file": "05_cluster_rct_iid_se.data.csv",
+    "columns": [
+      "cluster",
+      "arm",
+      "y"
+    ],
+    "types": [
+      "str",
+      "str",
+      "float"
+    ],
+    "n_rows": 1000,
+    "sha256": "c0b5084b7f8f3d759896a88b888a4ceef2ce76708d640b5d9f93cd26ee08cd54"
+  },
+  "expected": {
+    "naive_individual_analysis": "REFUSED: NAIVE_IID_SE_UNDER_CLUSTER_ASSIGNMENT",
+    "cluster_analysis": {
+      "clusters_per_arm": {
+        "treatment": 10,
+        "control": 10
+      },
+      "equal_cluster_sizes": true,
+      "support": "SUPPORTED_WITH_LIMITATIONS",
+      "support_reason": "10 clusters in the smallest arm: small-sample t on cluster means (df = G - 2), assumes approximately normal cluster means",
+      "estimate": 0.039282584,
+      "se": 0.104195839926,
+      "df": 18,
+      "t": 0.377007220516,
+      "p_value": 0.710576118007,
+      "ci": [
+        -0.179624752603,
+        0.258189920603
+      ]
+    },
+    "claim_kind": "CAUSAL_EFFECT_CONDITIONAL",
+    "empirical_variance_inflation": 2.94086295866
+  },
+  "v21_reference": {
+    "rule": "randomization unit must equal exposure/analysis unit",
+    "outcome": "study rejected as invalid; no cluster-aware path"
+  },
+  "failure_mode_if_unguarded": {
+    "estimate": 0.039282584,
+    "se": 0.060759331403,
+    "p_value": 0.517937736278,
+    "ci": [
+      -0.079803517276,
+      0.158368685276
+    ],
+    "n_units": 1000
+  }
+}

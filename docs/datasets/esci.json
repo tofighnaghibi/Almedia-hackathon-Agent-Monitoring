@@ -1,0 +1,46 @@
+{
+ "fetch_status": "ok",
+ "origin": "github amazon-science/esci-data (official)",
+ "fetched": "2026-11-21T18:24:27",
+ "files": {
+  "shopping_queries_dataset_examples.parquet": {
+   "bytes": 51286808,
+   "sha256": "4a735b693b4a424a6fc67f5be6e4c811495c488bbf66d02a602d308b2744263a"
+  },
+  "shopping_queries_dataset_products.parquet": {
+   "bytes": 1108857465,
+   "sha256": "25124442d064d64b26f74082d6fa09438d679efc0c183cf28d19064a2b65a265"
+  },
+  "shopping_queries_dataset_sources.csv": {
+   "bytes": 1682802,
+   "sha256": "a5fed8ecc016443de40bf3c63098f0e3f23bbe4daa4236f1c38b8c3184778c50"
+  }
+ },
+ "bytes": 1161827075,
+ "licence": "Apache-2.0",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Search queries, relevance",
+   "role": "primary",
+   "claim": "query text + human E/S/C/I labels per product",
+   "status": "PASS",
+   "evidence": "2,621,288 judgements, 130,652 queries, 1,802,772 products; US label mix {'C': 0.015, 'I': 0.062, 'E': 0.476, 'S': 0.141}; columns ['example_id', 'query', 'query_id', 'product_id', 'product_locale', 'esci_label', 'small_version', 'large_version', 'split', '__index_level_0__']"
+  },
+  {
+   "row": "Products, categories, titles",
+   "role": "secondary",
+   "claim": "product titles and brands",
+   "status": "PASS",
+   "evidence": "US products 1,215,854; title 100.0%, brand 94.1%; columns ['product_id', 'product_title', 'product_description', 'product_bullet_point', 'product_brand', 'product_color', 'product_locale']"
+  },
+  {
+   "row": "Exposure, position, clicks",
+   "role": "secondary",
+   "claim": "rank positions / exposure",
+   "status": "PARTIAL",
+   "evidence": "relevance labels only: no positions, impressions or clicks"
+  }
+ ],
+ "audited": "2026-11-21T18:43:56"
+}

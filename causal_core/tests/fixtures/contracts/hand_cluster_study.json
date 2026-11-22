@@ -1,0 +1,36 @@
+{
+  "_note": "Hand-written for the Phase 1 audit (probe E). A classroom-randomized study with student-level outcomes: assignment unit != outcome unit, which must be accepted (F04). No emulator code involved.",
+  "design": {
+    "schema_version": "2.0",
+    "design": "randomized",
+    "study_id": "reading_tutor_2026",
+    "scope": {"environment_id": "district-north", "environment_kind": "production"},
+    "provenance": {"source_id": "district-research-office", "method": "signed", "signature": "sig:ed25519:hand-fixture"},
+    "population": "grade 4 classrooms, district north, spring term 2026",
+    "outcomes": ["reading_score_post"],
+    "randomization": "cluster",
+    "cluster_field": "classroom_id",
+    "assignment_unit": "classroom",
+    "outcome_unit": "student",
+    "expected_allocation": {"tutor": 0.5, "control": 0.5},
+    "compliance": "unknown",
+    "interference": "none_assumed"
+  },
+  "outcomes": {
+    "schema_version": "2.0",
+    "observation_id": "rt2026-outcomes",
+    "variable_id": "reading_score_post",
+    "payload": {"shape": "assignment_outcomes", "study_id": "reading_tutor_2026", "arms": ["tutor", "control"], "units": [
+      {"unit_id": "s001", "arm": "tutor", "outcome": 71.0, "cluster_id": "cls-a"},
+      {"unit_id": "s002", "arm": "tutor", "outcome": null, "cluster_id": "cls-a"},
+      {"unit_id": "s003", "arm": "control", "outcome": 64.5, "cluster_id": "cls-b"},
+      {"unit_id": "s004", "arm": "control", "outcome": 66.0, "cluster_id": "cls-b"}
+    ]},
+    "source_id": "district-research-office",
+    "record_key": "rt2026:post",
+    "revision": 1,
+    "lineage": {"source_id": "district-research-office", "origin_kind": "original", "lineage_root_id": "dro:rt2026:post",
+                "content_hash": "0d1c2b3a49586776a5b4c3d2e1f00d1c2b3a49586776a5b4c3d2e1f00d1c2b3a"},
+    "scope": {"environment_id": "district-north", "environment_kind": "production"}
+  }
+}

@@ -1,0 +1,600 @@
+[
+ {
+  "layer": true,
+  "scenario": "9a",
+  "seed": 81,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -5.5)"
+  ],
+  "stage": [
+   "stage ratio completion_rate"
+  ],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -5.5)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ],
+   [
+    "ASSOCIATION",
+    "the change in orders_count is located at: stage ratio completion_rate"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "9a",
+  "seed": 82,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -6.5)"
+  ],
+  "stage": [
+   "stage ratio completion_rate"
+  ],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -6.5)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ],
+   [
+    "ASSOCIATION",
+    "the change in orders_count is located at: stage ratio completion_rate"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "9a",
+  "seed": 83,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -4.1)"
+  ],
+  "stage": [
+   "stage ratio completion_rate"
+  ],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -4.1)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ],
+   [
+    "ASSOCIATION",
+    "the change in orders_count is located at: stage ratio completion_rate"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "9a",
+  "seed": 84,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -4.9)"
+  ],
+  "stage": [
+   "stage ratio completion_rate"
+  ],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -4.9)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ],
+   [
+    "ASSOCIATION",
+    "the change in orders_count is located at: stage ratio completion_rate"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "9a",
+  "seed": 85,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -6.1)"
+  ],
+  "stage": [
+   "stage ratio completion_rate"
+  ],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -6.1)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ],
+   [
+    "ASSOCIATION",
+    "the change in orders_count is located at: stage ratio completion_rate"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "9b",
+  "seed": 81,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -4.4)"
+  ],
+  "stage": [
+   "upstream of sessions_count"
+  ],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -4.4)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ],
+   [
+    "ASSOCIATION",
+    "the change in orders_count is located at: upstream of sessions_count"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "9b",
+  "seed": 82,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -6.8)"
+  ],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -6.8)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ],
+   [
+    "INCONCLUSIVE",
+    "stage walk for orders_count: mixed evidence ([None])"
+   ]
+  ],
+  "correct": false
+ },
+ {
+  "layer": true,
+  "scenario": "9b",
+  "seed": 83,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -4.4)"
+  ],
+  "stage": [
+   "upstream of sessions_count"
+  ],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -4.4)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ],
+   [
+    "ASSOCIATION",
+    "the change in orders_count is located at: upstream of sessions_count"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "9b",
+  "seed": 84,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -4.4)"
+  ],
+  "stage": [
+   "upstream of sessions_count"
+  ],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -4.4)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ],
+   [
+    "ASSOCIATION",
+    "the change in orders_count is located at: upstream of sessions_count"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "9b",
+  "seed": 85,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -6.4)"
+  ],
+  "stage": [
+   "upstream of sessions_count"
+  ],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -6.4)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ],
+   [
+    "ASSOCIATION",
+    "the change in orders_count is located at: upstream of sessions_count"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 81,
+  "changed": [],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count: no period beyond the robust threshold"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 82,
+  "changed": [],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count: no period beyond the robust threshold"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 83,
+  "changed": [],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count: no period beyond the robust threshold"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 84,
+  "changed": [],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count: no period beyond the robust threshold"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": true,
+  "scenario": "control",
+  "seed": 85,
+  "changed": [],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count: no period beyond the robust threshold"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": false,
+  "scenario": "9a",
+  "seed": 81,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -5.5)"
+  ],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -5.5)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "correct": false
+ },
+ {
+  "layer": false,
+  "scenario": "9a",
+  "seed": 82,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -6.5)"
+  ],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -6.5)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "correct": false
+ },
+ {
+  "layer": false,
+  "scenario": "9a",
+  "seed": 83,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -4.1)"
+  ],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -4.1)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "correct": false
+ },
+ {
+  "layer": false,
+  "scenario": "9a",
+  "seed": 84,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -4.9)"
+  ],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -4.9)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "correct": false
+ },
+ {
+  "layer": false,
+  "scenario": "9a",
+  "seed": 85,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -6.1)"
+  ],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -6.1)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "correct": false
+ },
+ {
+  "layer": false,
+  "scenario": "9b",
+  "seed": 81,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -4.4)"
+  ],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -4.4)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "correct": false
+ },
+ {
+  "layer": false,
+  "scenario": "9b",
+  "seed": 82,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -6.8)"
+  ],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -6.8)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "correct": false
+ },
+ {
+  "layer": false,
+  "scenario": "9b",
+  "seed": 83,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -4.4)"
+  ],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -4.4)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "correct": false
+ },
+ {
+  "layer": false,
+  "scenario": "9b",
+  "seed": 84,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -4.4)"
+  ],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -4.4)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "correct": false
+ },
+ {
+  "layer": false,
+  "scenario": "9b",
+  "seed": 85,
+  "changed": [
+   "orders_count changed in period(s) 2018-02-12 (robust z -6.4)"
+  ],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count changed in period(s) 2018-02-12 (robust z -6.4)"
+   ],
+   [
+    "ASSOCIATION",
+    "2018-02-12: orders_count and payments_count (identity order_payment_ratio) moved together: the change is in the measured quantity, not its measurement"
+   ]
+  ],
+  "correct": false
+ },
+ {
+  "layer": false,
+  "scenario": "control",
+  "seed": 81,
+  "changed": [],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count: no period beyond the robust threshold"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": false,
+  "scenario": "control",
+  "seed": 82,
+  "changed": [],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count: no period beyond the robust threshold"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": false,
+  "scenario": "control",
+  "seed": 83,
+  "changed": [],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count: no period beyond the robust threshold"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": false,
+  "scenario": "control",
+  "seed": 84,
+  "changed": [],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count: no period beyond the robust threshold"
+   ]
+  ],
+  "correct": true
+ },
+ {
+  "layer": false,
+  "scenario": "control",
+  "seed": 85,
+  "changed": [],
+  "stage": [],
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "orders_count: no period beyond the robust threshold"
+   ]
+  ],
+  "correct": true
+ }
+]

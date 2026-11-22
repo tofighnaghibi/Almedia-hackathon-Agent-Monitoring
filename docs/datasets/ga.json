@@ -1,0 +1,25 @@
+{
+ "fetch_status": "ok",
+ "origin": "kaggle competition ga-customer-revenue-prediction (train.csv v1 only; 25 GB v2 not needed)",
+ "fetched": "2026-11-21T20:55:29",
+ "files": {
+  "train.csv": {
+   "bytes": 1503430926,
+   "sha256": "29b193f50ffcb5737cc55efe3168e18f57650acada0424764428cf096b758e54"
+  }
+ },
+ "bytes": 1503430926,
+ "licence": "competition rules",
+ "audit_status": "done",
+ "audit_error": null,
+ "claims": [
+  {
+   "row": "Devices, channels",
+   "role": "secondary",
+   "claim": "sessions with device + marketing channel + purchase outcome",
+   "status": "PASS",
+   "evidence": "903,653 sessions; conversion by device [('desktop', 664479, 0.0158), ('mobile', 208725, 0.0041), ('tablet', 30449, 0.0055)]; by channel [('Organic Search', 0.009), ('Social', 0.0005), ('Direct', 0.0143), ('Referral', 0.0507), ('Paid Search', 0.0185), ('Affiliates', 0.0005), ('Display', 0.0227), ('(Other)', 0.0083)]"
+  }
+ ],
+ "audited": "2026-11-21T20:58:09"
+}

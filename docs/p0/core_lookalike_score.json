@@ -1,0 +1,111 @@
+[
+ {
+  "scenario": "8a",
+  "seed": 31,
+  "verdict_target_week": "DQ_FAILURE",
+  "other_period_verdicts": [
+   "ASSOCIATION"
+  ],
+  "correct": true
+ },
+ {
+  "scenario": "8a",
+  "seed": 32,
+  "verdict_target_week": "DQ_FAILURE",
+  "other_period_verdicts": [],
+  "correct": true
+ },
+ {
+  "scenario": "8a",
+  "seed": 33,
+  "verdict_target_week": "DQ_FAILURE",
+  "other_period_verdicts": [],
+  "correct": true
+ },
+ {
+  "scenario": "8a",
+  "seed": 34,
+  "verdict_target_week": "DQ_FAILURE",
+  "other_period_verdicts": [],
+  "correct": true
+ },
+ {
+  "scenario": "8a",
+  "seed": 35,
+  "verdict_target_week": "DQ_FAILURE",
+  "other_period_verdicts": [],
+  "correct": true
+ },
+ {
+  "scenario": "8b",
+  "seed": 31,
+  "verdict_target_week": "ASSOCIATION",
+  "other_period_verdicts": [],
+  "correct": true
+ },
+ {
+  "scenario": "8b",
+  "seed": 32,
+  "verdict_target_week": "INCONCLUSIVE",
+  "other_period_verdicts": [],
+  "correct": false
+ },
+ {
+  "scenario": "8b",
+  "seed": 33,
+  "verdict_target_week": "INCONCLUSIVE",
+  "other_period_verdicts": [],
+  "correct": false
+ },
+ {
+  "scenario": "8b",
+  "seed": 34,
+  "verdict_target_week": "ASSOCIATION",
+  "other_period_verdicts": [],
+  "correct": true
+ },
+ {
+  "scenario": "8b",
+  "seed": 35,
+  "verdict_target_week": "ASSOCIATION",
+  "other_period_verdicts": [],
+  "correct": true
+ },
+ {
+  "scenario": "control",
+  "seed": 31,
+  "verdict_target_week": null,
+  "other_period_verdicts": [
+   "ASSOCIATION"
+  ],
+  "correct": false
+ },
+ {
+  "scenario": "control",
+  "seed": 32,
+  "verdict_target_week": null,
+  "other_period_verdicts": [],
+  "correct": true
+ },
+ {
+  "scenario": "control",
+  "seed": 33,
+  "verdict_target_week": null,
+  "other_period_verdicts": [],
+  "correct": true
+ },
+ {
+  "scenario": "control",
+  "seed": 34,
+  "verdict_target_week": null,
+  "other_period_verdicts": [],
+  "correct": true
+ },
+ {
+  "scenario": "control",
+  "seed": 35,
+  "verdict_target_week": null,
+  "other_period_verdicts": [],
+  "correct": true
+ }
+]

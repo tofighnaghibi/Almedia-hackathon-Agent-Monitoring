@@ -1,0 +1,65 @@
+{
+ "status": "partially supported (transferred; held-out stable)",
+ "estimate": {
+  "random_ctr_halves": [
+   0.0034373212760291224,
+   0.003501347567683988
+  ],
+  "random_propensity": 0.0125,
+  "bts_propensity_min_median_max_n": [
+   1e-06,
+   0.066605,
+   0.95424,
+   12357200
+  ]
+ },
+ "heldout": [
+  {
+   "name": "random-policy CTR, first vs second half of days",
+   "halves": [
+    0.0034373212760291224,
+    0.003501347567683988
+   ],
+   "diff": 0.018626798752088246,
+   "tol": 0.2,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2019-12-01",
+ "target": false,
+ "assumptions": [
+  "propensities show how a logging policy behaves; the CTR level is ZOZOTOWN fashion, not Olist"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L4-recs",
+ "layer": "L4",
+ "data_type": "Recommendation policy, propensities",
+ "method": "transfer",
+ "sources": [
+  "open_bandit"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "random-policy CTR: first vs second half of days",
+ "seconds": 21.6,
+ "cache_key": "83ae404d78404d88",
+ "inputs": {
+  "open_bandit/bts/all.csv": [
+   6321017454,
+   1795282638
+  ],
+  "open_bandit/bts/item_context.csv": [
+   10041,
+   1795282639
+  ],
+  "open_bandit/random/all.csv": [
+   695501426,
+   1795282312
+  ],
+  "open_bandit/random/item_context.csv": [
+   10041,
+   1795282313
+  ]
+ }
+}

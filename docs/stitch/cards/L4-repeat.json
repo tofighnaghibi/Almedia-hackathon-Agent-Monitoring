@@ -1,0 +1,112 @@
+{
+ "status": "partially supported (transferred; held-out stable)",
+ "estimate": {
+  "olist_repeat_buyer_share": 0.031187562437562436,
+  "instacart_median_gap_days": [
+   7.0,
+   7.0
+  ]
+ },
+ "heldout": [
+  {
+   "name": "Instacart median inter-order gap, even vs odd users",
+   "halves": [
+    7.0,
+    7.0
+   ],
+   "diff": 0.0,
+   "tol": 0.15,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2017-12-31",
+ "target": false,
+ "assumptions": [
+  "groceries repeat far more often than Olist goods: only the gap SHAPE transfers, scaled to Olist's 3.1% repeat share"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L4-repeat",
+ "layer": "L4",
+ "data_type": "Repeat purchases",
+ "method": "fit + transfer",
+ "sources": [
+  "olist",
+  "instacart"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "Instacart inter-order gap: random halves of users",
+ "seconds": 2.4,
+ "cache_key": "9013cb3c85cf19b8",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ],
+  "instacart/aisles.csv": [
+   2603,
+   1795284189
+  ],
+  "instacart/departments.csv": [
+   270,
+   1795284189
+  ],
+  "instacart/order_products__prior.csv": [
+   577550706,
+   1795284193
+  ],
+  "instacart/order_products__train.csv": [
+   24680147,
+   1795284193
+  ],
+  "instacart/orders.csv": [
+   108968645,
+   1795284194
+  ],
+  "instacart/products.csv": [
+   2166953,
+   1795284194
+  ]
+ }
+}

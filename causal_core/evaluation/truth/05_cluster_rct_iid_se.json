@@ -1,0 +1,14 @@
+{
+  "case_id": "05_cluster_rct_iid_se",
+  "generator": "emulator/0.1:cluster_randomized_trial",
+  "seed": 20261105,
+  "params": {
+    "n_clusters": 20,
+    "cluster_size": 50,
+    "icc": 0.1
+  },
+  "true_values": {
+    "average_treatment_effect": 0.15,
+    "design_effect": 5.9
+  }
+}

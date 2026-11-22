@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Voice-over prompter</title>
+<style>
+body{margin:0;background:#0e1115;color:#e9ecf0;font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;display:flex;flex-direction:column;align-items:center}
+video{width:min(1280px,96vw);margin-top:16px;border:1px solid #2b323c;border-radius:10px;background:#000}
+#now{font-size:34px;line-height:1.35;min-height:96px;max-width:1240px;text-align:center;margin-top:18px}
+#next{font-size:22px;color:#7f8996;min-height:60px;max-width:1240px;text-align:center;margin-top:6px}
+#bar{display:flex;gap:14px;align-items:center;margin:16px 0 26px}
+button{font-size:19px;font-weight:650;padding:10px 22px;border-radius:10px;border:1.5px solid #3e4652;background:#1d222a;color:#e9ecf0;cursor:pointer}
+button.rec{border-color:#7a2626;color:#ff9a9a} button:disabled{opacity:.4;cursor:default}
+#status{font-size:17px;color:#b1b9c4}
+</style>
+</head>
+<body>
+<video id="v" src="../videos/uc2_silent.mp4" preload="auto" playsinline></video>
+<div id="now">Press Record: a 3-second countdown, then the video plays and your microphone records until the end.</div>
+<div id="next"></div>
+<div id="bar">
+  <button id="rec" class="rec">● Record</button>
+  <button id="stop" disabled>■ Stop and save</button>
+  <button id="play">▶ Rehearse (no recording)</button>
+  <span id="status"></span>
+</div>
+<script>
+const v = document.getElementById("v"), now = document.getElementById("now"), next = document.getElementById("next"), st = document.getElementById("status");
+let lines = [], rec = null, chunks = [], t0 = 0, offset = 0;
+fetch("uc2_narration_resolved.json?" + Date.now()).then(r => r.json()).then(d => { lines = d.lines; });
+const mm = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+function tick() {
+  const t = v.currentTime;
+  const i = lines.findLastIndex(l => l.t <= t + 0.15);
+  now.textContent = i >= 0 && t < lines[i].end + 0.5 ? lines[i].text : "";
+  const n = lines.find(l => l.t > t + 0.15);
+  next.textContent = n ? `next at ${mm(n.t)} · ${n.text}` : "";
+  requestAnimationFrame(tick);
+}
+tick();
+document.getElementById("play").onclick = () => { v.currentTime = 0; v.play(); };
+document.getElementById("rec").onclick = async () => {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: true, autoGainControl: true } });
+  rec = new MediaRecorder(stream); chunks = [];
+  rec.ondataavailable = e => chunks.push(e.data);
+  rec.onstop = save;
+  for (const c of ["3", "2", "1"]) { now.textContent = c; await new Promise(r => setTimeout(r, 1000)); }
+  v.currentTime = 0;
+  rec.start(); t0 = performance.now();
+  v.addEventListener("playing", () => { offset = (performance.now() - t0) / 1000; }, { once: true });
+  await v.play();
+  document.getElementById("rec").disabled = true; document.getElementById("stop").disabled = false;
+  st.textContent = "recording…";
+};
+v.onended = () => { if (rec && rec.state === "recording") rec.stop(); };
+document.getElementById("stop").onclick = () => { v.pause(); if (rec && rec.state === "recording") rec.stop(); };
+async function save() {
+  st.textContent = "saving…";
+  const blob = new Blob(chunks, { type: rec.mimeType || "audio/webm" });
+  const r = await fetch(`/save-voice?offset=${offset.toFixed(3)}`, { method: "POST", body: blob });
+  st.textContent = r.ok ? `saved videos/uc2_voice.webm (video started ${offset.toFixed(2)} s into the recording). Next: scripts/uc2_assemble.sh videos/uc2_voice.webm` : "save failed";
+  rec.stream.getTracks().forEach(t => t.stop());
+  document.getElementById("rec").disabled = false; document.getElementById("stop").disabled = true;
+}
+</script>
+</body>
+</html>

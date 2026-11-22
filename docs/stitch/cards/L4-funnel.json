@@ -1,0 +1,72 @@
+{
+ "status": "partially supported (transferred shape; held-out stable)",
+ "estimate": {
+  "views_mean_buying": 6.247254668811639,
+  "views_mean_nonbuying": 1.4736336385143913,
+  "cart_share_nonbuying": 0.0183085743325142,
+  "cart_share_buying": 0.8345806812618032,
+  "k_nonbuying_per_buying": 122.21990627404351
+ },
+ "heldout": [
+  {
+   "name": "H1 views/session non-buying (rel diff <= 10%)",
+   "halves": {
+    "first": 1.5161464284814663,
+    "second": 1.4311507146485796
+   },
+   "rel_diff": 0.056060359498400346,
+   "pass": true
+  },
+  {
+   "name": "H2 non-buying cart share (abs diff <= 0.02)",
+   "halves": {
+    "first": 0.018547439722824605,
+    "second": 0.01806987675000801
+   },
+   "abs_diff": 0.00047756297281659546,
+   "pass": true
+  }
+ ],
+ "trained_through": "2015-09-18",
+ "target": false,
+ "assumptions": [
+  "ratios carry over, levels come from Olist",
+  "k (non-buying sessions per buying session) is site-specific: least transferable; scenarios should vary it"
+ ],
+ "bridges": [],
+ "status_override": "partially supported (transferred shape; held-out stable)",
+ "id": "L4-funnel",
+ "layer": "L4",
+ "data_type": "Funnel view \u2192 cart \u2192 buy, timing",
+ "method": "transfer",
+ "sources": [
+  "retailrocket",
+  "taobao"
+ ],
+ "consumed_by": "sim.sessions",
+ "heldout_plan": "card TC-RR1 (views and cart share halves)",
+ "seconds": 22.9,
+ "cache_key": "a62cc3e22b26753f",
+ "inputs": {
+  "retailrocket/category_tree.csv": [
+   14454,
+   1795273490
+  ],
+  "retailrocket/events.csv": [
+   94237913,
+   1795273491
+  ],
+  "retailrocket/item_properties_part1.csv": [
+   484315749,
+   1795273494
+  ],
+  "retailrocket/item_properties_part2.csv": [
+   408929907,
+   1795273496
+  ],
+  "taobao/UserBehavior.csv": [
+   3672347465,
+   1795285741
+  ]
+ }
+}

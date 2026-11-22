@@ -1,0 +1,31 @@
+# Video 2: the Astronomy Shop in storefront mode. Same as marketplace-recon/deploy/emulator/compose.emulator.yaml,
+# minus the `!override` tag (needs Docker Compose >= 2.24; this Mac has 2.17; Compose merges volumes by container
+# path, so the flagd mount below replaces the upstream ./src/flagd mount), plus two compatibility fixes for this Mac:
+#   - payment: the pinned upstream compose (main @7a88536) preloads @opentelemetry/auto-instrumentations-node, which the
+#     3.1.0 payment image does not contain -> set back to the 3.1.0 image's own preload;
+#   - otel-collector: docker_stats pinned to Docker API 1.42 (Docker Engine 23.0.5) via one more config layer;
+#   - recommendation: the pinned compose health check needs bash, which the 3.1.0 image lacks -> the 3.1.0 tag's nc check.
+# Upstream opentelemetry-demo and marketplace-recon are untouched.
+services:
+  otel-collector:
+    command:
+      - --config=/etc/otelcol-config.yml
+      - --config=/etc/otelcol-config-extras.yml
+      - --config=/etc/otelcol-uc2.yml
+      - --feature-gates=service.profilesSupport
+    volumes:
+      - ${HOME}/data/mkt/astronomy/live:/m0out
+      - ${UC2_DEPLOY}/otelcol-uc2.yml:/etc/otelcol-uc2.yml
+  flagd:
+    volumes:
+      - ${HOME}/data/mkt/astronomy/flags:/etc/flagd
+  payment:
+    environment:
+      - NODE_OPTIONS=--require /otel-auto-instrumentation-nodejs/autoinstrumentation.js
+  recommendation:
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost ${RECOMMENDATION_PORT}"]
+      start_period: 20s
+      interval: 5s
+      timeout: 5s
+      retries: 20

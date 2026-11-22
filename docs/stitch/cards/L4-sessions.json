@@ -1,0 +1,66 @@
+{
+ "status": "unsupported transfer (held-out unstable; sensitivity = both halves)",
+ "estimate": {
+  "share_buys_with_prior_view": 0.5155026383326922,
+  "lag_view_median_s": 2675.0,
+  "lag_view_p90_s": 176258.80000000005,
+  "share_lag_over_30min": 0.5491866020997671,
+  "lag_cart_median_s": 67382.0,
+  "share_buys_with_cart": 0.16646651370930937
+ },
+ "heldout": [
+  {
+   "name": "H3 median first-view->buy lag, halves (rel diff <= 25%)",
+   "halves": {
+    "first": 2014.0,
+    "second": 3613.0
+   },
+   "rel_diff": 0.7939424031777557,
+   "pass": false
+  }
+ ],
+ "trained_through": "2017-12-03",
+ "target": false,
+ "assumptions": [
+  "lag shape carries over",
+  "truncated by the 9-day window (long lags under-represented)",
+  "H3 halves are confounded by left truncation (early buys have less visible history)",
+  "window includes the run-up to Double 12"
+ ],
+ "bridges": [],
+ "status_override": "unsupported transfer (held-out unstable; sensitivity = both halves)",
+ "id": "L4-sessions",
+ "layer": "L4",
+ "data_type": "Session length, revisits",
+ "method": "transfer",
+ "sources": [
+  "taobao",
+  "retailrocket"
+ ],
+ "consumed_by": "sim.sessions",
+ "heldout_plan": "card TC-TB1 (first-view lag halves)",
+ "seconds": 66.4,
+ "cache_key": "2e0933f013aebec9",
+ "inputs": {
+  "taobao/UserBehavior.csv": [
+   3672347465,
+   1795285741
+  ],
+  "retailrocket/category_tree.csv": [
+   14454,
+   1795273490
+  ],
+  "retailrocket/events.csv": [
+   94237913,
+   1795273491
+  ],
+  "retailrocket/item_properties_part1.csv": [
+   484315749,
+   1795273494
+  ],
+  "retailrocket/item_properties_part2.csv": [
+   408929907,
+   1795273496
+  ]
+ }
+}

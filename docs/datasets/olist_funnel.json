@@ -1,0 +1,35 @@
+{
+ "fetch_status": "ok",
+ "origin": "kaggle olistbr/marketing-funnel-olist",
+ "fetched": "2026-11-21T18:20:28",
+ "files": {
+  "olist_closed_deals_dataset.csv": {
+   "bytes": 171352,
+   "sha256": "1433f402d8fff00ca167579de641d9525f6e846368958c166f699ef1b0c31f3d"
+  },
+  "olist_marketing_qualified_leads_dataset.csv": {
+   "bytes": 703836,
+   "sha256": "5537753b7549ce4068e52e2402c29f2773c5375fc0575520ae8f3f301f666573"
+  }
+ },
+ "bytes": 875188,
+ "licence": "CC BY-NC-SA 4.0",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Seller entry, ramp-up",
+   "role": "primary",
+   "claim": "acquisition date + channel, joinable to sales",
+   "status": "PASS",
+   "evidence": "842 closed deals, 380 join to Olist sales on seller_id; MQL columns ['mql_id', 'first_contact_date', 'landing_page_id', 'origin']"
+  },
+  {
+   "row": "Sellers, regions, size",
+   "role": "secondary",
+   "claim": "seller segment / type",
+   "status": "PASS",
+   "evidence": "business_segment, lead_type, business_type columns"
+  }
+ ],
+ "audited": "2026-11-21T18:21:58"
+}

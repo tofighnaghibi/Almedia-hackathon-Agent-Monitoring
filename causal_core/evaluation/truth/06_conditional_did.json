@@ -1,0 +1,13 @@
+{
+  "case_id": "06_conditional_did",
+  "generator": "emulator/0.1:parallel_trends_panel",
+  "seed": 20261106,
+  "params": {
+    "trend": 0.5,
+    "noise_sd": 0.3,
+    "parallel_trends": true
+  },
+  "true_values": {
+    "att": 1.5
+  }
+}

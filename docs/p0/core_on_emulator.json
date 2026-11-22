@@ -1,0 +1,371 @@
+[
+ {
+  "scenario": "8a_logging_drop",
+  "seed": 31,
+  "outcome": "COMPLETED",
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "alarm: evidence against the null (up), first at point 8; peak log-wealth 13.86 \u2265 3.69 (against a baseline learned on 63 older points, frozen)"
+   ],
+   [
+    "DESCRIPTIVE",
+    "alarm: evidence against the null (up), first at point 29; peak log-wealth 44.89 \u2265 3.69 (against a baseline learned on 63 older points, frozen)"
+   ]
+  ],
+  "trace": [
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "PASS"
+   ],
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "PASS"
+   ],
+   [
+    "CHALLENGE",
+    "PASS"
+   ],
+   [
+    "REPORT",
+    "DONE"
+   ]
+  ]
+ },
+ {
+  "scenario": "8a_logging_drop",
+  "seed": 32,
+  "outcome": "COMPLETED",
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "no alarm: peak log-wealth 0.65 < 3.69 (failure to reject, not evidence of no change) (against a baseline learned on 63 older points, frozen)"
+   ],
+   [
+    "DESCRIPTIVE",
+    "alarm: evidence against the null (up), first at point 29; peak log-wealth 61.50 \u2265 3.69 (against a baseline learned on 63 older points, frozen)"
+   ]
+  ],
+  "trace": [
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "PASS"
+   ],
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "PASS"
+   ],
+   [
+    "CHALLENGE",
+    "PASS"
+   ],
+   [
+    "REPORT",
+    "DONE"
+   ]
+  ]
+ },
+ {
+  "scenario": "8a_logging_drop",
+  "seed": 33,
+  "outcome": "INCONCLUSIVE",
+  "findings": [
+   [
+    "INCONCLUSIVE",
+    "baseline_shift_v1 refused: BASELINE_AUTOCORRELATED: training residuals have lag-1 autocorrelation +0.27 (> 2/\u221an): increments would not be independent"
+   ],
+   [
+    "INCONCLUSIVE",
+    "baseline_shift_v1 refused: BASELINE_AUTOCORRELATED: training residuals have lag-1 autocorrelation -0.26 (> 2/\u221an): increments would not be independent"
+   ]
+  ],
+  "trace": [
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "REFUSED"
+   ],
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "REFUSED"
+   ],
+   [
+    "CHALLENGE",
+    "PASS"
+   ],
+   [
+    "REPORT",
+    "DONE"
+   ]
+  ]
+ },
+ {
+  "scenario": "8b_demand_drop",
+  "seed": 31,
+  "outcome": "COMPLETED",
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "alarm: evidence against the null (up), first at point 8; peak log-wealth 13.86 \u2265 3.69 (against a baseline learned on 63 older points, frozen)"
+   ],
+   [
+    "DESCRIPTIVE",
+    "no alarm: peak log-wealth -0.08 < 3.69 (failure to reject, not evidence of no change) (against a baseline learned on 63 older points, frozen)"
+   ]
+  ],
+  "trace": [
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "PASS"
+   ],
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "PASS"
+   ],
+   [
+    "CHALLENGE",
+    "PASS"
+   ],
+   [
+    "REPORT",
+    "DONE"
+   ]
+  ]
+ },
+ {
+  "scenario": "8b_demand_drop",
+  "seed": 32,
+  "outcome": "COMPLETED",
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "no alarm: peak log-wealth 0.65 < 3.69 (failure to reject, not evidence of no change) (against a baseline learned on 63 older points, frozen)"
+   ],
+   [
+    "DESCRIPTIVE",
+    "no alarm: peak log-wealth -0.09 < 3.69 (failure to reject, not evidence of no change) (against a baseline learned on 63 older points, frozen)"
+   ]
+  ],
+  "trace": [
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "PASS"
+   ],
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "PASS"
+   ],
+   [
+    "CHALLENGE",
+    "PASS"
+   ],
+   [
+    "REPORT",
+    "DONE"
+   ]
+  ]
+ },
+ {
+  "scenario": "8b_demand_drop",
+  "seed": 33,
+  "outcome": "INCONCLUSIVE",
+  "findings": [
+   [
+    "INCONCLUSIVE",
+    "baseline_shift_v1 refused: BASELINE_AUTOCORRELATED: training residuals have lag-1 autocorrelation +0.27 (> 2/\u221an): increments would not be independent"
+   ],
+   [
+    "INCONCLUSIVE",
+    "baseline_shift_v1 refused: BASELINE_AUTOCORRELATED: training residuals have lag-1 autocorrelation -0.26 (> 2/\u221an): increments would not be independent"
+   ]
+  ],
+  "trace": [
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "REFUSED"
+   ],
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "REFUSED"
+   ],
+   [
+    "CHALLENGE",
+    "PASS"
+   ],
+   [
+    "REPORT",
+    "DONE"
+   ]
+  ]
+ },
+ {
+  "scenario": "control",
+  "seed": 31,
+  "outcome": "COMPLETED",
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "alarm: evidence against the null (up), first at point 8; peak log-wealth 13.86 \u2265 3.69 (against a baseline learned on 63 older points, frozen)"
+   ],
+   [
+    "DESCRIPTIVE",
+    "no alarm: peak log-wealth -0.08 < 3.69 (failure to reject, not evidence of no change) (against a baseline learned on 63 older points, frozen)"
+   ]
+  ],
+  "trace": [
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "PASS"
+   ],
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "PASS"
+   ],
+   [
+    "CHALLENGE",
+    "PASS"
+   ],
+   [
+    "REPORT",
+    "DONE"
+   ]
+  ]
+ },
+ {
+  "scenario": "control",
+  "seed": 32,
+  "outcome": "COMPLETED",
+  "findings": [
+   [
+    "DESCRIPTIVE",
+    "no alarm: peak log-wealth 0.65 < 3.69 (failure to reject, not evidence of no change) (against a baseline learned on 63 older points, frozen)"
+   ],
+   [
+    "DESCRIPTIVE",
+    "no alarm: peak log-wealth -0.10 < 3.69 (failure to reject, not evidence of no change) (against a baseline learned on 63 older points, frozen)"
+   ]
+  ],
+  "trace": [
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "PASS"
+   ],
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "PASS"
+   ],
+   [
+    "CHALLENGE",
+    "PASS"
+   ],
+   [
+    "REPORT",
+    "DONE"
+   ]
+  ]
+ },
+ {
+  "scenario": "control",
+  "seed": 33,
+  "outcome": "INCONCLUSIVE",
+  "findings": [
+   [
+    "INCONCLUSIVE",
+    "baseline_shift_v1 refused: BASELINE_AUTOCORRELATED: training residuals have lag-1 autocorrelation +0.27 (> 2/\u221an): increments would not be independent"
+   ],
+   [
+    "INCONCLUSIVE",
+    "baseline_shift_v1 refused: BASELINE_AUTOCORRELATED: training residuals have lag-1 autocorrelation -0.26 (> 2/\u221an): increments would not be independent"
+   ]
+  ],
+  "trace": [
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "REFUSED"
+   ],
+   [
+    "EVALUATE",
+    "PLAN"
+   ],
+   [
+    "EVALUATE",
+    "REFUSED"
+   ],
+   [
+    "CHALLENGE",
+    "PASS"
+   ],
+   [
+    "REPORT",
+    "DONE"
+   ]
+  ]
+ }
+]

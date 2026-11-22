@@ -1,0 +1,108 @@
+{
+  "fixture_schema": "phase0-reference/1",
+  "case_id": "11_noncompliance_itt_vs_exposure",
+  "title": "Noncompliance: ITT is not an exposure edge",
+  "tests_what": "ITT identified; D->Y edge not admitted from it; as-treated refused; CACE separate",
+  "refs": [
+    "v3.2 §3.1 correction",
+    "C01",
+    "F05"
+  ],
+  "gates": [
+    "G11"
+  ],
+  "source": "emulator:one_sided_noncompliance seed=20261111",
+  "behavior": {
+    "status": "CORRECTED",
+    "v21": "unit alignment pass -> certified exposure edge",
+    "v32": "EffectClaim for Z->Y only",
+    "corrections": [
+      "C01",
+      "F05"
+    ]
+  },
+  "input": {
+    "question_kind": "ESTIMATE_EFFECT",
+    "study_design": {
+      "design": "randomized",
+      "assignment_unit": "user",
+      "assignment": "z",
+      "exposure_recorded": "d",
+      "noncompliance": "one-sided (declared)"
+    },
+    "requested_claims": [
+      "effect of z on y",
+      "effect of d on y",
+      "admit edge d -> y"
+    ]
+  },
+  "data": {
+    "file": "11_noncompliance_itt_vs_exposure.data.csv",
+    "columns": [
+      "unit",
+      "z",
+      "d",
+      "y"
+    ],
+    "types": [
+      "str",
+      "int",
+      "int",
+      "float"
+    ],
+    "n_rows": 2000,
+    "sha256": "c261e37af3db77d820418266ac5436132b721b4ddf530713a25d9b36a999cc76"
+  },
+  "expected": {
+    "itt": {
+      "estimate": 0.590830956842,
+      "se": 0.050102711112,
+      "p_value": 0.0,
+      "ci": [
+        0.492631447535,
+        0.689030466149
+      ],
+      "n_units": 2000
+    },
+    "first_stage_takeup": {
+      "estimate": 0.616842105263,
+      "se": 0.015781300456,
+      "p_value": 0.0,
+      "ci": [
+        0.58591132474,
+        0.647772885786
+      ],
+      "n_units": 2000
+    },
+    "wald_iv_cace": {
+      "estimate": 0.957831755973,
+      "se": 0.072572382456,
+      "ci": [
+        0.815592500087,
+        1.100071011859
+      ],
+      "requires": [
+        "exclusion restriction",
+        "monotonicity (no defiers)",
+        "first stage ≠ 0"
+      ]
+    },
+    "as_treated_comparison": {
+      "estimate": 1.273423318939,
+      "status": "REFUSED_AS_CAUSAL",
+      "reason": "selection into exposure"
+    },
+    "claims": {
+      "z_on_y": "CAUSAL_EFFECT_CONDITIONAL (ITT, randomization)",
+      "d_on_y": "CAUSAL_EFFECT_CONDITIONAL only as a separate IV claim, scoped to compliers",
+      "edge_d_to_y_from_itt": {
+        "admitted": false,
+        "reason": "EXPOSURE_NOT_IDENTIFIED_BY_ITT"
+      }
+    }
+  },
+  "v21_reference": {
+    "rule": "randomization/exposure unit alignment PASS -> certificate",
+    "outcome": "CAUSALLY_IDENTIFIED edge on the exposure path"
+  }
+}

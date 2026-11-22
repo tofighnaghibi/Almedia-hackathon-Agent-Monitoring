@@ -1,0 +1,49 @@
+rule_id,v21_rule,v21_section,class,v32_disposition,fixture_or_gate
+R01,Functional core / imperative shell; pure kernels do no I/O,§1,KEEP,Unchanged,G01
+R02,No vendor/source/LLM/oracle imports in core; AST lint,§1 §9 G1,KEEP,Unchanged; AST test exists from Phase 0,G01
+R03,MetricDefinition is the canonical input,§3.1,SPECIALIZE,Metric becomes one VariableDefinition subtype (F01),G02
+R04,Formula AST + unit/grain/population checks + empirical residual tol 1e-4,§3.1 §6.3,KEEP,Metric-only path; nonmetric gets NOT_APPLICABLE,01 / G09
+R05,Top-K + OTHER conservation,§3.1,FIX,Report bounded truncation; top-K alone is never a complete partition,02 / G09
+R06,entity_match_confidence < 1 excluded from exact closure,§3.1,KEEP,Unchanged,G04
+R07,Thirteen EdgeKinds,§4.1,KEEP,All 13 retained with layer/target rules,G04
+R08,Missing edge resolves to UNKNOWN never KNOWN_ABSENT,§1,KEEP,Plus: audit only the unknowns relevant to the strategy (F09 / C07),07 / G04
+R09,Observation-layer mechanisms never promoted to domain causes,§1,KEEP,Unchanged,03 / G06
+R10,Completeness < 0.95 halts business attribution,§5.2 Stage 1,KEEP,Plus: independent business-risk check retained,03 / G06
+R11,Replay by event_time / as_of,§3.1,FIX,Leakage-sensitive replay needs a KNOWN available_at (C09),03 / G06
+R12,Same-root synthetic replicas add zero support,§3.3 §9 G3,KEEP,Plus: distinct roots do not imply independence (I10),08 / G07
+R13,SAVI e-process with log_wealth / peak / alpha,§3.2,FIX,Declare null and predictable bet; disable guarantee when assumptions fail (C03),08 / G08
+R14,Late revisions invalidate cache on higher revision_id,§3.1,FIX,Recompute wealth path on revision; never double-consume or keep a stale value,08 / G08
+R15,Five-stage DQ->detect->decompose->experiment->act pipeline,§5.2,FIX,Question-first FSM; monitoring is one optional producer (F02),G13
+R16,ExperimentRecord is the sole path to CAUSALLY_IDENTIFIED,§3.1,FIX,Method-specific IdentificationAssessment (F03),04 06 / G11
+R17,Randomization unit must equal exposure unit,§5.2,FIX,Study-aware units with cluster inference or UNSUPPORTED (F04),05 / G12
+R18,RCT certificate becomes a CAUSALLY_IDENTIFIED edge,§6.2,FIX,Scoped EffectClaim; structural edge needs separate evidence (F05 / C01),04 11 / G11
+R19,Valid RCT refutes the observational estimate,§6.2 §10 demo 7,FIX,Compare estimands first; no blanket precedence (C02 / I09),Phase 4 / G11
+R20,Missing covariance -> conservative Holm never zero,§6.2,KEEP,Plus: surrogate/mediation claims blocked explicitly (C05),Phase 4 / G12
+R21,Mandatory pre-trend falsification for DiD,§5.2,FIX,Pre-trend is diagnostic; result is a conditional ATT (C04),06 / G11
+R22,Kitagawa mix-vs-rate; mix is not proof of harmlessness,§5.2 Stage 5,KEEP,Unchanged,02 / G09
+R23,RCD-lite invariance pruning,§5.2,KEEP,Reported as candidate pruning only (C06),Phase 4 / G10
+R24,Identifiability audit -> INCONCLUSIVE_ABSTAINED,§5.2 Stage 4,SPECIALIZE,IdentificationAuditor with six statuses,07 / G11
+R25,VoI argmax formula,§5.3,FIX,Labelled a heuristic proxy; unavailable queries become EvidenceGap,G14
+R26,EvidenceQueryPort with six capabilities,§3.2,SPECIALIZE,Legacy adapter behind the typed EvidenceAccessPort (F06); see D1,G14
+R27,bucket_grain + max_buckets = 168,§3.2,KEEP,Kept in the legacy adapter and as the T2 default,Phase 1
+R28,O(1) zero-copy snapshot and < 2 ms lookups on 5k nodes,§4.1 §4.2,FIX,O(1) pin handle only; traversal cost measured (F08),G16
+R29,TraversalBound 3 hops / 100 nodes,§4.1,KEEP,Plus max_edges = 400 and an explicit TRUNCATED result,Phase 2 / G04
+R30,8-step admission and every new metric auto-monitored,§6.3,FIX,Steps kept; subscriber-only notification; nonmetric NOT_APPLICABLE,Phase 2 / G05
+R31,Single-writer SQLite with WAL,§3.4,KEEP,Unchanged,Phase 3 / G15
+R32,Exactly-once-visible incident revisions,§3.4,FIX,Only where the sink honors idempotency keys; transactional outbox (I14),G15
+R33,T0 < 2 s / T1 < 10 s / T2 < 60 s,§5.4,KEEP,Targets measured as p50/p95/p99; baseline currently MISSING,G16
+R34,EvidenceClass with four values,§3.3,SPECIALIZE,Provenance roles + claim kinds; class alone confers no authority,G07
+R35,Missing origin -> LEGACY_UNSCOPED,§3.2,KEEP,Unchanged,09 / G03
+R36,HYPOTHESIZED_CAUSAL -> CAUSAL_HYPOTHESIS,§3.2,KEEP,Unchanged; no certification upgrade,09 / G03
+R37,Historic CAUSALLY_IDENTIFIED edges keep authority (implicit),§3.2,FIX,REVIEW_REQUIRED until estimand / assumptions / scope re-audited,09 / G03
+R38,Emulator scope read from request environment_kind,§5.6,FIX,Trusted attestation + allowlist + bound approval (F12 / C10),10 / G17
+R39,No production writes,§5.6,KEEP,No write method on any P0 port,10 / G17
+R40,Sparse counterfactual output is MODEL_PREDICTION only,§5.5,KEEP,Unchanged,Phase 7 / G17
+R41,Common random numbers across do() rollouts,§5.5,FIX,CRN keyed by seed + entity + event + time + mechanism version,Phase 7 / G17
+R42,TabPFN optional with rows <= 2000 / >= 5000 ms / <= 3 calls,§7,DEFER,P1; caps are heuristics and model names need re-verification (D7),P1
+R43,Causal Shapley on pruned ancestors,§5.2,DEFER,P1; needs a defensible structural value function,P1
+R44,Synthetic DiD (SDID),§5.2,DEFER,P1 with documented donor/regularization design,P1
+R45,Optional LLM HypothesisProposerPort (3 s cap),§2.2,DEFER,Optional producer of candidates only,P1
+R46,Ground truth never enters the core,§1,KEEP,Enforced from Phase 0 by truth/fixture split + AST test,G01 / G18
+R47,Twelve merge gates G1-G12,§9,SPECIALIZE,Eighteen gates G01-G18 (IDs collide; see inventory §5),All
+R48,Marketplace-centric demo portfolio,§10,FIX,Twelve scenarios across marketplace / study / sensor (§9),G18

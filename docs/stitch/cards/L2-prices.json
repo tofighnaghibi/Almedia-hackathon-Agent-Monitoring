@@ -1,0 +1,113 @@
+{
+ "status": "partially supported (transferred; held-out stable)",
+ "estimate": {
+  "olist_products_sold_at_several_prices": 0.17905374647203423,
+  "m5_weekly_change_prob": [
+   0.013748816346712852,
+   0.009700787143817764
+  ],
+  "m5_median_change_size": [
+   0.09333333333333327,
+   0.09420289855072461
+  ]
+ },
+ "heldout": [
+  {
+   "name": "M5 weekly price-change probability, first vs second half",
+   "halves": [
+    0.013748816346712852,
+    0.009700787143817764
+   ],
+   "diff": 0.294427469304506,
+   "tol": 0.3,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2016-06-19",
+ "target": false,
+ "assumptions": [
+  "change frequency and size transfer; price levels come from Olist",
+  "no promotion flags exist in any source"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L2-prices",
+ "layer": "L2",
+ "data_type": "Prices, promotions",
+ "method": "fit + transfer",
+ "sources": [
+  "olist",
+  "m5"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "M5 weekly price-change probability and size: first vs second half of weeks",
+ "seconds": 5.6,
+ "cache_key": "8a385d4404bc9dd8",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ],
+  "m5/calendar.csv": [
+   103469,
+   1795284771
+  ],
+  "m5/sales_train_evaluation.csv": [
+   121736518,
+   1795284772
+  ],
+  "m5/sales_train_validation.csv": [
+   120007726,
+   1795284772
+  ],
+  "m5/sample_submission.csv": [
+   5228786,
+   1795284772
+  ],
+  "m5/sell_prices.csv": [
+   203395785,
+   1795284773
+  ]
+ }
+}

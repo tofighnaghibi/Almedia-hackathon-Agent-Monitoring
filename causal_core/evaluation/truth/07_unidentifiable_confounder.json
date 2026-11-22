@@ -1,0 +1,14 @@
+{
+  "case_id": "07_unidentifiable_confounder",
+  "generator": "emulator/0.1:latent_confounded_pair",
+  "seed": 20261107,
+  "params": {
+    "a": 0.8,
+    "gamma": 1.0,
+    "latent": "U ~ N(0,1)"
+  },
+  "true_values": {
+    "causal_effect_x_on_y": 0.5,
+    "ols_probability_limit": 0.987804878049
+  }
+}

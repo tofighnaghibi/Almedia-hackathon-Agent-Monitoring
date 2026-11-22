@@ -1,0 +1,177 @@
+[
+ {
+  "scenario": "8a_logging_drop",
+  "seed": 31,
+  "truth_layer": "observation",
+  "world_changed": false,
+  "classification": "undetermined",
+  "periods": [
+   "2018-02-12",
+   "2018-03-12"
+  ],
+  "correct": false,
+  "rationale": "identity partners gave mixed evidence (['measurement', 'real']): abstaining"
+ },
+ {
+  "scenario": "8a_logging_drop",
+  "seed": 32,
+  "truth_layer": "observation",
+  "world_changed": false,
+  "classification": "measurement_suspected",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "orders_count moved but its identity partner(s) ['payments_count'] did not: the identity is broken"
+ },
+ {
+  "scenario": "8a_logging_drop",
+  "seed": 33,
+  "truth_layer": "observation",
+  "world_changed": false,
+  "classification": "measurement_suspected",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "orders_count moved but its identity partner(s) ['payments_count'] did not: the identity is broken"
+ },
+ {
+  "scenario": "8a_logging_drop",
+  "seed": 34,
+  "truth_layer": "observation",
+  "world_changed": false,
+  "classification": "measurement_suspected",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "orders_count moved but its identity partner(s) ['payments_count'] did not: the identity is broken"
+ },
+ {
+  "scenario": "8a_logging_drop",
+  "seed": 35,
+  "truth_layer": "observation",
+  "world_changed": false,
+  "classification": "measurement_suspected",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "orders_count moved but its identity partner(s) ['payments_count'] did not: the identity is broken"
+ },
+ {
+  "scenario": "8b_demand_drop",
+  "seed": 31,
+  "truth_layer": "world",
+  "world_changed": true,
+  "classification": "real_change",
+  "periods": [
+   "2018-02-12",
+   "2018-03-12"
+  ],
+  "correct": true,
+  "rationale": "orders_count and its identity partner(s) ['payments_count'] moved together"
+ },
+ {
+  "scenario": "8b_demand_drop",
+  "seed": 32,
+  "truth_layer": "world",
+  "world_changed": true,
+  "classification": "real_change",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "orders_count and its identity partner(s) ['payments_count'] moved together"
+ },
+ {
+  "scenario": "8b_demand_drop",
+  "seed": 33,
+  "truth_layer": "world",
+  "world_changed": true,
+  "classification": "real_change",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "orders_count and its identity partner(s) ['payments_count'] moved together"
+ },
+ {
+  "scenario": "8b_demand_drop",
+  "seed": 34,
+  "truth_layer": "world",
+  "world_changed": true,
+  "classification": "real_change",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "orders_count and its identity partner(s) ['payments_count'] moved together"
+ },
+ {
+  "scenario": "8b_demand_drop",
+  "seed": 35,
+  "truth_layer": "world",
+  "world_changed": true,
+  "classification": "real_change",
+  "periods": [
+   "2018-02-12"
+  ],
+  "correct": true,
+  "rationale": "orders_count and its identity partner(s) ['payments_count'] moved together"
+ },
+ {
+  "scenario": "control",
+  "seed": 31,
+  "truth_layer": null,
+  "world_changed": false,
+  "classification": "real_change",
+  "periods": [
+   "2018-03-12",
+   "2018-03-19"
+  ],
+  "correct": false,
+  "rationale": "orders_count and its identity partner(s) ['payments_count'] moved together"
+ },
+ {
+  "scenario": "control",
+  "seed": 32,
+  "truth_layer": null,
+  "world_changed": false,
+  "classification": "no_change",
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the robust threshold"
+ },
+ {
+  "scenario": "control",
+  "seed": 33,
+  "truth_layer": null,
+  "world_changed": false,
+  "classification": "no_change",
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the robust threshold"
+ },
+ {
+  "scenario": "control",
+  "seed": 34,
+  "truth_layer": null,
+  "world_changed": false,
+  "classification": "no_change",
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the robust threshold"
+ },
+ {
+  "scenario": "control",
+  "seed": 35,
+  "truth_layer": null,
+  "world_changed": false,
+  "classification": "no_change",
+  "periods": [],
+  "correct": true,
+  "rationale": "no period beyond the robust threshold"
+ }
+]

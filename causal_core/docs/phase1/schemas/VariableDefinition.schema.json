@@ -1,0 +1,1038 @@
+{
+  "$defs": {
+    "CategoricalValueSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "categories": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Categories",
+          "type": "array"
+        },
+        "exhaustive": {
+          "default": false,
+          "title": "Exhaustive",
+          "type": "boolean"
+        },
+        "missing_code": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Code"
+        },
+        "ordered": {
+          "default": false,
+          "title": "Ordered",
+          "type": "boolean"
+        },
+        "other_code": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Other Code"
+        },
+        "type": {
+          "const": "categorical",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "categories"
+      ],
+      "title": "CategoricalValueSchema",
+      "type": "object"
+    },
+    "CategoricalVariableDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "entity_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entity Ref"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Extensions",
+          "type": "object"
+        },
+        "kind": {
+          "const": "categorical",
+          "title": "Kind",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "value_schema": {
+          "$ref": "#/$defs/CategoricalValueSchema"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "variable_id",
+        "scope",
+        "provenance",
+        "kind",
+        "value_schema"
+      ],
+      "title": "CategoricalVariableDefinition",
+      "type": "object"
+    },
+    "EnvironmentScope": {
+      "additionalProperties": false,
+      "properties": {
+        "data_cut": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Cut"
+        },
+        "dataset_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dataset Version"
+        },
+        "environment_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Environment Id",
+          "type": "string"
+        },
+        "environment_kind": {
+          "enum": [
+            "production",
+            "staging",
+            "emulator",
+            "offline_replay",
+            "legacy_unscoped"
+          ],
+          "title": "Environment Kind",
+          "type": "string"
+        },
+        "generator_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generator Version"
+        }
+      },
+      "required": [
+        "environment_id",
+        "environment_kind"
+      ],
+      "title": "EnvironmentScope",
+      "type": "object"
+    },
+    "EventPayloadSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "fields": {
+          "minProperties": 1,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$": {
+              "enum": [
+                "real",
+                "integer",
+                "boolean",
+                "text",
+                "category"
+              ],
+              "type": "string"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "title": "Fields",
+          "type": "object"
+        },
+        "identity_fields": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Identity Fields",
+          "type": "array"
+        },
+        "type": {
+          "const": "event",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "fields",
+        "identity_fields"
+      ],
+      "title": "EventPayloadSchema",
+      "type": "object"
+    },
+    "EventVariableDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "entity_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entity Ref"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Extensions",
+          "type": "object"
+        },
+        "kind": {
+          "const": "event",
+          "title": "Kind",
+          "type": "string"
+        },
+        "occurrence_time": {
+          "default": "unknown",
+          "enum": [
+            "event_time",
+            "ingest_time_only",
+            "unknown"
+          ],
+          "title": "Occurrence Time",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "value_schema": {
+          "$ref": "#/$defs/EventPayloadSchema"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "variable_id",
+        "scope",
+        "provenance",
+        "kind",
+        "value_schema"
+      ],
+      "title": "EventVariableDefinition",
+      "type": "object"
+    },
+    "FormulaBinOp": {
+      "additionalProperties": false,
+      "properties": {
+        "left": {
+          "discriminator": {
+            "mapping": {
+              "binop": "#/$defs/FormulaBinOp",
+              "const": "#/$defs/FormulaConst",
+              "ref": "#/$defs/FormulaRef"
+            },
+            "propertyName": "node"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FormulaRef"
+            },
+            {
+              "$ref": "#/$defs/FormulaConst"
+            },
+            {
+              "$ref": "#/$defs/FormulaBinOp"
+            }
+          ],
+          "title": "Left"
+        },
+        "node": {
+          "const": "binop",
+          "title": "Node",
+          "type": "string"
+        },
+        "op": {
+          "enum": [
+            "add",
+            "sub",
+            "mul",
+            "div"
+          ],
+          "title": "Op",
+          "type": "string"
+        },
+        "right": {
+          "discriminator": {
+            "mapping": {
+              "binop": "#/$defs/FormulaBinOp",
+              "const": "#/$defs/FormulaConst",
+              "ref": "#/$defs/FormulaRef"
+            },
+            "propertyName": "node"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FormulaRef"
+            },
+            {
+              "$ref": "#/$defs/FormulaConst"
+            },
+            {
+              "$ref": "#/$defs/FormulaBinOp"
+            }
+          ],
+          "title": "Right"
+        }
+      },
+      "required": [
+        "node",
+        "op",
+        "left",
+        "right"
+      ],
+      "title": "FormulaBinOp",
+      "type": "object"
+    },
+    "FormulaConst": {
+      "additionalProperties": false,
+      "properties": {
+        "node": {
+          "const": "const",
+          "title": "Node",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "node",
+        "value"
+      ],
+      "title": "FormulaConst",
+      "type": "object"
+    },
+    "FormulaRef": {
+      "additionalProperties": false,
+      "properties": {
+        "node": {
+          "const": "ref",
+          "title": "Node",
+          "type": "string"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node",
+        "variable_id"
+      ],
+      "title": "FormulaRef",
+      "type": "object"
+    },
+    "MetricDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregation_kind": {
+          "anyOf": [
+            {
+              "enum": [
+                "sum",
+                "count",
+                "mean",
+                "ratio",
+                "quantile",
+                "min",
+                "max"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Aggregation Kind"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "entity_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entity Ref"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Extensions",
+          "type": "object"
+        },
+        "formula_ast": {
+          "anyOf": [
+            {
+              "discriminator": {
+                "mapping": {
+                  "binop": "#/$defs/FormulaBinOp",
+                  "const": "#/$defs/FormulaConst",
+                  "ref": "#/$defs/FormulaRef"
+                },
+                "propertyName": "node"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/FormulaRef"
+                },
+                {
+                  "$ref": "#/$defs/FormulaConst"
+                },
+                {
+                  "$ref": "#/$defs/FormulaBinOp"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Formula Ast"
+        },
+        "identity_tolerance": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Identity Tolerance"
+        },
+        "kind": {
+          "const": "metric",
+          "title": "Kind",
+          "type": "string"
+        },
+        "population_coverage": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PopulationCoverage"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "time_semantics": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MetricTimeSemantics"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value_schema": {
+          "$ref": "#/$defs/NumericValueSchema"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "variable_id",
+        "scope",
+        "provenance",
+        "kind",
+        "value_schema"
+      ],
+      "title": "MetricDefinition",
+      "type": "object"
+    },
+    "MetricTimeSemantics": {
+      "additionalProperties": false,
+      "properties": {
+        "grain": {
+          "pattern": "^[1-9][0-9]*(m|h|d|w)$",
+          "title": "Grain",
+          "type": "string"
+        },
+        "timezone": {
+          "default": "UTC",
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Timezone",
+          "type": "string"
+        },
+        "window": {
+          "default": "unknown",
+          "enum": [
+            "tumbling",
+            "rolling",
+            "cumulative",
+            "unknown"
+          ],
+          "title": "Window",
+          "type": "string"
+        }
+      },
+      "required": [
+        "grain"
+      ],
+      "title": "MetricTimeSemantics",
+      "type": "object"
+    },
+    "NumericValueSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "dtype": {
+          "enum": [
+            "real",
+            "integer",
+            "count",
+            "proportion"
+          ],
+          "title": "Dtype",
+          "type": "string"
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum"
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum"
+        },
+        "type": {
+          "const": "numeric",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "dtype"
+      ],
+      "title": "NumericValueSchema",
+      "type": "object"
+    },
+    "PopulationCoverage": {
+      "additionalProperties": false,
+      "properties": {
+        "coverage": {
+          "default": "unknown",
+          "enum": [
+            "full",
+            "subset",
+            "unknown"
+          ],
+          "title": "Coverage",
+          "type": "string"
+        },
+        "parent_population_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Population Id"
+        },
+        "population_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Population Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "population_id"
+      ],
+      "title": "PopulationCoverage",
+      "type": "object"
+    },
+    "SourceAttestation": {
+      "additionalProperties": false,
+      "description": "Who vouches for a record. A string label is not trust; 'signed' needs a signature.",
+      "properties": {
+        "attested_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attested At"
+        },
+        "method": {
+          "enum": [
+            "adapter_declared",
+            "signed",
+            "none"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "signature": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Signature"
+        },
+        "source_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "method"
+      ],
+      "title": "SourceAttestation",
+      "type": "object"
+    },
+    "StateVariableDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "entity_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entity Ref"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Extensions",
+          "type": "object"
+        },
+        "irregular_sampling": {
+          "default": false,
+          "title": "Irregular Sampling",
+          "type": "boolean"
+        },
+        "kind": {
+          "const": "state",
+          "title": "Kind",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/SourceAttestation"
+        },
+        "sampling_cadence_s": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sampling Cadence S"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value_schema": {
+          "discriminator": {
+            "mapping": {
+              "categorical": "#/$defs/CategoricalValueSchema",
+              "numeric": "#/$defs/NumericValueSchema"
+            },
+            "propertyName": "type"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/NumericValueSchema"
+            },
+            {
+              "$ref": "#/$defs/CategoricalValueSchema"
+            }
+          ],
+          "title": "Value Schema"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "variable_id",
+        "scope",
+        "provenance",
+        "kind",
+        "value_schema"
+      ],
+      "title": "StateVariableDefinition",
+      "type": "object"
+    }
+  },
+  "discriminator": {
+    "mapping": {
+      "categorical": "#/$defs/CategoricalVariableDefinition",
+      "event": "#/$defs/EventVariableDefinition",
+      "metric": "#/$defs/MetricDefinition",
+      "state": "#/$defs/StateVariableDefinition"
+    },
+    "propertyName": "kind"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/MetricDefinition"
+    },
+    {
+      "$ref": "#/$defs/StateVariableDefinition"
+    },
+    {
+      "$ref": "#/$defs/EventVariableDefinition"
+    },
+    {
+      "$ref": "#/$defs/CategoricalVariableDefinition"
+    }
+  ]
+}

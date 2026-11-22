@@ -1,0 +1,50 @@
+{
+ "fetch_status": "ok",
+ "origin": "HF zozonext/open-bandit (random + bts, all campaigns)",
+ "fetched": "2026-11-21T18:37:40",
+ "files": {
+  "bts/all.csv": {
+   "bytes": 6321017454,
+   "sha256": "05ba8416e6626be0dc16ee09a434d736eca1c4c274e10eabe3931521c4aeede2"
+  },
+  "bts/item_context.csv": {
+   "bytes": 10041,
+   "sha256": "79fe2a9baf18d9584fd4865ce6322864655d1d1cf43f80efea9fc1161dd18f61"
+  },
+  "random/all.csv": {
+   "bytes": 695501426,
+   "sha256": "f24fdf91e38de41dcd15f2482279358766556be04155b35882e327b465d104b7"
+  },
+  "random/item_context.csv": {
+   "bytes": 10041,
+   "sha256": "88345bc52dea9965cf148f02c661d03ce566f278b2b870ec0c70c5d3da1c2d1c"
+  }
+ },
+ "bytes": 7016538962,
+ "licence": "CC BY 4.0",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Exposure, position, clicks",
+   "role": "primary",
+   "claim": "position + click under a uniformly random policy; position effect present",
+   "status": "PARTIAL",
+   "evidence": "random: 1,374,327 rows, 3 positions, 80 items, propensity 0.01250..0.01250 (uniform, as required); CTR by position [(1, 0.0035), (2, 0.0035), (3, 0.0034)] -> no meaningful position effect (likely because ZOZOTOWN shows the 3 slots together; unverified), so it cannot supply a search-ranking decay curve"
+  },
+  {
+   "row": "Recommendation policy, propensities",
+   "role": "primary",
+   "claim": "logged propensities for two policies",
+   "status": "PASS",
+   "evidence": "bts: 12,357,200 rows, propensity 1e-06..0.9542; columns ['column00', 'timestamp', 'item_id', 'position', 'click', 'propensity_score', 'user_feature_0', 'user_feature_1']\u2026"
+  },
+  {
+   "row": "Experiments, assignments",
+   "role": "primary",
+   "claim": "assignment probabilities known per impression",
+   "status": "PASS",
+   "evidence": "time span 2019-11-24 01:00:00.007365+01:00 .. 2019-12-01 00:59:59.408889+01:00"
+  }
+ ],
+ "audited": "2026-11-21T18:45:25"
+}

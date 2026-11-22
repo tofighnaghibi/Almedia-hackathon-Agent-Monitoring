@@ -1,0 +1,88 @@
+{
+ "status": "unsupported transfer (held-out unstable; sensitivity = both halves)",
+ "estimate": {
+  "criteo_arms": [
+   [
+    0,
+    2096937,
+    0.0,
+    0.03820095691954503,
+    0.0019375880152813366
+   ],
+   [
+    1,
+    11882655,
+    0.036036727482199896,
+    0.048543360048743316,
+    0.0030894610674129645
+   ]
+  ],
+  "criteo_visit_uplift_halves": [
+   0.008481539704761114,
+   0.013622833209190499
+  ],
+  "hillstrom_arms": [
+   [
+    "Mens E-Mail",
+    21307,
+    0.18275684047496127,
+    0.01253109306800582
+   ],
+   [
+    "No E-Mail",
+    21306,
+    0.10616727682343002,
+    0.005726086548390125
+   ],
+   [
+    "Womens E-Mail",
+    21387,
+    0.151400383410483,
+    0.008837144059475383
+   ]
+  ]
+ },
+ "heldout": [
+  {
+   "name": "Criteo visit uplift, random halves",
+   "halves": [
+    0.008481539704761114,
+    0.013622833209190499
+   ],
+   "diff": 0.6061745488903765,
+   "tol": 0.2,
+   "rel": true,
+   "pass": false
+  }
+ ],
+ "trained_through": "2021-01-01",
+ "target": false,
+ "assumptions": [
+  "only treated users can be exposed (one-sided non-compliance)",
+  "lift is relative; levels come from Olist sessions"
+ ],
+ "bridges": [],
+ "status_override": null,
+ "id": "L4-ads",
+ "layer": "L4",
+ "data_type": "Ads, sponsored lift",
+ "method": "transfer",
+ "sources": [
+  "criteo",
+  "hillstrom"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "Criteo visit uplift: random halves of rows",
+ "seconds": 42.3,
+ "cache_key": "a1631752bdd239e7",
+ "inputs": {
+  "criteo/criteo-research-uplift-v2.1.csv.gz": [
+   311422618,
+   1795281706
+  ],
+  "hillstrom/hillstrom.csv": [
+   3964977,
+   1795281645
+  ]
+ }
+}

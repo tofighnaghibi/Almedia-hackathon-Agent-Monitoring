@@ -1,0 +1,60 @@
+# E3b: proposed hidden-fault redaction layer (telemetry adapter, ASTRONOMY_SHOP_INTEGRATION.md §B). Upstream untouched.
+processors:
+  filter/drop_flag_service:
+    error_mode: ignore
+    traces:
+      span:
+        - 'resource.attributes["service.name"] == "flagd"'
+        - 'IsMatch(name, "(?i)flagd|feature_flag")'
+        - 'attributes["server.address"] == "flagd" or attributes["rpc.service"] != nil and IsMatch(attributes["rpc.service"], "(?i)flagd")'
+        - 'attributes["http.url"] != nil and IsMatch(attributes["http.url"], "(?i)flagd|flagservice|openfeature")'
+        - 'attributes["url.full"] != nil and IsMatch(attributes["url.full"], "(?i)flagd|flagservice|openfeature")'
+        - 'attributes["url.path"] != nil and IsMatch(attributes["url.path"], "(?i)flagd|flagservice|openfeature")'
+      spanevent:
+        - 'IsMatch(name, "(?i)feature_flag")'
+    logs:
+      log_record:
+        - 'resource.attributes["service.name"] == "flagd"'
+        - 'resource.attributes["service.name"] == "otelcol-contrib"'
+        - 'IsMatch(body, "(?i)flagd|flagservice|openfeature")'
+        - 'attributes["url.full"] != nil and IsMatch(attributes["url.full"], "(?i)flagd|flagservice|openfeature")'
+        - 'attributes["url.path"] != nil and IsMatch(attributes["url.path"], "(?i)flagd|flagservice|openfeature")'
+        - 'IsMatch(instrumentation_scope.name, "(?i)openfeature")'
+  transform/hide_faults:
+    error_mode: ignore
+    trace_statements:
+      - context: span
+        statements:
+          - replace_all_patterns(attributes, "value", "(?i).*(invalid token|loyalty_level|feature.flag|fail feature|cache failure|paymentFailure|recommendationCacheFailure).*", "error")
+          - delete_matching_keys(attributes, "^(demo\\.)?feature_flag.*")
+          - delete_matching_keys(attributes, "^(openfeature|flagd).*")
+          - delete_matching_keys(attributes, ".*loyalty_level.*")
+          - delete_matching_keys(attributes, "^(user\\.email|demo\\.payment\\.card.*)$")
+          - replace_pattern(status.message, "(?i).*(feature flag|fail feature|invalid token|cache failure).*", "error")
+      - context: spanevent
+        statements:
+          - replace_all_patterns(attributes, "value", "(?i).*(invalid token|loyalty_level|feature.flag|fail feature|cache failure|paymentFailure|recommendationCacheFailure).*", "error")
+          - delete_matching_keys(attributes, "^(demo\\.)?feature_flag.*")
+          - replace_pattern(name, "(?i).*(feature flag|fail feature|invalid token|cache failure).*", "error")
+    log_statements:
+      - context: log
+        statements:
+          - replace_all_patterns(attributes, "value", "(?i).*(invalid token|loyalty_level|feature.flag|fail feature|cache failure|paymentFailure|recommendationCacheFailure).*", "error")
+          - delete_matching_keys(attributes, "^(demo\\.)?feature_flag.*")
+          - delete_matching_keys(attributes, ".*loyalty_level.*")
+          - delete_matching_keys(attributes, "^(user\\.email|demo\\.payment\\.card.*)$")
+          - replace_pattern(body, "(?i).*(feature flag|fail feature|invalid token|cache failure|paymentFailure|recommendationCacheFailure).*", "error")
+          - replace_pattern(body, "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+", "<email>")
+exporters:
+  file/spans:
+    path: /m0out/spans.jsonl
+  file/logs:
+    path: /m0out/logs.jsonl
+service:
+  pipelines:
+    traces:
+      processors: [resource_detection, memory_limiter, transform/sanitize_spans, gen_ai_normalizer, transform/redact_sensitive_data, redaction, filter/drop_flag_service, transform/hide_faults]
+      exporters: [debug, span_metrics, file/spans]
+    logs:
+      processors: [resource_detection, memory_limiter, transform/sanitize_logs, filter/drop_flag_service, transform/hide_faults]
+      exporters: [debug, file/logs]

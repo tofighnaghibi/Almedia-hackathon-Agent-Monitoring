@@ -1,0 +1,92 @@
+{
+  "fixture_schema": "phase0-reference/1",
+  "case_id": "09_migrated_legacy_record",
+  "title": "Migrated v1.x records",
+  "tests_what": "Byte receipts kept; no fabricated scope, IID, covariance or authority",
+  "refs": [
+    "v3.2 §2.4"
+  ],
+  "gates": [
+    "G03"
+  ],
+  "source": "hand_derived",
+  "behavior": {
+    "status": "CORRECTED",
+    "v21": "old certificates implicitly authoritative",
+    "v32": "REVIEW_REQUIRED until re-audited",
+    "corrections": [
+      "§2.4 row 9"
+    ]
+  },
+  "input": {
+    "raw_records": {
+      "observation": "{\"schema_version\":\"1.1\",\"kind\":\"Observation\",\"metric_id\":\"m_conv\",\"window\":{\"start\":\"2026-10-01T00:00:00Z\",\"end\":\"2026-10-02T00:00:00Z\"},\"stats\":{\"numerator\":520,\"denominator\":10000,\"n\":10000,\"se\":0.00222},\"event_time\":\"2026-10-01T23:59:59Z\",\"as_of\":\"2026-10-02T06:00:00Z\",\"revision_id\":1}",
+      "hypothesis_edge": "{\"schema_version\":\"1.1\",\"kind\":\"GraphEdge\",\"edge_kind\":\"HYPOTHESIZED_CAUSAL\",\"source\":\"m_ads\",\"target\":\"m_conv\"}",
+      "certified_edge": "{\"schema_version\":\"1.2\",\"kind\":\"GraphEdge\",\"edge_kind\":\"CAUSALLY_IDENTIFIED\",\"source\":\"exp_17\",\"target\":\"m_conv\",\"identification_certificate_id\":\"cert_17\",\"evidence_class\":\"EXPERIMENTAL\"}"
+    }
+  },
+  "data": null,
+  "expected": {
+    "receipts": {
+      "observation": {
+        "original_sha256": "54658c6d0fff657c8cd7e7410a501720bd6e1d89d77dccbbd40cdafdded932df"
+      },
+      "hypothesis_edge": {
+        "original_sha256": "30ff6d11c07154dafe5d57f78cacc0d9b4c57b725db0f24a42e1f3fcde74e1c6"
+      },
+      "certified_edge": {
+        "original_sha256": "b7c13f8d016ae097dc2bdaac1267058c753b564ba1beb7f44b3f796c5e91fdfe"
+      }
+    },
+    "observation": {
+      "schema_version": "2.0",
+      "payload_kind": "AggregateStats",
+      "preserved": {
+        "numerator": 520,
+        "denominator": 10000,
+        "n": 10000,
+        "se": 0.00222,
+        "window": [
+          "2026-10-01T00:00:00Z",
+          "2026-10-02T00:00:00Z"
+        ],
+        "revision": 1
+      },
+      "not_inferred": {
+        "iid": "UNKNOWN",
+        "covariance": "UNKNOWN (never zero)"
+      },
+      "clocks": {
+        "observed_at": "2026-10-01T23:59:59Z (as declared)",
+        "as_of": "2026-10-02T06:00:00Z",
+        "available_at": "UNKNOWN"
+      },
+      "scope": "LEGACY_UNSCOPED",
+      "lineage_root": "legacy:54658c6d0fff657c",
+      "forbidden_uses": [
+        "production claims",
+        "action permissions",
+        "leakage-sensitive replay"
+      ]
+    },
+    "hypothesis_edge": {
+      "edge_kind": "CAUSAL_HYPOTHESIS",
+      "certification_upgrade": false
+    },
+    "certified_edge": {
+      "edge_kind": "CAUSALLY_IDENTIFIED (historical)",
+      "status": "REVIEW_REQUIRED",
+      "reasons": [
+        "MISSING_ESTIMAND",
+        "MISSING_ASSUMPTION_AUDIT",
+        "MISSING_SCOPE"
+      ],
+      "authority_until_reaudit": "none"
+    }
+  },
+  "v21_reference": {
+    "observation": "LEGACY_UNSCOPED (same)",
+    "hypothesis_edge": "CAUSAL_HYPOTHESIS (same)",
+    "certified_edge": "kept as CAUSALLY_IDENTIFIED with full authority (implicit)"
+  }
+}

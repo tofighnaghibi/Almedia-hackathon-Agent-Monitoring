@@ -1,0 +1,20 @@
+# Optional (scripts/uc2_shop.sh up --traces): for people to watch, not for the agent.
+#   traces  → also to Jaeger (search and trace detail)
+#   metrics → also to Prometheus (the collector's span_metrics: request, error and latency rates per service), which is
+#             what Jaeger's Monitor tab reads
+# The agent never reads Jaeger or Prometheus; it reads only the redacted span file through marketplace-recon's port.
+exporters:
+  otlp_grpc/jaeger:
+    endpoint: "jaeger:4317"
+    tls:
+      insecure: true
+  otlp_http/prometheus:
+    endpoint: "http://prometheus:9090/api/v1/otlp"
+    tls:
+      insecure: true
+service:
+  pipelines:
+    traces:
+      exporters: [debug, span_metrics, file/spans, otlp_grpc/jaeger]
+    metrics:
+      exporters: [debug, otlp_http/prometheus]

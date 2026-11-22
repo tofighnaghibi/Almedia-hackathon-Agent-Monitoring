@@ -1,0 +1,84 @@
+{
+ "status": "supported (fitted on Olist; held-out stable)",
+ "estimate": {
+  "median_handling_hours": [
+   48.735277777777775,
+   40.03055555555556
+  ]
+ },
+ "heldout": [
+  {
+   "name": "median approval-to-carrier hours 2017 vs 2018",
+   "halves": [
+    48.735277777777775,
+    40.03055555555556
+   ],
+   "diff": 0.17861234446869984,
+   "tol": 0.25,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2017-12-31",
+ "target": true,
+ "assumptions": [],
+ "bridges": [],
+ "status_override": null,
+ "id": "L3-handling",
+ "layer": "L3",
+ "data_type": "Handling time, reliability",
+ "method": "fit",
+ "sources": [
+  "olist"
+ ],
+ "consumed_by": "sim.chain",
+ "heldout_plan": "approval-to-carrier hours: 2017 vs 2018",
+ "seconds": 0.4,
+ "cache_key": "b7fd773950f306ca",
+ "inputs": {
+  "olist/funnel/olist_closed_deals_dataset.csv": [
+   171352,
+   1795273464
+  ],
+  "olist/funnel/olist_marketing_qualified_leads_dataset.csv": [
+   703836,
+   1795273464
+  ],
+  "olist/olist_customers_dataset.csv": [
+   9033957,
+   1795273461
+  ],
+  "olist/olist_geolocation_dataset.csv": [
+   61273883,
+   1795273462
+  ],
+  "olist/olist_order_items_dataset.csv": [
+   15438671,
+   1795273462
+  ],
+  "olist/olist_order_payments_dataset.csv": [
+   5777138,
+   1795273462
+  ],
+  "olist/olist_order_reviews_dataset.csv": [
+   14451670,
+   1795273462
+  ],
+  "olist/olist_orders_dataset.csv": [
+   17654914,
+   1795273462
+  ],
+  "olist/olist_products_dataset.csv": [
+   2379446,
+   1795273462
+  ],
+  "olist/olist_sellers_dataset.csv": [
+   174703,
+   1795273462
+  ],
+  "olist/product_category_name_translation.csv": [
+   2613,
+   1795273462
+  ]
+ }
+}

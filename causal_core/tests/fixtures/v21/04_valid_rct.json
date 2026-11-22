@@ -1,0 +1,85 @@
+{
+  "fixture_schema": "phase0-reference/1",
+  "case_id": "04_valid_rct",
+  "title": "Valid randomized study, no anomaly",
+  "tests_what": "ITT identified for a declared estimand with no monitor; an EffectClaim, not an edge",
+  "refs": [
+    "v3.2 §4.5",
+    "§7.1",
+    "F03",
+    "F05"
+  ],
+  "gates": [
+    "G11",
+    "G13"
+  ],
+  "source": "hand_derived",
+  "behavior": {
+    "status": "CORRECTED",
+    "v21": "certificate becomes a CAUSALLY_IDENTIFIED edge",
+    "v32": "scoped EffectClaim; SRM computed at assignment unit",
+    "corrections": [
+      "F05",
+      "D6"
+    ]
+  },
+  "input": {
+    "question_kind": "ESTIMATE_EFFECT",
+    "monitor": "ABSENT",
+    "study_design": {
+      "design": "randomized",
+      "assignment_unit": "user",
+      "outcome_unit": "user",
+      "analysis_unit": "user",
+      "expected_allocation": {
+        "treatment": 0.5,
+        "control": 0.5
+      },
+      "compliance": "assignment_is_exposure"
+    },
+    "estimand": {
+      "outcome": "conversion_7d",
+      "contrast": "assigned treatment vs control",
+      "population": "users randomized 2026-11-01..14 in env:staging-web",
+      "horizon": "7d",
+      "functional": "ITT risk difference"
+    },
+    "assigned": {
+      "treatment": 9960,
+      "control": 10040
+    },
+    "converted": {
+      "treatment": 1096,
+      "control": 1004
+    }
+  },
+  "data": null,
+  "expected": {
+    "srm_at_assignment_unit": {
+      "chi2": 0.32,
+      "df": 1,
+      "p_value": 0.571607644953
+    },
+    "itt": {
+      "p_treatment": 0.110040160643,
+      "p_control": 0.1,
+      "estimate": 0.010040160643,
+      "se": 0.004335505235,
+      "z": 2.315799450817,
+      "p_value": 0.020569221242,
+      "ci": [
+        0.001542726527,
+        0.018537594758
+      ]
+    },
+    "identification": "CONDITIONAL_IDENTIFICATION",
+    "claim_kind": "CAUSAL_EFFECT_CONDITIONAL",
+    "graph_artifact": "EffectClaim(assignment -> conversion_7d)",
+    "structural_edge_admitted": false,
+    "scope": "users randomized 2026-11-01..14 in env:staging-web"
+  },
+  "v21_reference": {
+    "srm": "read from ExperimentRecord.srm_p_value (source-supplied, not computed)",
+    "output": "IdentificationCertificate -> propose CAUSALLY_IDENTIFIED edge exp -> conversion_7d"
+  }
+}

@@ -1,0 +1,38 @@
+{
+ "fetch_status": "ok",
+ "origin": "Tianchi dataset 649 (Taobao User Behavior), manual download, md5 verified",
+ "fetched": "2026-11-21T19:29:12",
+ "files": {
+  "UserBehavior.csv": {
+   "bytes": 3672347465,
+   "sha256": "46fdd7d389c1ddc7922eb7d9014af5573a4a3045da28c6c46197636873d8f1a9"
+  }
+ },
+ "bytes": 3672347465,
+ "licence": "Tianchi research terms",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Funnel view -> cart -> buy, timing",
+   "role": "secondary",
+   "claim": "typed events with second-level timestamps",
+   "status": "PASS",
+   "evidence": "100,150,807 events from 987,994 users; {'pv': 89716264, 'cart': 5530446, 'fav': 2888258, 'buy': 2015839}; 99.8% within 2017-11-24..2017-12-03; 0.1% outside the documented 9 days"
+  },
+  {
+   "row": "Session length, revisits",
+   "role": "secondary",
+   "claim": "event gaps to cut sessions",
+   "status": "PASS",
+   "evidence": "no session id, but second-level timestamps: median gap between a user's events 76s, p90 12167s -> sessions by inactivity gap"
+  },
+  {
+   "row": "Traffic volume, calendar",
+   "role": "secondary",
+   "claim": "hourly traffic pattern",
+   "status": "PARTIAL",
+   "evidence": "only 9 days: hour-of-day yes, weekly/seasonal no"
+  }
+ ],
+ "audited": "2026-11-21T19:29:57"
+}

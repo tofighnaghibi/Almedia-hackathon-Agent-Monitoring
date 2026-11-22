@@ -1,0 +1,31 @@
+{
+ "fetch_status": "ok",
+ "origin": "HF criteo/criteo-uplift v2.1",
+ "fetched": "2026-11-21T18:21:47",
+ "files": {
+  "criteo-research-uplift-v2.1.csv.gz": {
+   "bytes": 311422618,
+   "sha256": "2716e1bf0fd157a93b5bf86924d9088419dfbac2022c6cd90030220634f616dc"
+  }
+ },
+ "bytes": 311422618,
+ "licence": "CC BY-NC-SA 4.0",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Ads, sponsored lift",
+   "role": "primary",
+   "claim": "randomised ad treatment with exposure, visit, conversion",
+   "status": "PASS",
+   "evidence": "13,979,592 rows; treated 85.0%; exposure control 0.0000 vs treated 0.0360; visit/conv by arm [(0, 0.0382, 0.00194), (1, 0.0485, 0.00309)]; columns ['f0', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'treatment', 'conversion', 'visit', 'exposure']"
+  },
+  {
+   "row": "Experiments, assignments",
+   "role": "secondary",
+   "claim": "known assignment + non-compliance",
+   "status": "PASS",
+   "evidence": "treatment is randomised; exposure records non-compliance"
+  }
+ ],
+ "audited": "2026-11-21T18:22:29"
+}

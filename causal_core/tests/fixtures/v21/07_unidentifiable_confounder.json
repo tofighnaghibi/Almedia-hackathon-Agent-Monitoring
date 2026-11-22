@@ -1,0 +1,86 @@
+{
+  "fixture_schema": "phase0-reference/1",
+  "case_id": "07_unidentifiable_confounder",
+  "title": "Known unidentifiable confounder",
+  "tests_what": "Association reported, effect not identified, evidence gap emitted",
+  "refs": [
+    "v3.2 §4.5",
+    "C07",
+    "I08"
+  ],
+  "gates": [
+    "G11"
+  ],
+  "source": "emulator:latent_confounded_pair seed=20261107",
+  "behavior": {
+    "status": "PRESERVED",
+    "v21": "INCONCLUSIVE_ABSTAINED",
+    "v32": "UNIDENTIFIED + ASSOCIATION + evidence gaps",
+    "corrections": []
+  },
+  "input": {
+    "question_kind": "ESTIMATE_EFFECT",
+    "estimand": {
+      "treatment": "x",
+      "outcome": "y",
+      "functional": "ATE"
+    },
+    "study_design": {
+      "design": "observational",
+      "adjustment_set": [],
+      "instruments": []
+    },
+    "declared_graph": [
+      {
+        "source": "x",
+        "target": "y",
+        "kind": "CAUSAL_HYPOTHESIS"
+      },
+      {
+        "source": "x",
+        "target": "y",
+        "kind": "LATENT_CONFOUNDING",
+        "status": "CANDIDATE",
+        "note": "analyst-declared plausible unmeasured common cause"
+      }
+    ]
+  },
+  "data": {
+    "file": "07_unidentifiable_confounder.data.csv",
+    "columns": [
+      "row",
+      "x",
+      "y"
+    ],
+    "types": [
+      "str",
+      "float",
+      "float"
+    ],
+    "n_rows": 1500,
+    "sha256": "452181e9f8db701a8af7e56afa38beab47d0fce0072578a9e9992c91d5977076"
+  },
+  "expected": {
+    "association": {
+      "slope": 0.989971307391,
+      "intercept": 0.012144605084,
+      "n": 1500,
+      "se_slope": 0.025360983491
+    },
+    "identification": {
+      "status": "UNIDENTIFIED",
+      "claim_kind": "ASSOCIATION",
+      "blocking": [
+        "LATENT_CONFOUNDING(x,y) unblocked; observed adjustment set [] cannot block a latent path"
+      ]
+    },
+    "claim_kind": "ASSOCIATION",
+    "evidence_gaps": [
+      "randomize x (or find a valid instrument)",
+      "measure a proxy for the latent common cause"
+    ]
+  },
+  "v21_reference": {
+    "outcome": "INCONCLUSIVE_ABSTAINED (same)"
+  }
+}

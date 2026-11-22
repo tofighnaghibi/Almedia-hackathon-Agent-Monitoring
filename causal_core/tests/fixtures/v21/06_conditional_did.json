@@ -1,0 +1,95 @@
+{
+  "fixture_schema": "phase0-reference/1",
+  "case_id": "06_conditional_did",
+  "title": "Conditional DiD",
+  "tests_what": "ATT under untestable parallel trends; pre-trend is a diagnostic, not proof",
+  "refs": [
+    "v3.2 §4.4 did_v1",
+    "C04"
+  ],
+  "gates": [
+    "G11"
+  ],
+  "source": "emulator:parallel_trends_panel seed=20261106",
+  "behavior": {
+    "status": "CORRECTED",
+    "v21": "pre-trend pass -> INTERVENTION_SUPPORTED",
+    "v32": "CAUSAL_EFFECT_CONDITIONAL with untestable assumptions listed",
+    "corrections": [
+      "C04"
+    ]
+  },
+  "input": {
+    "question_kind": "ESTIMATE_EFFECT",
+    "study_design": {
+      "design": "difference_in_differences",
+      "treated_group": "treated",
+      "intervention_period": 0,
+      "timing": "single (not staggered)"
+    },
+    "estimand": {
+      "functional": "ATT",
+      "population": "treated units",
+      "horizon": "period 0"
+    }
+  },
+  "data": {
+    "file": "06_conditional_did.data.csv",
+    "columns": [
+      "unit",
+      "group",
+      "period",
+      "y"
+    ],
+    "types": [
+      "str",
+      "str",
+      "int",
+      "float"
+    ],
+    "n_rows": 64,
+    "sha256": "dfcc2fa1f571609965a67ac70e0b03782e1f28091509fea20aaca4a2c7c5003a"
+  },
+  "expected": {
+    "att": {
+      "estimate": 1.322120833333,
+      "se": 0.132995009966,
+      "df": 14,
+      "t": 9.941131127175,
+      "p_value": 1.00497e-07,
+      "ci": [
+        1.036874906398,
+        1.607366760268
+      ]
+    },
+    "pretrend_slope_difference": {
+      "estimate": 0.154515875,
+      "se": 0.106831260919,
+      "df": 14,
+      "t": 1.446354500271,
+      "p_value": 0.170093579813,
+      "ci": [
+        -0.074614391273,
+        0.383646141273
+      ]
+    },
+    "pretrend_diagnostic": "NO_DETECTABLE_DIVERGENCE",
+    "units_per_group": {
+      "treated": 8,
+      "control": 8
+    },
+    "claim_kind": "CAUSAL_EFFECT_CONDITIONAL",
+    "untestable_assumptions": [
+      "parallel trends in the post period",
+      "no anticipation",
+      "no spillover to controls",
+      "stable group composition"
+    ],
+    "pretrend_role": "diagnostic only; a pass is not proof of parallel trends",
+    "structural_edge_admitted": false
+  },
+  "v21_reference": {
+    "rule": "mandatory pre-trend falsification",
+    "outcome": "INTERVENTION_SUPPORTED -> HUMAN_APPROVAL_REQUIRED (same estimate)"
+  }
+}

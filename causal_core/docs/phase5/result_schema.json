@@ -1,0 +1,141 @@
+{
+  "additionalProperties": false,
+  "description": "The JSON result schema (plan \u00a7G deliverable). Written to docs/phase5/result_schema.json by the demo.",
+  "properties": {
+    "schema_version": {
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "task_id": {
+      "title": "Task Id",
+      "type": "string"
+    },
+    "revision": {
+      "title": "Revision",
+      "type": "integer"
+    },
+    "provisional": {
+      "title": "Provisional",
+      "type": "boolean"
+    },
+    "trigger": {
+      "title": "Trigger",
+      "type": "string"
+    },
+    "question_kind": {
+      "title": "Question Kind",
+      "type": "string"
+    },
+    "outcome": {
+      "title": "Outcome",
+      "type": "string"
+    },
+    "policy": {
+      "additionalProperties": true,
+      "title": "Policy",
+      "type": "object"
+    },
+    "findings": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "effect_claims": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Effect Claims",
+      "type": "array"
+    },
+    "identification": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Identification",
+      "type": "array"
+    },
+    "method_trace": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Method Trace",
+      "type": "array"
+    },
+    "stage_trace": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Stage Trace",
+      "type": "array"
+    },
+    "rivals_and_assumptions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Rivals And Assumptions",
+      "type": "array"
+    },
+    "evidence_gaps": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Evidence Gaps",
+      "type": "array"
+    },
+    "failures": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Failures",
+      "type": "array"
+    },
+    "evidence_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "pins": {
+      "additionalProperties": true,
+      "title": "Pins",
+      "type": "object"
+    },
+    "abstained": {
+      "title": "Abstained",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_version",
+    "task_id",
+    "revision",
+    "provisional",
+    "trigger",
+    "question_kind",
+    "outcome",
+    "policy",
+    "findings",
+    "effect_claims",
+    "identification",
+    "method_trace",
+    "stage_trace",
+    "rivals_and_assumptions",
+    "evidence_gaps",
+    "failures",
+    "evidence_ids",
+    "pins",
+    "abstained"
+  ],
+  "title": "ReportEnvelope",
+  "type": "object"
+}

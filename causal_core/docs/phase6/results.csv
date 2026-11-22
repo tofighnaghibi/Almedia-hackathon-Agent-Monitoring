@@ -1,0 +1,19 @@
+slice,case,task_id,outcome,failure_class,first_finding
+S1,success,s1-explain,COMPLETED,DQ_FAULT,"4 bucket(s) not mature or not assessed (country:BR:2026-11-21, country:DE:2026-11-21, country:FR:2026-11-21…): excluded; a change there is not attributed to the domain"
+S1,error,s1-no-window,FAILED_VALIDATION,ILL_DEFINED_TARGET,ILL_DEFINED_TARGET at FRAME: an observation to explain needs its time window; none is invented
+S1,abstention,s1-monitor,WAITING_FOR_EVIDENCE,MISSING_EVIDENCE,MISSING_EVIDENCE at AUDIT_INPUTS: no declared null for ['web_conversion']: a change test needs one
+S2,success,s2-itt,COMPLETED,,"ITT of variant vs control on trial_start_7d: +0.0305 [+0.0095, +0.0514] (CONDITIONAL_IDENTIFICATION)"
+S2,error,s2-srm,INCONCLUSIVE,STATISTICAL_INVALIDITY,randomized_effect_v1 refused: SRM_FAIL: sample ratio mismatch p = 9.01e-25 < 0.001; assignment integrity not established
+S2,abstention,s2-ate,COMPLETED,,abstain: UNIDENTIFIED: ATE of actual exposure is not identified by random assignment alone (C01)
+S3,success,s3-door,COMPLETED,,door openings warm the freezer: graph says KNOWN (TEMPORAL_LAG (lag 300–1200 s)); not tested by data in this task
+S3,error,s3-monitor,INCONCLUSIVE,METHOD_REFUSAL,savi_eprocess_v1 refused: DEPENDENCE_UNSUPPORTED: dependence 'ar1': the test martingale is not valid; Type-I control would not hold
+S3,abstention,s3-dispatch,COMPLETED,,door openings directly change the dispatch rate: graph says UNKNOWN; not tested by data in this task
+S1,acceptance,,MET,,"drop attributed to mix, not to segment rates (truth: rates unchanged)"
+S1,acceptance,,MET,,"the partly loaded day (2026-11-21) is a DQ fault, not a domain change"
+S1,acceptance,,MET,,no change test without a declared null
+S2,acceptance,,MET,,ITT CI covers truth 0.035
+S2,acceptance,,MET,,exposure effect not claimed; no monitor involved
+S2,acceptance,,MET,,broken randomization refused (no estimate)
+S3,acceptance,,MET,,runs with no metric fields: lagged door→temperature link found in the graph
+S3,acceptance,,MET,,"autocorrelated sensor stream refused, not alarmed on"
+S3,acceptance,,MET,,"no edge recorded → UNKNOWN, not 'no effect'"

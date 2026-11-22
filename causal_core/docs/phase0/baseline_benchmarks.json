@@ -1,0 +1,52 @@
+{
+  "captured_at": "2026-11-21T20:24:03+00:00",
+  "machine": {
+    "os": "macOS-27.2.1-arm64-arm-64bit",
+    "cpu": "Apple M1 Pro",
+    "logical_cores": 8,
+    "ram_gib": 16.0
+  },
+  "python": {
+    "version": "3.11.12",
+    "executable": "/Users/sdye/.pyenv/versions/3.11.12/bin/python3"
+  },
+  "phase0_dependencies": "stdlib only",
+  "phase1_candidate_dependencies_installed_here": {
+    "pydantic": "2.14.1",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "networkx": "3.6.1"
+  },
+  "targets_not_measurements": {
+    "T0_p95_s": 2,
+    "T1_p95_s": 10,
+    "T2_attempt_p95_s": 60,
+    "load_profile": "5k nodes, 100 concurrent tasks, writer saturation, hung adapter (v3.2 \u00a75.3)"
+  },
+  "measurements": {
+    "T0": {
+      "status": "MISSING",
+      "reason": "no v2.1 implementation exists; specification-only baseline (plan \u00a7B)"
+    },
+    "T1": {
+      "status": "MISSING",
+      "reason": "no v2.1 implementation exists; specification-only baseline (plan \u00a7B)"
+    },
+    "T2": {
+      "status": "MISSING",
+      "reason": "no v2.1 implementation exists; specification-only baseline (plan \u00a7B)"
+    },
+    "graph_traversal": {
+      "status": "MISSING",
+      "reason": "no v2.1 implementation exists; specification-only baseline (plan \u00a7B)"
+    },
+    "memory_peak": {
+      "status": "MISSING",
+      "reason": "no v2.1 implementation exists; specification-only baseline (plan \u00a7B)"
+    },
+    "sqlite_writer": {
+      "status": "MISSING",
+      "reason": "no v2.1 implementation exists; specification-only baseline (plan \u00a7B)"
+    }
+  }
+}

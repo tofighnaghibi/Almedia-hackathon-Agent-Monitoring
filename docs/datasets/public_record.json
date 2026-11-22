@@ -1,0 +1,24 @@
+{
+ "fetch_status": "ok",
+ "origin": "reference file: documented strike window with source links",
+ "fetched": "2026-11-21T20:24:04",
+ "files": {
+  "truckers_strike_2018.json": {
+   "bytes": 514,
+   "sha256": "b2de1f55ec8dfdf5cfd15a73fd3d70872897bb096ad9dbb5f154c1f04916d210"
+  }
+ },
+ "bytes": 514,
+ "licence": "n/a",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "External shocks (2018 strike)",
+   "role": "secondary",
+   "claim": "documented strike window",
+   "status": "PASS",
+   "evidence": "21 May 2018 start; effectively over 31 May-1 Jun, formal end 2 Jun (Wikipedia, Reuters via Stabroek News 1 Jun, Garda alert 1 Jun)"
+  }
+ ],
+ "audited": "2026-11-21T20:24:07"
+}

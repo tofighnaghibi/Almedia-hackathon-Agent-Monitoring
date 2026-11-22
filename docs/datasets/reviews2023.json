@@ -1,0 +1,25 @@
+{
+ "fetch_status": "ok",
+ "origin": "HF McAuley-Lab/Amazon-Reviews-2023: category map only (asin2category.json); category files archived 21 Nov",
+ "fetched": "2026-11-21T21:10:52",
+ "files": {
+  "asin2category.json": {
+   "bytes": 1246846569,
+   "sha256": "a3447e014ccb9228540779e6c2bf0fb0400a90ff07ba10e4d99b10d513b1d080"
+  }
+ },
+ "bytes": 1246846569,
+ "licence": "research use; none declared on HF card",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Search queries, relevance",
+   "role": "secondary",
+   "claim": "category for each Amazon item (to place ESCI items in mapped categories)",
+   "status": "PASS",
+   "evidence": "asin2category.json maps 35,393,189 parent ASINs to 34 categories (measured earlier); 36.8% of ESCI-US items covered. Review/meta category files archived 21 Nov (audited earlier: ratings + English text present, no delivery fields)"
+  }
+ ],
+ "audited": "2026-11-21T21:10:53",
+ "audit_error": null
+}

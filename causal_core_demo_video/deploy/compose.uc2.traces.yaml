@@ -1,0 +1,12 @@
+# Optional layer for watching (scripts/uc2_shop.sh up --traces): Jaeger and Prometheus from the upstream observability compose file,
+# and one more collector config layer that exports the (already redacted) spans to it. UI: http://localhost:8080/jaeger/ui/
+services:
+  otel-collector:
+    command:
+      - --config=/etc/otelcol-config.yml
+      - --config=/etc/otelcol-config-extras.yml
+      - --config=/etc/otelcol-uc2.yml
+      - --config=/etc/otelcol-uc2-traces.yml
+      - --feature-gates=service.profilesSupport
+    volumes:
+      - ${UC2_DEPLOY}/otelcol-uc2-traces.yml:/etc/otelcol-uc2-traces.yml

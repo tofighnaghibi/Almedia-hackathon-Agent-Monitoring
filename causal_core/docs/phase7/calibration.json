@@ -1,0 +1,101 @@
+{
+  "calibration": {
+    "linear": {
+      "worlds": 40,
+      "validated": 39,
+      "predicted": 39,
+      "abstained": 0,
+      "coverage": {
+        "0.5": 0.7692307692307693,
+        "0.8": 0.9230769230769231,
+        "0.9": 0.9487179487179487,
+        "0.95": 0.9743589743589743
+      },
+      "mean_error": 1.386783968759108,
+      "rmse": 13.754307883144204
+    },
+    "saturating": {
+      "worlds": 40,
+      "validated": 40,
+      "predicted": 40,
+      "abstained": 0,
+      "coverage": {
+        "0.5": 0.7,
+        "0.8": 0.9,
+        "0.9": 0.975,
+        "0.95": 0.975
+      },
+      "mean_error": 5.399627110990432,
+      "rmse": 14.690693639531137
+    }
+  },
+  "straight_line_only": {
+    "linear": {
+      "worlds": 40,
+      "validated": 39,
+      "predicted": 39,
+      "abstained": 0,
+      "coverage": {
+        "0.5": 0.717948717948718,
+        "0.8": 0.8717948717948718,
+        "0.9": 0.9230769230769231,
+        "0.95": 0.9487179487179487
+      },
+      "mean_error": 1.467765519622771,
+      "rmse": 14.358355505977737
+    },
+    "saturating": {
+      "worlds": 40,
+      "validated": 40,
+      "predicted": 40,
+      "abstained": 0,
+      "coverage": {
+        "0.5": 0.325,
+        "0.8": 0.725,
+        "0.9": 0.8,
+        "0.95": 0.9
+      },
+      "mean_error": 12.045511254177454,
+      "rmse": 18.959500124946278
+    }
+  },
+  "out_of_regime": {
+    "linear": {
+      "status": "OUT_OF_REGIME",
+      "reason": "110 mechanism input(s) leave the fitted range on average",
+      "truth": 1488.0953886286504,
+      "unguarded_prediction": 1522.8614601013649,
+      "unguarded_interval": [
+        1358.9661808355938,
+        1717.7599003411096
+      ],
+      "unguarded_covers_truth": true,
+      "unguarded_shapes_interval": [
+        952.9901244905186,
+        2420.2051213688505
+      ],
+      "unguarded_shapes_covers_truth": true
+    },
+    "saturating": {
+      "status": "OUT_OF_REGIME",
+      "reason": "110 mechanism input(s) leave the fitted range on average",
+      "truth": 808.9792512782292,
+      "unguarded_prediction": 1231.4385860834132,
+      "unguarded_interval": [
+        1070.7014471688651,
+        1425.3963895062477
+      ],
+      "unguarded_covers_truth": false,
+      "unguarded_shapes_interval": [
+        441.27323212955343,
+        1642.5461264459975
+      ],
+      "unguarded_shapes_covers_truth": true
+    }
+  },
+  "crn": {
+    "paired_width": 47.77919001599321,
+    "independent_width_approx": 155.41785640481123,
+    "ratio": 0.30742407031753477
+  }
+}

@@ -1,0 +1,522 @@
+{
+  "generated_at": "2026-11-22T10:47:05+00:00",
+  "python": "3.11.12",
+  "differential_vs_phase0_oracle": [
+    {
+      "fixture": "02",
+      "quantity": "mix_component",
+      "production": -0.024000000000000004,
+      "oracle": -0.024,
+      "abs_diff": 3.469446951953614e-18
+    },
+    {
+      "fixture": "02",
+      "quantity": "rate_component",
+      "production": 0.005000000000000003,
+      "oracle": 0.005,
+      "abs_diff": 2.6020852139652106e-18
+    },
+    {
+      "fixture": "04",
+      "quantity": "itt",
+      "production": 0.010040160642570281,
+      "oracle": 0.010040160643,
+      "abs_diff": 4.2971876057507075e-13
+    },
+    {
+      "fixture": "04",
+      "quantity": "itt_se",
+      "production": 0.004335722070201719,
+      "oracle": 0.004335505235,
+      "abs_diff": 2.1683520171848075e-07
+    },
+    {
+      "fixture": "04",
+      "quantity": "srm_p",
+      "production": 0.5716076449533314,
+      "oracle": 0.571607644953,
+      "abs_diff": 3.3140157285060923e-13
+    },
+    {
+      "fixture": "05",
+      "quantity": "cluster_estimate",
+      "production": 0.03928258400000001,
+      "oracle": 0.039282584,
+      "abs_diff": 6.938893903907228e-18
+    },
+    {
+      "fixture": "05",
+      "quantity": "cluster_se",
+      "production": 0.10419583992642305,
+      "oracle": 0.104195839926,
+      "abs_diff": 4.230504835334159e-13
+    },
+    {
+      "fixture": "05",
+      "quantity": "cluster_p_value",
+      "production": 0.710576118007229,
+      "oracle": 0.710576118007,
+      "abs_diff": 2.289279876777073e-13
+    },
+    {
+      "fixture": "06",
+      "quantity": "att",
+      "production": 1.3221208333333325,
+      "oracle": 1.322120833333,
+      "abs_diff": 3.326228181776969e-13
+    },
+    {
+      "fixture": "06",
+      "quantity": "att_se",
+      "production": 0.132995009966137,
+      "oracle": 0.132995009966,
+      "abs_diff": 1.3700152123874432e-13
+    },
+    {
+      "fixture": "06",
+      "quantity": "pretrend_p",
+      "production": 0.17009357981347076,
+      "oracle": 0.170093579813,
+      "abs_diff": 4.70762318016682e-13
+    },
+    {
+      "fixture": "07",
+      "quantity": "slope",
+      "production": 0.9899713073906594,
+      "oracle": 0.989971307391,
+      "abs_diff": 3.4061642395499803e-13
+    },
+    {
+      "fixture": "07",
+      "quantity": "se_slope",
+      "production": 0.025360983491121872,
+      "oracle": 0.025360983491,
+      "abs_diff": 1.218712630812746e-13
+    },
+    {
+      "fixture": "08",
+      "quantity": "log_wealth",
+      "production": 0.8500000000000001,
+      "oracle": 0.85,
+      "abs_diff": 1.1102230246251565e-16
+    },
+    {
+      "fixture": "11",
+      "quantity": "itt",
+      "production": 0.5908309568421052,
+      "oracle": 0.590830956842,
+      "abs_diff": 1.0513812043200232e-13
+    },
+    {
+      "fixture": "11",
+      "quantity": "cace",
+      "production": 0.9578317559726962,
+      "oracle": 0.957831755973,
+      "abs_diff": 3.0375701953744283e-13
+    },
+    {
+      "fixture": "11",
+      "quantity": "cace_se",
+      "production": 0.07257238245596914,
+      "oracle": 0.072572382456,
+      "abs_diff": 3.086420008457935e-14
+    }
+  ],
+  "type_one_error": [
+    {
+      "rho": 0.0,
+      "streams": 1000,
+      "peeks": 200,
+      "alpha": 0.05,
+      "seed": 7,
+      "false_alarm_rate": 0.036,
+      "false_alarm_rate_old_bet": 0.042
+    },
+    {
+      "rho": 0.3,
+      "streams": 1000,
+      "peeks": 200,
+      "alpha": 0.05,
+      "seed": 7,
+      "false_alarm_rate": 0.204,
+      "false_alarm_rate_old_bet": 0.131
+    },
+    {
+      "rho": 0.5,
+      "streams": 1000,
+      "peeks": 200,
+      "alpha": 0.05,
+      "seed": 7,
+      "false_alarm_rate": 0.419,
+      "false_alarm_rate_old_bet": 0.232
+    },
+    {
+      "rho": 0.8,
+      "streams": 1000,
+      "peeks": 200,
+      "alpha": 0.05,
+      "seed": 7,
+      "false_alarm_rate": 0.825,
+      "false_alarm_rate_old_bet": 0.458
+    }
+  ],
+  "revised_and_bursty": {
+    "alpha": 0.05,
+    "streams": 1000,
+    "peeks": 200,
+    "seed": 7,
+    "revised_final_version_rate": 0.043,
+    "revised_ever_raised_rate": 0.045,
+    "revised_superseded_only_rate": 0.002,
+    "bursty_variance_rate": 0.058
+  },
+  "revised_and_bursty_new_bet": {
+    "alpha": 0.05,
+    "streams": 1000,
+    "peeks": 200,
+    "seed": 7,
+    "revised_final_version_rate": 0.041,
+    "revised_ever_raised_rate": 0.052,
+    "revised_superseded_only_rate": 0.011,
+    "bursty_variance_rate": 0.064
+  },
+  "power_fixed_bet": [
+    {
+      "shift_sd": 0.1,
+      "peeks": 200,
+      "drift_per_step": -0.075,
+      "alarm_rate": 0.142,
+      "median_peeks_to_alarm": 29.0
+    },
+    {
+      "shift_sd": 0.2,
+      "peeks": 200,
+      "drift_per_step": -0.024999999999999994,
+      "alarm_rate": 0.423,
+      "median_peeks_to_alarm": 45.0
+    },
+    {
+      "shift_sd": 0.25,
+      "peeks": 200,
+      "drift_per_step": 0.0,
+      "alarm_rate": 0.62,
+      "median_peeks_to_alarm": 45.0
+    },
+    {
+      "shift_sd": 0.3,
+      "peeks": 200,
+      "drift_per_step": 0.024999999999999994,
+      "alarm_rate": 0.819,
+      "median_peeks_to_alarm": 43.0
+    },
+    {
+      "shift_sd": 0.5,
+      "peeks": 200,
+      "drift_per_step": 0.125,
+      "alarm_rate": 1.0,
+      "median_peeks_to_alarm": 21.0
+    },
+    {
+      "shift_sd": 1.0,
+      "peeks": 200,
+      "drift_per_step": 0.375,
+      "alarm_rate": 1.0,
+      "median_peeks_to_alarm": 8.0
+    }
+  ],
+  "power_old_vs_new_bet": [
+    {
+      "old": {
+        "shift_sd": -0.25,
+        "peeks": 200,
+        "drift_per_step": null,
+        "alarm_rate": 0.0,
+        "median_peeks_to_alarm": null
+      },
+      "new": {
+        "shift_sd": -0.25,
+        "peeks": 200,
+        "drift_per_step": null,
+        "alarm_rate": 0.813,
+        "median_peeks_to_alarm": 85.0
+      }
+    },
+    {
+      "old": {
+        "shift_sd": 0.1,
+        "peeks": 200,
+        "drift_per_step": null,
+        "alarm_rate": 0.142,
+        "median_peeks_to_alarm": 29.0
+      },
+      "new": {
+        "shift_sd": 0.1,
+        "peeks": 200,
+        "drift_per_step": null,
+        "alarm_rate": 0.172,
+        "median_peeks_to_alarm": 106.0
+      }
+    },
+    {
+      "old": {
+        "shift_sd": 0.2,
+        "peeks": 200,
+        "drift_per_step": null,
+        "alarm_rate": 0.423,
+        "median_peeks_to_alarm": 45.0
+      },
+      "new": {
+        "shift_sd": 0.2,
+        "peeks": 200,
+        "drift_per_step": null,
+        "alarm_rate": 0.592,
+        "median_peeks_to_alarm": 98.0
+      }
+    },
+    {
+      "old": {
+        "shift_sd": 0.25,
+        "peeks": 200,
+        "drift_per_step": null,
+        "alarm_rate": 0.62,
+        "median_peeks_to_alarm": 45.0
+      },
+      "new": {
+        "shift_sd": 0.25,
+        "peeks": 200,
+        "drift_per_step": null,
+        "alarm_rate": 0.829,
+        "median_peeks_to_alarm": 93.0
+      }
+    },
+    {
+      "old": {
+        "shift_sd": 0.5,
+        "peeks": 200,
+        "drift_per_step": null,
+        "alarm_rate": 1.0,
+        "median_peeks_to_alarm": 21.0
+      },
+      "new": {
+        "shift_sd": 0.5,
+        "peeks": 200,
+        "drift_per_step": null,
+        "alarm_rate": 1.0,
+        "median_peeks_to_alarm": 36.0
+      }
+    },
+    {
+      "old": {
+        "shift_sd": 1.0,
+        "peeks": 200,
+        "drift_per_step": null,
+        "alarm_rate": 1.0,
+        "median_peeks_to_alarm": 8.0
+      },
+      "new": {
+        "shift_sd": 1.0,
+        "peeks": 200,
+        "drift_per_step": null,
+        "alarm_rate": 1.0,
+        "median_peeks_to_alarm": 15.0
+      }
+    },
+    {
+      "old": {
+        "shift_sd": 0.05,
+        "peeks": 1000,
+        "drift_per_step": null,
+        "alarm_rate": 0.084,
+        "median_peeks_to_alarm": 26.0
+      },
+      "new": {
+        "shift_sd": 0.05,
+        "peeks": 1000,
+        "drift_per_step": null,
+        "alarm_rate": 0.15,
+        "median_peeks_to_alarm": 248.0
+      }
+    },
+    {
+      "old": {
+        "shift_sd": 0.1,
+        "peeks": 1000,
+        "drift_per_step": null,
+        "alarm_rate": 0.147,
+        "median_peeks_to_alarm": 32.0
+      },
+      "new": {
+        "shift_sd": 0.1,
+        "peeks": 1000,
+        "drift_per_step": null,
+        "alarm_rate": 0.594,
+        "median_peeks_to_alarm": 384.0
+      }
+    }
+  ],
+  "srm_calibration": {
+    "mixed history (90% healthy, 5% gross, 5% subtle)": {
+      "experiments": 2000,
+      "warn_alpha": 0.002088411006935275,
+      "reason": "largest threshold with estimated false-warning share \u2264 20%",
+      "blocked": 108,
+      "blocked_truly_broken": 104,
+      "warned": 10,
+      "warned_truly_broken": 6,
+      "estimated_false_warning_share": 0.193954841435866,
+      "true_false_warning_share": 0.4,
+      "broken_missed": 86,
+      "false_share_at_0.01": 0.5945945945945946
+    },
+    "only blatant bugs (95% healthy, 5% gross)": {
+      "experiments": 2000,
+      "warn_alpha": 0.001,
+      "reason": "no warning threshold keeps estimated false warnings \u2264 20%: warning tier collapses onto the 0.001 block",
+      "blocked": 110,
+      "blocked_truly_broken": 106,
+      "warned": 0,
+      "warned_truly_broken": 0,
+      "estimated_false_warning_share": null,
+      "true_false_warning_share": null,
+      "broken_missed": 2,
+      "false_share_at_0.01": 0.92
+    },
+    "all healthy": {
+      "experiments": 2000,
+      "warn_alpha": 0.001,
+      "reason": "no warning threshold keeps estimated false warnings \u2264 20%: warning tier collapses onto the 0.001 block",
+      "blocked": 5,
+      "blocked_truly_broken": 0,
+      "warned": 0,
+      "warned_truly_broken": 0,
+      "estimated_false_warning_share": null,
+      "true_false_warning_share": null,
+      "broken_missed": 0,
+      "false_share_at_0.01": 1.0
+    },
+    "short history (60 experiments)": {
+      "experiments": 60,
+      "warn_alpha": 0.01,
+      "reason": "insufficient history (60 < 100): starting threshold 0.01 kept",
+      "blocked": 2,
+      "blocked_truly_broken": 2,
+      "warned": 1,
+      "warned_truly_broken": 1,
+      "estimated_false_warning_share": null,
+      "true_false_warning_share": 0.0,
+      "broken_missed": 3,
+      "false_share_at_0.01": 0.0
+    }
+  },
+  "adversarial_suite": [
+    {
+      "scenario": "pretrend_ok_but_violated",
+      "expected": "pre-trend diagnostic passes, status stays CONDITIONAL (never certified), parallel trends listed untestable",
+      "observed": {
+        "pretrend": "NO_DETECTABLE_DIVERGENCE",
+        "status": "CONDITIONAL_IDENTIFICATION",
+        "estimate": 1.054,
+        "trend_sensitivity_fragile": false
+      },
+      "truth": 0.0,
+      "ci": [
+        0.8023794035292193,
+        1.305671129804115
+      ],
+      "ci_covers_truth": false,
+      "expectation_met": true
+    },
+    {
+      "scenario": "differential_attrition",
+      "expected": "DIFFERENTIAL_ATTRITION flagged and status PARTIAL_IDENTIFICATION",
+      "observed": {
+        "status": "PARTIAL_IDENTIFICATION",
+        "limitations": [
+          "DIFFERENTIAL_ATTRITION"
+        ],
+        "estimate": 0.432
+      },
+      "truth": 0.2,
+      "ci": [
+        0.36802178434508825,
+        0.49690818699398587
+      ],
+      "ci_covers_truth": false,
+      "expectation_met": true
+    },
+    {
+      "scenario": "spillover",
+      "expected": "cannot be detected from these data; SUTVA must be listed as untestable",
+      "observed": {
+        "status": "CONDITIONAL_IDENTIFICATION",
+        "estimate": 0.336
+      },
+      "truth": 0.5,
+      "ci": [
+        0.24945990268009133,
+        0.42331578225492483
+      ],
+      "ci_covers_truth": false,
+      "expectation_met": true
+    },
+    {
+      "scenario": "skewed_clusters",
+      "expected": "6/arm unequal \u2192 limitations (few + unequal); 3/arm \u2192 UNSUPPORTED_CLUSTER_INFERENCE",
+      "observed": {
+        "six_per_arm": "OK_WITH_LIMITATIONS",
+        "limitations": 2,
+        "three_per_arm": "UNSUPPORTED_CLUSTER_INFERENCE"
+      },
+      "truth": 0.3,
+      "ci": [
+        -1.029666935047514,
+        0.5738563700475141
+      ],
+      "ci_covers_truth": true,
+      "expectation_met": true
+    },
+    {
+      "scenario": "ate_vs_att",
+      "expected": "INCOMPARABLE: no blanket RCT override across estimands (C02, I09)",
+      "observed": {
+        "comparable": false,
+        "differences": [
+          "population: 'all sites' vs 'self-selected sites'",
+          "functional: 'ATE' vs 'ATT'"
+        ]
+      },
+      "truth": null,
+      "ci": null,
+      "ci_covers_truth": null,
+      "expectation_met": true
+    },
+    {
+      "scenario": "unmeasured_confounding",
+      "expected": "association reported; effect UNIDENTIFIED even with an unrelated adjustment set",
+      "observed": {
+        "status": "ASSOCIATION_ONLY",
+        "status_with_adjustment": "UNIDENTIFIED",
+        "association": 0.99
+      },
+      "truth": 0.5,
+      "ci": [
+        0.9402244989132412,
+        1.0397181158680777
+      ],
+      "ci_covers_truth": false,
+      "expectation_met": true
+    }
+  ],
+  "summary": {
+    "differential_quantities": 17,
+    "max_abs_diff": 2.1683520171848075e-07,
+    "adversarial_expectations_met": "6/6"
+  },
+  "history": [
+    "First adversarial run (same expectations): skewed_clusters NOT MET. The method found both problems but packed them into ONE limitation string. Fix: one limitation per reason (experiments.cluster_support). The expectation was not changed.",
+    "Tier 1 T1-P4-01: the cluster and DiD SEs were computed as estimate / t-statistic, which is NaN when the estimate is exactly 0; constant outcomes crashed the unit-level path with ZeroDivisionError; a constant x crashed the association slope. Now one pooled kernel (analytics/kernels.py) computes the SE directly, and zero variance refuses with DEGENERATE_VARIANCE / NO_VARIATION. The differential rows above were re-run after the fix.",
+    "DiD trend sensitivity added (plan \u00a7F.5) after the suite's expectations were fixed. On pretrend_ok_but_violated it reports fragile = False: the violation begins at the intervention, which no pre-period extrapolation can detect. The expectation was not changed.",
+    "User decisions 2026-11-22: the default bet became the regularized two-sided plug-in (\u03bb0 0.25, prior strength 100, floor 0.05, cap 1.0); k = 100 was chosen from a sweep over k \u2208 {1, 5, 10, 20, 50, 100, 200, \u221e} as the best balance of power near 0.25 SD in 200 peeks and power on 0.1 SD over 1,000 peeks. Measured costs, recorded rather than hidden: autocorrelated streams inflate more (\u03c1 0.8: 0.825 vs 0.458; still refused), variance bursts 0.064 vs 0.058, and the revised 'ever raised' rate 0.052 vs 0.045.",
+    "SRM calibration, first version: a threshold qualified with as few as 1 experiment in its warning band; on the mixed history it estimated 19% false warnings where truth gave 40%, and on the blatant-bugs history 19% vs 50% (2 warnings). Fix: a threshold needs at least 10 past experiments in its band (min_band). Truth was used to find the problem; the target (20%) was not tuned to it."
+  ]
+}

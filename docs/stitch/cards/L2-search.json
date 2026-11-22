@@ -1,0 +1,68 @@
+{
+ "status": "partially supported (transferred; held-out stable)",
+ "estimate": {
+  "label_mix": {
+   "S": 0.2028086789699089,
+   "C": 0.022161905736780178,
+   "I": 0.08943129699155018,
+   "E": 0.6855981183017608
+  },
+  "judged_products_per_query": [
+   18.68431866043454,
+   16.0
+  ],
+  "bridge_rows": 637652
+ },
+ "heldout": [
+  {
+   "name": "Exact-label share, even vs odd query ids",
+   "halves": [
+    0.6855981183017608,
+    0.6862297920209517
+   ],
+   "diff": 0.000921346926615837,
+   "tol": 0.05,
+   "rel": true,
+   "pass": true
+  }
+ ],
+ "trained_through": "2022-06-01",
+ "target": false,
+ "assumptions": [
+  "English queries bridged onto a Portuguese-category catalog: labelled mixed-language stand-in"
+ ],
+ "bridges": [
+  "/home/sneha/data/mkt/stitch/bridges/L2-search.parquet"
+ ],
+ "status_override": null,
+ "id": "L2-search",
+ "layer": "L2",
+ "data_type": "Search queries, relevance",
+ "method": "bridge",
+ "sources": [
+  "esci",
+  "reviews2023"
+ ],
+ "consumed_by": null,
+ "heldout_plan": "E/S/C/I label mix: random halves of queries",
+ "seconds": 41.2,
+ "cache_key": "5333f96d36c6d267",
+ "inputs": {
+  "esci/shopping_queries_dataset_examples.parquet": [
+   51286808,
+   1795281723
+  ],
+  "esci/shopping_queries_dataset_products.parquet": [
+   1108857465,
+   1795281863
+  ],
+  "esci/shopping_queries_dataset_sources.csv": [
+   1682802,
+   1795281863
+  ],
+  "reviews2023/asin2category.json": [
+   1246846569,
+   1795269949
+  ]
+ }
+}

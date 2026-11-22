@@ -1,0 +1,34 @@
+{
+  "note": "Video 2 narration. Times are seconds within a segment (anchor), set for about 2.9 words per second. Segments: open 0-32, solution 32-96, demo 96-166 (cut from the screen recording; demo lines are anchored to events in the run), close 166-180. {placeholders} are filled from outputs/uc2 at assembly.",
+  "lines": [
+    {"anchor": "open", "at": 0.3, "text": "Frank owns a marketplace for telescopes. Business is booming, so Frank and his partner decide to start a family."},
+    {"anchor": "open", "at": 6.8, "text": "The marketplace crashes at 3 a.m.: orders are dropping, and nobody knows why yet. But Frank has rent to pay."},
+    {"anchor": "open", "at": 14.0, "text": "Is it a data glitch, a quieter market, or something broken in checkout?"},
+    {"anchor": "open", "at": 18.8, "text": "Today a person digs through dashboards, logs and traces to find out, while orders keep failing."},
+    {"anchor": "open", "at": 24.6, "text": "We built an engine that answers that question on its own, and an agent that acts on the answer, safely."},
+
+    {"anchor": "solution", "at": 0.5, "text": "The engine accesses the event stream through ports: telemetry from the services, and data from the order pipeline."},
+    {"anchor": "solution", "at": 7.0, "text": "Every question goes through the same seven stages."},
+    {"anchor": "solution", "at": 10.1, "text": "One, frame it: has something changed, why, how big is the effect, or what if we act? Here: have checkout errors gone up?"},
+    {"anchor": "solution", "at": 18.3, "text": "Two, check the inputs: the right source, on time, and a baseline to compare with. If anything is missing, it stops."},
+    {"anchor": "solution", "at": 25.8, "text": "Three, pick the methods: two of its fourteen fit here, and the other twelve are set aside, each with a reason."},
+    {"anchor": "solution", "at": 33.3, "text": "Four, fetch the checkout numbers. Five, test them: are errors above budget, are attempts below normal?"},
+    {"anchor": "solution", "at": 39.1, "text": "Six, challenge the result: could a logging change explain it?"},
+    {"anchor": "solution", "at": 42.8, "text": "Seven, report: publish, publish a draft, propose a test, or refuse to act. Every step is written to a ledger."},
+    {"anchor": "solution", "at": 50.0, "text": "On top, an agent turns the findings into a suggested fix, with a best guess of how much it helps, and a low and high estimate."},
+    {"anchor": "solution", "at": 58.9, "text": "It acts only after a person approves, and only inside a sandbox."},
+
+    {"anchor": "demo_start", "at": 0.5, "text": "This is a real, running shop, with 200 products from a Brazilian marketplace and shoppers simulated from real orders."},
+    {"anchor": "demo_start", "at": 7.6, "text": "Left: the world and what the agent sees. Right: the engine at work, every three hours."},
+    {"anchor": "fault_day", "at": 0.5, "text": "Now, without telling the agent, we break payments: one in four fails."},
+    {"anchor": "alarm", "at": -1.0, "text": "As traffic picks up, the engine raises an alarm: checkout errors far above budget."},
+    {"anchor": "alarm", "at": 5.0, "text": "Checkout attempts are normal, {attempts} against {usual}. The failures sit in the payment service."},
+    {"anchor": "policy", "at": 1.0, "text": "The engine itself may not act; its policy gate says so."},
+    {"anchor": "proposal", "at": 1.0, "text": "The agent proposes switching the faulty flag off: about {exp} more orders today, {lo} to {hi}."},
+    {"anchor": "approval", "at": 0.5, "text": "A person approves. The change runs in the shop's flag service and is read back."},
+    {"anchor": "execution", "at": 6.0, "text": "Payments recover in the next block."},
+
+    {"anchor": "close", "at": 0.3, "text": "So the agent found the cause, ruled out a drop in demand, and stated the expected benefits of pursuing its recommended action."},
+    {"anchor": "close", "at": 8.6, "text": "Next: connect it to our own telemetry, with the same guardrails."}
+  ]
+}

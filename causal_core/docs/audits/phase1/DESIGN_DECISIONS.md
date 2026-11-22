@@ -1,0 +1,26 @@
+# Phase 1 Audit — Design Decisions (ADR form)
+
+"Authorized" = covered by the user's checkpoint A approval on `38a5081`. "Provisional" = made during
+the unattended run (see the internal build log (not included)).
+
+| ID | Decision | Requirement | Alternatives considered | Why this is more correct | Cost | Falsifiable test | Authorization |
+|---|---|---|---|---|---|---|---|
+| DD-01 | Every parse goes through one JSON path (dict → `json.dumps` → strict JSON validation) | plan §C.6 "no unknown coercions"; §C public API | (1) python-mode validation of dicts; (2) two paths | Dicts and bytes get identical semantics. Strict JSON mode accepts ISO datetimes but no coercions | One `json.dumps` per parse | `RoundTripG02.test_dict_and_bytes_parse_identically` | Authorized (A-2) |
+| DD-02 | Contracts are frozen, closed (`extra=forbid`), strict and finite (`allow_inf_nan=False`) | §C.6; I02 | Lax models ignoring extras | An unknown or mistyped field is an error, not silently dropped. NaN is not a measurement | Adapters must emit exact types | `StrictnessT1`; corpus B1–B3, K1 | Authorized (A-2); finite = Tier 1 fix |
+| DD-03 | `Literal` value sets instead of `Enum` classes | §2.1 enumerations | `enum.Enum` | Strict JSON parsing of enum members needs no conversion; the schemas list values explicitly | No enum methods | `SchemaFreezeT1` (values in frozen schemas) | Authorized |
+| DD-04 | Metric fields are optional; each operation states its needs (`assess_contract_compatibility`) | comparison §5; F01; I02 | (1) required metric fields; (2) profile flags | Absent means "not declared", never a default. A missing field surfaces where it matters | Callers must ask before computing | corpus A3; `CompatibilityAndPorts.test_conditional_requirements` | Authorized (A-3) |
+| DD-05 | Closed kind → shape table; events only as `event_batch` | §2.1 event/state rows | Free pairing | Prevents silent event→rate coercion | Derived metrics need their own definition | corpus J1 | Authorized (A-3) |
+| DD-06 | `Clock{quality, value}`; UNKNOWN carries no value | §2.2 | Bare datetime + separate flag | The quality can't drift away from its value; manufacturing a timestamp is unrepresentable | Slightly verbose wire | corpus F1, F2 | Authorized |
+| DD-07 | UTC-only wire timestamps; source zone in `source_timezone` | §2.2 | Normalize; accept any offset | See CP-003 | Adapters convert | `UtcOnTheWireCP003`, corpus D4 | **Provisional** (CP-003) |
+| DD-08 | Legacy keying: root `legacy:` + sha256[:16] of exact bytes; ids from the same hash; record key = metric:window start | §2.4 "deterministic stable root" | Random UUIDs; full hash | Deterministic and content-addressed; a 64-bit prefix gives ~2³² records before birthday collisions matter | Long-ish ids | `MigrationG03.test_observation_matches_frozen`; `CompatibilityFixturesT1.test_migration_is_deterministic` | Authorized (A-4) |
+| DD-09 | Migration never raises; it quarantines with reasons and keeps the original text | §2.4; plan §C.5 | Raise on bad input | A bad legacy record can't abort a batch or vanish | Callers must check `outcome` | `MigrationG03.test_migration_never_raises` | Authorized (A-4) |
+| DD-10 | Extra origin `legacy_unknown` and role `LEGACY_UNSCOPED` (not in the blueprint's lists) | §2.1 origin list; §2.4 | Label legacy as `original` | The alternative fabricates provenance. **Class C valid alternate** | One more enum value | `EvidenceIndependenceG07`; MigrationG03 | Authorized (A-4 table) |
+| DD-11 | v1 formula strings parsed by recursive descent over {add, sub, mul, div}; never `eval` | §3.3 step 4 "no dynamic evaluation" | `eval` / `ast` module | Closed grammar; anything else is refused | Small parser to maintain | `CompatibilityFixturesT1` (`pow` refused) | Authorized |
+| DD-12 | Ports are `typing.Protocol`s with read/publish methods only | I15; G17 surface | ABCs; generic `execute` | No write surface exists to misuse | Phase 8 adds a separate port | `test_p0_ports_have_no_write_surface` | Authorized |
+| DD-13 | One `schema_version = "2.0"` per record. Additive optional fields don't bump it; meaning changes do. Frozen JSON Schemas detect any change | plan §C; P1-057 | Per-type versions | Simple and testable. Drift forces a decision-log entry | Re-freeze on approved change | `SchemaFreezeT1` | Provisional (CP-002 part) |
+| DD-14 | Per-record rules live in contracts; cross-record rules (lineage DAG, revision conflicts, assessment links) live in the ledger/admission | §2.2; §5.1 | Validate cross-record in contracts | Contracts stay pure and stateless | Some rules wait for Phase 2/3 | future-011, P1-023 (Phase 3 tests) | Authorized (scope) |
+| DD-15 | `EntitySpec` / `DimensionSpec` with explicit `partition_policy`; OTHER only when declared | §2.1; §3.1; §3.3 step 3 | Reuse `CategoricalValueSchema`; defer | See CP-005 | Additive | `EntityDimensionCP005` | **Provisional** (CP-005) |
+| DD-16 | `EstimandSpec` requires source and target scope; `requires_transport` derived | §2.1; I05; §4.5.5 | Optional; inherit from task | See CP-004 | 2 constructors | `EstimandScopesCP004` | **Provisional** (CP-004) |
+
+No decision relies on "future-proof", "generic" or "best practice" alone. Each row names the test
+that would show it wrong.

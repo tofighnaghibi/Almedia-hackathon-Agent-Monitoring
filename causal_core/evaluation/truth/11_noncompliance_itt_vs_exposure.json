@@ -1,0 +1,14 @@
+{
+  "case_id": "11_noncompliance_itt_vs_exposure",
+  "generator": "emulator/0.1:one_sided_noncompliance",
+  "seed": 20261111,
+  "params": {
+    "complier_share": 0.6,
+    "never_taker_shift": -0.5,
+    "realised_complier_share": 0.6005
+  },
+  "true_values": {
+    "itt_effect_of_assignment": 0.6,
+    "complier_average_causal_effect": 1.0
+  }
+}

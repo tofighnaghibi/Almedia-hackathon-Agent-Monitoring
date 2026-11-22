@@ -1,0 +1,8 @@
+# Project configuration. Paths may use ~ and $VARS.
+[paths]
+data = "~/.cache/mkt-probe/data"     # raw downloads (Olist, Retailrocket, ...)
+artifacts = "artifacts"              # cached stage outputs (content-addressed)
+runs = "runs"                        # generated worlds / scenario runs
+
+[calibration]
+fit_until = "2018-01-01"             # fit on purchases before this date; hold out the rest

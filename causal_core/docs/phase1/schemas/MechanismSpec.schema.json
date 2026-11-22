@@ -1,0 +1,375 @@
+{
+  "$defs": {
+    "EnvironmentScope": {
+      "additionalProperties": false,
+      "properties": {
+        "data_cut": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Cut"
+        },
+        "dataset_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dataset Version"
+        },
+        "environment_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Environment Id",
+          "type": "string"
+        },
+        "environment_kind": {
+          "enum": [
+            "production",
+            "staging",
+            "emulator",
+            "offline_replay",
+            "legacy_unscoped"
+          ],
+          "title": "Environment Kind",
+          "type": "string"
+        },
+        "generator_version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generator Version"
+        }
+      },
+      "required": [
+        "environment_id",
+        "environment_kind"
+      ],
+      "title": "EnvironmentScope",
+      "type": "object"
+    },
+    "FittedOn": {
+      "additionalProperties": false,
+      "properties": {
+        "lineage_roots": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Lineage Roots",
+          "type": "array"
+        },
+        "n": {
+          "exclusiveMinimum": 0,
+          "title": "N",
+          "type": "integer"
+        },
+        "scope": {
+          "$ref": "#/$defs/EnvironmentScope"
+        },
+        "window": {
+          "$ref": "#/$defs/TimeWindow"
+        }
+      },
+      "required": [
+        "scope",
+        "window",
+        "n",
+        "lineage_roots"
+      ],
+      "title": "FittedOn",
+      "type": "object"
+    },
+    "MechanismParent": {
+      "additionalProperties": false,
+      "properties": {
+        "lag_steps": {
+          "minimum": 0,
+          "title": "Lag Steps",
+          "type": "integer"
+        },
+        "transform": {
+          "default": "identity",
+          "enum": [
+            "identity",
+            "square"
+          ],
+          "title": "Transform",
+          "type": "string"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "variable_id",
+        "lag_steps"
+      ],
+      "title": "MechanismParent",
+      "type": "object"
+    },
+    "RegimeBound": {
+      "additionalProperties": false,
+      "description": "The range of one parent seen while fitting. Outside it the mechanism is not trusted (OUT_OF_REGIME).",
+      "properties": {
+        "lag_steps": {
+          "minimum": 0,
+          "title": "Lag Steps",
+          "type": "integer"
+        },
+        "maximum": {
+          "title": "Maximum",
+          "type": "number"
+        },
+        "minimum": {
+          "title": "Minimum",
+          "type": "number"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "variable_id",
+        "lag_steps",
+        "minimum",
+        "maximum"
+      ],
+      "title": "RegimeBound",
+      "type": "object"
+    },
+    "TimeWindow": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "TimeWindow",
+      "type": "object"
+    },
+    "ValidationDiagnostics": {
+      "additionalProperties": false,
+      "properties": {
+        "coverage": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Coverage",
+          "type": "number"
+        },
+        "holdout_window": {
+          "$ref": "#/$defs/TimeWindow"
+        },
+        "interval_level": {
+          "exclusiveMaximum": 1,
+          "exclusiveMinimum": 0,
+          "title": "Interval Level",
+          "type": "number"
+        },
+        "log_score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Log Score"
+        },
+        "n": {
+          "exclusiveMinimum": 0,
+          "title": "N",
+          "type": "integer"
+        },
+        "out_of_regime_points": {
+          "minimum": 0,
+          "title": "Out Of Regime Points",
+          "type": "integer"
+        },
+        "rmse": {
+          "minimum": 0,
+          "title": "Rmse",
+          "type": "number"
+        },
+        "verdict": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ],
+          "title": "Verdict",
+          "type": "string"
+        }
+      },
+      "required": [
+        "holdout_window",
+        "n",
+        "rmse",
+        "interval_level",
+        "coverage",
+        "out_of_regime_points",
+        "verdict"
+      ],
+      "title": "ValidationDiagnostics",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "coefficients": {
+      "items": {
+        "type": "number"
+      },
+      "title": "Coefficients",
+      "type": "array"
+    },
+    "covariance": {
+      "items": {
+        "items": {
+          "type": "number"
+        },
+        "type": "array"
+      },
+      "title": "Covariance",
+      "type": "array"
+    },
+    "family": {
+      "const": "linear_gaussian",
+      "title": "Family",
+      "type": "string"
+    },
+    "feature_availability": {
+      "const": "parents_observed_by_target_time",
+      "title": "Feature Availability",
+      "type": "string"
+    },
+    "fitted_on": {
+      "$ref": "#/$defs/FittedOn"
+    },
+    "mechanism_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Mechanism Id",
+      "type": "string"
+    },
+    "noise_sd": {
+      "exclusiveMinimum": 0,
+      "title": "Noise Sd",
+      "type": "number"
+    },
+    "parents": {
+      "items": {
+        "$ref": "#/$defs/MechanismParent"
+      },
+      "title": "Parents",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "CANDIDATE",
+        "VALIDATED",
+        "REJECTED"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "target": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Target",
+      "type": "string"
+    },
+    "valid_regime": {
+      "items": {
+        "$ref": "#/$defs/RegimeBound"
+      },
+      "title": "Valid Regime",
+      "type": "array"
+    },
+    "validation": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ValidationDiagnostics"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "version": {
+      "minimum": 1,
+      "title": "Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "mechanism_id",
+    "version",
+    "target",
+    "family",
+    "parents",
+    "coefficients",
+    "covariance",
+    "noise_sd",
+    "valid_regime",
+    "feature_availability",
+    "fitted_on",
+    "status"
+  ],
+  "title": "MechanismSpec",
+  "type": "object"
+}

@@ -1,0 +1,240 @@
+{
+  "$defs": {
+    "InterventionSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "set",
+            "shift"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        },
+        "variable_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+          "title": "Variable Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "variable_id",
+        "kind",
+        "value"
+      ],
+      "title": "InterventionSpec",
+      "type": "object"
+    },
+    "PredictiveSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "lower": {
+          "title": "Lower",
+          "type": "number"
+        },
+        "mean": {
+          "title": "Mean",
+          "type": "number"
+        },
+        "upper": {
+          "title": "Upper",
+          "type": "number"
+        }
+      },
+      "required": [
+        "mean",
+        "lower",
+        "upper"
+      ],
+      "title": "PredictiveSummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "assumptions": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "title": "Assumptions",
+      "type": "array"
+    },
+    "baseline": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PredictiveSummary"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "calibration_scope_kinds": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "title": "Calibration Scope Kinds",
+      "type": "array"
+    },
+    "constraint_risk": {
+      "default": {},
+      "patternProperties": {
+        "\\S": {
+          "type": "number"
+        }
+      },
+      "propertyNames": {
+        "minLength": 1
+      },
+      "title": "Constraint Risk",
+      "type": "object"
+    },
+    "effect": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PredictiveSummary"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "horizon_steps": {
+      "minimum": 1,
+      "title": "Horizon Steps",
+      "type": "integer"
+    },
+    "intervened": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PredictiveSummary"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "interventions": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/InterventionSpec"
+      },
+      "title": "Interventions",
+      "type": "array"
+    },
+    "level": {
+      "exclusiveMaximum": 1,
+      "exclusiveMinimum": 0,
+      "title": "Level",
+      "type": "number"
+    },
+    "mechanism_versions": {
+      "default": {},
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$": {
+          "type": "integer"
+        }
+      },
+      "propertyNames": {
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "title": "Mechanism Versions",
+      "type": "object"
+    },
+    "n_samples": {
+      "minimum": 1,
+      "title": "N Samples",
+      "type": "integer"
+    },
+    "prediction_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Prediction Id",
+      "type": "string"
+    },
+    "provenance_role": {
+      "const": "MODEL_PREDICTION",
+      "default": "MODEL_PREDICTION",
+      "title": "Provenance Role",
+      "type": "string"
+    },
+    "reach_sensitivity": {
+      "default": {},
+      "patternProperties": {
+        "\\S": {
+          "$ref": "#/$defs/PredictiveSummary"
+        }
+      },
+      "propertyNames": {
+        "minLength": 1
+      },
+      "title": "Reach Sensitivity",
+      "type": "object"
+    },
+    "reasons": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "title": "Reasons",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed": {
+      "title": "Seed",
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "PREDICTED",
+        "OUT_OF_REGIME",
+        "UNSUPPORTED_MODEL",
+        "CAP_EXCEEDED"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "target": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-/]*$",
+      "title": "Target",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "prediction_id",
+    "target",
+    "horizon_steps",
+    "status",
+    "level",
+    "seed",
+    "n_samples"
+  ],
+  "title": "CounterfactualPrediction",
+  "type": "object"
+}

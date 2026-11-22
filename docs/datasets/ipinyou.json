@@ -1,0 +1,456 @@
+{
+ "fetch_status": "ok",
+ "origin": "Kaggle mirror lastsummer/ipinyou (third-party copy of the iPinYou RTB release)",
+ "fetched": "2026-11-21T18:43:45",
+ "files": {
+  "ipinyou.contest.dataset/README": {
+   "bytes": 10663,
+   "sha256": "1d705c0ff3c15d61ed2ce870467fe4133a50d7dc2f443f65a30d6cecdfd198a1"
+  },
+  "ipinyou.contest.dataset/README.old": {
+   "bytes": 10534,
+   "sha256": "0240592c72ee85003a6ebd160e027646ef35123f3fe5b438685009f74ef1b974"
+  },
+  "ipinyou.contest.dataset/algo.submission.demo/algo.submission.demo/Java/Algorithm.java": {
+   "bytes": 157,
+   "sha256": "8894a7170a2dfaad80b341721c1b510d0cd17562851732f08bf67bcf0a5c8e00"
+  },
+  "ipinyou.contest.dataset/algo.submission.demo/algo.submission.demo/Java/Bid.java": {
+   "bytes": 2694,
+   "sha256": "afc1e4ec39208e09ca0d7e9940b26178cd68564df0947c7343a5f18173d0eb4e"
+  },
+  "ipinyou.contest.dataset/algo.submission.demo/algo.submission.demo/Java/BidRequest.java": {
+   "bytes": 4227,
+   "sha256": "40bc63f27a9d546646172d12d415253ff5a24fe4012a3106e10dd8640ee7a680"
+  },
+  "ipinyou.contest.dataset/algo.submission.demo/algo.submission.demo/Python/bid.py": {
+   "bytes": 183,
+   "sha256": "ff2aa6774386e5b53809874af398a3731539d0698259c09aceb8fa65eb342b78"
+  },
+  "ipinyou.contest.dataset/algo.submission.demo/algo.submission.demo/Python/bidDemo.py": {
+   "bytes": 1915,
+   "sha256": "a7fe25e8b423f901b23c2b25cb66c91471cd3a73de816b3ecccdfbac74eb9937"
+  },
+  "ipinyou.contest.dataset/algo.submission.demo/algo.submission.demo/Python/bidRequest.py": {
+   "bytes": 3881,
+   "sha256": "659d6c5b19c1c29d5371f23b70f6c9fbd7250beda5501417a5d9b258cc0aa022"
+  },
+  "ipinyou.contest.dataset/algo.submission.demo/algo.submission.demo/R/bid.R": {
+   "bytes": 2168,
+   "sha256": "ddd992b8f714f10a690ba6caed71f938ce9c93ea277c8dada07664f9fca73e78"
+  },
+  "ipinyou.contest.dataset/city.cn.txt": {
+   "bytes": 6144,
+   "sha256": "674691f7453e70a10a40750251599e26209a648bd2379ef1e069cb6edbf986f6"
+  },
+  "ipinyou.contest.dataset/city.en.txt": {
+   "bytes": 4683,
+   "sha256": "47d68f77d545ea7358f4bc2ed073b7f5e412d4751b55ab31b4de2748d5bd868d"
+  },
+  "ipinyou.contest.dataset/files.md5": {
+   "bytes": 7305,
+   "sha256": "752ccfc8648dde3e28071e88213ed5d19c44f61a06635e7510164fc7e954fb89"
+  },
+  "ipinyou.contest.dataset/known.data.bugs.txt": {
+   "bytes": 326,
+   "sha256": "e2749452e53ba439f48d87c78cdf90dbd58afbe522fb83fea989efdfd6a74b4a"
+  },
+  "ipinyou.contest.dataset/region.cn.txt": {
+   "bytes": 410,
+   "sha256": "5630f8a2d38b0a420708642b17a5dab1ec689b29b4868e620c7d52a82b4cc210"
+  },
+  "ipinyou.contest.dataset/region.en.txt": {
+   "bytes": 435,
+   "sha256": "6e3d257b0b2f57390ade28e36d3a42b433382e03ac9b6122693aecebb4b938ab"
+  },
+  "ipinyou.contest.dataset/testing1st/leaderboard.test.data.20130318_20.txt.bz2": {
+   "bytes": 184482363,
+   "sha256": "45a2f4af53fc7c6226da259546676d7fe85d76933712748bdca1d938dad2c918"
+  },
+  "ipinyou.contest.dataset/testing2nd/leaderboard.test.data.20130613_15.txt.bz2": {
+   "bytes": 171842537,
+   "sha256": "1fab29e50a5d8277a83f738cbec7bf50035ce398125fabbb9a556b35224979c0"
+  },
+  "ipinyou.contest.dataset/testing3rd/leaderboard.test.data.20131021_28.txt.bz2": {
+   "bytes": 112633775,
+   "sha256": "c41ac6cacc455c2d782ba38e8bc0a6f502c14ee553336a93ca000b45069fc3db"
+  },
+  "ipinyou.contest.dataset/training1st/bid.20130311.txt.bz2": {
+   "bytes": 108986453,
+   "sha256": "c3b4a6f18249b1c8a348deca86538e9b2f48a2c17640ab654c9f6faf204405db"
+  },
+  "ipinyou.contest.dataset/training1st/bid.20130312.txt.bz2": {
+   "bytes": 112368876,
+   "sha256": "69a087440b3f28ec20c47884a13cf11469178ee463239351e3ee6041198430cb"
+  },
+  "ipinyou.contest.dataset/training1st/bid.20130313.txt.bz2": {
+   "bytes": 121245050,
+   "sha256": "0f73fc24cb0bc2f445690c7ddb4be227486c3291dc023eb519c643c53272859c"
+  },
+  "ipinyou.contest.dataset/training1st/bid.20130314.txt.bz2": {
+   "bytes": 134055126,
+   "sha256": "3c84c1a2f2ea2e5c2d3d498b61cd4f8ca2918239c5e41a1799ce0517dd0eb98b"
+  },
+  "ipinyou.contest.dataset/training1st/bid.20130315.txt.bz2": {
+   "bytes": 126930603,
+   "sha256": "10796b48a7ef7fc14e3ef932b790bb06840f5a7a50a1cf12618a3a350ae01364"
+  },
+  "ipinyou.contest.dataset/training1st/bid.20130316.txt.bz2": {
+   "bytes": 126031333,
+   "sha256": "a65e3dd53421cc41c57689200581a82fe3fc60379a74e5b74d451da1cdabac5d"
+  },
+  "ipinyou.contest.dataset/training1st/bid.20130317.txt.bz2": {
+   "bytes": 128518840,
+   "sha256": "6e2f6e51152b373824c75deabe5db7205286460814b93a199ff2dbad5c124969"
+  },
+  "ipinyou.contest.dataset/training1st/clk.20130311.txt.bz2": {
+   "bytes": 77909,
+   "sha256": "0192875c2ae8ec775bfd8aa1d5de19b475e64252245fce070a91a0acfbbf23a8"
+  },
+  "ipinyou.contest.dataset/training1st/clk.20130312.txt.bz2": {
+   "bytes": 78220,
+   "sha256": "713a9b7c2e8ceea2a9a192f9efe71c1997a6ac2cc9a2448490d15cad06516f14"
+  },
+  "ipinyou.contest.dataset/training1st/clk.20130313.txt.bz2": {
+   "bytes": 83040,
+   "sha256": "0c5c88aae0eaec49e03386c29e7a236fc6d2d92e7e2033e9af9c012da27d59c2"
+  },
+  "ipinyou.contest.dataset/training1st/clk.20130314.txt.bz2": {
+   "bytes": 83045,
+   "sha256": "ea930310441808ad601d2edba2b9ec78c1e5f64df356032a485dc74282c73a61"
+  },
+  "ipinyou.contest.dataset/training1st/clk.20130315.txt.bz2": {
+   "bytes": 82998,
+   "sha256": "2b700f80346e9197cd4efbf89a60f8429ea0a863613b73fa69ad8b3eedab10fd"
+  },
+  "ipinyou.contest.dataset/training1st/clk.20130316.txt.bz2": {
+   "bytes": 102948,
+   "sha256": "c586ff2f220262bbe0d8199117ddebee28f412ac2a5e04625533823d50e39a02"
+  },
+  "ipinyou.contest.dataset/training1st/clk.20130317.txt.bz2": {
+   "bytes": 106764,
+   "sha256": "6397d01c507c2de877a81df0e73f05d12754a1de1353de971ff952e0df29e552"
+  },
+  "ipinyou.contest.dataset/training1st/conv.20130311.txt.bz2": {
+   "bytes": 2084,
+   "sha256": "ab395efe5ce5fb547f9fe3a92ce3e38bd5fdabe4c5b792b20ae093bf81796771"
+  },
+  "ipinyou.contest.dataset/training1st/conv.20130312.txt.bz2": {
+   "bytes": 1884,
+   "sha256": "1d140f63fe54a4955733efe63ab10c15f0eb115cd4362803e476551f13f971e7"
+  },
+  "ipinyou.contest.dataset/training1st/conv.20130313.txt.bz2": {
+   "bytes": 1639,
+   "sha256": "5515a21d74d450605277cab1856b753a6ca0577979d7be2d7e5bfb245bd7f0df"
+  },
+  "ipinyou.contest.dataset/training1st/conv.20130314.txt.bz2": {
+   "bytes": 1400,
+   "sha256": "51b6520436f45493440c0910aa5d1391e69cd6c28f46f56fb0ef9364e09f3c7b"
+  },
+  "ipinyou.contest.dataset/training1st/conv.20130315.txt.bz2": {
+   "bytes": 1309,
+   "sha256": "5f1a9d50b099412d7b044455af2d29d84fe716cb038da7d2a8a4911428f33b75"
+  },
+  "ipinyou.contest.dataset/training1st/conv.20130316.txt.bz2": {
+   "bytes": 1986,
+   "sha256": "a38739a39ba826953ea217955b6f9a6b5103cc47c7ec153893ac2706cb489047"
+  },
+  "ipinyou.contest.dataset/training1st/conv.20130317.txt.bz2": {
+   "bytes": 1427,
+   "sha256": "a69566804f5d258a6c379ea057aeefc9e64802a5591f15196006143afa29beea"
+  },
+  "ipinyou.contest.dataset/training1st/imp.20130311.txt.bz2": {
+   "bytes": 86867121,
+   "sha256": "9a87d1d214ad3de5afcd1306ae4b68f46afba9a2c7e98201d1d5e734913f9887"
+  },
+  "ipinyou.contest.dataset/training1st/imp.20130312.txt.bz2": {
+   "bytes": 86668726,
+   "sha256": "a5ec6257e3878ac401bf93966d13a71aa4ebaa010f0ce2eaa743e290da0ad4e3"
+  },
+  "ipinyou.contest.dataset/training1st/imp.20130313.txt.bz2": {
+   "bytes": 93722477,
+   "sha256": "2d617cfc6a7e5d6c4251faa05ea73ef5e6edbab9f4c9bd748240769a986ce4a2"
+  },
+  "ipinyou.contest.dataset/training1st/imp.20130314.txt.bz2": {
+   "bytes": 102843257,
+   "sha256": "b7831e019371862a6358aa75627c383b1027c7526adaed1f14d1a4a29846c7af"
+  },
+  "ipinyou.contest.dataset/training1st/imp.20130315.txt.bz2": {
+   "bytes": 95543526,
+   "sha256": "890f99dd9d8c4fe193ff8eccbf2a7943f2fe0c54ab5f17e163a2c28d9bae1366"
+  },
+  "ipinyou.contest.dataset/training1st/imp.20130316.txt.bz2": {
+   "bytes": 99445608,
+   "sha256": "f9eac5de999fd652cf9ab24a332577eaa1121ea537d32ab0046419c1307bc871"
+  },
+  "ipinyou.contest.dataset/training1st/imp.20130317.txt.bz2": {
+   "bytes": 100162853,
+   "sha256": "881b581601c45b857db9b6ab073f28c35ba1f5cd0daaddc7ed3db53e517cf88c"
+  },
+  "ipinyou.contest.dataset/training2nd/bid.20130606.txt.bz2": {
+   "bytes": 465222307,
+   "sha256": "a3e047e19574fdda6361f556979fe211973917a90a539b6c097cf9c3bf44309a"
+  },
+  "ipinyou.contest.dataset/training2nd/bid.20130607.txt.bz2": {
+   "bytes": 512584088,
+   "sha256": "59213ebd57aef231d9096435c50da3e60baaf46d0c387b4f74f043f5537d23ad"
+  },
+  "ipinyou.contest.dataset/training2nd/bid.20130608.txt.bz2": {
+   "bytes": 271750756,
+   "sha256": "0dd40352c870a7a231dc8aaad027283893c4ed91cb52b6e770ae71fde7b03c77"
+  },
+  "ipinyou.contest.dataset/training2nd/bid.20130609.txt.bz2": {
+   "bytes": 625048879,
+   "sha256": "cbdbef3d00b5e0004d8d82291dd0ef82387de4e8980156f497bad8847fb19ae6"
+  },
+  "ipinyou.contest.dataset/training2nd/bid.20130610.txt.bz2": {
+   "bytes": 281053211,
+   "sha256": "3757c9fd99f2898e0925da8333a9c9d8a7fa62b8a8a9e7ed60182f1d93be0d63"
+  },
+  "ipinyou.contest.dataset/training2nd/bid.20130611.txt.bz2": {
+   "bytes": 254404082,
+   "sha256": "0e52b67315d7703af10e613b5b30487105ba456db685746c0fb9cf919985ecf2"
+  },
+  "ipinyou.contest.dataset/training2nd/bid.20130612.txt.bz2": {
+   "bytes": 233420812,
+   "sha256": "1aadfd90d0e7e71e761228e46058f3b380a9c710efa07e3e4e19cc0029d9f945"
+  },
+  "ipinyou.contest.dataset/training2nd/clk.20130606.txt.bz2": {
+   "bytes": 99316,
+   "sha256": "c3fc6719d4507d4e1e8a5a94596ab70dd2a02270fa36df6f4e05df1715bfd753"
+  },
+  "ipinyou.contest.dataset/training2nd/clk.20130607.txt.bz2": {
+   "bytes": 90069,
+   "sha256": "880b8930a7eca037f31398db55774758f429228e15b32d4e1fbe8d6857d68fb6"
+  },
+  "ipinyou.contest.dataset/training2nd/clk.20130608.txt.bz2": {
+   "bytes": 99774,
+   "sha256": "8494038fe17309222bda28bebbbed6cc384295d3d0e6cb7619cf486e48b1cf50"
+  },
+  "ipinyou.contest.dataset/training2nd/clk.20130609.txt.bz2": {
+   "bytes": 95818,
+   "sha256": "0ce29d8ed5da423564f749c043c9bac6ddb1d304a40e8560132b109aeecf6b91"
+  },
+  "ipinyou.contest.dataset/training2nd/clk.20130610.txt.bz2": {
+   "bytes": 121818,
+   "sha256": "4f6325589b70e6c509877549eb84376c186fb8a2bb72a71f6da8d942244e4720"
+  },
+  "ipinyou.contest.dataset/training2nd/clk.20130611.txt.bz2": {
+   "bytes": 113880,
+   "sha256": "9721c107cb887628362ddd9d7bead980d81f3bf22afbb1fb48115c4a7d3ddc9e"
+  },
+  "ipinyou.contest.dataset/training2nd/clk.20130612.txt.bz2": {
+   "bytes": 112802,
+   "sha256": "8d3884e682d7c3f98cc23d0d2d19cd24576f7203279ef1de5d880767a29dd804"
+  },
+  "ipinyou.contest.dataset/training2nd/conv.20130606.txt.bz2": {
+   "bytes": 5334,
+   "sha256": "14663b7fce283762f31946db775d53eac3733d5022b09b6e8cab5956c7761ebe"
+  },
+  "ipinyou.contest.dataset/training2nd/conv.20130607.txt.bz2": {
+   "bytes": 6020,
+   "sha256": "66019d58be5d8a4a9f31113317c52dd030eac0f5cab62841653fd82b5ad88d46"
+  },
+  "ipinyou.contest.dataset/training2nd/conv.20130608.txt.bz2": {
+   "bytes": 5560,
+   "sha256": "35fc7bde88cde2bac4d92868649b480a983ac85861eb5a13f96c39c666126149"
+  },
+  "ipinyou.contest.dataset/training2nd/conv.20130609.txt.bz2": {
+   "bytes": 4278,
+   "sha256": "63d2423e79039340fce28627f9812f34a7cbcd965de3bb6b9ca17968705828e2"
+  },
+  "ipinyou.contest.dataset/training2nd/conv.20130610.txt.bz2": {
+   "bytes": 12451,
+   "sha256": "df0b16ddaf526fccad42d482fff2b1e92fb9b74694b18b7e7e7e159fc6d7e892"
+  },
+  "ipinyou.contest.dataset/training2nd/conv.20130611.txt.bz2": {
+   "bytes": 6454,
+   "sha256": "740296147aba3e5da658b9387cbdef0523d8fb03ee912ab76da83533b39cfe30"
+  },
+  "ipinyou.contest.dataset/training2nd/conv.20130612.txt.bz2": {
+   "bytes": 9848,
+   "sha256": "135287472dc00d7a5d5bd6f4663f9baf9318878595a8724bae379f53f948cb6b"
+  },
+  "ipinyou.contest.dataset/training2nd/imp.20130606.txt.bz2": {
+   "bytes": 121560730,
+   "sha256": "63ceaf1560f3d022dfbf76d1d29c8814734fb6c2c7c92b398eb57e42c038dae6"
+  },
+  "ipinyou.contest.dataset/training2nd/imp.20130607.txt.bz2": {
+   "bytes": 119545822,
+   "sha256": "51adfcaaae35e7eddc9c43345acdab4e3e8fa9de12fabeb640de76b1091482a0"
+  },
+  "ipinyou.contest.dataset/training2nd/imp.20130608.txt.bz2": {
+   "bytes": 109675020,
+   "sha256": "2b66181c61b8f2ec31513a7c8e4a0d1a81d12fb8a62f816663d5c6331c5946a6"
+  },
+  "ipinyou.contest.dataset/training2nd/imp.20130609.txt.bz2": {
+   "bytes": 108107284,
+   "sha256": "0bb50338ea6922d0305100b708a283e560fa8e371c4ab69c0c67e1b75f44e600"
+  },
+  "ipinyou.contest.dataset/training2nd/imp.20130610.txt.bz2": {
+   "bytes": 120686089,
+   "sha256": "5d9f3ba4a5173a1565cccdb341381a35252186ed7c0f114eb63315031fd2de89"
+  },
+  "ipinyou.contest.dataset/training2nd/imp.20130611.txt.bz2": {
+   "bytes": 110999156,
+   "sha256": "1194ad35698564df5e54b8d8dafd1ad1e83aabd4d96bae45a00a564156cd0c8e"
+  },
+  "ipinyou.contest.dataset/training2nd/imp.20130612.txt.bz2": {
+   "bytes": 103534527,
+   "sha256": "e1f89b536a54e419dfdbeead6f86c98da0c5c667a96160d5a23a1d3027d1d57e"
+  },
+  "ipinyou.contest.dataset/training3rd/bid.20131019.txt.bz2": {
+   "bytes": 20889564,
+   "sha256": "14bb3220247465078bf4c4d258d3491b045e70e302c697cb6fa05fd00225cb3d"
+  },
+  "ipinyou.contest.dataset/training3rd/bid.20131020.txt.bz2": {
+   "bytes": 19155687,
+   "sha256": "b1e55ef6802f823484860a55a47dc261665c69ded43d9c31a6bc2a159c3c5d2f"
+  },
+  "ipinyou.contest.dataset/training3rd/bid.20131021.txt.bz2": {
+   "bytes": 89106280,
+   "sha256": "88223595fa2873c4c8615904df457a572bc9da92bcedfc397196c515be9f0700"
+  },
+  "ipinyou.contest.dataset/training3rd/bid.20131022.txt.bz2": {
+   "bytes": 73936820,
+   "sha256": "c1a89167497e278d1fc4019b1aee0277118f4f6843cc6eeea2ba473aeb6497cc"
+  },
+  "ipinyou.contest.dataset/training3rd/bid.20131023.txt.bz2": {
+   "bytes": 89533575,
+   "sha256": "68a510aee273bdc00e351b4835529516d167fc27bb679eea8d03d9b7a50813e2"
+  },
+  "ipinyou.contest.dataset/training3rd/bid.20131024.txt.bz2": {
+   "bytes": 120838217,
+   "sha256": "fa3e44fd212c33ce7b997c1e09780454bc07f7b60c5c007cd8d8391850d7c8ae"
+  },
+  "ipinyou.contest.dataset/training3rd/bid.20131025.txt.bz2": {
+   "bytes": 129121619,
+   "sha256": "34361b28d8601c556c5d0f67850ca497d8471c20dc0b6d4ab28f1bf48519652e"
+  },
+  "ipinyou.contest.dataset/training3rd/bid.20131026.txt.bz2": {
+   "bytes": 28613463,
+   "sha256": "57609d3c004da8727101dd960bc78def0276967338653661f9967ea1580549a0"
+  },
+  "ipinyou.contest.dataset/training3rd/bid.20131027.txt.bz2": {
+   "bytes": 29059709,
+   "sha256": "42c6c240d34561571727e4021d00420a46103266618eb649780a36a86dd183a7"
+  },
+  "ipinyou.contest.dataset/training3rd/bid.20131028.txt.bz2": {
+   "bytes": 52552956,
+   "sha256": "a4ea35586c3732b8f91cc36b089edb4bf50f3511854b27a9915dc52a8be7cd07"
+  },
+  "ipinyou.contest.dataset/training3rd/clk.20131019.txt.bz2": {
+   "bytes": 8751,
+   "sha256": "362218c2eb25ba122158dec06679d6de4bcc0eccef47f840db1c4ec4dba07a1c"
+  },
+  "ipinyou.contest.dataset/training3rd/clk.20131020.txt.bz2": {
+   "bytes": 6878,
+   "sha256": "a26da3fff0720ca3597ec0e57b68bbb7cd059dbf0528fd6fc471c940d01ee907"
+  },
+  "ipinyou.contest.dataset/training3rd/clk.20131021.txt.bz2": {
+   "bytes": 43151,
+   "sha256": "21da9d03f04b1b8c34fe71cb9cdae5278ba0ca7b3fe2c86bc96abe9d162371aa"
+  },
+  "ipinyou.contest.dataset/training3rd/clk.20131022.txt.bz2": {
+   "bytes": 34752,
+   "sha256": "c974157f02b395b9f9a05c39020bcbe0958c36a0dd526c2c2bbe3add912a0d34"
+  },
+  "ipinyou.contest.dataset/training3rd/clk.20131023.txt.bz2": {
+   "bytes": 33629,
+   "sha256": "d900c28a7dd18bb26baddbe6a94371bc038d3977a34e8b8cbfb19214be53ba36"
+  },
+  "ipinyou.contest.dataset/training3rd/clk.20131024.txt.bz2": {
+   "bytes": 22677,
+   "sha256": "ca9f330ee4551c504ac033d107414b337a916d9cf066bd6121aaacbcc88d9411"
+  },
+  "ipinyou.contest.dataset/training3rd/clk.20131025.txt.bz2": {
+   "bytes": 26996,
+   "sha256": "5d85fe2fa528e43d3b0923678d61b6b8b3825c94dbe92b65ae0fb2495654115d"
+  },
+  "ipinyou.contest.dataset/training3rd/clk.20131026.txt.bz2": {
+   "bytes": 20376,
+   "sha256": "8bdf25b6f67a4f05a96e5a955a46a62558693467dbac73fd0ac195f125c00b37"
+  },
+  "ipinyou.contest.dataset/training3rd/clk.20131027.txt.bz2": {
+   "bytes": 3690,
+   "sha256": "5cc808c8211eda6b3ab2ee6d34a99b30f10e1331d6512dda37a2096ff0d87fa1"
+  },
+  "ipinyou.contest.dataset/training3rd/conv.20131019.txt.bz2": {
+   "bytes": 2343,
+   "sha256": "a6598f7659ca2308a1d7fefebc2b3dea67ee34c46da94e1ecb74b50871fa26c8"
+  },
+  "ipinyou.contest.dataset/training3rd/conv.20131020.txt.bz2": {
+   "bytes": 2881,
+   "sha256": "c67b7ff3a13d7bbc37445437b2f2bb5e931bfd3947b6f45bab1a3d964baf9988"
+  },
+  "ipinyou.contest.dataset/training3rd/conv.20131021.txt.bz2": {
+   "bytes": 24730,
+   "sha256": "163cebaeb082687e04cef0c4dcb9948ef604737fbc841d03edb2a7e5f0b232ef"
+  },
+  "ipinyou.contest.dataset/training3rd/conv.20131022.txt.bz2": {
+   "bytes": 18041,
+   "sha256": "c48fbb44a65fa13a54071331d1663e927d40ce74e0963668c10726798dc92c4e"
+  },
+  "ipinyou.contest.dataset/training3rd/conv.20131023.txt.bz2": {
+   "bytes": 4716,
+   "sha256": "a7e9becb3eaf88fd7b74fb56abb88ba6b1cfe6f5efb59717449d174b5192974a"
+  },
+  "ipinyou.contest.dataset/training3rd/imp.20131019.txt.bz2": {
+   "bytes": 15767746,
+   "sha256": "4036c5b694fb691998a53dbac8cd970f84f3686d7c935c2f5c341ff40bf64c83"
+  },
+  "ipinyou.contest.dataset/training3rd/imp.20131020.txt.bz2": {
+   "bytes": 14714304,
+   "sha256": "480d847e8358331be4d1d0702c76f7fe9566caa68c46b9d71492de3dd7748418"
+  },
+  "ipinyou.contest.dataset/training3rd/imp.20131021.txt.bz2": {
+   "bytes": 61278003,
+   "sha256": "a997b6071b2b717f42dcf687208b9dce188dbc207525d1a3cea3163ae70f7f99"
+  },
+  "ipinyou.contest.dataset/training3rd/imp.20131022.txt.bz2": {
+   "bytes": 50891651,
+   "sha256": "b3dba89308bb4f217285a9a36eff37203317d73e17ba37f60103f2b8eb39e1ab"
+  },
+  "ipinyou.contest.dataset/training3rd/imp.20131023.txt.bz2": {
+   "bytes": 15100892,
+   "sha256": "628841786923eade41803bbc7595e772f4a5883e2f06fd329eeb7a63cff0205e"
+  },
+  "ipinyou.contest.dataset/training3rd/imp.20131024.txt.bz2": {
+   "bytes": 15442694,
+   "sha256": "e31c55a6e9bb4882d773df31f008edd4653d0bbd57e636bff8cbaac9c9dd720c"
+  },
+  "ipinyou.contest.dataset/training3rd/imp.20131025.txt.bz2": {
+   "bytes": 21093083,
+   "sha256": "ced6b8028fa4bdb7596341aff972bf1a0144acdc4e2221b091d683766421542c"
+  },
+  "ipinyou.contest.dataset/training3rd/imp.20131026.txt.bz2": {
+   "bytes": 18054608,
+   "sha256": "dc4a050bf06bb2032d1657f7ecba5f584c6dc258b3b1dc83dc6fa92b2a82c1c9"
+  },
+  "ipinyou.contest.dataset/training3rd/imp.20131027.txt.bz2": {
+   "bytes": 7591299,
+   "sha256": "372527205fe5c92fadd7004d9daa0f93effb46f0620f1428a6963a4f6ae2c41e"
+  },
+  "ipinyou.contest.dataset/user.profile.tags.cn.txt": {
+   "bytes": 1335,
+   "sha256": "6f9172fcee3422cb457d6ec1635b3729ed5e817712ab8b3402549353f107e33c"
+  },
+  "ipinyou.contest.dataset/user.profile.tags.en.txt": {
+   "bytes": 1420,
+   "sha256": "8d0b160f29286848007a605965ed8e21626b7d506ce1e87c17b26aabfef13642"
+  }
+ },
+ "bytes": 6304405623,
+ "licence": "iPinYou release terms (mirror)",
+ "audit_status": "done",
+ "claims": [
+  {
+   "row": "Ads, sponsored lift",
+   "role": "secondary",
+   "claim": "auction bid and paying prices, clicks, conversions",
+   "status": "PASS",
+   "evidence": "genuine contest package (season 1-3 bid/imp/clk/conv logs): season-2 files imp 7, clk 7, conv 7; imp.20130606.txt.bz2: 200,000 lines sampled, column counts [24], paying <= bidding in 99.3%, median paying price 55.0 (CPM fen); no treatment randomisation -> auction prices only, not ad lift"
+  }
+ ],
+ "audited": "2026-11-21T18:44:54"
+}

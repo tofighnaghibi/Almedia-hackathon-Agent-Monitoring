@@ -1,0 +1,12 @@
+# M0 experiments only: also write every span and log to files (E3 leak scan). Upstream untouched.
+exporters:
+  file/spans:
+    path: /m0out/spans.jsonl
+  file/logs:
+    path: /m0out/logs.jsonl
+service:
+  pipelines:
+    traces:
+      exporters: [debug, span_metrics, file/spans]
+    logs:
+      exporters: [debug, file/logs]

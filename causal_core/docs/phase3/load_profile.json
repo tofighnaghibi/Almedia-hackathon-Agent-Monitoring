@@ -1,0 +1,33 @@
+{
+  "measured_at": "2026-11-21T21:40:11+00:00",
+  "machine": {
+    "os": "macOS-27.2.1-arm64-arm-64bit",
+    "cpu": "Apple M1 Pro",
+    "python": "3.11.12"
+  },
+  "caveat": "Threads in one CPython process sharing one SQLite connection behind one writer lock (GIL applies). Not an end-to-end tier latency; measures ledger + scheduler contention only.",
+  "scenario": {
+    "duration_s": 4.0,
+    "deep_jobs_queued": 100,
+    "deep_workers": 4,
+    "writer_hog_txn_ms": 20.0,
+    "t0_interval_ms": 25.0,
+    "long_reader_s": 1.5
+  },
+  "t0_enqueue_to_lease_ms": {
+    "n": 59,
+    "p50": 62.73,
+    "p95": 151.68,
+    "p99": 231.17,
+    "max": 231.17,
+    "target_context": "T0 end-to-end target is p95 < 2 s (\u00a75.3); this is only the scheduling slice"
+  },
+  "deep_jobs_completed": 69,
+  "deep_jobs_per_s": 17.0,
+  "writer_hog_txns": 136,
+  "wal_mib": {
+    "max_during_run": 4.19,
+    "after_truncate_checkpoint": 0.0
+  },
+  "db_mib": 0.23
+}
